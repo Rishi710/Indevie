@@ -1,6 +1,8 @@
 
 import "./globals.css";
 import { Poppins, Cormorant_Garamond } from "next/font/google";
+import Header from "./components/Header";
+import HeroSlider from "./components/HeroSlider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,8 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.variable} ${seasons.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+    
+      <body className={`${poppins.variable} ${seasons.variable} antialiased`} suppressHydrationWarning>
+        <Header />
+        <HeroSlider />
         {children}
       </body>
     </html>
