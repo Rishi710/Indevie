@@ -19,23 +19,22 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
       <div className="flex-1 overflow-hidden">
         <motion.div
           animate={{
-            x: ["-50%", "0%"],
+            x: ["0%", "-50%"],
           }}
           transition={{
-            duration: 50,
+            duration: 30,
             repeat: Infinity,
             ease: "linear",
           }}
           className="flex whitespace-nowrap"
-          style={{ width: "200%" }}
         >
-          {/* Duplicate content blocks for seamless looping */}
+          {/* Loop twice for seamless scrolling */}
           {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex space-x-16 px-8 items-center w-1/2 justify-around">
+            <div key={i} className="flex space-x-12 px-6 items-center">
               {announcementItems.map((item, index) => (
                 <span 
                   key={index} 
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-[0.5em] flex-shrink-0"
+                  className="text-[10px] md:text-xs font-medium uppercase tracking-[0.2em] flex-shrink-0"
                 >
                   {item}
                 </span>
@@ -48,7 +47,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
       {/* Close Button - positioned absolute but within the bar's height */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#EFE8D9]/80 hover:text-white transition-colors z-10 bg-[#B40417] pl-3 h-full flex items-center"
+        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#EFE8D9]/80 hover:text-white transition-colors z-10 bg-[#B40417] pl-1 h-full flex items-center"
         aria-label="Close announcement"
       >
         <svg
