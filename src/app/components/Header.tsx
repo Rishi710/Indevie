@@ -9,6 +9,7 @@ import AnnouncementBar from "./AnnouncementBar";
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +18,15 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Lock scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isMenuOpen]);
 
   const links = [
     { name: "Shop", href: "/shop" },
@@ -30,7 +40,7 @@ export default function Header() {
   return (
     <div className="fixed top-0 w-full z-50">
       <AnimatePresence>
-        {showAnnouncement && (
+        {showAnnouncement && !isMenuOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -44,8 +54,8 @@ export default function Header() {
       
       <header 
         className={`w-full transition-all duration-300 ${
-          isScrolled 
-            ? "bg-white/90 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm" 
+          isScrolled || isMenuOpen
+            ? "bg-white border-b border-gray-100 py-4 shadow-sm" 
             : "bg-transparent border-transparent py-6"
         }`}
       >
@@ -53,17 +63,19 @@ export default function Header() {
         <div className="flex justify-between items-center">
           
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="flex-shrink-0 flex items-center z-50">
             <Link 
               href="/" 
-              className="relative h-8 w-32 md:h-[45px] md:w-[180px] transition-all duration-300"
+              className="relative h-8 w-28 md:h-[45px] md:w-[180px] transition-all duration-300"
+              onClick={() => setIsMenuOpen(false)}
             >
               <Image
                 src="/images/logo.png"
                 alt="INDEVIE"
                 fill
+                sizes="(max-width: 768px) 112px, 180px"
                 className={`object-contain transition-all duration-300 ${
-                  isScrolled ? "brightness-0" : "brightness-0 invert"
+                  isScrolled || isMenuOpen ? "brightness-0" : "brightness-0 invert"
                 }`}
                 priority
               />
@@ -88,30 +100,96 @@ export default function Header() {
             ))}
           </nav>
           
-          {/* Icons (Cart, Account, etc.) */}
-          <div className={`flex items-center space-x-6 transition-colors duration-300 ${
-            isScrolled ? "text-gray-800" : "text-white"
+          {/* Icons and Hamburger */}
+          <div className={`flex items-center space-x-4 md:space-x-6 transition-colors duration-300 z-50 ${
+            isScrolled || isMenuOpen ? "text-gray-800" : "text-white"
           }`}>
-            <button className="hover:opacity-70 transition-opacity" aria-label="Search">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-6 h-6">
+            <button className="hover:opacity-70 transition-opacity hidden sm:block" aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
             </button>
-            <button className="hover:opacity-70 transition-opacity" aria-label="Account">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-6 h-6">
+            <button className="hover:opacity-70 transition-opacity hidden sm:block" aria-label="Account">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                </svg>
             </button>
             <button className="hover:opacity-70 transition-opacity" aria-label="Cart">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-6 h-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
               </svg>
+            </button>
+
+            {/* Hamburger Button */}
+            <button 
+              className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <motion.span 
+                animate={isMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                className={`block w-6 h-0.5 transition-colors duration-300 ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+              ></motion.span>
+              <motion.span 
+                animate={isMenuOpen ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+                className={`block w-6 h-0.5 transition-colors duration-300 ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+              ></motion.span>
+              <motion.span 
+                animate={isMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                className={`block w-6 h-0.5 transition-colors duration-300 ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+              ></motion.span>
             </button>
           </div>
           
         </div>
       </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 bg-white z-40 pt-24 px-6 md:hidden"
+          >
+            <nav className="flex flex-col space-y-8">
+              {links.map((link, idx) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + idx * 0.05 }}
+                >
+                  <Link 
+                    href={link.href}
+                    className="text-3xl font-serif text-gray-900 hover:text-red-700 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+            
+            {/* Mobile Menu Bottom Info */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="absolute bottom-12 left-6 right-6 border-t border-gray-100 pt-8"
+            >
+              <p className="text-xs uppercase tracking-widest text-gray-400 mb-4">Follow Us</p>
+              <div className="flex space-x-6">
+                <span className="text-sm font-medium">Instagram</span>
+                <span className="text-sm font-medium">Facebook</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
