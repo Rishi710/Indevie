@@ -26,7 +26,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
             repeat: Infinity,
             ease: "linear",
           }}
-          className="flex whitespace-nowrap"
+          className="flex whitespace-nowrap will-change-transform"
         >
           {/* Loop twice for seamless scrolling */}
           {[...Array(2)].map((_, i) => (

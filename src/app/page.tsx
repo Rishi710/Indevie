@@ -4,7 +4,10 @@ import Image from "next/image";
 export default function Home() {
   console.log("STORE:", process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
   return (
-    <h1 className="text-5xl text-red-500">Tailwind Working 🚀</h1>
+    <div>
+    <h1 className="text-3xl text-red-500">Tailwind Working 🚀</h1>
+    <h1>Shopify Connected ✅</h1>
+    </div>
   );
 }
 

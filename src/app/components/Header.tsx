@@ -128,15 +128,15 @@ export default function Header() {
             >
               <motion.span 
                 animate={isMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                className={`block w-6 h-0.5 transition-colors duration-300 ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
               ></motion.span>
               <motion.span 
                 animate={isMenuOpen ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
-                className={`block w-6 h-0.5 transition-colors duration-300 ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
               ></motion.span>
               <motion.span 
                 animate={isMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                className={`block w-6 h-0.5 transition-colors duration-300 ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
               ></motion.span>
             </button>
           </div>
@@ -153,7 +153,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 bg-white z-40 pt-24 px-6 md:hidden"
+            className="fixed inset-0 bg-white z-40 pt-24 px-6 md:hidden will-change-transform"
           >
             <nav className="flex flex-col space-y-8">
               {links.map((link, idx) => (
