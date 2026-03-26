@@ -1,13 +1,18 @@
 export const dynamic = "force-dynamic";
 import Image from "next/image";
 
+import HeroSlider from "./components/HeroSlider";
+
 export default function Home() {
   console.log("STORE:", process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
   return (
-    <div>
-    <h1 className="text-3xl text-red-500">Tailwind Working 🚀</h1>
-    <h1>Shopify Connected ✅</h1>
-    </div>
+    <main>
+      <HeroSlider />
+      <div className="py-20 text-center">
+        <h1 className="text-3xl text-red-500 mb-4">Tailwind Working 🚀</h1>
+        <h1 className="text-xl">Shopify Connected ✅</h1>
+      </div>
+    </main>
   );
 }
 

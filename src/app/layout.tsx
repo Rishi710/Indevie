@@ -2,7 +2,6 @@
 import "./globals.css";
 import { Poppins, Cormorant_Garamond } from "next/font/google";
 import Header from "./components/Header";
-import HeroSlider from "./components/HeroSlider";
 import Footer from "./components/Footer";
 
 const poppins = Poppins({
@@ -28,7 +27,6 @@ export default function RootLayout({
     
       <body className={`${poppins.variable} ${seasons.variable} antialiased`} suppressHydrationWarning>
         <Header />
-        <HeroSlider />
         {children}
         <Footer />
       </body>
