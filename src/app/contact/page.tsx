@@ -72,8 +72,8 @@ export default function ContactPage() {
               <h2 className="text-4xl font-popins text-[#6c3518] leading-tight">
                 Get in touch with <br/> Indevie beauty experts.
               </h2>
-              <p className="text-sm font-popins text-[#6c3518] leading-tight">
-                Whether you have a question about our products, need guidance <br/> on your skincare journey, or want to share your experience, <br/> we&apos;re here to listen.
+              <p className="text-sm md:text-base font-poppins text-[#6c3518] leading-relaxed max-w-md">
+                Whether you have a question about our products, need guidance on your skincare journey, or want to share your experience,we&apos;re here to listen.
               </p>
             </div>
 
