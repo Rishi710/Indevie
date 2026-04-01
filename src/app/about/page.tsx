@@ -126,7 +126,7 @@ export default function AboutPage() {
                transition={{ duration: 0.8, delay: 0.4 }}
                className="w-full md:w-auto mt-4 md:mt-0"
              >
-                <Link href="/shop" className="group flex items-center justify-center gap-4 bg-[#24120a] text-[#f5f1e6] px-10 py-5 rounded-none text-xs uppercase tracking-[0.2em] font-sans font-bold hover:bg-[#d0ba96] hover:text-[#24120a] transition-all w-full md:min-w-[200px]">
+                <Link href="/shop" className="group flex items-center justify-center gap-4 bg-[#6c3518] text-[#f5f1e6] px-10 py-5 rounded-none text-xs uppercase tracking-[0.2em] font-sans font-bold hover:bg-[#d0ba96] hover:text-[#24120a] transition-all w-full md:min-w-[200px]">
                   <span>Explore Collection</span>
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -138,7 +138,7 @@ export default function AboutPage() {
       
 
       {/* 🌿 SECTION 2: THE JOURNEY (Animated Continuous Timeline) */}
-      <section ref={journeyRef} className="relative z-20 bg-[#1a0e08] py-32 px-6 lg:px-12 text-[#f5f1e6] overflow-hidden">
+      <section ref={journeyRef} className="relative z-20 bg-[#6c3518] py-32 px-6 lg:px-12 text-[#f5f1e6] overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -193,10 +193,10 @@ export default function AboutPage() {
                 className="relative flex flex-col items-end w-full"
               >
                 <div className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#1a0e08] border-4 border-[#d0ba96] shadow-[0_0_20px_rgba(208,186,150,0.8)]" />
-                <div className="pr-16 text-right w-full">
+                <div className="pr-16 text-right w-full max-w-[280px] ml-auto">
                   <p className="text-[12px] text-[#d0ba96] uppercase tracking-widest font-sans mb-3 font-semibold">01 &mdash; The Search</p>
                   <p className="text-3xl font-seasons italic mb-4 text-[#f5f1e6]">Patience Required</p>
-                  <p className="text-[15px] font-sans text-[#f5f1e6]/70 leading-relaxed font-light">
+                  <p className="text-[15px] font-sans text-[#f5f1e6]/80 leading-relaxed font-light">
                     The path to Indévie wasn’t easy. It took working with over ten manufacturers and eight different packaging partners before everything aligned perfectly.
                   </p>
                 </div>
@@ -213,10 +213,10 @@ export default function AboutPage() {
                 className="relative w-full"
               >
                 <div className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#1a0e08] border-4 border-[#d0ba96] shadow-[0_0_20px_rgba(208,186,150,0.8)]" />
-                <div className="pl-16 w-full">
+                <div className="pl-16 md:pl-24 w-full max-w-[320px]">
                   <p className="text-[12px] text-[#d0ba96] uppercase tracking-widest font-sans mb-3 font-semibold">02 &mdash; The Intention</p>
                   <p className="text-3xl font-seasons italic mb-4 text-[#f5f1e6]">No Compromises</p>
-                  <p className="text-[15px] font-sans text-[#f5f1e6]/70 leading-relaxed font-light">
+                  <p className="text-[15px] font-sans text-[#f5f1e6]/80 leading-relaxed font-light">
                     From sourcing the right ingredients to ensuring every formulation followed a clean, no-nonsense approach, we settled for nothing less than perfection.
                   </p>
                 </div>
@@ -233,10 +233,10 @@ export default function AboutPage() {
                 className="relative flex flex-col items-end w-full"
               >
                 <div className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#1a0e08] border-4 border-[#d0ba96] shadow-[0_0_20px_rgba(208,186,150,0.8)]" />
-                <div className="pr-16 text-right w-full">
+                <div className="pr-16 text-right w-full max-w-[280px] ml-auto">
                   <p className="text-[12px] text-[#d0ba96] uppercase tracking-widest font-sans mb-3 font-semibold">03 &mdash; The Reality</p>
                   <p className="text-3xl font-seasons italic mb-4 text-[#f5f1e6]">Worth The Wait</p>
-                  <p className="text-[15px] font-sans text-[#f5f1e6]/70 leading-relaxed font-light">
+                  <p className="text-[15px] font-sans text-[#f5f1e6]/80 leading-relaxed font-light">
                     Every step required patience, persistence, and intention. Looking back, every challenge beautifully shaped what Indévie stands for today.
                   </p>
                 </div>
@@ -364,21 +364,26 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="flex-1 w-full relative"
+            className="flex-1 w-full relative h-[600px] flex items-center justify-center"
           >
-            <div className="relative aspect-[4/5] w-full max-w-md mx-auto rounded-t-full rounded-bl-full overflow-hidden shadow-2xl border-4 border-[#f5f1e6]">
-              <Image 
-                src="/images/WhatsApp Image 2026-02-26 at 8.17.53 PM.jpeg" 
-                alt="Founder Note abstract aesthetic"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-[3s]"
-              />
-              <div className="absolute inset-0 bg-[#6c3518]/10 mix-blend-multiply" />
+            {/* Elegant Gallery Frame for Clear Image */}
+            <div className="relative aspect-[3/4] w-full max-w-md mx-auto rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(108,53,24,0.15)] ring-1 ring-[#6c3518]/10 bg-white p-3 z-10">
+              <div className="relative w-full h-full rounded-[1.25rem] overflow-hidden bg-[#e8decb]">
+                <Image 
+                  src="/images/founder image.png" 
+                  alt="Founder of Indévie"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  className="object-cover object-top hover:scale-105 transition-transform duration-[2s] ease-out"
+                />
+              </div>
             </div>
+            {/* Background Decorative Element */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#6c3518]/5 to-transparent rounded-full blur-3xl -z-10 pointer-events-none" />
           </motion.div>
         </div>
       </section>
