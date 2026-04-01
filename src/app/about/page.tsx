@@ -294,9 +294,10 @@ export default function AboutPage() {
             className="relative h-[400px] md:h-[600px] w-full rounded-2xl overflow-hidden shadow-xl"
           >
              <Image 
-                src="/images/WhatsApp Image 2026-02-26 at 8.23.44 PM.jpeg"
+                src="/images/contact.jpeg"
                 alt="More than a brand, a family"
                 fill
+                sizes="(max-width: 768px) 100vw, 500px"
                 className="object-cover"
              />
              <div className="absolute inset-0 bg-[#6c3518]/10" />
@@ -352,7 +353,7 @@ export default function AboutPage() {
             <div className="relative">
               <span className="absolute -top-10 -left-6 text-7xl text-[#6c3518]/10 font-sans font-bold leading-none">"</span>
               <h2 className="text-4xl md:text-[46px] font-seasons text-[#6c3518] leading-[1.3] italic relative z-10 pr-4">
-                We wanted to help my mother feel confident in her skin.
+                We wanted to help my mother feel confident.
               </h2>
             </div>
             
@@ -383,7 +384,7 @@ export default function AboutPage() {
             <div className="relative w-full max-w-[460px] aspect-[4/5] rounded-[2.5rem] p-4 bg-white shadow-[0_30px_60px_rgba(108,53,24,0.06)] z-10 transition-transform duration-500 hover:-translate-y-2">
               <div className="relative w-full h-full rounded-[1.8rem] overflow-hidden bg-[#e8decb]">
                 <Image 
-                  src="/images/founder.jpg" 
+                  src="/images/founder-indevie.png"
                   alt="Founder of Indévie"
                   fill
                   sizes="(max-width: 768px) 100vw, 500px"
