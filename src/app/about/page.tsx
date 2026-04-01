@@ -193,7 +193,7 @@ export default function AboutPage() {
                 className="relative flex flex-col items-end w-full"
               >
                 <div className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#1a0e08] border-4 border-[#d0ba96] shadow-[0_0_20px_rgba(208,186,150,0.8)]" />
-                <div className="pr-16 text-right w-full max-w-[280px] ml-auto">
+                <div className="pr-16 text-right w-180">
                   <p className="text-[12px] text-[#d0ba96] uppercase tracking-widest font-sans mb-3 font-semibold">01 &mdash; The Search</p>
                   <p className="text-3xl font-seasons italic mb-4 text-[#f5f1e6]">Patience Required</p>
                   <p className="text-[15px] font-sans text-[#f5f1e6]/80 leading-relaxed font-light">
@@ -213,7 +213,7 @@ export default function AboutPage() {
                 className="relative w-full"
               >
                 <div className="absolute left-0 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#1a0e08] border-4 border-[#d0ba96] shadow-[0_0_20px_rgba(208,186,150,0.8)]" />
-                <div className="pl-16 md:pl-24 w-full max-w-[320px]">
+                <div className="pl-16 md:pl-24 w-190">
                   <p className="text-[12px] text-[#d0ba96] uppercase tracking-widest font-sans mb-3 font-semibold">02 &mdash; The Intention</p>
                   <p className="text-3xl font-seasons italic mb-4 text-[#f5f1e6]">No Compromises</p>
                   <p className="text-[15px] font-sans text-[#f5f1e6]/80 leading-relaxed font-light">
@@ -233,7 +233,7 @@ export default function AboutPage() {
                 className="relative flex flex-col items-end w-full"
               >
                 <div className="absolute right-0 translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#1a0e08] border-4 border-[#d0ba96] shadow-[0_0_20px_rgba(208,186,150,0.8)]" />
-                <div className="pr-16 text-right w-full max-w-[280px] ml-auto">
+                <div className="pr-16 text-right w-150">
                   <p className="text-[12px] text-[#d0ba96] uppercase tracking-widest font-sans mb-3 font-semibold">03 &mdash; The Reality</p>
                   <p className="text-3xl font-seasons italic mb-4 text-[#f5f1e6]">Worth The Wait</p>
                   <p className="text-[15px] font-sans text-[#f5f1e6]/80 leading-relaxed font-light">
@@ -326,64 +326,71 @@ export default function AboutPage() {
         </div>
       </section>
 
-       {/* 🌿 SECTION 4: FOUNDER'S NOTE (Abstract Layout) */}
-      <section className="relative z-20 bg-[#f5f1e6] pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#6c3518]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+      {/* 🌿 SECTION 4: FOUNDER'S NOTE (Creative Layout) */}
+      <section className="relative z-20 bg-[#f5f1e6] py-32 px-6 lg:px-12 overflow-hidden">
+        {/* Abstract Background Elements for Creativity */}
+        <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#d0ba96]/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-[#6c3518]/5 rounded-full blur-[80px] -translate-y-1/2 pointer-events-none" />
         
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 md:gap-24 relative z-10">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
+          
+          {/* Left Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="flex-1 space-y-8"
+            className="space-y-10"
           >
-            <div className="flex items-center gap-4">
-              <Sparkles className="text-[#6c3518]/40" size={20} strokeWidth={1} />
-              <h3 className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#6c3518]/60 italic font-seasons">
+            <div className="flex items-center gap-3 text-[#6c3518]/60">
+              <Sparkles size={16} strokeWidth={1.5} />
+              <h3 className="text-[11px] uppercase tracking-[0.4em] font-medium font-sans italic">
                 Founder&apos;s Note
               </h3>
             </div>
             
-            <h2 className="text-3xl md:text-5xl font-seasons text-[#6c3518] leading-snug italic relative">
-              <span className="absolute -top-10 -left-6 text-8xl text-[#6c3518]/10 font-seasons">"</span>
-              We wanted to help my mother feel confident in her skin.
-            </h2>
+            <div className="relative">
+              <span className="absolute -top-10 -left-6 text-7xl text-[#6c3518]/10 font-sans font-bold leading-none">"</span>
+              <h2 className="text-4xl md:text-[46px] font-seasons text-[#6c3518] leading-[1.3] italic relative z-10 pr-4">
+                We wanted to help my mother feel confident in her skin.
+              </h2>
+            </div>
             
-            <p className="text-sm md:text-base font-sans text-[#6c3518]/80 leading-relaxed md:leading-loose">
-              What started as a quiet thought slowly turned into something much bigger—a purpose. I wanted to help my mother feel confident in her skin as she struggled with psoriasis. Watching her go through discomfort, both physically and emotionally, made me realize how deeply personal skincare really is. 
-            </p>
-            <p className="text-sm md:text-base font-sans text-[#6c3518]/80 leading-relaxed md:leading-loose">
-              What began as small formulations made with care, for one person, gradually grew into something I felt the need to share with many.
-            </p>
+            <div className="space-y-6 text-[14px] md:text-[15px] font-sans text-[#6c3518]/70 leading-[1.8] font-light max-w-[480px]">
+              <p>
+                What started as a quiet thought slowly turned into something much bigger a purpose. I wanted to help my mother feel confident in her skin as she struggled with psoriasis. Watching her go through discomfort, both physically and emotionally, made me realize how deeply personal skincare really is. 
+              </p>
+              {/* <p>
+                What began as small formulations made with care, for one person, gradually grew into something I felt the need to share with many.
+              </p> */}
+            </div>
             
-            <div className="pt-6 border-t border-[#6c3518]/10 inline-block w-full">
-              <p className="text-lg font-seasons text-[#6c3518] italic">Ar. Ishita Pathak</p>
-              <p className="text-[10px] uppercase tracking-widest font-sans text-[#6c3518]/60 mt-1">Founder, Indévie</p>
+            <div className="pt-8 border-t border-[#6c3518]/10 w-full max-w-[480px] mt-4">
+              <p className="text-xl md:text-2xl font-poppins text-[#6c3518] font-medium">Ar. Ishita Pathak</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] font-sans text-[#6c3518]/50 mt-2 font-medium">Founder, Indévie</p>
             </div>
           </motion.div>
 
+          {/* Right Creative Image Frame */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="flex-1 w-full relative h-[600px] flex items-center justify-center"
+            className="w-full relative flex justify-center lg:justify-end"
           >
-            {/* Elegant Gallery Frame for Clear Image */}
-            <div className="relative aspect-[3/4] w-full max-w-md mx-auto rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(108,53,24,0.15)] ring-1 ring-[#6c3518]/10 bg-white p-3 z-10">
-              <div className="relative w-full h-full rounded-[1.25rem] overflow-hidden bg-[#e8decb]">
+            {/* Elegant Solid White Creative Frame imitating screen/card layout */}
+            <div className="relative w-full max-w-[460px] aspect-[4/5] rounded-[2.5rem] p-4 bg-white shadow-[0_30px_60px_rgba(108,53,24,0.06)] z-10 transition-transform duration-500 hover:-translate-y-2">
+              <div className="relative w-full h-full rounded-[1.8rem] overflow-hidden bg-[#e8decb]">
                 <Image 
-                  src="/images/founder image.png" 
+                  src="/images/founder.jpg" 
                   alt="Founder of Indévie"
                   fill
-                  sizes="(max-width: 768px) 100vw, 400px"
+                  sizes="(max-width: 768px) 100vw, 500px"
                   className="object-cover object-top hover:scale-105 transition-transform duration-[2s] ease-out"
                 />
               </div>
             </div>
-            {/* Background Decorative Element */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#6c3518]/5 to-transparent rounded-full blur-3xl -z-10 pointer-events-none" />
           </motion.div>
         </div>
       </section>
