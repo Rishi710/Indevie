@@ -202,11 +202,8 @@ export default function UgcSection() {
     return (
       <section ref={targetRef} className="py-12 bg-[#f5f1e6] overflow-hidden flex flex-col">
         <h2 className="text-3xl text-center mb-8 text-[#6c3518] italic px-4">
-          What our customers say
+          Voices of Indévie
         </h2>
-        <h2 className="italic text-[#6c3518] tracking-tight">
-  Voices of Indévie
-</h2>
 
         {/* Carousel */}
         <div 
@@ -285,10 +282,10 @@ export default function UgcSection() {
   // ================= DESKTOP VIEW =================
   return (
     <section ref={targetRef} className="relative h-[370vh] bg-[#f5f1e6]">
-      <div className="sticky mb-30 top-0 h-screen flex flex-col justify-center overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
 
         {/* Heading */}
-        <div className="text-center mb-5 mt-">
+        <div className="text-center mb-10">
           <h2 className="text-4xl md:text-5xl text-[#6c3518]">
             Voices of Indévie
           </h2>
