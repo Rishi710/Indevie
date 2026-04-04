@@ -63,6 +63,7 @@ const Footer = () => {
   ];
 
   const supportLinks = [
+    { name: "FAQ", href: "/faq" },
     { name: "Terms", href: "/policies/terms" },
     { name: "Shipping", href: "/policies/shipping" },
     { name: "Refund", href: "/policies/refund" },

@@ -381,7 +381,7 @@ export default function AboutPage() {
             className="w-full relative flex justify-center lg:justify-end"
           >
             {/* Elegant Solid White Creative Frame imitating screen/card layout */}
-            <div className="relative w-full max-w-[460px] aspect-[4/5] rounded-[2.5rem] p-4 bg-white shadow-[0_30px_60px_rgba(108,53,24,0.06)] z-10 transition-transform duration-500 hover:-translate-y-2">
+            <div className="relative w-full max-w-[460px] aspect-[4/5] rounded-[2.5rem] p-2 bg-white shadow-[0_30px_60px_rgba(108,53,24,0.06)] z-10 transition-transform duration-500 hover:-translate-y-2">
               <div className="relative w-full h-full rounded-[1.8rem] overflow-hidden bg-[#e8decb]">
                 <Image 
                   src="/images/founder-indevie.png"
