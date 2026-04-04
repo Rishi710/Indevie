@@ -129,9 +129,9 @@ const Footer = () => {
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-20 right-[15%] opacity-[0.08] pointer-events-none will-change-transform"
       >
-        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
+        {/* <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
           <path d="M12 2L12 22M12 2C12 2 4 7 4 12C4 17 12 22 12 22M12 2C12 2 20 7 20 12C20 17 12 22 12 22M4 12H20" />
-        </svg>
+        </svg> */}
       </motion.div>
 
       {/* 🌫️ Ambient Organic Blobs (GPU Accelerated) */}

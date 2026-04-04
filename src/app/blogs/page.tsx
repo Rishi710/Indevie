@@ -1,6 +1,7 @@
 import { fetchBlogWithArticles } from "@/lib/shopify";
 import BlogHero from "../components/BlogHero";
-import BlogCard from "../components/BlogCard";
+import HomeBlogCard from "../components/HomeBlogCard";
+import ShaderBackground from "../components/ShaderBackground";
 
 export const revalidate = 3600; // Recache every hour
 
@@ -24,29 +25,43 @@ export default async function BlogsPage() {
   const remainingArticles = articles.slice(1);
 
   return (
-    <main className="min-h-screen pt-24 pb-24 bg-white">
-      {/* Hero Section for Featured Post */}
-      <BlogHero post={featuredArticle} />
+    <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
+      {/* Hero Section for Blogs */}
+      <section className="relative h-[95vh] md:h-[95vh] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
+        <div className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0">
+          <ShaderBackground />
+        </div>
+        
+        <div className="relative z-10 animate-fade-in-up">
+          <h1 className="text-4xl md:text-7xl font-poppins text-white mb-4 drop-shadow-md">
+            Our Blogs
+          </h1>
+          <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
+            Discover our latest rituals and stories.
+          </p>
+        </div>
+      </section>
+
+      {/* Content Container */}
+      <div className="relative z-20 bg-white pt-8 pb-24">
+        <BlogHero post={featuredArticle} />
 
       {/* Grid for Remaining Posts */}
       {remainingArticles.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <div className="space-y-4">
-              <h2 className="text-3xl md:text-5xl font-serif text-gray-900 italic">Latest Journals</h2>
-              <p className="text-gray-500 max-w-sm">
-                Explore our collection of stories, rituals, and mindful insights.
-              </p>
-            </div>
-            <div className="h-[1px] flex-1 bg-gray-100 hidden md:block mx-12 mb-4"></div>
-            <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-4">
+          <div className="text-center mb-16 space-y-4 flex flex-col items-center">
+            <h2 className="text-3xl md:text-5xl font-poppins text-gray-900">Latest Journals</h2>
+            <p className="text-gray-500 max-w-lg mx-auto">
+              Explore our collection of stories, rituals, and mindful insights.
+            </p>
+            <div className="text-[10px] uppercase tracking-widest font-bold text-gray-400 pt-4">
               {remainingArticles.length} ARTICLES
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
             {remainingArticles.map((post, index) => (
-              <BlogCard key={post.id} post={post} index={index} />
+              <HomeBlogCard key={post.id} post={post} index={index} />
             ))}
           </div>
         </section>
@@ -72,6 +87,7 @@ export default async function BlogsPage() {
            </form>
         </div>
       </section>
+      </div>
     </main>
   );
 }
