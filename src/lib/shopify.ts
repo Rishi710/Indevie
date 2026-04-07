@@ -123,3 +123,60 @@ export async function fetchArticle(blogHandle: string, articleHandle: string): P
     return null;
   }
 }
+
+export interface ShopifyProduct {
+  id: string;
+  title: string;
+  handle: string;
+  variants: {
+    nodes: {
+      id: string;
+      price: {
+        amount: string;
+        currencyCode: string;
+      };
+    }[];
+  };
+  images: {
+    nodes: ShopifyImage[];
+  };
+}
+
+export const GET_PRODUCTS_QUERY = `
+  query getProducts($first: Int!) {
+    products(first: $first) {
+      nodes {
+        id
+        title
+        handle
+        variants(first: 1) {
+          nodes {
+            id
+            price {
+              amount
+              currencyCode
+            }
+          }
+        }
+        images(first: 5) {
+          nodes {
+            url
+            altText
+            width
+            height
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function fetchProducts(limit = 10): Promise<ShopifyProduct[]> {
+  try {
+    const data: any = await storefrontClient.request(GET_PRODUCTS_QUERY, { first: limit });
+    return data.products?.nodes || [];
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+}
