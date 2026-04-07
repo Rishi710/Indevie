@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { Bookmark, ShoppingBag, ArrowLeft, ArrowRight } from "lucide-react";
 import { ShopifyProduct } from "@/lib/shopify";
@@ -11,6 +11,16 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollToImage = (index: number) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        left: index * scrollRef.current.clientWidth,
+        behavior: "smooth"
+      });
+    }
+  };
 
   const price = product?.variants?.nodes[0]?.price;
   const images = product?.images?.nodes || [];
@@ -37,13 +47,28 @@ export default function ProductCard({ product }: ProductCardProps) {
 
          {/* Image Slider */}
          {images.length > 0 ? (
-           <Image
-             src={images[currentImageIndex]?.url}
-             alt={images[currentImageIndex]?.altText || product.title}
-             fill
-             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-           />
+           <div 
+             ref={scrollRef}
+             className="flex w-full h-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
+             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+             onScroll={(e) => {
+                const target = e.currentTarget;
+                const idx = Math.round(target.scrollLeft / target.clientWidth);
+                if (idx !== currentImageIndex) setCurrentImageIndex(idx);
+             }}
+           >
+             {images.slice(0, 5).map((img, idx) => (
+               <div key={idx} className="relative min-w-full h-full snap-center shrink-0">
+                 <Image
+                   src={img?.url}
+                   alt={img?.altText || product.title}
+                   fill
+                   className="object-cover transition-transform duration-500 group-hover/image:scale-[1.03]"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                 />
+               </div>
+             ))}
+           </div>
          ) : (
            <div className="w-full h-full flex items-center justify-center bg-[#d3d3d3]">
              <span className="text-gray-500 text-sm">No Image</span>
@@ -57,6 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                onClick={(e) => {
                  e.preventDefault();
                  setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+                 scrollToImage(currentImageIndex === 0 ? (Math.min(images.length, 5) - 1) : currentImageIndex - 1);
                }}
                className="hidden md:flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/60 text-black opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
@@ -66,6 +92,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                onClick={(e) => {
                  e.preventDefault();
                  setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+                 scrollToImage(currentImageIndex === (Math.min(images.length, 5) - 1) ? 0 : currentImageIndex + 1);
                }}
                className="hidden md:flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/60 text-black opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
@@ -82,7 +109,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                  key={idx}
                  onClick={(e) => {
                    e.preventDefault();
-                   setCurrentImageIndex(idx);
+                   scrollToImage(idx);
                  }}
                  className={`rounded-full transition-all duration-300 shadow-sm ${
                    idx === currentImageIndex 
