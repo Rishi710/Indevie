@@ -128,13 +128,26 @@ export interface ShopifyProduct {
   id: string;
   title: string;
   handle: string;
+  descriptionHtml?: string;
+  description?: string;
+  options?: {
+    id: string;
+    name: string;
+    values: string[];
+  }[];
   variants: {
     nodes: {
       id: string;
+      title?: string;
+      availableForSale?: boolean;
       price: {
         amount: string;
         currencyCode: string;
       };
+      selectedOptions?: {
+        name: string;
+        value: string;
+      }[];
     }[];
   };
   images: {
@@ -180,3 +193,91 @@ export async function fetchProducts(limit = 10): Promise<ShopifyProduct[]> {
     return [];
   }
 }
+
+export const GET_PRODUCT_BY_HANDLE_QUERY = `
+  query getProductByHandle($handle: String!) {
+    product(handle: $handle) {
+      id
+      title
+      handle
+      descriptionHtml
+      description
+      options {
+        id
+        name
+        values
+      }
+      variants(first: 250) {
+        nodes {
+          id
+          title
+          availableForSale
+          price {
+            amount
+            currencyCode
+          }
+          selectedOptions {
+            name
+            value
+          }
+        }
+      }
+      images(first: 20) {
+        nodes {
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
+export async function fetchProduct(handle: string): Promise<ShopifyProduct | null> {
+  try {
+    const data: any = await storefrontClient.request(GET_PRODUCT_BY_HANDLE_QUERY, { handle });
+    return data.product || null;
+  } catch (error) {
+    console.error("Error fetching product by handle:", error);
+    return null;
+  }
+}
+
+export const GET_RECOMMENDED_PRODUCTS_QUERY = `
+  query productRecommendations($productId: ID!) {
+    productRecommendations(productId: $productId) {
+      id
+      title
+      handle
+      variants(first: 1) {
+        nodes {
+          id
+          price {
+            amount
+            currencyCode
+          }
+        }
+      }
+      images(first: 5) {
+        nodes {
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
+export async function fetchRecommendedProducts(productId: string): Promise<ShopifyProduct[]> {
+  try {
+    const data: any = await storefrontClient.request(GET_RECOMMENDED_PRODUCTS_QUERY, { productId });
+    return data.productRecommendations || [];
+  } catch (error) {
+    console.error("Error fetching recommended products:", error);
+    return [];
+  }
+}
+

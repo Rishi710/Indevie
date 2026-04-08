@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Bookmark, ShoppingBag, ArrowLeft, ArrowRight } from "lucide-react";
 import { ShopifyProduct } from "@/lib/shopify";
 
@@ -31,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     : "N/A";
 
   return (
-    <div className="flex flex-col group cursor-pointer hover:border-1 border-black p-1.5 rounded-[10px] bg-#6c3518">
+    <Link href={`/products/${product.handle}`} className="flex flex-col group cursor-pointer hover:border-1 border-black p-1.5 rounded-[10px] bg-#6c3518">
       {/* Image Container */}
       <div className="group/image relative w-full aspect-[4/5] rounded-[10px] overflow-hidden bg-[#e5e5e5] mb-4">
          {/* Bookmark Icon */}
@@ -145,6 +146,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           <span className="text-[11px] font-medium tracking-[0.1em] uppercase">Add to cart</span>
         </button>
       </div>
-    </div>
+    </Link>
   );
 }

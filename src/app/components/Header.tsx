@@ -5,11 +5,16 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isHome = pathname === "/";
+  const shouldBeSolid = isScrolled || isMenuOpen || !isHome;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,7 +59,7 @@ export default function Header() {
       
       <header 
         className={`w-full transition-all duration-300 ${
-          isScrolled || isMenuOpen
+          shouldBeSolid
             ? "bg-white border-b border-gray-100 py-4 shadow-sm" 
             : "bg-transparent border-transparent py-6"
         }`}
@@ -75,7 +80,7 @@ export default function Header() {
                 fill
                 sizes="(max-width: 768px) 112px, 180px"
                 className={`object-contain transition-all duration-300 ${
-                  isScrolled || isMenuOpen ? "brightness-0" : "brightness-0 invert"
+                  shouldBeSolid ? "brightness-0" : "brightness-0 invert"
                 }`}
                 priority
               />
@@ -89,7 +94,7 @@ export default function Header() {
                 key={link.name} 
                 href={link.href}
                 className={`text-[13px] font-medium transition-all uppercase tracking-widest relative group ${
-                  isScrolled ? "text-gray-800 hover:text-black" : "text-white/90 hover:text-white"
+                  shouldBeSolid ? "text-gray-800 hover:text-black" : "text-white/90 hover:text-white"
                 }`}
               >
                 {link.name}
@@ -102,7 +107,7 @@ export default function Header() {
           
           {/* Icons and Hamburger */}
           <div className={`flex items-center space-x-4 md:space-x-6 transition-colors duration-300 z-50 ${
-            isScrolled || isMenuOpen ? "text-gray-800" : "text-white"
+            shouldBeSolid ? "text-gray-800" : "text-white"
           }`}>
             <button className="hover:opacity-70 transition-opacity hidden sm:block" aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
@@ -128,15 +133,15 @@ export default function Header() {
             >
               <motion.span 
                 animate={isMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${shouldBeSolid ? "bg-gray-800" : "bg-white"}`}
               ></motion.span>
               <motion.span 
                 animate={isMenuOpen ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
-                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${shouldBeSolid ? "bg-gray-800" : "bg-white"}`}
               ></motion.span>
               <motion.span 
                 animate={isMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${isScrolled || isMenuOpen ? "bg-gray-800" : "bg-white"}`}
+                className={`block w-6 h-0.5 transition-colors duration-300 will-change-transform ${shouldBeSolid ? "bg-gray-800" : "bg-white"}`}
               ></motion.span>
             </button>
           </div>
