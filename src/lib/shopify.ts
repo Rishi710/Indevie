@@ -281,3 +281,130 @@ export async function fetchRecommendedProducts(productId: string): Promise<Shopi
   }
 }
 
+
+export const CUSTOMER_CREATE_MUTATION = `
+  mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+        email
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION = `
+  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const GET_CUSTOMER_QUERY = `
+  query getCustomer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id
+      firstName
+      lastName
+      email
+      phone
+      orders(first: 10, sortKey: PROCESSED_AT, reverse: true) {
+        nodes {
+          id
+          orderNumber
+          processedAt
+          totalPriceV2 {
+            amount
+            currencyCode
+          }
+          lineItems(first: 5) {
+            nodes {
+              title
+              quantity
+              variant {
+                image {
+                  url
+                  altText
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function loginCustomer(email: string, password: string) {
+  try {
+    const data: any = await storefrontClient.request(CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION, {
+      input: { email, password },
+    });
+    return data.customerAccessTokenCreate;
+  } catch (error) {
+    console.error("Login Error:", error);
+    return null;
+  }
+}
+
+export async function registerCustomer(input: any) {
+  try {
+    const data: any = await storefrontClient.request(CUSTOMER_CREATE_MUTATION, {
+      input,
+    });
+    return data.customerCreate;
+  } catch (error) {
+    console.error("Registration Error:", error);
+    return null;
+  }
+}
+
+export async function fetchCustomer(accessToken: string) {
+  try {
+    const data: any = await storefrontClient.request(GET_CUSTOMER_QUERY, {
+      customerAccessToken: accessToken,
+    });
+    return data.customer;
+  } catch (error) {
+    console.error("Fetch Customer Error:", error);
+    return null;
+  }
+}
+
+export const CUSTOMER_RECOVER_MUTATION = `
+  mutation customerRecover($email: String!) {
+    customerRecover(email: $email) {
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function recoverCustomer(email: string) {
+  try {
+    const data: any = await storefrontClient.request(CUSTOMER_RECOVER_MUTATION, {
+      email,
+    });
+    return data.customerRecover;
+  } catch (error) {
+    console.error("Recovery Error:", error);
+    return null;
+  }
+}

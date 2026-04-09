@@ -1,5 +1,5 @@
 import React from "react";
-import FaqAccordion from "../components/FaqAccordion";
+import FaqAccordion from "../../components/FaqAccordion";
 
 export const metadata = {
   title: 'FAQ - Indevie Beauty',
