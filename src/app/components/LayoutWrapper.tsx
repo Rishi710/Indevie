@@ -8,9 +8,10 @@ import Footer from "./Footer";
 interface LayoutWrapperProps {
   children: React.ReactNode;
   isLoggedIn: boolean;
+  userName?: string | null;
 }
 
-export default function LayoutWrapper({ children, isLoggedIn }: LayoutWrapperProps) {
+export default function LayoutWrapper({ children, isLoggedIn, userName }: LayoutWrapperProps) {
   const pathname = usePathname();
   
   // Define routes that should NOT have Header and Footer
@@ -23,7 +24,7 @@ export default function LayoutWrapper({ children, isLoggedIn }: LayoutWrapperPro
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header isLoggedIn={isLoggedIn} userName={userName} />
       {children}
       <Footer />
     </>

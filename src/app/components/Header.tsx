@@ -7,7 +7,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
 import { usePathname } from "next/navigation";
 
-export default function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
+export default function Header({ 
+  isLoggedIn = false, 
+  userName = null 
+}: { 
+  isLoggedIn?: boolean;
+  userName?: string | null;
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -109,22 +115,27 @@ export default function Header({ isLoggedIn = false }: { isLoggedIn?: boolean })
           <div className={`flex items-center space-x-4 md:space-x-6 transition-colors duration-300 z-50 ${
             shouldBeSolid ? "text-gray-800" : "text-white"
           }`}>
-            <button className="hover:opacity-70 transition-opacity hidden sm:block" aria-label="Search">
+            {/* <button className="hover:opacity-70 transition-opacity hidden sm:block" aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
-            </button>
+            </button> */}
              <Link 
               href={isLoggedIn ? "/account" : "/login"} 
-              className="hover:opacity-70 transition-opacity hidden sm:block relative" 
+              className="hover:opacity-70 transition-opacity hidden sm:flex items-center gap-2 group relative" 
               aria-label="Account"
             >
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
-                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-               </svg>
-               {isLoggedIn && (
-                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
-               )}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+               <span className={`text-[11px] font-poppins font-bold tracking-[0.2em] uppercase transition-colors ${
+                 shouldBeSolid ? "text-[#6c3518]" : "text-white"
+               }`}>
+                 {isLoggedIn ? `${userName || "User"}` : "Login"}
+               </span>
+               {/* {isLoggedIn && (
+                 <span className="absolute -top-1 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
+               )} */}
             </Link>
             <button className="hover:opacity-70 transition-opacity" aria-label="Cart">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
@@ -167,7 +178,35 @@ export default function Header({ isLoggedIn = false }: { isLoggedIn?: boolean })
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="fixed inset-0 bg-white z-40 pt-24 px-6 md:hidden will-change-transform"
           >
-            <nav className="flex flex-col space-y-8">
+            <nav className="flex flex-col space-y-6">
+              {/* Mobile Account Section */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 }}
+                className="pb-6 border-b border-gray-100"
+              >
+                <Link 
+                  href={isLoggedIn ? "/account" : "/login"}
+                  className="flex items-center gap-4 text-gray-900 group"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <div className="w-12 h-12 bg-[#f5f1e6] rounded-full flex items-center justify-center text-[#6c3518]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-poppins font-bold tracking-widest text-gray-400 uppercase">
+                      {isLoggedIn ? "Account Dashboard" : "Welcome to Indevie"}
+                    </p>
+                    <p className="text-xl font-poppins font-medium text-[#6c3518]">
+                      {isLoggedIn ? `Hello, ${userName || "User"}` : "Login / Register"}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+
               {links.map((link, idx) => (
                 <motion.div
                   key={link.name}

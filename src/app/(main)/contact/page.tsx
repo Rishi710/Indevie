@@ -45,7 +45,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-xl00">
+            <h1 className="text-4xl md:text-7xl font-Poppins italic text-white mb-4 drop-shadow-xl00">
               Connect With Us
             </h1>
             <p className="text-white/100 text-[10px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
@@ -82,7 +82,7 @@ export default function ContactPage() {
                 <Mail size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-popins-bold text-[#6c3518]/50s">Email</h4>
-                  <a href="mailto:care@indevie.in" className="text-lg font-popins text-[#6c3518] hover:opacity-60 transition-opacity">care@indevie.in</a>
+                  <a href="mailto:care@indevie.com" className="text-lg font-popins text-[#6c3518] hover:opacity-60 transition-opacity">care@indevie.com</a>
                 </div>
               </div>
 
@@ -90,7 +90,7 @@ export default function ContactPage() {
                 <Phone size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-popins-bold text-[#6c3518]/50s">Phone</h4>
-                  <a href="tel:+919876543210" className="text-lg font-popins text-[#6c3518] hover:opacity-60 transition-opacity">+91 98765 43210</a>
+                  <a href="tel:+919826604580" className="text-lg font-popins text-[#6c3518] hover:opacity-60 transition-opacity">+919826604580</a>
                 </div>
               </div>
 

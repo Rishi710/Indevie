@@ -35,17 +35,6 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link href={`/products/${product.handle}`} className="flex flex-col group cursor-pointer hover:border-1 border-black p-1.5 rounded-[10px] bg-#6c3518">
       {/* Image Container */}
       <div className="group/image relative w-full aspect-[4/5] rounded-[10px] overflow-hidden bg-[#e5e5e5] mb-4">
-         {/* Bookmark Icon */}
-         {/* <button 
-           className="absolute top-4 right-4 z-10 text-black hover:scale-110 transition-transform drop-shadow-md"
-           onClick={(e) => {
-             e.preventDefault();
-             // Add to wishlist logic
-           }}
-         >
-           <Bookmark size={22} strokeWidth={0} fill="currentColor" />
-         </button> */}
-
          {/* Image Slider */}
          {images.length > 0 ? (
            <div 
@@ -76,7 +65,7 @@ export default function ProductCard({ product }: ProductCardProps) {
            </div>
          )}
 
-         {/* Hover Arrows (Desktop) */}
+         {/* Arrows */}
          {images.length > 1 && (
            <>
              <button
@@ -85,9 +74,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                  setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
                  scrollToImage(currentImageIndex === 0 ? (Math.min(images.length, 5) - 1) : currentImageIndex - 1);
                }}
-               className="hidden md:flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/60 text-black opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
+               className="flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 md:bg-white/60 text-black md:opacity-0 md:group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
-               <ArrowLeft size={20} strokeWidth={1.5} />
+               <ArrowLeft size={16} strokeWidth={1.5} />
              </button>
              <button
                onClick={(e) => {
@@ -95,12 +84,26 @@ export default function ProductCard({ product }: ProductCardProps) {
                  setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
                  scrollToImage(currentImageIndex === (Math.min(images.length, 5) - 1) ? 0 : currentImageIndex + 1);
                }}
-               className="hidden md:flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/60 text-black opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
+               className="flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 md:bg-white/60 text-black md:opacity-0 md:group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
-               <ArrowRight size={20} strokeWidth={1.5} />
+               <ArrowRight size={16} strokeWidth={1.5} />
              </button>
            </>
          )}
+
+          {/* Floating Add to Cart Button */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full md:group-hover/image:translate-y-0 lg:opacity-0 lg:group-hover/image:opacity-100 transition-all duration-500 z-20 bg-gradient-to-t from-black/20 to-transparent block md:block">
+             <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert(`Added ${product.title} to cart`);
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-3 rounded-[8px] hover:bg-black transition-colors shadow-lg"
+              >
+                <ShoppingBag size={14} strokeWidth={1.5} />
+                <span className="text-[10px] font-poppins font-bold tracking-[0.15em] uppercase">Add to cart</span>
+              </button>
+          </div>
 
          {/* Pagination Dots */}
          {images.length > 1 && (
@@ -125,27 +128,16 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Info Container */}
       <div className="flex flex-col px-1 mt-1">
-        <div className="flex flex-col gap-0.5 mb-3">
-          <h3 className="text-[13px] font-medium text-[#2a2a2a] leading-tight">
+        <div className="flex flex-col gap-0.5">
+          <h3 className="text-[13px] font-poppins font-medium text-[#2a2a2a] leading-tight">
             {product.title}
           </h3>
-          <p className="text-[12px] text-[#555] tracking-wide">
+          <p className="text-[12px] font-poppins text-[#555] tracking-wide mt-1">
              {formattedPrice}
           </p>
         </div>
-
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            // TODO: integrate actual cart context
-            alert(`Added ${product.title} to cart`);
-          }}
-          className="w-full flex items-center justify-center gap-2 bg-[#6c3518] border rounded-[10px] border-[#e5e5e5] text-white py-3 mb-2 hover:bg-white hover:border-black hover:text-[#6b3517] transition-colors"
-        >
-          <ShoppingBag size={16} strokeWidth={1.5} />
-          <span className="text-[11px] font-medium tracking-[0.1em] uppercase">Add to cart</span>
-        </button>
       </div>
+
     </Link>
   );
 }

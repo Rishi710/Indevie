@@ -322,6 +322,14 @@ export const GET_CUSTOMER_QUERY = `
       lastName
       email
       phone
+      defaultAddress {
+        address1
+        address2
+        city
+        province
+        country
+        zip
+      }
       orders(first: 10, sortKey: PROCESSED_AT, reverse: true) {
         nodes {
           id
@@ -405,6 +413,42 @@ export async function recoverCustomer(email: string) {
     return data.customerRecover;
   } catch (error) {
     console.error("Recovery Error:", error);
+    return null;
+  }
+}
+
+export const CUSTOMER_UPDATE_MUTATION = `
+  mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
+    customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
+      customer {
+        id
+        firstName
+        lastName
+        email
+        phone
+      }
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function updateCustomer(accessToken: string, customerInput: any) {
+  try {
+    const data: any = await storefrontClient.request(CUSTOMER_UPDATE_MUTATION, {
+      customerAccessToken: accessToken,
+      customer: customerInput,
+    });
+    return data.customerUpdate;
+  } catch (error) {
+    console.error("Update Customer Error:", error);
     return null;
   }
 }
