@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bookmark, ShoppingBag, ArrowLeft, ArrowRight } from "lucide-react";
 import { ShopifyProduct } from "@/lib/shopify";
+import { useCart } from "../context/CartContext";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -13,6 +14,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { addItem } = useCart();
 
   const scrollToImage = (index: number) => {
     if (scrollRef.current) {
@@ -23,6 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const variantId = product?.variants?.nodes[0]?.id;
   const price = product?.variants?.nodes[0]?.price;
   const images = product?.images?.nodes || [];
 
@@ -96,7 +99,7 @@ export default function ProductCard({ product }: ProductCardProps) {
              <button 
                 onClick={(e) => {
                   e.preventDefault();
-                  alert(`Added ${product.title} to cart`);
+                  if (variantId) addItem(variantId);
                 }}
                 className="w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-3 rounded-[8px] hover:bg-black transition-colors shadow-lg"
               >

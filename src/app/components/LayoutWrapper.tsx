@@ -4,6 +4,8 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
+import { CartProvider } from "../context/CartContext";
+import CartDrawer from "./CartDrawer";
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -23,10 +25,11 @@ export default function LayoutWrapper({ children, isLoggedIn, userName }: Layout
   }
 
   return (
-    <>
+    <CartProvider>
       <Header isLoggedIn={isLoggedIn} userName={userName} />
+      <CartDrawer />
       {children}
       <Footer />
-    </>
+    </CartProvider>
   );
 }

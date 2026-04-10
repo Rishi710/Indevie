@@ -3,8 +3,9 @@
 import { ShopifyProduct } from "@/lib/shopify";
 import Image from "next/image";
 import { useState } from "react";
-import { Bookmark } from "lucide-react";
+import { Bookmark, ShoppingBag } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
+import { useCart } from "@/app/context/CartContext";
 
 export default function ProductPageClient({ 
   product, 
@@ -16,13 +17,24 @@ export default function ProductPageClient({
   const [activeTab, setActiveTab] = useState<"details" | "shipping" | "return">("details");
   const [quantity, setQuantity] = useState(1);
   const [mobileImageIndex, setMobileImageIndex] = useState(0);
+  const { cart, addItem } = useCart();
 
   const images = product.images?.nodes || [];
   const firstImage = images[0];
   const restImages = images.slice(1);
 
-  const price = product.variants?.nodes[0]?.price;
+  const selectedVariant = product.variants?.nodes[0];
+  const variantId = selectedVariant?.id;
+  const price = selectedVariant?.price;
   const formattedPrice = price ? `RS. ${parseFloat(price.amount).toLocaleString("en-IN")}` : "N/A";
+
+  const handleBuyNow = async () => {
+    if (variantId) {
+      await addItem(variantId, quantity);
+      // addItem opens the cart by default, but for Buy Now we want to go straight to checkout if possible
+      // However, we wait for cart to update or just use the checkoutUrl from the latest cart state
+    }
+  };
 
   const sizeOption = (product.options || []).find(o => o.name.toLowerCase() === 'size');
 
@@ -104,10 +116,16 @@ export default function ProductPageClient({
 
            {/* Actions */}
            <div className="flex flex-col gap-3 mb-12 w-full">
-             <button className="w-full bg-white border border-[#2a2a2a] rounded-[3px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-colors">
+             <button 
+                onClick={() => variantId && addItem(variantId, quantity)}
+                className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
+              >
                ADD TO BAG
              </button>
-             <button className="w-full bg-[#6c3518] text-white rounded-[3px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-white hover:text-[#6c3518] border border-[#6c3518] transition-colors">
+             <button 
+                onClick={handleBuyNow}
+                className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
+              >
                BUY NOW
              </button>
            </div>
@@ -235,15 +253,20 @@ export default function ProductPageClient({
             </div>
          </div>
 
-         {/* Actions */}
-         <div className="flex flex-col gap-3 mb-6 w-full">
-             <button className="w-full bg-white border border-[#2a2a2a] rounded-[3px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-colors">
-               ADD TO BAG
-             </button>
-             <button className="w-full bg-[#6c3518] text-white rounded-[3px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-white hover:text-[#6c3518] border border-[#6c3518] transition-colors">
-               BUY NOW
-             </button>
-         </div>
+          <div className="flex flex-col gap-3 mb-6 w-full">
+              <button 
+                onClick={() => variantId && addItem(variantId, quantity)}
+                className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
+              >
+                ADD TO BAG
+              </button>
+              <button 
+                onClick={handleBuyNow}
+                className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
+              >
+                BUY NOW
+              </button>
+          </div>
 
          {/* Accordion / Tabs Mobile */}
          <div className="border border-[#e5e5e5] rounded-[14px] bg-white p-5 mb-8 shadow-sm">

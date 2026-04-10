@@ -330,20 +330,61 @@ export const GET_CUSTOMER_QUERY = `
         country
         zip
       }
-      orders(first: 10, sortKey: PROCESSED_AT, reverse: true) {
+      addresses(first: 10) {
+        nodes {
+          id
+          address1
+          address2
+          city
+          province
+          country
+          zip
+          phone
+          firstName
+          lastName
+        }
+      }
+      orders(first: 20, sortKey: PROCESSED_AT, reverse: true) {
         nodes {
           id
           orderNumber
           processedAt
+          financialStatus
+          fulfillmentStatus
           totalPriceV2 {
             amount
             currencyCode
           }
-          lineItems(first: 5) {
+          subtotalPriceV2 {
+            amount
+            currencyCode
+          }
+          totalTaxV2 {
+            amount
+            currencyCode
+          }
+          totalShippingPriceV2 {
+            amount
+            currencyCode
+          }
+          shippingAddress {
+            address1
+            address2
+            city
+            province
+            zip
+            country
+          }
+          lineItems(first: 50) {
             nodes {
               title
               quantity
               variant {
+                title
+                price {
+                  amount
+                  currencyCode
+                }
                 image {
                   url
                   altText
@@ -452,3 +493,165 @@ export async function updateCustomer(accessToken: string, customerInput: any) {
     return null;
   }
 }
+
+// --- Cart Mutations & Queries ---
+
+export const CART_FRAGMENT = `
+  id
+  checkoutUrl
+  totalQuantity
+  lines(first: 100) {
+    nodes {
+      id
+      quantity
+      estimatedCost {
+        totalAmount {
+          amount
+          currencyCode
+        }
+      }
+      merchandise {
+        ... on ProductVariant {
+          id
+          title
+          product {
+            id
+            title
+            handle
+          }
+          image {
+            url
+            altText
+            width
+            height
+          }
+          price {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+  cost {
+    subtotalAmount {
+      amount
+      currencyCode
+    }
+    totalAmount {
+      amount
+      currencyCode
+    }
+  }
+`;
+
+export const CREATE_CART_MUTATION = `
+  mutation cartCreate($input: CartInput) {
+    cartCreate(input: $input) {
+      cart {
+        ${CART_FRAGMENT}
+      }
+    }
+  }
+`;
+
+export const ADD_CART_LINES_MUTATION = `
+  mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        ${CART_FRAGMENT}
+      }
+    }
+  }
+`;
+
+export const UPDATE_CART_LINES_MUTATION = `
+  mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart {
+        ${CART_FRAGMENT}
+      }
+    }
+  }
+`;
+
+export const REMOVE_CART_LINES_MUTATION = `
+  mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart {
+        ${CART_FRAGMENT}
+      }
+    }
+  }
+`;
+
+export const GET_CART_QUERY = `
+  query getCart($cartId: ID!) {
+    cart(id: $cartId) {
+      ${CART_FRAGMENT}
+    }
+  }
+`;
+
+// --- Cart Helper Functions ---
+
+export async function createCart(variantId?: string, quantity = 1): Promise<any> {
+  const input = variantId ? { lines: [{ merchandiseId: variantId, quantity }] } : {};
+  try {
+    const data: any = await storefrontClient.request(CREATE_CART_MUTATION, { input });
+    return data.cartCreate.cart;
+  } catch (error) {
+    console.error("Create Cart Error:", error);
+    return null;
+  }
+}
+
+export async function addToCart(cartId: string, variantId: string, quantity = 1): Promise<any> {
+  try {
+    const data: any = await storefrontClient.request(ADD_CART_LINES_MUTATION, {
+      cartId,
+      lines: [{ merchandiseId: variantId, quantity }],
+    });
+    return data.cartLinesAdd.cart;
+  } catch (error) {
+    console.error("Add to Cart Error:", error);
+    return null;
+  }
+}
+
+export async function updateCartLine(cartId: string, lineId: string, quantity: number): Promise<any> {
+  try {
+    const data: any = await storefrontClient.request(UPDATE_CART_LINES_MUTATION, {
+      cartId,
+      lines: [{ id: lineId, quantity }],
+    });
+    return data.cartLinesUpdate.cart;
+  } catch (error) {
+    console.error("Update Cart Line Error:", error);
+    return null;
+  }
+}
+
+export async function removeFromCart(cartId: string, lineId: string): Promise<any> {
+  try {
+    const data: any = await storefrontClient.request(REMOVE_CART_LINES_MUTATION, {
+      cartId,
+      lineIds: [lineId],
+    });
+    return data.cartLinesRemove.cart;
+  } catch (error) {
+    console.error("Remove from Cart Error:", error);
+    return null;
+  }
+}
+
+export async function fetchCart(cartId: string): Promise<any> {
+  try {
+    const data: any = await storefrontClient.request(GET_CART_QUERY, { cartId });
+    return data.cart;
+  } catch (error) {
+    console.error("Fetch Cart Error:", error);
+    return null;
+  }
+}
+

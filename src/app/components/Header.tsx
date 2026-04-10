@@ -6,6 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
 import { usePathname } from "next/navigation";
+import { useCart } from "../context/CartContext";
 
 export default function Header({ 
   isLoggedIn = false, 
@@ -18,6 +19,7 @@ export default function Header({
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { setIsCartOpen, totalQuantity } = useCart();
 
   const isHome = pathname === "/";
   const shouldBeSolid = isScrolled || isMenuOpen || !isHome;
@@ -137,10 +139,19 @@ export default function Header({
                  <span className="absolute -top-1 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
                )} */}
             </Link>
-            <button className="hover:opacity-70 transition-opacity" aria-label="Cart">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="hover:opacity-70 transition-opacity relative group" 
+              aria-label="Cart"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
               </svg>
+              {totalQuantity > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-[#6c3518] text-white text-[8px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-white shadow-sm animate-in zoom-in duration-300">
+                  {totalQuantity}
+                </span>
+              )}
             </button>
 
             {/* Hamburger Button */}
