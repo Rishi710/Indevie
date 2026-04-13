@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,7 +16,8 @@ export default function CartDrawer() {
     setIsCartOpen, 
     removeItem, 
     updateQuantity, 
-    totalQuantity 
+    totalQuantity,
+    updateBuyerIdentity
   } = useCart();
 
   // Prevent body scroll when drawer is open
@@ -31,6 +33,20 @@ export default function CartDrawer() {
   }, [isCartOpen]);
 
   const subtotal = cart?.cost?.subtotalAmount;
+
+  const handleCheckout = async () => {
+    if (isUpdating) return;
+    
+    const token = Cookies.get("customerAccessToken");
+    if (token && cart?.id) {
+      // Sync buyer identity before checkout if logged in
+      await updateBuyerIdentity(token);
+    }
+    
+    if (cart?.checkoutUrl) {
+      window.location.href = cart.checkoutUrl;
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -82,6 +98,7 @@ export default function CartDrawer() {
                           src={line.merchandise.image.url}
                           alt={line.merchandise.image.altText || line.merchandise.product.title}
                           fill
+                          sizes="96px"
                           className="object-cover"
                         />
                       ) : (
@@ -178,15 +195,16 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                <a
-                  href={cart?.checkoutUrl}
-                  className="group w-full flex items-center justify-between bg-[#6c3518] text-white p-6 rounded-xl hover:bg-black transition-all duration-500 shadow-xl shadow-[#6c3518]/10"
+                <button
+                  onClick={handleCheckout}
+                  disabled={isUpdating}
+                  className="group w-full flex items-center justify-between bg-[#6c3518] text-white p-6 rounded-xl hover:bg-black transition-all duration-500 shadow-xl shadow-[#6c3518]/10 disabled:opacity-50"
                 >
                   <span className="text-sm font-poppins font-bold tracking-[0.2em] uppercase underline-offset-4 group-hover:underline">
-                    Proceed to Checkout
+                    {isUpdating ? "Preparing Checkout..." : "Proceed to Checkout"}
                   </span>
                   <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
-                </a>
+                </button>
                 
                 <p className="text-[9px] text-center text-gray-800 uppercase tracking-[0.3em] font-light">
                   SECURE SHOPPING • FAST SHIPPING • SATISFACTION GUARANTEED

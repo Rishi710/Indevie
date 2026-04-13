@@ -26,7 +26,12 @@ export default function ProductPageClient({
   const selectedVariant = product.variants?.nodes[0];
   const variantId = selectedVariant?.id;
   const price = selectedVariant?.price;
-  const formattedPrice = price ? `RS. ${parseFloat(price.amount).toLocaleString("en-IN")}` : "N/A";
+  const compareAtPrice = selectedVariant?.compareAtPrice;
+  const formattedPrice = price ? `Rs. ${parseFloat(price.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "N/A";
+  
+  const formattedComparePrice = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price?.amount || "0")
+    ? `MRP. ${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    : null;
 
   const handleBuyNow = async () => {
     if (variantId) {
@@ -50,6 +55,7 @@ export default function ProductPageClient({
                 src={firstImage.url} 
                 alt={firstImage.altText || product.title} 
                 fill 
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover" 
                 priority
               />
@@ -68,6 +74,7 @@ export default function ProductPageClient({
                    src={img.url} 
                    alt={img.altText || `${product.title} ${idx + 2}`} 
                    fill 
+                   sizes="(max-width: 768px) 100vw, 33vw"
                    className="object-cover" 
                  />
                </div>
@@ -90,7 +97,12 @@ export default function ProductPageClient({
              </button> */}
            </div>
            
-           <p className="text-lg text-gray-600 mb-8">{formattedPrice}</p>
+           <div className="flex items-center gap-3 mb-8">
+             <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
+             {formattedComparePrice && (
+               <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
+             )}
+           </div>
 
            {/* Quantity Selector */}
            <div className="flex flex-col gap-3 mb-8">
@@ -198,6 +210,7 @@ export default function ProductPageClient({
                        src={img.url} 
                        alt={img.altText || `${product.title} ${idx + 1}`} 
                        fill 
+                       sizes="(max-width: 768px) 100vw, 50vw"
                        className="object-cover" 
                        priority={idx === 0}
                      />
@@ -228,7 +241,12 @@ export default function ProductPageClient({
                <Bookmark size={24} />
              </button> */}
            </div>
-           <p className="text-lg text-gray-600 mt-2">{formattedPrice}</p>
+           <div className="flex items-center gap-3 mt-2">
+             <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
+             {formattedComparePrice && (
+               <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
+             )}
+           </div>
          </div>
 
          {/* Quantity Selector Mobile */}

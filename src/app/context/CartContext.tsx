@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import Cookies from "js-cookie";
-import { createCart, addToCart, updateCartLine, removeFromCart, fetchCart } from "@/lib/shopify";
+import { createCart, addToCart, updateCartLine, removeFromCart, fetchCart, updateCartBuyerIdentity } from "@/lib/shopify";
 
 const CART_COOKIE_KEY = "shopify_cart_id";
 
@@ -15,6 +15,7 @@ interface CartContextType {
   removeItem: (lineId: string) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   totalQuantity: number;
+  updateBuyerIdentity: (customerAccessToken: string) => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -103,6 +104,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setIsUpdating(false);
     }
   };
+  
+  const updateBuyerIdentity = useCallback(async (customerAccessToken: string) => {
+    if (isUpdating) return;
+    setIsUpdating(true);
+    try {
+      const currentCartId = Cookies.get(CART_COOKIE_KEY);
+      if (!currentCartId) return;
+
+      const updatedCart = await updateCartBuyerIdentity(currentCartId, customerAccessToken);
+      if (updatedCart) {
+        setCart(updatedCart);
+      }
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [isUpdating]);
 
   const totalQuantity = cart?.totalQuantity || 0;
 
@@ -117,6 +134,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         removeItem,
         updateQuantity,
         totalQuantity,
+        updateBuyerIdentity,
       }}
     >
       {children}

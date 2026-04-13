@@ -27,12 +27,17 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const variantId = product?.variants?.nodes[0]?.id;
   const price = product?.variants?.nodes[0]?.price;
+  const compareAtPrice = product?.variants?.nodes[0]?.compareAtPrice;
   const images = product?.images?.nodes || [];
 
-  // Format to match screenshot: "RS. 17,000"
+  // Format to match screenshot: "Rs. 959.00"
   const formattedPrice = price 
-    ? `RS. ${parseFloat(price.amount).toLocaleString("en-IN")}` 
+    ? `Rs. ${parseFloat(price.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
     : "N/A";
+
+  const formattedComparePrice = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price?.amount || "0")
+    ? `MRP  . ${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    : null;
 
   return (
     <Link href={`/products/${product.handle}`} className="flex flex-col group cursor-pointer hover:border-1 border-black p-1.5 rounded-[10px] bg-#6c3518">
@@ -135,8 +140,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-[13px] font-poppins font-medium text-[#2a2a2a] leading-tight">
             {product.title}
           </h3>
-          <p className="text-[12px] font-poppins text-[#555] tracking-wide mt-1">
-             {formattedPrice}
+          <p className="text-[12px] font-poppins text-[#555] tracking-wide mt-1 flex items-center gap-2">
+             <span>{formattedPrice}</span>
+             {formattedComparePrice && (
+               <span className="text-gray-400 line-through">{formattedComparePrice}</span>
+             )}
           </p>
         </div>
       </div>

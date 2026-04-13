@@ -21,6 +21,7 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
           src="/images/DSC_6479.jpg"
           alt="Indevie Beauty Ritual"
           fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
           priority
         />
@@ -35,6 +36,7 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
               src="/images/DSC_6479.jpg"
               alt="Background"
               fill
+              sizes="100vw"
               className="object-cover opacity-20"
               priority
             />

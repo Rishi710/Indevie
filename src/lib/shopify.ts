@@ -144,6 +144,10 @@ export interface ShopifyProduct {
         amount: string;
         currencyCode: string;
       };
+      compareAtPrice?: {
+        amount: string;
+        currencyCode: string;
+      } | null;
       selectedOptions?: {
         name: string;
         value: string;
@@ -166,6 +170,10 @@ export const GET_PRODUCTS_QUERY = `
           nodes {
             id
             price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
               amount
               currencyCode
             }
@@ -216,6 +224,10 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
             amount
             currencyCode
           }
+          compareAtPrice {
+            amount
+            currencyCode
+          }
           selectedOptions {
             name
             value
@@ -254,6 +266,10 @@ export const GET_RECOMMENDED_PRODUCTS_QUERY = `
         nodes {
           id
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }
@@ -593,6 +609,20 @@ export const GET_CART_QUERY = `
   }
 `;
 
+export const CART_BUYER_IDENTITY_UPDATE_MUTATION = `
+  mutation cartBuyerIdentityUpdate($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+      cart {
+        ${CART_FRAGMENT}
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 // --- Cart Helper Functions ---
 
 export async function createCart(variantId?: string, quantity = 1): Promise<any> {
@@ -651,6 +681,19 @@ export async function fetchCart(cartId: string): Promise<any> {
     return data.cart;
   } catch (error) {
     console.error("Fetch Cart Error:", error);
+    return null;
+  }
+}
+
+export async function updateCartBuyerIdentity(cartId: string, customerAccessToken: string): Promise<any> {
+  try {
+    const data: any = await storefrontClient.request(CART_BUYER_IDENTITY_UPDATE_MUTATION, {
+      cartId,
+      buyerIdentity: { customerAccessToken },
+    });
+    return data.cartBuyerIdentityUpdate.cart;
+  } catch (error) {
+    console.error("Update Cart Buyer Identity Error:", error);
     return null;
   }
 }

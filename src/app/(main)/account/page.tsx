@@ -1,10 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { cookies } from "next/headers";
 import { fetchCustomer } from "@/lib/shopify";
 import { redirect } from "next/navigation";
-import { logoutAction } from "../../actions/auth";
-import AccountDetailsForm from "@/app/components/AccountDetailsForm";
-import OrderHistory from "@/app/components/OrderHistory";
+import AccountDashboard from "@/app/components/AccountDashboard";
 
 export const metadata = {
   title: "My Account - Indevie Beauty",
@@ -26,47 +24,37 @@ export default async function AccountPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f5f1e6] pt-40 pb-20 px-6">
+    <main className="min-h-screen bg-[#fcfaf6] pt-40 pb-20 px-10">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-end mb-16 border-b border-[#6c3518]/10 pb-10">
-          <div>
-            <h1 className="text-3xl lg:text-5xl font-poppins text-[#6c3518] italic mb-3">
-              Hello, {customer.firstName || "Indevie User"}
-            </h1>
-            <p className="text-gray-500 font-light font-poppins tracking-wide text-sm">
-              Welcome back to your personalized skincare Indevie dashboard.
-            </p>
-          </div>
-          <form action={logoutAction}>
-            <button 
-              type="submit"
-              className="text-[10px] font-bold tracking-[0.2em] text-[#6c3518] hover:text-[#000] uppercase border-b border-[#6c3518]/20 transition-all pb-1"
-            >
-              Sign Out
-            </button>
-          </form>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-16 items-start">
-          {/* LEFT: Account Details & Address (1/3) */}
-          <div className="lg:col-span-1">
-            <AccountDetailsForm customer={customer} />
-          </div>
-
-          {/* RIGHT: Order History (2/3) */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-poppins text-[#6c3518] italic">Order History</h2>
-                <div className="px-4 py-1 bg-white rounded-full border border-[#6c3518]/10 shadow-sm">
-                    <p className="text-[10px] font-bold text-[#6c3518] tracking-widest uppercase">
-                        {customer.orders?.nodes.length || 0} Total Orders
-                    </p>
-                </div>
+        {/* Welcome Header */}
+        <div className="mb-16 relative">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-[#6c3518]/10 pb-10">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-12 h-[1px] bg-[#6c3518]"></span>
+                <span className="text-[10px] font-bold text-[#6c3518] uppercase tracking-[0.4em]">Welcome to your Dashboard</span>
+              </div>
+              <h1 className="text-4xl lg:text-7xl font-poppins text-[#6c3518] italic -ml-1">
+                Hello, {customer.firstName || "Indevie User"}
+              </h1>
+              <p className="text-gray-500 font-light font-poppins tracking-wide text-sm mt-4 max-w-md leading-relaxed">
+                This is your little corner of Indevie, where everything is just for you. Check in on your orders, update your details, or simply pick up right where you left off in your skincare journey.
+              </p>
             </div>
-
-            <OrderHistory orders={customer.orders?.nodes || []} />
           </div>
+          
+          {/* Decorative element */}
+          <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#f5f1e6]/20 rounded-full blur-[120px] pointer-events-none"></div>
         </div>
+
+        {/* Dashboard Content */}
+        <Suspense fallback={
+          <div className="flex items-center justify-center p-20">
+             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#6c3518]"></div>
+          </div>
+        }>
+          <AccountDashboard customer={customer} />
+        </Suspense>
       </div>
     </main>
   );
