@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Bookmark, ShoppingBag } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
 import { useCart } from "@/app/context/CartContext";
+import ReviewSection from "@/app/components/ReviewSection";
+import ProductRatingBadge from "@/app/components/ProductRatingBadge";
 
 export default function ProductPageClient({ 
   product, 
@@ -97,11 +99,15 @@ export default function ProductPageClient({
              </button> */}
            </div>
            
-           <div className="flex items-center gap-3 mb-8">
+           <div className="flex items-center gap-3 mb-2">
              <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
              {formattedComparePrice && (
                <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
              )}
+           </div>
+           
+           <div className="mb-8">
+              <ProductRatingBadge productId={product.id} />
            </div>
 
            {/* Quantity Selector */}
@@ -241,12 +247,13 @@ export default function ProductPageClient({
                <Bookmark size={24} />
              </button> */}
            </div>
-           <div className="flex items-center gap-3 mt-2">
+           <div className="flex items-center gap-3 mt-2 mb-1">
              <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
              {formattedComparePrice && (
                <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
              )}
            </div>
+           <ProductRatingBadge productId={product.id} />
          </div>
 
          {/* Quantity Selector Mobile */}
@@ -330,6 +337,13 @@ export default function ProductPageClient({
                </div>
              )}
            </div>
+         </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="max-w-[1500px] mx-auto w-full md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 px-4 sm:px-10 lg:px-16 pb-12">
+         <div className="w-full relative col-span-1 md:col-start-1 md:pr-10 lg:pr-5">
+           <ReviewSection productId={product.id} />
          </div>
       </div>
 

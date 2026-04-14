@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Bookmark, ShoppingBag, ArrowLeft, ArrowRight } from "lucide-react";
 import { ShopifyProduct } from "@/lib/shopify";
 import { useCart } from "../context/CartContext";
+import ProductRatingBadge from "./ProductRatingBadge";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -146,6 +147,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                <span className="text-gray-400 line-through">{formattedComparePrice}</span>
              )}
           </p>
+          <div className="mt-1">
+             <ProductRatingBadge productId={product.id} />
+          </div>
         </div>
       </div>
 
