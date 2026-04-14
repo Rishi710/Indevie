@@ -8,6 +8,8 @@ import ProductCard from "@/app/components/ProductCard";
 import { useCart } from "@/app/context/CartContext";
 import ReviewSection from "@/app/components/ReviewSection";
 import ProductRatingBadge from "@/app/components/ProductRatingBadge";
+import TestimonialSection from "@/app/components/TestimonialSection";
+import ProductFaqSection from "@/app/components/ProductFaqSection";
 
 export default function ProductPageClient({ 
   product, 
@@ -340,13 +342,20 @@ export default function ProductPageClient({
          </div>
       </div>
 
-      {/* Reviews Section */}
+      {/* Hardcoded Featured Testimonials */}
+      <TestimonialSection />
+
+
+      {/* Judge.me Reviews Section */}
       <div className="max-w-[1500px] mx-auto w-full md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 px-4 sm:px-10 lg:px-16 pb-12">
          <div className="w-full relative col-span-1 md:col-start-1 md:pr-10 lg:pr-5">
            <ReviewSection productId={product.id} />
          </div>
       </div>
 
+      {/* Dynamic Product FAQs */}
+      <ProductFaqSection productHandle={product.handle} />
+      
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
         <section className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16 py-20 border-t border-[#e5e5e5]/30">
