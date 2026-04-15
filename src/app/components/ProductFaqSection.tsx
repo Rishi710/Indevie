@@ -14,48 +14,47 @@ export default function ProductFaqSection({ productHandle }: { productHandle: st
   }> = {
     // ---- PRODUCT 1 ---- 
     // Replace 'your-product-handle-1' with your actual Shopify product handle (e.g. 'calm-balm')
-    "your-product-handle-1": {
-      image: "https://your-custom-image-url-here.jpg",
+    "indevie-calm-balm": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1_240x240.jpg?v=1771916802",
       faqs: [
-        { question: "Your first question here?", answer: "Your answer here." },
-        { question: "Your second question here?", answer: "Your answer here." },
-        { question: "Your third question here?", answer: "Your answer here." },
-        { question: "Your fourth question here?", answer: "Your answer here." },
-        { question: "Your fifth question here?", answer: "Your answer here." }
+        { question: "How do I use Calm Balm?", answer: "Apply a small amount of Calm Balm to the desired area and gently massage it in until fully absorbed. Use it as needed, typically once or twice a day, or as directed on the product packaging. For best results, apply after cleansing or before bedtime to enjoy its calming effects" },
+        { question: "Is Calm Balm suitable for sensitive skin?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals." },
       ]
     },
 
     // ---- PRODUCT 2 ---- 
-    "your-product-handle-2": {
-      image: "https://your-custom-image-url-here.jpg",
+    "indevie-kalakand-body-lotion": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/2_240x240.jpg?v=1771916802",
       faqs: [
-        { question: "Your first question here?", answer: "Your answer here." },
-        { question: "Your second question here?", answer: "Your answer here." },
-        { question: "Your third question here?", answer: "Your answer here." },
-        { question: "Your fourth question here?", answer: "Your answer here." },
-        { question: "Your fifth question here?", answer: "Your answer here." }
+        { question: "How do I use Kalakand Skin Barrier Milk?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
+        { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Can we apply both kalakand Lotion and Glow Maalish Oil together?", answer: "Yes! You can use them together, and they actually complement each other beautifully. Apply Kalakand Skin Barrier Milk first to hydrate, soothe, and strengthen your skin barrier. Once it absorbs, follow with Glow Maalish Oil to lock in moisture, nourish the skin, and add a natural glow. This layering creates a richer, more luxurious ritual, especially at night or during dry weather." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
       ]
     },
     // ---- PRODUCT 2 ---- 
-    "your-product-handle-3": {
-      image: "https://your-custom-image-url-here.jpg",
+    "indevie-glow-maalish-oil": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/3_240x240.jpg?v=1771916802",
       faqs: [
-        { question: "Your first question here?", answer: "Your answer here." },
-        { question: "Your second question here?", answer: "Your answer here." },
-        { question: "Your third question here?", answer: "Your answer here." },
-        { question: "Your fourth question here?", answer: "Your answer here." },
-        { question: "Your fifth question here?", answer: "Your answer here." }
+        { question: "How do I use Glow Maalish Oil?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
+        { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Can we apply both Kalakand Skin Barrier Milk and Glow Maalish Oil together?", answer: "Yes! You can use them together, and they actually complement each other beautifully. Apply Kalakand Skin Barrier Milk first to hydrate, soothe, and strengthen your skin barrier. Once it absorbs, follow with Glow Maalish Oil to lock in moisture, nourish the skin, and add a natural glow. This layering creates a richer, more luxurious ritual, especially at night or during dry weather." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
       ]
     },
     // ---- PRODUCT 2 ---- 
-    "your-product-handle-4": {
-      image: "https://your-custom-image-url-here.jpg",
+    "the-ultimate-care-ritual-set": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_240x240.jpg?v=1771916802",
       faqs: [
-        { question: "Your first question here?", answer: "Your answer here." },
-        { question: "Your second question here?", answer: "Your answer here." },
-        { question: "Your third question here?", answer: "Your answer here." },
-        { question: "Your fourth question here?", answer: "Your answer here." },
-        { question: "Your fifth question here?", answer: "Your answer here." }
+        { question: "How do I use The Ultimate Care Ritual Set?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
+        { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Can we apply both Kalakand Skin Barrier Milk and Glow Maalish Oil together?", answer: "Yes! You can use them together, and they actually complement each other beautifully. Apply Kalakand Skin Barrier Milk first to hydrate, soothe, and strengthen your skin barrier. Once it absorbs, follow with Glow Maalish Oil to lock in moisture, nourish the skin, and add a natural glow. This layering creates a richer, more luxurious ritual, especially at night or during dry weather." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
       ]
     },
     

@@ -364,9 +364,12 @@ export default function ProductPageClient({
             <div className="w-24 h-[1px] bg-[#6c3518]/20"></div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          {/* Mobile: Horizontal Carousel | Desktop: 4-Column Grid */}
+          <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-4 md:gap-8 -mx-4 px-4 md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {relatedProducts.slice(0, 4).map((relProduct) => (
-              <ProductCard key={relProduct.id} product={relProduct} />
+              <div key={relProduct.id} className="min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center">
+                <ProductCard product={relProduct} />
+              </div>
             ))}
           </div>
         </section>
