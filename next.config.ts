@@ -16,8 +16,15 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "www.youtube.com//shorts/ta",
-        pathname: "/shorts/**",
+        hostname: "indewild.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.instagram.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.cdninstagram.com",
       },
     ],
   },

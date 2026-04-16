@@ -160,7 +160,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         
         {/* --- NEWSLETTER SECTION: Enter the Ritual --- */}
-        <motion.div 
+        {/* <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -202,7 +202,7 @@ const Footer = () => {
               )}
             </AnimatePresence>
           </form>
-        </motion.div>
+        </motion.div> */}
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 lg:gap-8 mb-24">
           
@@ -267,13 +267,13 @@ const Footer = () => {
                   <MapPin size={16} strokeWidth={1.5} />
                   <span className="text-[14px] font-light tracking-wide">Indore, Madhya Pradesh, India</span>
                 </div>
-                <a href="mailto:care@indevie.in" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                <a href="mailto:care@indevie.com" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
                   <Mail size={16} strokeWidth={1.5} />
-                  <span className="text-[14px] font-light tracking-wide">care@indevie.in</span>
+                  <span className="text-[14px] font-light tracking-wide">care@indevie.com</span>
                 </a>
-                <a href="tel:+919998887777" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                <a href="tel:+919826604580" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
                   <Phone size={16} strokeWidth={1.5} />
-                  <span className="text-[14px] font-light tracking-wide">+91 9998887777</span>
+                  <span className="text-[14px] font-light tracking-wide">+91 9826604580</span>
                 </a>
               </div>
 

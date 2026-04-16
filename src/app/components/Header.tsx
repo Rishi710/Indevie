@@ -22,8 +22,7 @@ export default function Header({
   const pathname = usePathname();
   const { setIsCartOpen, totalQuantity } = useCart();
 
-  const isHome = pathname === "/";
-  const shouldBeSolid = isScrolled || isMenuOpen || !isHome;
+  const shouldBeSolid = isScrolled || isMenuOpen;
 
   useEffect(() => {
     const handleScroll = () => {

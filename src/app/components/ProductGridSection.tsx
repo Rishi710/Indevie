@@ -16,7 +16,7 @@ export default async function ProductGridSection() {
   return (
     <section className="py-12 md:py-24 px-0 md:px-10 lg:px-16 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
-        <h2 className="text-2xl text-[#2a2a2a] mb-8 lg:mb-12 font-poppins italic text-center px-4">Our Products</h2>
+        <h2 className="text-5xl text-[#2a2a2a] mb-8 lg:mb-12 font-poppins italic text-center px-4">Our Products</h2>
         
         {/* Mobile: Horizontal Carousel | Desktop: 4-Column Grid */}
         <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory lg:snap-none gap-4 lg:gap-1 px-4 md:px-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
