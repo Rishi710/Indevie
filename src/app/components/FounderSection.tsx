@@ -17,7 +17,7 @@ export default function FounderSection() {
     }
   };
   return (
-    <section className="relative py-18 md:py-20 bg-[#6c3518] overflow-hidden">
+    <section className="relative py-18 md:py-20 bg-[#6c3518] ml-6 mr-6 rounded-4xl overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[#ffffff]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-[#ffffff]/3 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
