@@ -26,7 +26,7 @@ export default function AboutPage() {
         <div 
           className="fixed inset-0 w-full h-[110vh] z-0 opacity-90"
           style={{
-            backgroundImage: "url('/images/contact.jpeg')",
+            backgroundImage: "url('/images/ig-6.jpg')", 
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -51,8 +51,12 @@ export default function AboutPage() {
       </section>
 
       {/* 🌿 SECTION 1: SO, WHAT IS INDEVIE? (Poster Layout) */}
-      <section className="relative z-20 bg-[#f5f1e6] pt-24 md:pt-40 pb-20 px-6 lg:px-12 border-b border-[#6c3518]/10 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto">
+      <section 
+      className="relative z-20 bg-[#f5f1e6] pt-24 md:pt-40 pb-20 px-6 lg:px-12 border-b border-[#6c3518]/10 overflow-hidden"
+      >
+        <div className="max-w-[1400px] mx-auto"
+
+>
           {/* Giant Heading */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -60,6 +64,11 @@ export default function AboutPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
             className="w-full text-left mb-12 md:mb-24"
+            style={{
+              
+              backgroundImage: ``       
+             }}
+            
           >
              <h2 className="text-[17vw] xs:text-[15vw] sm:text-7xl md:text-[11vw] lg:text-[130px] xl:text-[180px] font-sans font-black text-[#6c3518] leading-[0.9] tracking-[-0.04em] uppercase w-full">
                WHAT IS <br className="lg:hidden"/> INDEVIE?
@@ -294,7 +303,7 @@ export default function AboutPage() {
             className="relative h-[400px] md:h-[600px] w-full rounded-2xl overflow-hidden shadow-xl"
           >
              <Image 
-                src="/images/contact.jpeg"
+                src="/images/ig-6.jpg"
                 alt="More than a brand, a family"
                 fill
                 sizes="(max-width: 768px) 100vw, 500px"

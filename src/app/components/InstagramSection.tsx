@@ -59,7 +59,7 @@ export default function InstagramSection() {
             target="_blank"
             className="inline-flex items-center gap-3 text-[#6c3518]"
           >
-            <InstagramIcon size={26} />
+            {/* <InstagramIcon size={26} /> */}
             <h2 className="text-2xl md:text-3xl font-medium">
               @indeviebeauty
             </h2>
@@ -99,7 +99,7 @@ export default function InstagramSection() {
           {instagramPosts.map((url, index) => (
             <div
               key={index}
-              className="min-w-[300px] sm:min-w-[350px] md:min-w-[400px] snap-center"
+              className="min-w-[320px] sm:min-w-[320px] md:min-w-[350px] snap-center"
             >
               <blockquote
                 className="instagram-media w-full"

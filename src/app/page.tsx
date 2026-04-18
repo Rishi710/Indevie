@@ -10,12 +10,14 @@ import FounderSection from "./components/FounderSection";
 import BlogsCarousel from "./components/BlogsCarousel";
 import InstagramSection from "./components/InstagramSection";
 import ProductGridSection from "./components/ProductGridSection";
+import BrandMantra from "./components/BrandMantra";
 
 export default function Home() {
   return (
     <main className="bg-[#f5f1e6] min-h-screen">
       <HeroSlider />
       <InfiniteTicker />
+      <BrandMantra />
       <ProductGridSection />
       <IntroductionSection />
       <UgcSection />
