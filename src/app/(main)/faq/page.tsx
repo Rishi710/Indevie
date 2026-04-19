@@ -1,5 +1,5 @@
-import React from "react";
 import FaqAccordion from "../../components/FaqAccordion";
+import Image from "next/image";
 
 export const metadata = {
   title: 'FAQ - Indevie Beauty',
@@ -62,40 +62,35 @@ export default function FaqPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#fdfcfaf8] pt-40 pb-24 relative overflow-hidden font-sans">
-      {/* --- Aesthetic Background Elements inspired by the Reference & Indevie Theme --- */}
-      {/* Noise Texture */}
+    <main className="min-h-screen bg-[#f5f1e6] relative overflow-hidden font-poppins">
+      {/* --- Aesthetic Background Elements --- */}
       <div 
-        className="absolute inset-0 opacity-[0.02] pointer-events-none" 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" 
         style={{ 
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` 
         }} 
       />
-      
-      {/* Ambient Organic Blobs for the Hero Section */}
-      <div className="absolute top-0 left-0 w-full h-[800px] pointer-events-none select-none overflow-hidden z-0">
-        <div 
-          className="absolute -top-[10%] -right-[5%] w-[60vw] max-w-[800px] aspect-square bg-[#e8dcc4] rounded-full blur-[120px] opacity-40 mix-blend-multiply" 
-        />
-        <div 
-          className="absolute top-[10%] -left-[10%] w-[40vw] max-w-[600px] aspect-square bg-[#f2e6d8] rounded-full blur-[100px] opacity-60 mix-blend-multiply" 
-        />
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* --- Hero Header --- */}
-        <div className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto mb-20 md:mb-32">
-          <h1 className="text-5xl md:text-7xl font-serif text-gray-900 mb-6 drop-shadow-sm leading-tight">
+      {/* --- HERO SECTION FOR HEADER VISIBILITY --- */}
+      <section className="relative h-[100vh] w-full overflow-hidden bg-[#6c3518] flex items-center justify-center pt-20">
+        <div className="absolute inset-0 z-0 opacity-30">
+           <Image src="/images/ig-6.jpg" alt="FAQ Background" fill className="object-cover" priority />
+        </div>
+        <div className="relative z-10 text-center px-6 max-w-4xl">
+          <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight drop-shadow-lg">
             Frequently Asked<br/>
-            <span className="italic text-[#8B4513]">Questions</span>
+            <span className="italic text-[#d0ba96]">Questions</span>
           </h1>
-          <p className="text-gray-600 font-light text-lg md:text-xl max-w-xl leading-relaxed">
-            If you're new to Indevie or looking to improve your skincare ritual, this guide 
-            will help you learn more about our botanical products and formulations.
+          <p className="text-white/80 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Everything you need to know about our Genurvedic rituals, 
+            formulations, and bringing Indévie into your home.
           </p>
         </div>
+      </section>
 
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 py-24">
         {/* --- FAQ Accordions --- */}
+
         <FaqAccordion categories={faqCategories} />
         
         {/* --- Support CTA --- */}

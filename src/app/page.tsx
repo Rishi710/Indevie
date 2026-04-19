@@ -11,6 +11,7 @@ import BlogsCarousel from "./components/BlogsCarousel";
 import InstagramSection from "./components/InstagramSection";
 import ProductGridSection from "./components/ProductGridSection";
 import BrandMantra from "./components/BrandMantra";
+import ShopBanner from "./components/ShopBanner";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <InfiniteTicker />
       <BrandMantra />
       <ProductGridSection />
+      <ShopBanner />
       <IntroductionSection />
       <UgcSection />
       <HomeTestimonials />

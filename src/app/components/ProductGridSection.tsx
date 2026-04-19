@@ -14,7 +14,7 @@ export default async function ProductGridSection() {
   }
 
   return (
-    <section className="py-10 md:py-20 px-0 md:px-10 lg:px-16 bg-[#f5f1e6] overflow-hidden">
+    <section className="py-8 md:py-10 lg:py-12 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         <h2 className="text-5xl text-[#2a2a2a] mb-8 lg:mb-12 font-poppins text-center px-4">The <span className="text-[#7a4d34]">Pure Skin</span> Rituals</h2>
         
