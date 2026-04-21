@@ -8,14 +8,28 @@ import Link from "next/link";
 
 export default function FounderSection() {
   const [isMuted, setIsMuted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const toggleMute = () => {
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
     }
   };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
     <section className="relative py-18 md:py-20 bg-[#6c3518] ml-6 mr-6 rounded-4xl overflow-hidden">
       {/* Background Decorative Elements */}
@@ -32,18 +46,31 @@ export default function FounderSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/5] md:aspect-square lg:aspect-[3/4] rounded-[32px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(108,53,24,0.2)] bg-[#ffffff]/10"
+              className="relative aspect-[4/5] md:aspect-square lg:aspect-[3/4] rounded-[32px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(108,53,24,0.2)] bg-[#ffffff]/10 cursor-pointer"
+              onClick={togglePlay}
             >
               <video
                 ref={videoRef}
                 src="https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4"
-                autoPlay
                 loop
                 muted={isMuted}
                 playsInline
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
               />
               
+              {/* Central Play Button Overlay */}
+              {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-opacity z-10">
+                  <div className="w-14 h-14 bg-white/70 backdrop-blur-md rounded-full flex items-center justify-center shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform duration-300">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" className="text-[#6c3518] ml-1.5">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+
               {/* Mute/Unmute Toggle Overlay */}
               <button 
                 onClick={toggleMute}

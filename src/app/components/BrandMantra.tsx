@@ -14,7 +14,7 @@ export default function BrandMantra() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-2xl md:text-4xl lg:text-5xl font-poppins text-[#6c3518] leading-[1.3]"
         >
-          &quot;Clean. Conscious. Created for <strong className="font-bold">Indian skin</strong> that deserves more&quot;
+          &quot;Clean. Conscious. Created for <strong className="font-bold">Indian skin</strong>&quot; that deserves more
         </motion.h2>
       </div>
     </section>

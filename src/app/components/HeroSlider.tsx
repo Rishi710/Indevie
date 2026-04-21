@@ -22,7 +22,7 @@ const slides = [
   },
   {
     id: 2,
-    image: "/images/DSC_6447.jpg",
+    image: "/images/DSC_6484.jpg",
     title: "Feed Your Skin",
     subtitle: "Glow Maalish Oil is skin food",
     cta: "SHOP GLOW OIL",
@@ -38,8 +38,37 @@ const slides = [
   },
 ];
 
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+};
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity;
+};
+
 export default function HeroSlider() {
-  const [index, setIndex] = useState(0);
+  const [[page, direction], setPage] = useState([0, 0]);
+
+  // We only have 3 slides, so we wrap the index
+  const index = ((page % slides.length) + slides.length) % slides.length;
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
 
   // ✅ PRELOAD IMAGES (fix flicker)
   useEffect(() => {
@@ -52,11 +81,11 @@ export default function HeroSlider() {
   // ✅ AUTO SLIDE
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % slides.length);
+      paginate(1);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [page]); // Restart timer on page change
 
   // ✅ SCROLL PARALLAX
   const { scrollY } = useScroll();
@@ -79,15 +108,32 @@ export default function HeroSlider() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative h-screen w-full overflow-hidden bg-black"
+      className="relative h-screen w-full overflow-hidden bg-black touch-none"
     >
-      <AnimatePresence mode="sync">
+      <AnimatePresence initial={false} custom={direction}>
         <motion.div
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
+          key={page}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.5 },
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
+
+            if (swipe < -swipeConfidenceThreshold) {
+              paginate(1);
+            } else if (swipe > swipeConfidenceThreshold) {
+              paginate(-1);
+            }
+          }}
           className="absolute inset-0"
         >
           {/* 🔥 PARALLAX BACKGROUND */}
@@ -152,7 +198,12 @@ export default function HeroSlider() {
         {slides.map((_, i) => (
           <div
             key={i}
-            onClick={() => setIndex(i)}
+            onClick={() => {
+              const diff = i - index;
+              if (diff !== 0) {
+                setPage([page + diff, diff > 0 ? 1 : -1]);
+              }
+            }}
             className={`h-2 rounded-full cursor-pointer transition-all ${
               i === index ? "w-8 bg-white" : "w-2 bg-white/50"
             }`}

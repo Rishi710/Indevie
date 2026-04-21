@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Bookmark, ShoppingBag, ArrowLeft, ArrowRight } from "lucide-react";
@@ -31,6 +31,21 @@ export default function ProductCard({ product }: ProductCardProps) {
   const compareAtPrice = product?.variants?.nodes[0]?.compareAtPrice;
   const images = product?.images?.nodes || [];
 
+  const [maxSlides, setMaxSlides] = useState(5);
+
+  useEffect(() => {
+    const updateMaxSlides = () => {
+      const newMax = window.innerWidth < 768 ? 2 : 5;
+      setMaxSlides(newMax);
+      setCurrentImageIndex((prev) => (prev >= newMax ? 0 : prev));
+    };
+    updateMaxSlides();
+    window.addEventListener("resize", updateMaxSlides);
+    return () => window.removeEventListener("resize", updateMaxSlides);
+  }, []);
+
+  const displayedImages = images.slice(0, maxSlides);
+
   // Format to match screenshot: "Rs. 959.00"
   const formattedPrice = price 
     ? `Rs. ${parseFloat(price.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
@@ -45,7 +60,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image Container */}
       <div className="group/image relative w-full aspect-[4/5] rounded-[10px] overflow-hidden bg-[#e5e5e5] mb-4">
          {/* Image Slider */}
-         {images.length > 0 ? (
+         {displayedImages.length > 0 ? (
            <div 
              ref={scrollRef}
              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
@@ -56,7 +71,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 if (idx !== currentImageIndex) setCurrentImageIndex(idx);
              }}
            >
-             {images.slice(0, 5).map((img, idx) => (
+             {displayedImages.map((img, idx) => (
                <div key={idx} className="relative min-w-full h-full snap-center shrink-0">
                  <Image
                    src={img?.url}
@@ -75,13 +90,13 @@ export default function ProductCard({ product }: ProductCardProps) {
          )}
 
          {/* Arrows */}
-         {images.length > 1 && (
+         {displayedImages.length > 1 && (
            <>
              <button
                onClick={(e) => {
                  e.preventDefault();
-                 setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-                 scrollToImage(currentImageIndex === 0 ? (Math.min(images.length, 5) - 1) : currentImageIndex - 1);
+                 setCurrentImageIndex((prev) => (prev === 0 ? displayedImages.length - 1 : prev - 1));
+                 scrollToImage(currentImageIndex === 0 ? (displayedImages.length - 1) : currentImageIndex - 1);
                }}
                className="flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 md:bg-white/60 text-black md:opacity-0 md:group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
@@ -90,8 +105,8 @@ export default function ProductCard({ product }: ProductCardProps) {
              <button
                onClick={(e) => {
                  e.preventDefault();
-                 setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-                 scrollToImage(currentImageIndex === (Math.min(images.length, 5) - 1) ? 0 : currentImageIndex + 1);
+                 setCurrentImageIndex((prev) => (prev === displayedImages.length - 1 ? 0 : prev + 1));
+                 scrollToImage(currentImageIndex === (displayedImages.length - 1) ? 0 : currentImageIndex + 1);
                }}
                className="flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 md:bg-white/60 text-black md:opacity-0 md:group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
@@ -115,9 +130,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
          {/* Pagination Dots */}
-         {images.length > 1 && (
+         {displayedImages.length > 1 && (
            <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-1.5 z-10">
-             {images.slice(0, 5).map((_, idx) => (
+             {displayedImages.map((_, idx) => (
                <button
                  key={idx}
                  onClick={(e) => {

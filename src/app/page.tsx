@@ -1,17 +1,19 @@
-export const dynamic = "force-dynamic";
-import Image from "next/image";
+export const revalidate = 3600; // Revalidate every hour
+import dynamic from "next/dynamic";
 
 import HeroSlider from "./components/HeroSlider";
 import InfiniteTicker from "./components/InfiniteTicker";
-import IntroductionSection from "./components/IntroductionSection";
-import UgcSection from "./components/UgcSection";
-import HomeTestimonials from "./components/HomeTestimonials";
-import FounderSection from "./components/FounderSection";
-import BlogsCarousel from "./components/BlogsCarousel";
-import InstagramSection from "./components/InstagramSection";
-import ProductGridSection from "./components/ProductGridSection";
 import BrandMantra from "./components/BrandMantra";
-import ShopBanner from "./components/ShopBanner";
+import ProductGridSection from "./components/ProductGridSection";
+
+// Dynamic imports for components below the fold
+const ShopBanner = dynamic(() => import("./components/ShopBanner"));
+const IntroductionSection = dynamic(() => import("./components/IntroductionSection"));
+const UgcSection = dynamic(() => import("./components/UgcSection"));
+const HomeTestimonials = dynamic(() => import("./components/HomeTestimonials"));
+const FounderSection = dynamic(() => import("./components/FounderSection"));
+const BlogsCarousel = dynamic(() => import("./components/BlogsCarousel"));
+const InstagramSection = dynamic(() => import("./components/InstagramSection"));
 
 export default function Home() {
   return (
