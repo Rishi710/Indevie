@@ -108,7 +108,7 @@ export default function HeroSlider() {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative h-screen w-full overflow-hidden bg-black touch-none"
+      className="relative h-[100dvh] w-full overflow-hidden bg-black"
     >
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
