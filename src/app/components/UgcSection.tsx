@@ -254,7 +254,7 @@ export default function UgcSection() {
     return (
       <section className="py-12 bg-[#f5f1e6] overflow-hidden flex flex-col">
         <h2 className="text-3xl text-center mb-8 text-[#6c3518] italic px-4">
-          Voices of Indévie
+          Hear it from from <span className="font-semibold"><br/>&quot;Power Devi&quot;</span>
         </h2>
 
         {/* Carousel */}
@@ -336,8 +336,8 @@ export default function UgcSection() {
     <section className="py-24 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
       <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl text-[#6c3518]">
-          Voices of Indévie
+        <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
+          Hear it from from <span className="font-semibold italic"> &quot;Power Devi&quot;</span>
         </h2>
         <p className="italic mt-5 text-[#6c3518] tracking-tight text-lg">
           Real people, real routines, and moments of care that truly make a difference.

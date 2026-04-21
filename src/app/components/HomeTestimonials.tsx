@@ -19,21 +19,21 @@ const testimonials: Testimonial[] = [
     quote: "My favourite is the Glow Maalish Oil. It’s so smooth, it feels like having your own spa at home. The texture is exceptional, something you hardly find anywhere else. I love the natural jasmine fragrance. Overall, 10/10.",
     name: "Aayushi Gupta",
     subtext: "Architect",
-    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1.jpg", 
+    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1_86824398-6c97-4a70-9e2a-5157d1f893b4.jpg?v=1771928504", 
   },
   {
     id: 2,
     quote: "My freelancing career has only kept me running from one place to another. I never cared for my skin the way I should have. But honestly, the Kalakand Skin Barrier Body Lotion and Calm Balm have given my skin a new life. They’re truly worth it.",
     name: "Shiny W.",
     subtext: "Freelance Content Writer",
-    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_dd424b62-06f4-4679-9232-71d01a7b10f4.jpg", 
+    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/2_9d58d24e-84bd-4ba4-8e81-ec497af09208.jpg?v=1771928505", 
   },
   {
     id: 3,
     quote: "I only remember coming home so tired and unable to sleep, until I discovered the Calm Balm. It has turned my sleepless nights into a moment I actually look forward to. I carry it everywhere I go, happily sniffing my way through life.",
     name: "Anant N.",
     subtext: "Entrepreneur",
-    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1.jpg",
+    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/3_e07c3362-0506-4a21-acf7-495c40cf6998.jpg?v=1771928504",
   }
 ];
 

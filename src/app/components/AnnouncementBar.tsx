@@ -47,7 +47,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
       {/* Close Button - positioned absolute but within the bar's height */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#EFE8D9]/80 hover:text-white transition-colors z-10 bg-[#B40417] pl-1 h-full flex items-center"
+        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#EFE8D9]/80 hover:text-white transition-colors z-10 bg-[#B40417] pl-1 h-full hidden md:flex items-center"
         aria-label="Close announcement"
       >
         <svg

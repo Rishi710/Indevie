@@ -12,10 +12,10 @@ export default function BrandMantra() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-2xl md:text-4xl lg:text-5xl font-poppins text-[#6c3518] leading-[1.3]"
+          className="text-2xl md:text-3xl lg:text-4xl font-poppins text-[#6c3518] leading-[1.3]"
         >
-          &quot;Clean. Conscious. Created for <strong className="font-bold">Indian skin</strong>&quot; that deserves more
-        </motion.h2>
+          &quot;<strong>Turning selfcare into soulcare.</strong>&quot; We believe in feeding the skin right, because it surely eats.
+        </motion.h2> 
       </div>
     </section>
   );
