@@ -42,7 +42,7 @@ export default function IntroductionSection() {
             className="bg-white rounded-[10px] md:rounded-[40px] p-8 md:p-12 lg:p-16 flex flex-col justify-center shadow-sm border border-black/5"
           >
             <div className="space-y-6 md:space-y-8">
-              <p className="text-[10px] md:text-xs font-poppins font-bold tracking-[0.3em] uppercase text-[#6c3518]/60">
+              <p className="text-[10px] md:text-xs font-poppins font-bold tracking-[0.3em] uppercase text-red-800">
                 Introducing Genurveda™
               </p>
               

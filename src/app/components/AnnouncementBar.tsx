@@ -22,14 +22,14 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
             x: ["0%", "-50%"],
           }}
           transition={{
-            duration: 30,
+            duration: 25,
             repeat: Infinity,
             ease: "linear",
           }}
           className="flex whitespace-nowrap will-change-transform"
         >
           {/* Loop twice for seamless scrolling */}
-          {[...Array(2)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <div key={i} className="flex space-x-12 px-6 items-center">
               {announcementItems.map((item, index) => (
                 <span 
@@ -45,7 +45,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
       </div>
 
       {/* Close Button - positioned absolute but within the bar's height */}
-      <button
+      {/* <button
         onClick={onClose}
         className="absolute right-4 top-1/2 -translate-y-1/2 text-[#EFE8D9]/80 hover:text-white transition-colors z-10 bg-[#B40417] pl-1 h-full hidden md:flex items-center"
         aria-label="Close announcement"
@@ -64,7 +64,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
-      </button>
+      </button> */}
     </div>
   );
 }

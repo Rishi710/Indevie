@@ -22,94 +22,146 @@ type UgcItem = {
 const ugcData: UgcItem[] = [
   {
     id: 1,
-    name: "Soumya",
+    name: "Anjali",
     age: "22",
     concern: "Frizz",
     quote:
       "The wavy routine is a literal game changer I never even knew my hair had the potential for such defined waves!",
     location: "Delhi",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-glow-maalish-oil",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/fe4d81691d7a4c0bb66513005edb3f7d.mp4",
   },
   {
     id: 2,
-    name: "Meera",
+    name: "Cheshta Singh",
     age: "28",
     concern: "Dryness",
     quote:
       "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
     location: "Mumbai",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-kalakand-body-lotion",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/a9afc75e73c74c4aa2b29e1ae50f63dd.mov",
   },
   {
     id: 3,
-    name: "Ananya",
+    name: "Heena",
     age: "25",
     concern: "Dullness",
     quote:
       "The serum gives me a glass-skin glow without being sticky.",
     location: "Bangalore",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-calm-balm",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/dd98820824e6461198a2fa0fb4630ea8.mp4",
   },
   {
     id: 4,
-    name: "Ananya",
+    name: "Kanika Maghav",
     age: "25",
     concern: "Dullness",
     quote:
       "The serum gives me a glass-skin glow without being sticky.",
     location: "Bangalore",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-calm-balm",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/7af71e928eb54393af8ea1f3e5ff7bab.mov",
   },
   {
     id: 5,
-    name: "Ananya",
+    name: "Keerthi",
     age: "25",
     concern: "Dullness",
     quote:
       "The serum gives me a glass-skin glow without being sticky.",
     location: "Bangalore",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-kalakand-body-lotion",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
-  },
+      "https://cdn.shopify.com/videos/c/o/v/f558aee5524e4724aa61e7a7dee217b7.mp4",
+  }, 
   {
     id: 6,
-    name: "Ananya",
+    name: "Palavi Sudan ",
     age: "25",
     concern: "Dullness",
     quote:
       "The serum gives me a glass-skin glow without being sticky.",
     location: "Bangalore",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-calm-balm",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/54498fb45f3647a3a22984bbc9997327.mp4",
   },
   {
     id: 7,
-    name: "Ananya",
+    name: "Sata Deekshitha",
     age: "25",
     concern: "Dullness",
     quote:
       "The serum gives me a glass-skin glow without being sticky.",
     location: "Bangalore",
     rating: 5,
-    productLink: "/shop",
+    productLink: "/products/indevie-glow-maalish-oil",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/5a7c05b4b25c488097a4e26d63e9fbb6.mp4",
+  },
+  {
+    id: 8,
+    name: "Sonia",
+    age: "25",
+    concern: "Dullness",
+    quote:
+      "The serum gives me a glass-skin glow without being sticky.",
+    location: "Bangalore",
+    rating: 5,
+    productLink: "/products/indevie-kalakand-body-lotion",
+    videoSrc:
+      "https://cdn.shopify.com/videos/c/o/v/5ec492656c984fd7a9e84a264d9768f6.mov",
+  },
+  {
+    id: 9,
+    name: "Srivalli",
+    age: "25",
+    concern: "Dullness",
+    quote:
+      "The serum gives me a glass-skin glow without being sticky.",
+    location: "Bangalore",
+    rating: 5,
+    productLink: "/products/indevie-glow-maalish-oil",
+    videoSrc:
+      "https://cdn.shopify.com/videos/c/o/v/80e4c2a4a5064de5a14c8d30da8d29ba.mp4",
+  },
+  {
+    id: 10,
+    name: "Surbhi Sharma",
+    age: "25",
+    concern: "Dullness",
+    quote:
+      "The serum gives me a glass-skin glow without being sticky.",
+    location: "Bangalore",
+    rating: 5,
+    productLink: "/products/indevie-calm-balm",
+    videoSrc:
+      "https://cdn.shopify.com/videos/c/o/v/bd7cd51c2c084e50a1ad51657455acef.mp4",
+  },
+  {
+    id: 11,
+    name: "Tanu chokarika",
+    age: "25",
+    concern: "Dullness",
+    quote:
+      "The serum gives me a glass-skin glow without being sticky.",
+    location: "Bangalore",
+    rating: 5,
+    productLink: "/products/indevie-glow-maalish-oil",
+    videoSrc:
+      "https://cdn.shopify.com/videos/c/o/v/1d6d51a5e4cc4269985f15acdead6fa5.mov",
   },
 ];
 
@@ -253,9 +305,18 @@ export default function UgcSection() {
   if (isMobile) {
     return (
       <section className="py-12 bg-[#f5f1e6] overflow-hidden flex flex-col">
-        <h2 className="text-3xl text-center mb-8 text-[#6c3518] italic px-4">
-          Hear it from from <span className="font-semibold"><br/>&quot;Power Devi&quot;</span>
+
+        <div className="flex flex-col items-center text-center mb-16 gap-5">
+           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
+            Hear it from from our
+           </span>
+           <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
+          <span className="font-semibold italic"> &quot;Power Devi&quot;</span>
         </h2>
+           <p className="italic text-[#6c3518] tracking-tight text-lg">
+          Real people, real routines, and moments of care that truly make a difference.
+        </p>
+        </div>
 
         {/* Carousel */}
         <div 
@@ -322,7 +383,7 @@ export default function UgcSection() {
 
             <Link href={mobileActiveData.productLink}>
               <button className="border-b border-[#6c3518] text-sm pb-1 text-[#6c3518] font-medium active:scale-95 transition-transform">
-                Discover Routine →
+                   Shop Now →
               </button>
             </Link>
           </motion.div>
@@ -335,14 +396,26 @@ export default function UgcSection() {
   return (
     <section className="py-24 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
-      <div className="text-center mb-16">
+      {/* <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
           Hear it from from <span className="font-semibold italic"> &quot;Power Devi&quot;</span>
         </h2>
         <p className="italic mt-5 text-[#6c3518] tracking-tight text-lg">
           Real people, real routines, and moments of care that truly make a difference.
         </p>
-      </div>
+      </div> */}
+
+      <div className="flex flex-col items-center text-center mb-16 gap-5">
+           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
+            Hear it from from our
+           </span>
+           <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
+          <span className="font-semibold italic"> &quot;Power Devi&quot;</span>
+        </h2>
+           <p className="italic text-[#6c3518] tracking-tight text-lg">
+          Real people, real routines, and moments of care that truly make a difference.
+        </p>
+        </div>
 
       <div className="flex flex-col md:flex-row items-center max-w-7xl mx-auto w-full">
         {/* LEFT CONTENT */}
@@ -369,7 +442,7 @@ export default function UgcSection() {
 
             <Link href={activeData.productLink}>
               <button className="border-b border-[#6c3518] text-lg text-[#6c3518] font-medium hover:text-[#4a2410] hover:border-[#4a2410] transition-colors pb-1">
-                Discover Routine →
+                Shop Now →
               </button>
             </Link>
           </motion.div>
