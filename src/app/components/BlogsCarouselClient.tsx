@@ -24,9 +24,9 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
              Resources and Insights
            </span>
-           <h2 className="text-4xl md:text-5xl lg:text-[64px] font-poppins text-gray-900 leading-none">
-             Recent Blogs
-           </h2>
+           <h2 className="text-4xl md:text-5xl lg:text-6xl text-[#6c3518]">
+             <span className="font-poppins font-semibold italic">Recent Blogs</span>
+        </h2>
         </div>
 
         {/* Carousel Section */}

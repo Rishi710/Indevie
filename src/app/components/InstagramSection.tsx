@@ -78,9 +78,14 @@ export default function InstagramSection() {
             target="_blank"
             className="inline-flex items-center gap-3 text-[#6c3518]"
           >
-            <h2 className="text-2xl md:text-3xl font-medium">
+             <div className="flex flex-col items-center text-center gap-5">
+           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
+             Our Instagram Feed
+           </span>
+             <h2 className="text-2xl md:text-3xl font-medium italic">
               @indeviebeauty
-            </h2>
+            </h2> 
+        </div>
           </Link>
         </div>
 

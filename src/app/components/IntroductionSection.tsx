@@ -25,7 +25,7 @@ export default function IntroductionSection() {
             className="relative h-[400px] md:h-auto min-h-[400px] rounded-[10px] md:rounded-[40px] overflow-hidden"
           >
             <Image
-              src="/images/ig-6.jpg"
+              src="/images/intro.png"
               alt="Indevie Product Introduction"
               fill
               className="object-cover"

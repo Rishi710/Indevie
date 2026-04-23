@@ -76,8 +76,8 @@ export default function HomeTestimonials() {
   };
 
   return (
-    <section className="w-full bg-[#ffffff] py-20 lg:py-32 overflow-hidden flex flex-col items-center">
-      <div className="max-w-5xl w-full px-6 relative h-[450px] md:h-[400px] flex items-center justify-center">
+    <section className="w-full bg-[#ffffff] py-5 lg:py-15 overflow-hidden flex flex-col items-center">
+      <div className="max-w-5xl w-full px-5 relative h-[450px] md:h-[250px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -98,7 +98,7 @@ export default function HomeTestimonials() {
                 <Star
                   key={i}
                   size={12}
-                  fill="#f7a9a8"
+                  fill="#FFD700"
                   stroke="none"
                   className="drop-shadow-sm"
                 />
@@ -106,7 +106,7 @@ export default function HomeTestimonials() {
             </div>
 
             {/* Quote */}
-            <h2 className="text-2xl md:text-4xl lg:text-[32px] font-poppins leading-[1.3] text-[#6c3518] italic max-w-3xl mb-10 px-4 md:px-0 select-none">
+            <h2 className="text-xl md:text-2xl lg:text-[24px] font-poppins leading-[1.3] text-[#6c3518] italic max-w-3xl mb-10 px-4 md:px-0 select-none">
                 &quot; {testimonials[currentIndex].quote} &quot;
             </h2>
 

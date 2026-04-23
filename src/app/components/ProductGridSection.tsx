@@ -16,7 +16,15 @@ export default async function ProductGridSection() {
   return (
     <section className="py-8 md:py-10 lg:py-12 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
-        <h2 className="text-4xl text-[#2a2a2a] mb-8 lg:mb-10 font-poppins text-center italic px-4">Channel you Inner <span className="text-[#7a4d34] font-semibold"><br/>Devi with Indevie </span></h2>
+        <div className="flex flex-col items-center text-center mb-16 gap-5">
+           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
+            Channel you Inner
+           </span>
+           <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
+          <span className="font-semibold italic"> &quot;Devi with Indevie&quot;</span>
+        </h2>
+        </div>
+        {/* <h2 className="text-4xl text-[#2a2a2a] mb-8 lg:mb-10 font-poppins text-center italic px-4">Channel you Inner <span className="text-[#7a4d34] font-semibold"><br/>Devi with Indevie </span></h2> */}
         
         <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory lg:snap-none gap-4 lg:gap-1 px-4 md:px-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {products.map((product) => (

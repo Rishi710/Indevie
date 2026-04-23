@@ -324,7 +324,7 @@ export default function UgcSection() {
           onScroll={handleMobileScroll}
           className="flex items-center overflow-x-auto snap-x snap-mandatory gap-4 pb-4 [&::-webkit-scrollbar]:hidden"
           style={{ 
-            scrollbarWidth: "none", 
+            scrollbarWidth: "none",  
             msOverflowStyle: "none",
             paddingLeft: 'calc(50vw - 100px)',
             paddingRight: 'calc(50vw - 100px)'
