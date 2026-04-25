@@ -22,10 +22,10 @@ export default function IntroductionSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative h-[400px] md:h-auto min-h-[400px] rounded-[10px] md:rounded-[40px] overflow-hidden"
+            className="relative h-auto min-h-[400px] rounded-[10px] md:rounded-[40px] overflow-hidden"
           >
             <Image
-              src="/images/intro.png"
+              src="/images/intro.PNG"
               alt="Indevie Product Introduction"
               fill
               className="object-cover"

@@ -1,0 +1,227 @@
+[
+  {
+    "word": "Saffron",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Saffron.png?v=1777112020",
+    "tags": [
+      "Glow",
+      "Brightening", 
+      "Antioxidant"
+    ],
+    "about": "Saffron is not just for your kitchen. Your skin loves it just as much. A prized ingredient in Ayurvedic skincare, it is known for enhancing skin radiance and bringing back a natural, healthy glow. Rich in antioxidants, saffron helps brighten dull skin, improve uneven tone, and protect against environmental stressors. It is widely used in natural body care for glowing skin",
+    "subtitle": "Brightens dull skin, improves uneven tone, and boosts natural radiance with antioxidant-rich Ayurvedic care for glowing, healthy-looking skin.",
+    "work":"Saffron helps improve circulation and delivers antioxidants to the skin, reducing dullness and restoring luminosity over time.",
+    "foundIn": []
+  },
+  {
+    "word": "Oat Milk",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Oat_Milk.png?v=1777112018",
+    "tags": [
+      "Barrier Repair",
+      "Sensitive Skin",
+      "Hydration"
+    ],
+    "about": "If your skin could ask for comfort, it would probably ask for oat milk. A gentle favourite in skincare for dry and sensitive skin, oat milk helps repair the skin barrier, calm irritation, and deeply hydrate without feeling heavy. It is especially helpful for over-washed, stressed, or reactive skin.",
+    "subtitle": "Deeply soothes and repairs dry, sensitive skin while strengthening the skin barrier and providing lightweight, non-greasy hydration.",
+    "work":"Oat milk creates a soothing layer on the skin that locks in moisture, reduces inflammation, and supports long-term skin repair.",
+    "foundIn": []
+  },
+  {
+    "word": "Aloe Vera",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Aloe_Vera.png?v=1777112014",
+    "tags": [
+      "Soothing",
+      "Hydration",
+      "Calming"
+    ],
+    "about": "Aloe vera is that one ingredient your skin keeps coming back to. Known for its role in natural skincare for hydration and soothing, it helps calm irritation, reduce redness, and deliver lightweight moisture. It works especially well for sensitive, dry, or reactive skin.",
+    "subtitle": "Hydrates, cools, and calms irritated skin while supporting healing, making it ideal for sensitive, inflamed, or stressed skin.",
+    "work":"Aloe vera penetrates the skin to hydrate, cool, and support the skin’s natural healing process.",
+    "foundIn": []
+  },
+  {
+    "word": "Coconut",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Coconut.png?v=1777112019",
+    "tags": [
+      "Moisturising",
+      " Repair",
+      " Nourishing"
+    ],
+    "about": "Coconut brings deep nourishment your skin can actually feel. A staple in Ayurvedic body care for dry and damaged skin, it helps moisturise intensely, reduce inflammation, and support skin healing. It works especially well for rough, cracked, or dehydrated skin.",
+    "subtitle": "Deeply moisturises dry, rough skin while reducing inflammation and restoring the skin barrier for long-lasting nourishment.",
+    "work":"Coconut oil locks in moisture and strengthens the skin barrier, helping repair dryness and improve overall skin health.",
+    "foundIn": []
+  },
+  {
+    "word": "Shea Butter",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Shea_Butter.png?v=1777112018",
+    "tags": [
+      "Deep Moisture",
+      "Softening",
+      "Protection"
+    ],
+    "about": "Shea butter is rich, restorative, and deeply comforting for the skin. Used in skincare for dry, rough, and sensitive skin, it helps improve texture, lock in moisture, and protect against dryness while keeping the skin soft and smooth.",
+    "subtitle": "Richly hydrates and softens dry skin while improving texture, locking in moisture, and protecting against dryness and roughness.",
+    "work":"Shea butter melts into the skin, forming a protective layer that prevents moisture loss and improves softness over time.",
+    "foundIn": []
+  },
+  {
+    "word": "Almond",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Almond.png?v=1777112018",
+    "tags": [
+      "Nourishing",
+      "Softening",
+      "Smoothness"
+    ],
+    "about": "Almond is all about deep nourishment and lasting softness. Used in natural skincare for dry and dull skin, it helps improve texture, restore moisture, and support healthy, smooth skin.",
+    "subtitle": "Nourishes and softens skin while improving texture and elasticity, leaving it smooth, healthy, and deeply moisturised.",
+    "work":"Almond oil penetrates deeply to nourish and hydrate, improving skin softness and elasticity.",
+    "foundIn": []
+  },
+  {
+    "word": "Kumkumadi",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Kumkumadi.png?v=1777112018",
+    "tags": [
+      "Brightening",
+      "Even Tone",
+      "Glow"
+    ],
+    "about": "Kumkumadi is one of Ayurveda’s best-kept glow secrets. A traditional blend used in Ayurvedic skincare for glowing and even-toned skin, it helps reduce pigmentation, improve complexion, and restore radiance. It is widely used in natural skincare for brightening and skin repair.",
+    "subtitle": "Enhances skin radiance, reduces pigmentation, and supports an even complexion using traditional Ayurvedic ingredients for brighter, healthier-looking skin.",
+    "work":"Kumkumadi works by boosting skin renewal and improving circulation, helping the skin appear brighter, clearer, and more balanced over time.",
+    "foundIn": []
+  },
+
+  
+
+
+  {
+    "word": "Turmeric",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Turmeric.png?v=1777112015",
+    "tags": [
+      "Anti-inflammatory",
+      "Healing",
+      "Glow"
+    ],
+    "about": "Turmeric has been trusted in Ayurveda long before skincare trends existed. Known for its role in natural skincare for inflammation and glowing skin, it helps calm irritation, reduce redness, and improve overall skin clarity.",
+    "subtitle": "Soothes inflammation, reduces redness, and improves skin clarity with powerful Ayurvedic healing and antioxidant properties.",
+    "work":"Turmeric works through its anti-inflammatory and antioxidant properties, helping soothe the skin and support a clearer, healthier appearance.",
+    "foundIn": []
+  },
+  {
+    "word": "Sandalwood",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Sandalwood.png?v=1777112013",
+    "tags": [
+      "Cooling",
+      "Soothing",
+      "Anti-acne"
+    ],
+    "about": "Sandalwood is calm, grounding, and deeply skin-loving. Used in Ayurvedic skincare for soothing and cooling the skin, it helps reduce inflammation, calm sensitivity, and improve skin texture. It is especially beneficial for irritated or acne-prone skin.",
+    "subtitle": "Calms irritation, cools the skin, and improves texture while supporting balanced, clear, and soothed skin.",
+    "work":"Sandalwood cools the skin, reduces redness, and supports a more balanced and even complexion.",
+    "foundIn": []
+  },
+  {
+    "word": "Jasmine",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Jasmine.png?v=1777112016",
+    "tags": [
+      "Nourishing",
+      "Relaxing",
+      "Elasticity"
+    ],
+    "about": "Jasmine brings softness to both your skin and your senses. Used in natural body care for nourishment and relaxation, it helps improve skin elasticity, enhance hydration, and support overall skin health.",
+    "subtitle": "Hydrates, nourishes, and improves skin elasticity while offering a calming aroma that supports relaxation and overall well-being.",
+    "work":"Jasmine helps retain moisture in the skin while its natural aroma supports relaxation and emotional well-being.",
+    "foundIn": []
+  },
+  {
+    "word": "Grapeseed",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Grapeseed.png?v=1777112307",
+    "tags": [
+      "Lightweight",
+      "Anti-ageing",
+      "Barrier Support"
+    ],
+    "about": "Grapeseed is lightweight, fast-absorbing, and quietly effective. Used in skincare for oily, combination, and sensitive skin, it helps moisturise without clogging pores while supporting skin repair and elasticity. It is rich in antioxidants and supports anti-ageing skincare.",
+    "subtitle": "Lightweight oil that hydrates, strengthens the skin barrier, and supports anti-ageing without clogging pores.",
+    "work":"Grapeseed oil absorbs quickly into the skin, delivering hydration and antioxidants that help strengthen the skin barrier.",
+    "foundIn": []
+  },
+  {
+    "word": "Ginger",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Ginger.png?v=1777112018",
+    "tags": [
+      "Warming",
+      "Pain Relief",
+      "Circulation"
+    ],
+    "about": "Ginger brings warmth where your body needs it most. Used in Ayurvedic body care for inflammation and pain relief, it helps reduce stiffness, improve circulation, and support recovery from everyday tension.",
+    "subtitle": "Improves circulation, reduces stiffness, and eases body tension with warming Ayurvedic properties for relaxation and recovery.",
+    "work":"Ginger generates gentle warmth, boosts circulation, and helps the body release built-up tension.",
+    "foundIn": []
+  },
+  {
+    "word": "Tea Tree",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Tea_Tree.png?v=1777112008",
+    "tags": [
+      "Anti-bacterial",
+      "Acne Care",
+      "Clarifying"
+    ],
+    "about": "Tea tree is clarity in ingredient form. Known for its role in skincare for acne and inflammation, it helps reduce bacteria, calm irritation, and support clearer skin.",
+    "subtitle": "Helps reduce bacteria, calm inflammation, and support clearer skin, especially for acne-prone or reactive areas.",
+    "work":"Tea tree works through its antibacterial and anti-inflammatory properties, helping reduce breakouts and soothe the skin.",
+    "foundIn": []
+  },
+  {
+    "word": "Peppermint",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Peppermint.png?v=1777112009",
+    "tags": [
+      "Cooling",
+      "Relaxing",
+      "Stress Relief"
+    ],
+    "about": "Peppermint feels like a deep breath your body did not know it needed. Used in natural body care for relaxation and stress relief, it cools the skin, refreshes the senses, and helps ease both physical tension and mental fatigue.",
+    "subtitle": "Cools the skin, refreshes the senses, and helps relieve stress while promoting relaxation and better sleep.",
+    "work":"Peppermint stimulates circulation and provides a cooling and warming effect that relaxes muscles and reduces discomfort.",
+    "foundIn": []
+  },
+  {
+    "word": "Licorice",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Liquorice.png?v=1777112011",
+    "tags": [
+      "Brightening",
+      "Pigmentation",
+      "Even Tone"
+    ],
+    "about": "Licorice works quietly but effectively on uneven skin. Used in skincare for pigmentation and brightening, it helps reduce dark spots, soothe irritation, and improve overall skin tone.",
+    "subtitle":"Brightens skin, reduces pigmentation, and evens tone while soothing irritation and improving overall complexion.",
+    "work":"Licorice helps regulate melanin production and reduce inflammation, leading to brighter and more even skin.",
+    "foundIn": []
+  },
+  {
+    "word": "Clove",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Clove.png?v=1777112009",
+    "tags": [
+      "Warming",
+      "Circulation",
+      "Relief"
+    ],
+    "about": "Clove brings warmth and relief where your body needs it. Used in Ayurvedic formulations for pain relief and circulation, it helps ease discomfort, reduce inflammation, and support relaxation.",
+    "subtitle": "Provides warming relief, improves circulation, and helps ease muscle stiffness and body discomfort", 
+    "work":"Clove stimulates circulation and provides a warming effect that helps reduce stiffness and tension.",
+    "foundIn": []
+  },
+  {
+    "word": "Camphor",
+    "image": "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Camphor.png?v=1777112306",
+    "tags": [
+      "Pain Relief",
+      "Cooling",
+      "Relaxation"
+    ],
+    "about": "Camphor gets straight to work when your body needs relief. A staple in Ayurvedic formulations for pain relief, it helps ease stiffness, improve circulation, and soothe tired, tense areas.",
+    "subtitle": "Relieves muscle tension, improves circulation, and provides a cooling-warming effect for quick body relaxation.",
+    "work":"Camphor stimulates blood flow and creates a cooling and warming effect that relaxes muscles and reduces discomfort.",  
+    "foundIn": []
+  }
+]

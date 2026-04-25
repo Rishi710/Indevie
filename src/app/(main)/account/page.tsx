@@ -37,9 +37,9 @@ export default async function AccountPage() {
               <h1 className="text-4xl lg:text-7xl font-poppins text-[#6c3518] italic -ml-1">
                 Hello, {customer.firstName || "Indevie User"}
               </h1>
-              <p className="text-gray-500 font-light font-poppins tracking-wide text-sm mt-4 max-w-md leading-relaxed">
+              {/* <p className="text-gray-500 font-light font-poppins tracking-wide text-sm mt-4 max-w-md leading-relaxed">
                 This is your little corner of Indevie, where everything is just for you. Check in on your orders, update your details, or simply pick up right where you left off in your skincare journey.
-              </p>
+              </p> */}
             </div>
           </div>
           
