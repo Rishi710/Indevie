@@ -64,10 +64,10 @@ const Footer = () => {
 
   const supportLinks = [
     { name: "FAQ", href: "/faq" },
-    { name: "Terms", href: "/policies/terms" },
-    { name: "Shipping", href: "/policies/shipping" },
-    { name: "Refund", href: "/policies/refund" },
-    { name: "Privacy", href: "/policies/privacy" },
+    { name: "Terms", href: "/terms-of-service" },
+    { name: "Shipping", href: "/shipping-policy" },
+    { name: "Refund", href: "/refund-policy" },
+    { name: "Privacy", href: "/privacy-policy" },
   ];
 
   const socialIcons = [
