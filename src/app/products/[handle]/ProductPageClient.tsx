@@ -45,6 +45,18 @@ export default function ProductPageClient({
     }
   };
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: product.title,
+        url: window.location.href
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
+    }
+  };
+
   const sizeOption = (product.options || []).find(o => o.name.toLowerCase() === 'size');
 
   return (
@@ -115,21 +127,29 @@ export default function ProductPageClient({
            {/* Quantity Selector */}
            <div className="flex flex-col gap-3 mb-8">
              <span className="text-[11px] font-bold tracking-[0.15em] text-[#6c3518] uppercase">Quantity</span>
-             <div className="flex items-center w-32 border border-[#6c3518]/20 rounded-[4px] bg-white/50 backdrop-blur-sm">
-               <button 
-                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                 className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors"
-               >
-                 −
-               </button>
-               <div className="flex-1 text-center text-sm font-medium text-[#6c3518]">
-                 {quantity}
+             <div className="flex items-center gap-4">
+               <div className="flex items-center w-32 border border-[#6c3518]/20 rounded-[4px] bg-white/50 backdrop-blur-sm">
+                 <button 
+                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                   className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors"
+                 >
+                   −
+                 </button>
+                 <div className="flex-1 text-center text-sm font-medium text-[#6c3518]">
+                   {quantity}
+                 </div>
+                 <button 
+                   onClick={() => setQuantity(quantity + 1)}
+                   className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors"
+                 >
+                   +
+                 </button>
                </div>
                <button 
-                 onClick={() => setQuantity(quantity + 1)}
-                 className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors"
+                 onClick={handleShare}
+                 className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-[#6c3518]/20 hover:bg-[#6c3518]/5 transition-colors h-10 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-[4px] text-[#6c3518]"
                >
-                 +
+                 Share
                </button>
              </div>
            </div>
@@ -261,21 +281,29 @@ export default function ProductPageClient({
          {/* Quantity Selector Mobile */}
          <div className="flex flex-col gap-3 mb-6">
             <span className="text-[11px] font-bold tracking-[0.15em] text-black uppercase">Quantity</span>
-            <div className="flex items-center w-32 border border-[#e5e5e5] rounded-[8px] bg-white">
-              <button 
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-12 h-12 flex items-center justify-center text-[#2a2a2a]"
-              >
-                −
-              </button>
-              <div className="flex-1 text-center font-medium text-[#2a2a2a]">
-                {quantity}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center w-32 border border-[#e5e5e5] rounded-[8px] bg-white">
+                <button 
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-12 h-12 flex items-center justify-center text-[#2a2a2a]"
+                >
+                  −
+                </button>
+                <div className="flex-1 text-center font-medium text-[#2a2a2a]">
+                  {quantity}
+                </div>
+                <button 
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-12 h-12 flex items-center justify-center text-[#2a2a2a]"
+                >
+                  +
+                </button>
               </div>
               <button 
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-12 h-12 flex items-center justify-center text-[#2a2a2a]"
+                onClick={handleShare}
+                className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-[#e5e5e5] hover:bg-gray-50 transition-colors h-12 flex items-center justify-center bg-white rounded-[8px] text-[#2a2a2a]"
               >
-                +
+                Share
               </button>
             </div>
          </div>

@@ -16,15 +16,15 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
   // We can use a combination of mouse drag and trackpad scrolling, 
   // but a simple scroll snap with a hidden scrollbar works excellent.
   return (
-    <section className="py-24 bg-[#f5f1e6] relative text-gray-900">
+    <section className="py-10 bg-[#f5f1e6] relative text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
-        <div className="flex flex-col items-center text-center mb-16 gap-5">
+        <div className="flex flex-col items-center text-center mb-10 gap-3">
            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
              Resources and Insights
            </span>
-           <h2 className="text-4xl md:text-5xl lg:text-6xl text-[#6c3518]">
+           <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#6c3518]">
              <span className="font-poppins font-semibold italic">Recent Blogs</span>
         </h2>
         </div>
@@ -48,12 +48,12 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
         </div>
 
         {/* View All Button */}
-        <div className="mt-12 flex justify-center">
+        <div className="flex justify-center">
            <Link 
              href="/blogs"
              className="inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-neutral-900 transition-colors duration-300"
            >
-             View all Insights
+             Dig In
            </Link>
         </div>
         

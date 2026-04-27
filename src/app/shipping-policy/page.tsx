@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ShippingPolicyPage() {
   return (
-    <div className="min-h-screen bg-[#faf9f6] py-16 md:py-24">
+    <div className="min-h-screen bg-[#faf9f6] pt-40 pb-12 md:pt-40 md:pb-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}

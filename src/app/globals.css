@@ -26,3 +26,25 @@
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+@keyframes move-forever {
+  0% {
+   transform: translate3d(-90px, 0, 0);
+  }
+  100% { 
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+.wave1 > use {
+  animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.wave2 > use {
+  animation: move-forever 20s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.wave3 > use {
+  animation: move-forever 13s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.wave4 > use {
+  animation: move-forever 7s cubic-bezier(.55,.5,.45,.5) infinite;
+}

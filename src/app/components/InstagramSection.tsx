@@ -20,9 +20,10 @@ const InstagramIcon = ({ size = 24 }: { size?: number }) => (
 
 const instagramPosts = [
   "https://www.instagram.com/p/DT7u4AWjCQr/",
+  "https://www.instagram.com/reel/DWbZMvli28u/",
   "https://www.instagram.com/p/DWyhEPPjCxI/",
-  "https://www.instagram.com/p/DWTr_pQDI8D/",
-  "https://www.instagram.com/p/DT7u4AWjCQr/",
+  "https://www.instagram.com/p/DWY2s1wjOo6/"
+ 
 ];
 
 export default function InstagramSection() {

@@ -111,16 +111,28 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-sans pt-32 pb-12 overflow-hidden">
-      {/* 🌪️ Optimized CSS Noise Texture (No Network Request) */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-        style={{ 
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` 
-        }} 
-      />
-      
-      {/* 🌸 Floating Botanical Detail (GPU Accelerated) */}
+    <>
+      <div className="w-full bg-[#fffaf4] text-[#6c3518] leading-[0] overflow-hidden -mb-[1px]">
+        <svg className="relative block w-full h-[50px] md:h-[50px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
+          <defs>
+            <path id="wave-3" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path>
+          </defs>
+          <g className="wave1" opacity="0.2">
+            <use href="#wave-3" x="50" y="3" fill="currentColor"></use>
+          </g>
+          <g className="wave2" opacity="0.4">
+            <use href="#wave-3" x="50" y="0" fill="currentColor"></use>
+          </g>
+          <g className="wave3" opacity="0.6">
+            <use href="#wave-3" x="50" y="9" fill="currentColor"></use>
+          </g>
+          <g className="wave4" opacity="1">
+            <use href="#wave-3" x="50" y="6" fill="currentColor"></use>
+          </g>
+        </svg>
+      </div>
+      <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-poppins pt-20 pb-12 overflow-hidden">
+      {/*  Floating Botanical Detail (GPU Accelerated) */}
       <motion.div 
         animate={{ 
           y: [0, -40, 0],
@@ -330,6 +342,7 @@ const Footer = () => {
          </h2>
       </motion.div>
     </footer>
+    </>
   );
 };
 

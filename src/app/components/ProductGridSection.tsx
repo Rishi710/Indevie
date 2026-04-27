@@ -14,15 +14,16 @@ export default async function ProductGridSection() {
   }
 
   return (
-    <section className="py-8 md:py-10 lg:py-12 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
+    <section className="py-8 md:py-4 lg:py-4 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col items-center text-center mb-16 gap-5">
-           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
-            Channel you Inner
-           </span>
-           <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
-          <span className="font-semibold italic"> &quot;Devi with Indevie&quot;</span>
+           <h2 className="text-4xl md:text-5xl text-red-800 ">
+          <span className="font-semibold italic">
+            Channel your Inner Devi 
+           </span> 
         </h2>
+           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#6c3518]">
+            with Indevie</span> 
         </div>
         {/* <h2 className="text-4xl text-[#2a2a2a] mb-8 lg:mb-10 font-poppins text-center italic px-4">Channel you Inner <span className="text-[#7a4d34] font-semibold"><br/>Devi with Indevie </span></h2> */}
         

@@ -22,7 +22,7 @@ export default function Home() {
       <InfiniteTicker />
       <BrandMantra />
       <ProductGridSection />
-      <ShopBanner />
+      {/* <ShopBanner /> */}
       <IntroductionSection />
       <UgcSection />
       <HomeTestimonials />
