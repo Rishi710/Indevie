@@ -100,7 +100,7 @@ export default function FounderSection() {
               className="space-y-8"
             >
               <div className="space-y-4">
-                <span className="text-[11px] font-poppins font-bold tracking-[0.5em] uppercase text-[#ffffff]/40 block italic">
+                <span className="text-[11px] font-poppins font-bold tracking-[0.5em] uppercase text-[#ffffff] block italic">
                   From Our Founder
                 </span>
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-seasons leading-[1.1] text-[#ffffff] tracking-tight">

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const announcementItems = [
   "Fall in Love with your glow",
-  "Flat 20% OFF Sitwide",
+  "Flat 20% OFF Sitewide",
   "Enjoy Free Shipping Across India",
 ];
 
@@ -43,28 +43,6 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
           ))}
         </motion.div>
       </div>
-
-      {/* Close Button - positioned absolute but within the bar's height */}
-      {/* <button
-        onClick={onClose}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#EFE8D9]/80 hover:text-white transition-colors z-10 bg-[#B40417] pl-1 h-full hidden md:flex items-center"
-        aria-label="Close announcement"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button> */}
     </div>
   );
 }

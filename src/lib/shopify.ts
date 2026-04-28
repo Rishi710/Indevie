@@ -202,6 +202,79 @@ export async function fetchProducts(limit = 10): Promise<ShopifyProduct[]> {
   }
 }
 
+export const GET_COLLECTIONS_QUERY = `
+  query getCollections {
+    collections(first: 20) {
+      nodes {
+        id
+        title
+        handle
+      }
+    }
+  }
+`;
+
+export async function fetchCollections(): Promise<{ id: string; title: string; handle: string }[]> {
+  try {
+    const data: any = await storefrontClient.request(GET_COLLECTIONS_QUERY);
+    return data.collections?.nodes || [];
+  } catch (error) {
+    console.error("Error fetching collections:", error);
+    return [];
+  }
+}
+
+export const GET_COLLECTION_PRODUCTS_QUERY = `
+  query getCollectionProducts($handle: String!, $first: Int!) {
+    collection(handle: $handle) {
+      id
+      title
+      products(first: $first) {
+        nodes {
+          id
+          title
+          handle
+          variants(first: 1) {
+            nodes {
+              id
+              price {
+                amount
+                currencyCode
+              }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
+            }
+          }
+          images(first: 5) {
+            nodes {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function fetchCollectionProducts(handle: string, limit = 20): Promise<{ collectionTitle: string, products: ShopifyProduct[] } | null> {
+  try {
+    const data: any = await storefrontClient.request(GET_COLLECTION_PRODUCTS_QUERY, { handle, first: limit });
+    if (!data.collection) return null;
+    return {
+      collectionTitle: data.collection.title,
+      products: data.collection.products?.nodes || []
+    };
+  } catch (error) {
+    console.error(`Error fetching collection ${handle}:`, error);
+    return null;
+  }
+}
+
 export const GET_PRODUCT_BY_HANDLE_QUERY = `
   query getProductByHandle($handle: String!) {
     product(handle: $handle) {

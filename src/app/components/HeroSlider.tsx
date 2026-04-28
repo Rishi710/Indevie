@@ -18,7 +18,7 @@ const slides = [
     title: "Rub Away The Stress",
     subtitle: "Heavy Head? Find instant relief",
     cta: "SHOP CALM BALM",
-    link: "/shop/products/calm-balm",
+    link: "products/indevie-calm-balm",
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const slides = [
     title: "Feed Your Skin",
     subtitle: "Glow Maalish Oil is skin food",
     cta: "SHOP GLOW OIL",
-    link: "/shop/products/oils",
+    link: "products/indevie-glow-maalish-oil",
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const slides = [
     title: "Indulgence in Every Drop",
     subtitle: "A body lotion inspired by Kalakand",
     cta: "SHOP LOTION",
-    link: "/shop/products/kalakand-lotion",
+    link: "products/indevie-kalakand-body-lotion",
   },
 ];
 
