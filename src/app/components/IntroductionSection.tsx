@@ -42,7 +42,7 @@ export default function IntroductionSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative h-auto min-h-[400px] rounded-[10px] md:rounded-[40px] overflow-hidden"
+            className="relative h-auto min-h-[480px] rounded-[10px] md:rounded-[40px] overflow-hidden"
           >
             <Image
               src="/images/intro.PNG"
@@ -66,16 +66,21 @@ export default function IntroductionSection() {
                 Introducing Genurveda™
               </p>
               
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-poppins font-semibold leading-[1.1] text-[#6c3518]">
-                Where Ancient Rituals Meet Modern Calm
+              <h2 className="text-3xl md:text-4xl lg:text-4xl font-poppins font-semibold leading-[1.1] text-[#6c3518]">
+                Ancient Rituals. Updated Expectations.
               </h2>
               
               <div className="space-y-4 text-sm md:text-base text-[#6c3518]/80 leading-relaxed font-poppins">
                 <p>
-                    Genurveda™ is our new-age interpretation of Ayurveda, designed thoughtfully for this generation.  
+                    <strong>Genurveda™</strong> is our take on modern Ayurveda, because somewhere between tradition and today, things got… a little complicated.
+                </p> 
+                <p>
+                  We bring <strong>together traditional Ayurvedic herbs, modern skincare
+                  science</strong>, and <strong>simple self-care rituals</strong>  that fit into your life (not
+                  the other way around).
                 </p>
                 <p>
-                  It bridges <strong>traditional herbs</strong>, <strong>modern skin science</strong>, and <strong>simple everyday rituals</strong> to create selfcare that feels grounding, effective, and emotionally comforting.</p><p>It’s Ayurveda made easier, gentler, and more intuitive. A philosophy that truly honors our roots while evolving with the needs of the next generation
+                   <strong>No 10-step routines.</strong> No vague “apply regularly” instructions. No waking up at sunrise unless you really want to. Just thoughtful, effective skincare that does its job quietly, consistently, and without the drama.
                 </p>
               </div>
 

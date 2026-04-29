@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const announcementItems = [
-  "Fall in Love with your glow",
+  "Fully Fed Skin is Healthy Skin",
   "Flat 20% OFF Sitewide",
   "Enjoy Free Shipping Across India",
 ];

@@ -22,10 +22,10 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 gap-3">
            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
-             Resources and Insights
+             Indevie Journals
            </span>
            <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#6c3518]">
-             <span className="font-poppins font-semibold italic">Recent Blogs</span>
+             <span className="font-poppins font-semibold italic">Selfcare to Soulcare</span>
         </h2>
         </div>
 

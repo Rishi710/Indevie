@@ -74,7 +74,7 @@ export default function FaqPage() {
       {/* --- HERO SECTION FOR HEADER VISIBILITY --- */}
       <section className="relative h-[100vh] w-full overflow-hidden bg-[#6c3518] flex items-center justify-center pt-20">
         <div className="absolute inset-0 z-0 opacity-30">
-           <Image src="/images/ig-6.jpg" alt="FAQ Background" fill className="object-cover" priority />
+           <Image src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2821_2_1.webp?v=1777466276" alt="FAQ Background" fill className="object-cover object-top" priority />
         </div>
         <div className="relative z-10 text-center px-6 max-w-4xl">
           <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight drop-shadow-lg">
@@ -83,7 +83,7 @@ export default function FaqPage() {
           </h1>
           <p className="text-white/80 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Everything you need to know about our Genurvedic rituals, 
-            formulations, and bringing Indévie into your home.
+            formulations, and bringing Indevie into your home.
           </p>
         </div>
       </section>

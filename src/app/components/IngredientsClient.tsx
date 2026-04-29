@@ -82,7 +82,7 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <h1 className="text-4xl md:text-7xl font-Poppins italic text-white mb-4 drop-shadow-xl00">
-              Meet the ingredients <br className="hidden md:block" /> behind the science
+              Meet the ingredients <br className="hidden md:block" /> behind the Devi Energy
             </h1>
           </motion.div>
         </div>

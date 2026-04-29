@@ -104,9 +104,9 @@ export default function FounderSection() {
                   From Our Founder
                 </span>
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-seasons leading-[1.1] text-[#ffffff] tracking-tight">
-                  Built with <span className="italic">intention</span>. <br />
-                  Backed by <span className="relative">
-                    conviction
+                  We're Indevie <br />
+                  -Your Inner Devi <span className="relative">
+                    
                     <svg className="absolute -bottom-2 left-0 w-full h-2 text-[#6c3518]/10" viewBox="0 0 100 10" preserveAspectRatio="none">
                       <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
                     </svg>
@@ -122,7 +122,7 @@ export default function FounderSection() {
                   What started as a personal quest for pure, effective rituals is now a collective mission: to raise the bar for modern botanical beauty, rooted in ancient <strong className="text-[#ffffff]/90 font-medium">Genurveda™</strong> wisdom.
                 </p>
                 <p className="italic font-serif text-[#ffffff]/50 text-xl md:text-3xl pt-2">
-                  &quot;Self-care is the ultimate act of grounding.&quot;
+                  &quot;selfcare starts the moment you borrow that first comb from your parents to comb your own hair.&quot;
                 </p>
               </div>
 

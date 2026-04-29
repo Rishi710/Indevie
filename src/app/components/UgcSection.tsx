@@ -20,47 +20,21 @@ type UgcItem = {
 
 // ================= DATA =================
 const ugcData: UgcItem[] = [
-  {
+    {
+  id: 4,
+  name: "Tanu chokarika",
+  age: "25",
+  concern: "Dullness",
+  quote:
+    "The serum gives me a glass-skin glow without being sticky.",
+  location: "Bangalore",
+  rating: 5,
+  productLink: "/products/indevie-glow-maalish-oil",
+  videoSrc:
+    "https://cdn.shopify.com/videos/c/o/v/1d6d51a5e4cc4269985f15acdead6fa5.mov",
+},
+    {
     id: 1,
-    name: "Anjali",
-    age: "22",
-    concern: "Frizz",
-    quote:
-      "The wavy routine is a literal game changer I never even knew my hair had the potential for such defined waves!",
-    location: "Delhi",
-    rating: 5,
-    productLink: "/products/indevie-glow-maalish-oil",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/fe4d81691d7a4c0bb66513005edb3f7d.mp4",
-  },
-  {
-    id: 2,
-    name: "Cheshta Singh",
-    age: "28",
-    concern: "Dryness",
-    quote:
-      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
-    location: "Mumbai",
-    rating: 5,
-    productLink: "/products/indevie-kalakand-body-lotion",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/a9afc75e73c74c4aa2b29e1ae50f63dd.mov",
-  },
-  {
-    id: 3,
-    name: "Heena",
-    age: "25",
-    concern: "Dullness",
-    quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
-    rating: 5,
-    productLink: "/products/indevie-calm-balm",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/dd98820824e6461198a2fa0fb4630ea8.mp4",
-  },
-  {
-    id: 4,
     name: "Kanika Maghav",
     age: "25",
     concern: "Dullness",
@@ -72,34 +46,8 @@ const ugcData: UgcItem[] = [
     videoSrc:
       "https://cdn.shopify.com/videos/c/o/v/7af71e928eb54393af8ea1f3e5ff7bab.mov",
   },
-  {
-    id: 5,
-    name: "Keerthi",
-    age: "25",
-    concern: "Dullness",
-    quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
-    rating: 5,
-    productLink: "/products/indevie-kalakand-body-lotion",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/f558aee5524e4724aa61e7a7dee217b7.mp4",
-  }, 
-  {
-    id: 6,
-    name: "Palavi Sudan ",
-    age: "25",
-    concern: "Dullness",
-    quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
-    rating: 5,
-    productLink: "/products/indevie-calm-balm",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/54498fb45f3647a3a22984bbc9997327.mp4",
-  },
-  {
-    id: 7,
+   {
+    id: 2,
     name: "Sata Deekshitha",
     age: "25",
     concern: "Dullness",
@@ -111,58 +59,21 @@ const ugcData: UgcItem[] = [
     videoSrc:
       "https://cdn.shopify.com/videos/c/o/v/5a7c05b4b25c488097a4e26d63e9fbb6.mp4",
   },
+ 
   {
-    id: 8,
-    name: "Sonia",
-    age: "25",
-    concern: "Dullness",
+    id: 3,
+    name: "Ishita phatak",
+    age: "28",
+    concern: "Dryness",
     quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
+      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
+    location: "Mumbai",
     rating: 5,
     productLink: "/products/indevie-kalakand-body-lotion",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/5ec492656c984fd7a9e84a264d9768f6.mov",
+      "https://cdn.shopify.com/videos/c/o/v/a9afc75e73c74c4aa2b29e1ae50f63dd.mov",
   },
-  {
-    id: 9,
-    name: "Srivalli",
-    age: "25",
-    concern: "Dullness",
-    quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
-    rating: 5,
-    productLink: "/products/indevie-glow-maalish-oil",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/80e4c2a4a5064de5a14c8d30da8d29ba.mp4",
-  },
-  {
-    id: 10,
-    name: "Surbhi Sharma",
-    age: "25",
-    concern: "Dullness",
-    quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
-    rating: 5,
-    productLink: "/products/indevie-calm-balm",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/bd7cd51c2c084e50a1ad51657455acef.mp4",
-  },
-  {
-    id: 11,
-    name: "Tanu chokarika",
-    age: "25",
-    concern: "Dullness",
-    quote:
-      "The serum gives me a glass-skin glow without being sticky.",
-    location: "Bangalore",
-    rating: 5,
-    productLink: "/products/indevie-glow-maalish-oil",
-    videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/1d6d51a5e4cc4269985f15acdead6fa5.mov",
-  },
+
 ];
 
 // ================= CARD =================
@@ -304,7 +215,7 @@ export default function UgcSection() {
   // ================= MOBILE VIEW =================
   if (isMobile) {
     return (
-      <section className="py-12 bg-[#f5f1e6] overflow-hidden flex flex-col">
+      <section className="py-12  bg-[#f5f1e6] overflow-hidden flex flex-col">
 
         <div className="flex flex-col items-center text-center mb-16 gap-5">
            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
@@ -394,7 +305,7 @@ export default function UgcSection() {
 
   // ================= DESKTOP VIEW =================
   return (
-    <section className="py-24 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
+    <section className="py-10 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
       {/* <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl text-[#6c3518] ">

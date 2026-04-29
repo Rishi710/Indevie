@@ -81,7 +81,7 @@ export default function InstagramSection() {
           >
              <div className="flex flex-col items-center text-center gap-5">
            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
-             Our Instagram Feed
+             See Our Crazy Side On
            </span>
              <h2 className="text-2xl md:text-3xl font-medium italic">
               @indeviebeauty

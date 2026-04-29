@@ -77,6 +77,9 @@ export default function HomeTestimonials() {
 
   return (
     <section className="w-full bg-[#ffffff] py-5 lg:py-15 overflow-hidden flex flex-col items-center">
+        <h2 className="text-lg md:text-xl lg:text-3xl mb-5 font-poppins text-[#6c3518]">
+                Hear it from the Enthusiasts
+              </h2>
       <div className="max-w-5xl w-full px-5 relative h-[450px] md:h-[250px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div

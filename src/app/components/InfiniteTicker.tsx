@@ -4,9 +4,9 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const tickerItems = [
-  "Healing Powered by Genurveda™",
-  "Ancient Ritual, Reimagined",
-  "Healthy Skin, Effortless Glow",
+  "Not just Ayurveda, its Genurveda",
+  " Ancient Ritual, Reimagined",
+  "Ayurvedic Quick-Fix for the 'busiest'",
 ];
 
 export default function InfiniteTicker() {

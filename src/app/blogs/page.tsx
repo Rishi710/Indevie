@@ -27,17 +27,17 @@ export default async function BlogsPage() {
   return (
     <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
       {/* Hero Section for Blogs */}
-      <section className="relative h-[95vh] md:h-[95vh] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
+      <section className="relative h-[75vh] md:h-[95vh] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
         <div className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0">
           <ShaderBackground />
         </div>
         
         <div className="relative z-10 animate-fade-in-up">
-          <h1 className="text-4xl md:text-7xl font-poppins text-white mb-4 drop-shadow-md">
-            Our Blogs
+          <h1 className="text-3xl md:text-7xl font-poppins text-white mb-4 drop-shadow-md">
+            Indevie Journals 
           </h1>
-          <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
-            Discover our latest rituals and stories.
+          <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-snug">
+            Because your skin has questions and internet has terrible answers
           </p>
         </div>
       </section>
@@ -70,9 +70,9 @@ export default async function BlogsPage() {
       {/* Newsletter / CTA Section */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-24 text-center">
         <div className="bg-red-50 py-20 px-8 space-y-8 rounded-sm">
-           <span className="text-xs uppercase tracking-[0.4em] font-bold text-red-800">The Ritual</span>
-           <h3 className="text-3xl md:text-4xl font-serif text-gray-900 italic">Join our journal list</h3>
-           <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
+           <span className="text-xs uppercase tracking-[0.4em] font-bold text-red-800">No spam, just good skin advice.</span>
+           <h3 className="text-3xl md:text-4xl font-poppin text-gray-900 italic">Straight to your inbox</h3>
+           <p className="text-gray-600 max-w-md mx-auto leading-relaxed"> 
              Get the latest skincare rituals and sustainable insights delivered straight to your inbox.
            </p>
            <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4 pt-4">

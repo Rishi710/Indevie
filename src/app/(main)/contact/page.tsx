@@ -68,7 +68,7 @@ export default function ContactPage() {
             className="space-y-16"
           >
             <div className="space-y-4">
-              <h3 className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#6c3518]/40 italic">Inquiries</h3>
+              <h3 className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#6c3518]/40 italic">Enquiries</h3>
               <h2 className="text-4xl font-popins text-[#6c3518] leading-tight">
                 Get in touch with <br/> Indevie beauty experts.
               </h2>

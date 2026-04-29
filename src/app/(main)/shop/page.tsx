@@ -95,7 +95,7 @@ export default function ShopPage() {
       {/* 🌿 PARALLAX HERO SECTION (Modeled after Contact Page) */}
       <section className="relative h-[80vh] md:h-[100vh] w-full overflow-hidden">
         <div 
-          className=" inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-100"
+          className="absolute inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-100"
           style={{
             backgroundImage: "url('/images/DSC_6451.jpg')",
             backgroundSize: "cover",
@@ -125,7 +125,7 @@ export default function ShopPage() {
       </section>
 
       {/* 🍶 CONTENT SECTION */}
-      <section className="relative z-20 bg-[#f5f1e6] pt-24 pb-40">
+      <section className="relative z-20 bg-[#f5f1e6] pt-10 ">
         <div className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16">
           
           {loading ? (
@@ -148,10 +148,10 @@ export default function ShopPage() {
             <div className="space-y-32">
               {collections.map((collection, colIndex) => (
                 <div key={colIndex}>
-                  <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 pb-6 border-b border-[#6c3518]/10">
+                  <div className="flex flex-col md:flex-row justify-between items-center gap-2 mb-2 pb-6 border-b border-[#6c3518]/10">
                     <div className="flex flex-wrap items-center gap-4">
                       {/* <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#6c3518]/40 italic">Collection</span> */}
-                      <h2 className="text-3xl md:text-6xl font-poppins font-bold text-center text-[#6c3518]">{collection.heading}</h2>
+                      <h2 className="text-3xl md:text-4xl font-poppins font-bold text-center text-[#6c3518]">{collection.heading}</h2>
                       {/* <span className="px-3 py-1 bg-[#6c3518]/5 rounded-full text-[10px] font-bold text-[#6c3518]/60 uppercase tracking-widest">
                         {collection.products.length} Items
                       </span> */} 
@@ -159,7 +159,7 @@ export default function ShopPage() {
                   </div>
                   
                   <div 
-                    className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-y-20 gap-x-4 md:gap-x-12 px-4 md:px-0 -mx-4 md:mx-0 pb-8 [&::-webkit-scrollbar]:hidden" 
+                    className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-y-10 gap-x-4 md:gap-x-5 px-4 md:px-10 -mx-4 md:mx-0 pb-2 [&::-webkit-scrollbar]:hidden" 
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                   >
                     {collection.products.map((product, index) => (
@@ -179,7 +179,7 @@ export default function ShopPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-40">
+            <div className="text-center py-20">
               <h2 className="text-2xl font-serif italic text-[#6c3518] mb-4">Our rituals are currently being prepared.</h2>
               <Link href="/" className="text-[11px] font-bold tracking-[0.3em] uppercase text-[#6c3518]/60 hover:text-[#6c3518] border-b border-transparent hover:border-[#6c3518] transition-all pb-1">
                 Explore our Story
