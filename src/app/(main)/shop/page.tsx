@@ -125,7 +125,7 @@ export default function ShopPage() {
       </section>
 
       {/* 🍶 CONTENT SECTION */}
-      <section className="relative z-20 bg-[#f5f1e6] pt-10 ">
+      <section className="relative z-20 bg-[#f5f1e6] pt-20 ">
         <div className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16">
           
           {loading ? (
@@ -145,10 +145,10 @@ export default function ShopPage() {
               ))}
             </div>
           ) : collections && collections.length > 0 ? (
-            <div className="space-y-32">
+            <div className="space-y-12">
               {collections.map((collection, colIndex) => (
                 <div key={colIndex}>
-                  <div className="flex flex-col md:flex-row justify-between items-center gap-2 mb-2 pb-6 border-b border-[#6c3518]/10">
+                  <div className="flex flex-col md:flex-row justify-between items-center gap-2 mb-8 pb-6 border-b border-[#6c3518]/10">
                     <div className="flex flex-wrap items-center gap-4">
                       {/* <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#6c3518]/40 italic">Collection</span> */}
                       <h2 className="text-3xl md:text-4xl font-poppins font-bold text-center text-[#6c3518]">{collection.heading}</h2>

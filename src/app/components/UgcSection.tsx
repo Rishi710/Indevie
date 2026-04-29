@@ -21,7 +21,7 @@ type UgcItem = {
 // ================= DATA =================
 const ugcData: UgcItem[] = [
     {
-  id: 4,
+  id: 1,
   name: "Tanu chokarika",
   age: "25",
   concern: "Dullness",
@@ -31,10 +31,10 @@ const ugcData: UgcItem[] = [
   rating: 5,
   productLink: "/products/indevie-glow-maalish-oil",
   videoSrc:
-    "https://cdn.shopify.com/videos/c/o/v/1d6d51a5e4cc4269985f15acdead6fa5.mov",
+    "https://cdn.shopify.com/videos/c/o/v/8d0383e1b28946ee85ef87915691b5aa.mp4",
 },
     {
-    id: 1,
+    id: 2,
     name: "Kanika Maghav",
     age: "25",
     concern: "Dullness",
@@ -44,10 +44,10 @@ const ugcData: UgcItem[] = [
     rating: 5,
     productLink: "/products/indevie-calm-balm",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/7af71e928eb54393af8ea1f3e5ff7bab.mov",
+      "https://cdn.shopify.com/videos/c/o/v/623d09ce1d884c168fc086f4c203a4cc.mp4",
   },
    {
-    id: 2,
+    id: 3,
     name: "Sata Deekshitha",
     age: "25",
     concern: "Dullness",
@@ -57,11 +57,11 @@ const ugcData: UgcItem[] = [
     rating: 5,
     productLink: "/products/indevie-glow-maalish-oil",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/5a7c05b4b25c488097a4e26d63e9fbb6.mp4",
+      "https://cdn.shopify.com/videos/c/o/v/a8f1a2e826d44fcd8f6f487e9d84e733.mp4",
   },
  
   {
-    id: 3,
+    id: 4,
     name: "Ishita phatak",
     age: "28",
     concern: "Dryness",
@@ -71,7 +71,33 @@ const ugcData: UgcItem[] = [
     rating: 5,
     productLink: "/products/indevie-kalakand-body-lotion",
     videoSrc:
-      "https://cdn.shopify.com/videos/c/o/v/a9afc75e73c74c4aa2b29e1ae50f63dd.mov",
+      "https://cdn.shopify.com/videos/c/o/v/f877e19335cd40bb96cbb8a860f17d07.mp4",
+  },
+  {
+    id: 5,
+    name: "Mitali jaiswal",
+    age: "28",
+    concern: "Dryness",
+    quote:
+      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
+    location: "Mumbai",
+    rating: 5,
+    productLink: "/products/indevie-kalakand-body-lotion",
+    videoSrc:
+      "https://cdn.shopify.com/videos/c/o/v/2325f46207224f8a92d0010acbe46afd.mp4",
+  },
+  {
+    id: 6,
+    name: "Riya Sharma",
+    age: "28",
+    concern: "Dryness",
+    quote:
+      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
+    location: "Mumbai",
+    rating: 5,
+    productLink: "/products/indevie-kalakand-body-lotion",
+    videoSrc:
+      "https://cdn.shopify.com/videos/c/o/v/ea819fb229354eb19ee28cb6c9d732dc.mp4",
   },
 
 ];

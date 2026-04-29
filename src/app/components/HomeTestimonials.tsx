@@ -77,10 +77,15 @@ export default function HomeTestimonials() {
 
   return (
     <section className="w-full bg-[#ffffff] py-5 lg:py-15 overflow-hidden flex flex-col items-center">
-        <h2 className="text-lg md:text-xl lg:text-3xl mb-5 font-poppins text-[#6c3518]">
-                Hear it from the Enthusiasts
-              </h2>
-      <div className="max-w-5xl w-full px-5 relative h-[450px] md:h-[250px] flex items-center justify-center">
+        <div className="flex flex-col items-center text-center mb-6 md:mb-10 gap-3 px-4">
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold mt-10 md:mt-16 text-[#6c3518]/60">
+            Real Experiences
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#6c3518]">
+            <span className="font-poppins font-semibold italic">Hear it from the Enthusiasts</span>
+          </h2>
+        </div>
+      <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[280px] md:h-[250px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -93,10 +98,10 @@ export default function HomeTestimonials() {
               x: { type: "spring", stiffness: 300, damping: 30 },
               opacity: { duration: 0.4 },
             }}
-            className="absolute inset-0 flex flex-col items-center text-center justify-center pointer-events-none"
+            className="absolute inset-0 flex flex-col items-center text-center justify-start pointer-events-none w-full"
           >
             {/* Stars */}
-            <div className="flex gap-1 mb-8">
+            <div className="flex gap-1 mb-5 md:mb-8">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
@@ -109,12 +114,12 @@ export default function HomeTestimonials() {
             </div>
 
             {/* Quote */}
-            <h2 className="text-xl md:text-2xl lg:text-[24px] font-poppins leading-[1.3] text-[#6c3518] italic max-w-3xl mb-10 px-4 md:px-0 select-none">
+            <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-poppins leading-[1.7] md:leading-[1.4] text-[#6c3518] italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
                 &quot; {testimonials[currentIndex].quote} &quot;
             </h2>
 
             {/* Profile */}
-            <div className="flex items-center gap-4 mt-4 select-none">
+            <div className="flex items-center gap-3 md:gap-4 mt-2 md:mt-4 select-none">
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#6c3518]/10">
                 <Image
                   src={testimonials[currentIndex].image}
@@ -138,7 +143,7 @@ export default function HomeTestimonials() {
       </div>
 
       {/* Pagination Dots */}
-      <div className="flex items-center gap-2.5 mt-10 md:mt-16 z-20">
+      <div className="flex items-center gap-3.5 mb-10 z-20">
         {testimonials.map((_, idx) => (
           <button
             key={idx}

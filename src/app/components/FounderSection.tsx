@@ -51,7 +51,7 @@ export default function FounderSection() {
             >
               <video
                 ref={videoRef}
-                src="https://cdn.shopify.com/videos/c/o/v/79264dd60dbb47f9abae2dd97c3e6924.mp4"
+                src="https://cdn.shopify.com/videos/c/o/v/0fe7ba1076a84362a4ed289878b3c32d.mp4"
                 loop
                 muted={isMuted}
                 playsInline
@@ -80,9 +80,9 @@ export default function FounderSection() {
               </button>
 
               {/* Glass Card Annotation (Creative Touch) */}
-              <div className="absolute bottom-6 left-6 right-6 p-4 backdrop-blur-md bg-white/20 rounded-2xl border border-white/30 hidden md:block opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
+              {/* <div className="absolute bottom-6 left-6 right-6 p-4 backdrop-blur-md bg-white/20 rounded-2xl border border-white/30 hidden md:block opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
                 <p className="text-white text-[10px] uppercase tracking-[0.3em] font-medium font-poppins">A Journey of Intention — Ar. Ishita Pathak</p>
-              </div>
+              </div>  */}
             </motion.div>
             
             {/* Border Accents */}
@@ -122,7 +122,7 @@ export default function FounderSection() {
                   What started as a personal quest for pure, effective rituals is now a collective mission: to raise the bar for modern botanical beauty, rooted in ancient <strong className="text-[#ffffff]/90 font-medium">Genurveda™</strong> wisdom.
                 </p>
                 <p className="italic font-serif text-[#ffffff]/50 text-xl md:text-3xl pt-2">
-                  &quot;selfcare starts the moment you borrow that first comb from your parents to comb your own hair.&quot;
+                  &quot;Selfcare starts the moment you borrow that first comb from your parents to comb your own hair.&quot;
                 </p>
               </div>
 
@@ -151,7 +151,7 @@ export default function FounderSection() {
                   </div>
                 </div>
                 {/* Visual signature separator */}
-                <div className="w-12 h-[1px] bg-[#ffffff]/20" />
+                {/* <div className="w-12 h-[1px] bg-[#ffffff]/20" /> */}
               </div>
 
               <div className="pt-4">
