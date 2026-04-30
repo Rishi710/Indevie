@@ -27,7 +27,7 @@ export default function ShopPage() {
           if (data && data.products.length > 0) {
             collectionsToRender.push({
               title: singleCol.title,
-              heading: "Full Body’ Power Devi Range",
+              heading: "Full Body Power Devi Range",  
               products: data.products
             });
           }

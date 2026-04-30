@@ -110,7 +110,7 @@ export default function FounderSection() {
                     <svg className="absolute -bottom-2 left-0 w-full h-2 text-[#6c3518]/10" viewBox="0 0 100 10" preserveAspectRatio="none">
                       <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
                     </svg>
-                  </span>.
+                  </span>
                 </h2>
               </div>
 

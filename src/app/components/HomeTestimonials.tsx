@@ -76,16 +76,16 @@ export default function HomeTestimonials() {
   };
 
   return (
-    <section className="w-full bg-[#ffffff] py-5 lg:py-15 overflow-hidden flex flex-col items-center">
+    <section className="w-full bg-[#ffffff] py-5 lg:py-10 overflow-hidden flex flex-col items-center">
         <div className="flex flex-col items-center text-center mb-6 md:mb-10 gap-3 px-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold mt-10 md:mt-16 text-[#6c3518]/60">
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
             Real Experiences
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#6c3518]">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#6c3518]">
             <span className="font-poppins font-semibold italic">Hear it from the Enthusiasts</span>
           </h2>
         </div>
-      <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[280px] md:h-[250px] flex items-center justify-center">
+      <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[300px] md:h-[300px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -119,7 +119,7 @@ export default function HomeTestimonials() {
             </h2>
 
             {/* Profile */}
-            <div className="flex items-center gap-3 md:gap-4 mt-2 md:mt-4 select-none">
+            <div className="flex items-center gap-3 md:gap-4 mt-2 md:mt-2 select-none">
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#6c3518]/10">
                 <Image
                   src={testimonials[currentIndex].image}

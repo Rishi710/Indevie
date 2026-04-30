@@ -36,7 +36,7 @@ export default async function BlogsPage() {
           <h1 className="text-3xl md:text-7xl font-poppins text-white mb-4 drop-shadow-md">
             Indevie Journals 
           </h1>
-          <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-snug">
+          <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
             Because your skin has questions and internet has terrible answers
           </p>
         </div>

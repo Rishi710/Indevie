@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const announcementItems = [
@@ -14,22 +14,35 @@ interface AnnouncementBarProps {
 }
 
 export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
+  const [duration, setDuration] = useState(25);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setDuration(window.innerWidth < 500 ? 30 : 25);
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <div className="relative bg-[#B40417] text-[#EFE8D9] overflow-hidden py-2 border-b border-[#B40417]/10 flex items-center">
       <div className="flex-1 overflow-hidden">
         <motion.div
+          key={duration}
           animate={{
             x: ["0%", "-50%"],
           }}
           transition={{
-            duration: 25,
+            duration: duration,
             repeat: Infinity,
             ease: "linear",
           }}
-          className="flex whitespace-nowrap will-change-transform"
+          className="flex w-max whitespace-nowrap will-change-transform"
         >
           {/* Loop twice for seamless scrolling */}
-          {[...Array(4)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <div key={i} className="flex space-x-12 px-6 items-center">
               {announcementItems.map((item, index) => (
                 <span 

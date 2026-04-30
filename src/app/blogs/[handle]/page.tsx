@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import ShareArticleButton from "@/app/components/ShareArticleButton";
 
 interface PageProps {
   params: Promise<{ handle: string }>;
@@ -66,7 +67,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             <span className="text-xs uppercase tracking-[0.3em] font-medium text-gray-400">{formattedDate}</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-gray-900 leading-[1.1] italic">
+          <h1 className="text-4xl md:text-5xl lg:text-5xl font-poppins text-gray-900 leading-[1.1] italic">
             {post.title}
           </h1>
           
@@ -109,9 +110,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
         {/* Footer / Share Section */}
         <div className="mt-24 pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex gap-4">
-             <button className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-gray-200 hover:bg-gray-50 transition-colors">
-               Share Article
-             </button>
+             <ShareArticleButton title={post.title} url={`/blogs/${post.handle}`} />
           </div>
           <Link href="/blogs" className="text-sm font-serif italic text-gray-600 hover:text-red-900 transition-colors">
             Continue Reading →

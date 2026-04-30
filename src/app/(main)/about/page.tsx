@@ -317,7 +317,7 @@ export default function AboutPage() {
       </section>
 
       {/* 🌿 SECTION 3: MORE THAN A BRAND (Family) */}
-      <section className="relative z-20 bg-[#f5f1e6] py-32 px-6 lg:px-12 border-t border-[#6c3518]/10">
+      <section className="relative z-20 bg-[#f5f1e6] py-16 px-6 lg:px-12 border-t border-[#6c3518]/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
           
           <motion.div
@@ -401,7 +401,7 @@ export default function AboutPage() {
       </section>
 
       {/* 🌿 SECTION 4: FOUNDER'S NOTE (Creative Layout) */}
-      <section className="relative z-20 bg-[#f5f1e6] py-32 px-6 lg:px-12 overflow-hidden">
+      <section className="relative z-20 bg-[#f5f1e6] py-16 px-6 lg:px-12 overflow-hidden">
         {/* Abstract Background Elements for Creativity */}
         <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#d0ba96]/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
         <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-[#6c3518]/5 rounded-full blur-[80px] -translate-y-1/2 pointer-events-none" />

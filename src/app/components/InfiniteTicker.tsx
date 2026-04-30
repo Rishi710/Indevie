@@ -21,7 +21,7 @@ export default function InfiniteTicker() {
           repeat: Infinity,
           ease: "linear",
         }}
-        className="flex whitespace-nowrap will-change-transform"
+        className="flex w-max whitespace-nowrap will-change-transform"
       >
         {/* Loop to ensure seamless scroll */}
         {[...Array(4)].map((_, i) => (

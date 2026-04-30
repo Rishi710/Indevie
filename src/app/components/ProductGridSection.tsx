@@ -17,7 +17,7 @@ export default async function ProductGridSection() {
     <section className="py-8 md:py-4 lg:py-4 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col items-center text-center mb-16 gap-5">
-           <h2 className="text-2xl md:text-4xl text-red-800 ">
+           <h2 className="text-3xl md:text-4xl text-red-800 ">
           <span className="font-semibold italic">
             Channel your Inner Devi 
            </span> 
