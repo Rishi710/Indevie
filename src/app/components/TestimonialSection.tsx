@@ -7,39 +7,39 @@ export default function TestimonialSection() {
   const testimonials = [
     {
       id: 1,
-      name: "Soumya",
-      age: "22",
-      location: "Delhi",
+      name: "Aditi",
+      age: "30",
+      location: "Hyderabad",
       rating: 5,
-      text: "The wavy routine is a literal game changer - I never even knew my hair had the potential for such defined, frizz-free waves! OBSESSED.",
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1.jpg" // Placeholder
+      text: "I didn’t realise how much tension I carry in my body until I started using this. I apply Calm Balm on my neck and feet at night and within minutes, I feel calmer. It’s become my go-to wind-down ritual",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/111.webp?v=1778094296" // Placeholder
     },
     {
       id: 2,
-      name: "Aditi",
-      age: "26",
-      location: "Mumbai",
+      name: "Nikky",
+      age: "25",
+      location: "Ahmedabad",
       rating: 4.5, // Half star example
-      text: "I am absolutely in love with how my skin feels. This is exactly what I was looking for! Such a rich, hydrating finish.",
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_dd424b62-06f4-4679-9232-71d01a7b10f4.jpg"
+      text: "My skin feels softer instantly after applying Indevie Maalish oil, but the real difference is the glow. It doesn’t just sit on the skin, it actually absorbs and nourishes.",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/111_2.webp?v=1778094990"
     },
     {
       id: 3,
-      name: "Priya",
-      age: "24",
-      location: "Bangalore",
+      name: "Anushka",
+      age: "30",
+      location: "Indore",
       rating: 5,
-      text: "Such a beautiful texture and smells amazing. Can't wait to repurchase. The entire experience feels so premium from start to finish.",
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1.jpg"
+      text: "I have really dry skin and most lotions feel either sticky or not enough. Indevie Kalakand Body Lotion is different. It’s rich but absorbs well, and my skin feels comfortable all day. Oh, and it smells like my favourite dessert!",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/222.webp?v=1778094296"
     },
     {
       id: 4,
-      name: "Rhea",
-      age: "28",
+      name: "Nivedita",
+      age: "47",
       location: "Pune",
-      rating: 3.5, // Half star example
-      text: "My frizz is completely gone and my hair feels so bouncy and hydrated all day. Took away a star only because I wish the bottle was bigger!",
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_dd424b62-06f4-4679-9232-71d01a7b10f4.jpg"
+      rating: 5, // Half star example
+      text: "I am absolutely in love with how my skin feels after applying Kalakand Body Lotion. It has soothed the irritation and dryness in my skin, in just a few days.",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/444.webp?v=1778094297"
     }
   ];
 

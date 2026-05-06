@@ -42,10 +42,10 @@ export default function IntroductionSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative aspect-[4/4.5] rounded-[10px] md:rounded-[40px] overflow-hidden"
+            className="relative w-full aspect-[4/4.5] md:aspect-auto md:h-full min-h-[400px] md:min-h-[600px] rounded-[10px] md:rounded-[40px] overflow-hidden"
           >
             <Image
-              src="/images/intro.PNG"
+              src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/intro.webp?v=1778101634"
               alt="Indevie Product Introduction"
               fill
               className="object-cover"
@@ -59,7 +59,7 @@ export default function IntroductionSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="bg-white rounded-[10px] md:rounded-[40px] p-8 md:p-12 lg:p-16 flex flex-col justify-center shadow-sm border border-black/5"
+            className="bg-white rounded-[10px] md:rounded-[40px] p-8 md:p-12 lg:p-16 flex flex-col justify-center shadow-sm border border-black/5 h-full"
           >
             <div className="space-y-6 md:space-y-8">
               <p className="text-[10px] md:text-xs font-poppins font-bold tracking-[0.3em] uppercase text-red-800">
