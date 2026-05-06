@@ -67,7 +67,7 @@ export default function Header({
       </AnimatePresence>
       
       <header 
-        className={`w-full transition-all duration-300 ${
+        className={`w-full transition-all duration-300 relative z-50 ${
           shouldBeSolid
             ? "bg-white border-b border-gray-100 py-4 shadow-sm" 
             : "bg-transparent border-transparent py-6"
@@ -241,9 +241,9 @@ export default function Header({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 bg-white z-40 pt-24 pb-32 px-6 md:hidden will-change-transform overflow-y-auto"
+            className="fixed inset-0 bg-white z-40 pt-24 pb-8 px-6 md:hidden will-change-transform overflow-y-auto flex flex-col"
           >
-            <nav className="flex flex-col space-y-6">
+            <nav className="flex flex-col space-y-6 flex-grow">
               {/* Mobile Account Section */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -392,7 +392,7 @@ export default function Header({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="absolute bottom-12 left-6 right-6 border-t border-gray-100 pt-8"
+              className="mt-12 border-t border-gray-100 pt-8 pb-4"
             >
               <p className="text-xs uppercase tracking-widest text-gray-400 mb-4">Follow Us</p>
               <div className="flex space-x-6">
