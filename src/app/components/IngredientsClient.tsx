@@ -62,29 +62,26 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
     <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
       {/* 🌿 HERO SECTION (Parallax) */}
       <section className="relative h-[80vh] md:h-[80vh] w-full overflow-hidden">
-        <div 
-          className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-90"
-          style={{
-            backgroundImage: "url('/images/ig-6.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        <div className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-90">
+          <Image
+            src="/images/ig-6.jpg"
+            alt="Ingredients Background"
+            fill
+            priority
+            quality={85}
+            className="object-cover object-center"
+          />
           {/* Soft Overlay for depth */}
-          <div className="absolute inset-0 bg-[#6c3518]/30" />
+          <div className="absolute inset-0 bg-[#6c3518]/30 z-10" />
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          >
-            <h1 className="text-4xl md:text-7xl font-Poppins italic text-white mb-4 drop-shadow-xl00">
+          <div className="animate-fade-in-up">
+            <h1 className="text-4xl md:text-7xl font-Poppins italic text-white mb-4 drop-shadow-xl">
               Meet the ingredients <br className="hidden md:block" /> behind the Devi Energy
             </h1>
-          </motion.div>
+          </div>
         </div>
       </section>
 

@@ -457,7 +457,7 @@ export default function AboutPage() {
             <div className="relative w-full max-w-[460px] aspect-[4/5] rounded-[2.5rem] p-2 bg-white shadow-[0_30px_60px_rgba(108,53,24,0.06)] z-10 transition-transform duration-500 hover:-translate-y-2">
               <div className="relative w-full h-full rounded-[1.8rem] overflow-hidden bg-[#e8decb]">
                 <Image 
-                  src="/images/founder-indevie.png"
+                  src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/founder-indevie_1.webp?v=1777574919"
                   alt="Founder of Indévie"
                   fill
                   sizes="(max-width: 768px) 100vw, 500px"

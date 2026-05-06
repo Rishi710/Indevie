@@ -51,7 +51,8 @@ export default function FounderSection() {
             >
               <video
                 ref={videoRef}
-                src="https://cdn.shopify.com/videos/c/o/v/0fe7ba1076a84362a4ed289878b3c32d.mp4"
+                src="https://cdn.shopify.com/videos/c/o/v/0fe7ba1076a84362a4ed289878b3c32d.mp4#t=0.001"
+                preload="metadata"
                 loop
                 muted={isMuted}
                 playsInline

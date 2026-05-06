@@ -65,7 +65,7 @@ export default function ProductPageClient({
         
         {/* Column 1: Sticky First Image */}
         <div className="sticky top-32 p-1 pb-0 pl-10 lg:pl-5 self-start">
-          <div className="w-full h-[calc(100vh-160px)] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
+          <div className="w-full aspect-[4/4.5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
             {firstImage ? (
               <Image 
                 src={firstImage.url} 
@@ -82,7 +82,7 @@ export default function ProductPageClient({
         </div>
 
         {/* Column 2: Scrollable Content (Remaining Images) */}
-        <div className="relative p-1 pb-0 flex flex-col gap-1">
+        <div className="sticky  p-1 pb-0 flex flex-col gap-1">
           {restImages.length > 0 ? (
              restImages.map((img, idx) => (
                <div key={idx} className="w-full aspect-[4/4.5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
@@ -103,7 +103,7 @@ export default function ProductPageClient({
         </div>
 
         {/* Column 3: Sticky Product Info */}
-        <div className="sticky top-32 py-8 px-4 pr-10 lg:pr-5 flex flex-col self-start">
+        <div className="  sticky top-32 py-8 px-4 pr-10 lg:pr-5 flex flex-col self-start">
            <div className="flex justify-between items-start mb-2 mt-4">
              <h1 className="text-[20px] lg:text-[22px] leading-tight font-medium text-[#6c3518] max-w-[85%]">
                {product.title}

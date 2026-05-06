@@ -15,7 +15,17 @@ export default function ProductFaqSection({ productHandle }: { productHandle: st
     // ---- PRODUCT 1 ---- 
     // Replace 'your-product-handle-1' with your actual Shopify product handle (e.g. 'calm-balm')
     "indevie-calm-balm": {
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1_240x240.jpg?v=1771916802",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2822.webp?v=1777576830",
+      faqs: [
+        { question: "How do I use Calm Balm?", answer: "Apply a small amount of Calm Balm to the desired area and gently massage it in until fully absorbed. Use it as needed, typically once or twice a day, or as directed on the product packaging. For best results, apply after cleansing or before bedtime to enjoy its calming effects" },
+        { question: "Is Calm Balm suitable for sensitive skin?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals." },
+      ]
+    },
+    // ---- PRODUCT 1 Mini ---
+    "calm-balm-mini": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2822.webp?v=1777576830",
       faqs: [
         { question: "How do I use Calm Balm?", answer: "Apply a small amount of Calm Balm to the desired area and gently massage it in until fully absorbed. Use it as needed, typically once or twice a day, or as directed on the product packaging. For best results, apply after cleansing or before bedtime to enjoy its calming effects" },
         { question: "Is Calm Balm suitable for sensitive skin?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
@@ -26,7 +36,7 @@ export default function ProductFaqSection({ productHandle }: { productHandle: st
 
     // ---- PRODUCT 2 ---- 
     "indevie-kalakand-body-lotion": {
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/2_240x240.jpg?v=1771916802",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_896afc01-ff03-4bef-9609-bbaf23c7f7c5.webp?v=1777300186",
       faqs: [
         { question: "How do I use Kalakand Skin Barrier Milk?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
         { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
@@ -35,9 +45,20 @@ export default function ProductFaqSection({ productHandle }: { productHandle: st
         { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
       ]
     },
-    // ---- PRODUCT 2 ---- 
+    // ---- PRODUCT 2 MINI ---- 
+    "kalakand-body-lotion-mini": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_896afc01-ff03-4bef-9609-bbaf23c7f7c5.webp?v=1777300186",
+      faqs: [
+        { question: "How do I use Kalakand Skin Barrier Milk?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
+        { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Can we apply both kalakand Lotion and Glow Maalish Oil together?", answer: "Yes! You can use them together, and they actually complement each other beautifully. Apply Kalakand Skin Barrier Milk first to hydrate, soothe, and strengthen your skin barrier. Once it absorbs, follow with Glow Maalish Oil to lock in moisture, nourish the skin, and add a natural glow. This layering creates a richer, more luxurious ritual, especially at night or during dry weather." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
+      ]
+    },
+    // ---- PRODUCT 3 ---- 
     "indevie-glow-maalish-oil": {
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/3_240x240.jpg?v=1771916802",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/7_b58b71c6-ba43-4c1c-bb51-542073fd0928.webp?v=1777300271",
       faqs: [
         { question: "How do I use Glow Maalish Oil?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
         { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
@@ -46,9 +67,31 @@ export default function ProductFaqSection({ productHandle }: { productHandle: st
         { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
       ]
     },
-    // ---- PRODUCT 2 ---- 
+    // ---- PRODUCT 3 Mini ---- 
+    "maalish-oil-mini": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/10.webp?v=1777300271",
+      faqs: [
+        { question: "How do I use Glow Maalish Oil?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
+        { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Can we apply both Kalakand Skin Barrier Milk and Glow Maalish Oil together?", answer: "Yes! You can use them together, and they actually complement each other beautifully. Apply Kalakand Skin Barrier Milk first to hydrate, soothe, and strengthen your skin barrier. Once it absorbs, follow with Glow Maalish Oil to lock in moisture, nourish the skin, and add a natural glow. This layering creates a richer, more luxurious ritual, especially at night or during dry weather." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
+      ]
+    },
+    // ---- PRODUCT 4 Set ---- 
     "the-ultimate-care-ritual-set": {
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/4_240x240.jpg?v=1771916802",
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/hgh.webp?v=1777536779",
+      faqs: [
+        { question: "How do I use The Ultimate Care Ritual Set?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
+        { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },
+        { question: "Can we apply both Kalakand Skin Barrier Milk and Glow Maalish Oil together?", answer: "Yes! You can use them together, and they actually complement each other beautifully. Apply Kalakand Skin Barrier Milk first to hydrate, soothe, and strengthen your skin barrier. Once it absorbs, follow with Glow Maalish Oil to lock in moisture, nourish the skin, and add a natural glow. This layering creates a richer, more luxurious ritual, especially at night or during dry weather." },
+        { question: "Will it leave a greasy residue?", answer: "No, the lightweight formula absorbs quickly, leaving healthy and happy skin behind." },
+        { question: "Is it vegan and cruelty-free?", answer: "Absolutely, made with plant-based ingredients and never tested on animals" }
+      ]
+    },
+    // ---- PRODUCT 4 Set mini---- 
+    "bodycare-gift-set": {
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/hgh.webp?v=1777536779",
       faqs: [
         { question: "How do I use The Ultimate Care Ritual Set?", answer: "Apply 4-5 pumps per body part especially hands and legs for best results." },
         { question: "Is it suitable for all body types?", answer: "Yes, unless your doctor has advised otherwise. We still recommend doing a patch test before applying on the whole body." },

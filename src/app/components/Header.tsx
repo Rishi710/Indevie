@@ -18,6 +18,7 @@ export default function Header({
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
   const pathname = usePathname();
   const { setIsCartOpen, totalQuantity } = useCart();
@@ -240,7 +241,7 @@ export default function Header({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 bg-white z-40 pt-24 px-6 md:hidden will-change-transform"
+            className="fixed inset-0 bg-white z-40 pt-24 pb-32 px-6 md:hidden will-change-transform overflow-y-auto"
           >
             <nav className="flex flex-col space-y-6">
               {/* Mobile Account Section */}
@@ -307,22 +308,83 @@ export default function Header({
                 )}
               </motion.div>
 
-              {links.map((link, idx) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + idx * 0.05 }}
-                >
-                  <Link 
-                    href={link.href}
-                    className="text-3xl font-serif text-gray-900 hover:text-red-700 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
+              {links.map((link, idx) => {
+                if (link.name === "Shop") {
+                  return (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + idx * 0.05 }}
+                    >
+                      <div className="flex flex-col">
+                        <div className="flex items-center justify-between">
+                          <Link 
+                            href={link.href}
+                            className="text-3xl font-serif text-gray-900 hover:text-[#6c3518] transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {link.name}
+                          </Link>
+                          <button 
+                            onClick={(e) => {
+                               e.preventDefault();
+                               setIsShopDropdownOpen(!isShopDropdownOpen);
+                            }}
+                            className="p-2 text-gray-900 focus:outline-none"
+                            aria-label="Toggle shop dropdown"
+                          >
+                            <motion.svg 
+                              animate={{ rotate: isShopDropdownOpen ? 180 : 0 }}
+                              transition={{ duration: 0.3 }}
+                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </motion.svg>
+                          </button>
+                        </div>
+                        <AnimatePresence>
+                          {isShopDropdownOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="overflow-hidden pl-4 flex flex-col space-y-4 pt-4"
+                            >
+                              <Link href="/products/indevie-glow-maalish-oil" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil (Jasmine)</Link>
+                              <Link href="/products/indevie-kalakand-body-lotion" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion</Link>
+                              <Link href="/products/indevie-calm-balm" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm</Link>
+                              <Link href="/products/the-ultimate-care-ritual-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">The Ultimate Care Ritual Set</Link>
+                              <Link href="/products/calm-balm-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm Mini</Link>
+                              <Link href="/products/kalakand-body-lotion-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion Mini</Link>
+                              <Link href="/products/maalish-oil-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil Mini</Link>
+                              <Link href="/products/indevie-bodycare-gift-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Indevie Bodycare Gift Set</Link>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+                  );
+                }
+
+                return (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + idx * 0.05 }}
                   >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link 
+                      href={link.href}
+                      className="text-3xl font-serif text-gray-900 hover:text-[#6c3518] transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </nav>
             
             {/* Mobile Menu Bottom Info */}

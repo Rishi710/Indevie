@@ -74,9 +74,9 @@ export default async function BlogDetailPage({ params }: PageProps) {
           {post.authorV2 && (
             <div className="flex items-center justify-center gap-3 pt-4">
               <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-[10px] font-bold text-red-800 uppercase">
-                {post.authorV2.name.charAt(0)}
+                I
               </div>
-              <span className="text-xs font-medium text-gray-600">Written by {post.authorV2.name}</span>
+              <span className="text-xs font-medium text-gray-600">Indevie Editor Desk</span>
             </div>
           )}
         </div>

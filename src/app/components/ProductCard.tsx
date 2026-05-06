@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Bookmark, ShoppingBag, ArrowLeft, ArrowRight } from "lucide-react";
@@ -31,20 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const compareAtPrice = product?.variants?.nodes[0]?.compareAtPrice;
   const images = product?.images?.nodes || [];
 
-  const [maxSlides, setMaxSlides] = useState(5);
-
-  useEffect(() => {
-    const updateMaxSlides = () => {
-      const newMax = window.innerWidth < 768 ? 2 : 5;
-      setMaxSlides(newMax);
-      setCurrentImageIndex((prev) => (prev >= newMax ? 0 : prev));
-    };
-    updateMaxSlides();
-    window.addEventListener("resize", updateMaxSlides);
-    return () => window.removeEventListener("resize", updateMaxSlides);
-  }, []);
-
-  const displayedImages = images.slice(0, maxSlides);
+  const displayedImages = images;
 
   // Format to match screenshot: "Rs. 959.00"
   const formattedPrice = price 
@@ -63,7 +50,7 @@ export default function ProductCard({ product }: ProductCardProps) {
          {displayedImages.length > 0 ? (
            <div 
              ref={scrollRef}
-             className="flex w-full h-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
+             className="flex w-full h-full overflow-hidden [&::-webkit-scrollbar]:hidden"
              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
              onScroll={(e) => {
                 const target = e.currentTarget;
@@ -72,7 +59,7 @@ export default function ProductCard({ product }: ProductCardProps) {
              }}
            >
              {displayedImages.map((img, idx) => (
-               <div key={idx} className="relative min-w-full h-full snap-center shrink-0">
+               <div key={idx} className="relative min-w-full h-full shrink-0">
                  <Image
                    src={img?.url}
                    alt={img?.altText || product.title}
@@ -98,7 +85,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                  setCurrentImageIndex((prev) => (prev === 0 ? displayedImages.length - 1 : prev - 1));
                  scrollToImage(currentImageIndex === 0 ? (displayedImages.length - 1) : currentImageIndex - 1);
                }}
-               className="flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 md:bg-white/60 text-black md:opacity-0 md:group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
+               className="flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 text-black transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
                <ArrowLeft size={16} strokeWidth={1.5} />
              </button>
@@ -108,7 +95,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                  setCurrentImageIndex((prev) => (prev === displayedImages.length - 1 ? 0 : prev + 1));
                  scrollToImage(currentImageIndex === (displayedImages.length - 1) ? 0 : currentImageIndex + 1);
                }}
-               className="flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 md:bg-white/60 text-black md:opacity-0 md:group-hover/image:opacity-100 transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
+               className="flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 text-black transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
              >
                <ArrowRight size={16} strokeWidth={1.5} />
              </button>

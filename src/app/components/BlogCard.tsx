@@ -49,7 +49,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-gray-500">{formattedDate}</span>
           </div>
           
-          <h3 className="text-xl md:text-2xl font-serif text-gray-900 leading-tight group-hover:text-red-900 transition-colors">
+          <h3 className="text-xl md:text-2xl font-poppins text-gray-900 leading-tight group-hover:text-red-900 transition-colors">
             {post.title}
           </h3>
           

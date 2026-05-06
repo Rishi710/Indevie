@@ -14,11 +14,11 @@ interface AnnouncementBarProps {
 }
 
 export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
-  const [duration, setDuration] = useState(25);
+  const [duration, setDuration] = useState(35);
 
   useEffect(() => {
     const checkMobile = () => {
-      setDuration(window.innerWidth < 500 ? 30 : 25);
+      setDuration(window.innerWidth < 500 ? 40 : 35);
     };
     
     checkMobile();

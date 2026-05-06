@@ -42,7 +42,7 @@ export default function IntroductionSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative h-auto min-h-[480px] rounded-[10px] md:rounded-[40px] overflow-hidden"
+            className="relative aspect-[4/4.5] rounded-[10px] md:rounded-[40px] overflow-hidden"
           >
             <Image
               src="/images/intro.PNG"

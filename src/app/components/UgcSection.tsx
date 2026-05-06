@@ -26,7 +26,7 @@ const ugcData: UgcItem[] = [
   age: "25",
   concern: "Dullness",
   quote:
-    "The serum gives me a glass-skin glow without being sticky.",
+    "A non-sticky glow? Smells so good too.",
   location: "Bangalore",
   rating: 5,
   productLink: "/products/indevie-glow-maalish-oil",
@@ -39,7 +39,7 @@ const ugcData: UgcItem[] = [
     age: "25",
     concern: "Dullness",
     quote:
-      "The serum gives me a glass-skin glow without being sticky.",
+     " I had such a bad headache and in just 15 seconds, it blew like a wind.",
     location: "Bangalore",
     rating: 5,
     productLink: "/products/indevie-calm-balm",
@@ -52,7 +52,7 @@ const ugcData: UgcItem[] = [
     age: "25",
     concern: "Dullness",
     quote:
-      "The serum gives me a glass-skin glow without being sticky.",
+      "Glow Maalish, my go to for every skin problem",
     location: "Bangalore",
     rating: 5,
     productLink: "/products/indevie-glow-maalish-oil",
@@ -63,39 +63,39 @@ const ugcData: UgcItem[] = [
   {
     id: 4,
     name: "Ishita phatak",
-    age: "28",
+    age: "30",
     concern: "Dryness",
     quote:
-      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
-    location: "Mumbai",
+      "Indevie is supposed to make you remember who you are truly. Channel your inner devi and never stop taking care of yourself.",
+    location: "Indore",
     rating: 5,
-    productLink: "/products/indevie-kalakand-body-lotion",
+    productLink: "/products/indevie-calm-balm",
     videoSrc:
       "https://cdn.shopify.com/videos/c/o/v/f877e19335cd40bb96cbb8a860f17d07.mp4",
   },
   {
     id: 5,
-    name: "Mitali jaiswal",
+    name: "Shweta Patil",
     age: "28",
     concern: "Dryness",
     quote:
-      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
-    location: "Mumbai",
+      "I was going to get merried in 7 days and this body oil helped me recover my glow in just 3 days.",
+    location: "Alibag",
     rating: 5,
-    productLink: "/products/indevie-kalakand-body-lotion",
+    productLink: "/products/indevie-glow-maalish-oil",
     videoSrc:
       "https://cdn.shopify.com/videos/c/o/v/2325f46207224f8a92d0010acbe46afd.mp4",
   },
   {
     id: 6,
-    name: "Riya Sharma",
+    name: "Sazleen kaur",
     age: "28",
     concern: "Dryness",
     quote:
-      "Indévie completely transformed my dry ends. My curls feel hydrated and alive.",
-    location: "Mumbai",
+      "Being a new mother, baby duties has made my life chaotic. The calm balm is my escape to every problem now. ",
+    location: "Delhi",
     rating: 5,
-    productLink: "/products/indevie-kalakand-body-lotion",
+    productLink: "products/the-ultimate-care-ritual-set",
     videoSrc:
       "https://cdn.shopify.com/videos/c/o/v/ea819fb229354eb19ee28cb6c9d732dc.mp4",
   },
@@ -347,7 +347,7 @@ export default function UgcSection() {
             Hear it from from our
            </span>
            <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
-          <span className="font-semibold italic"> &quot;Power Devi&quot;</span>
+          <span className="font-semibold italic">Power Devi's</span>
         </h2>
            <p className="italic text-[#6c3518] tracking-tight text-lg">
           Real people, real routines, and moments of care that truly make a difference.

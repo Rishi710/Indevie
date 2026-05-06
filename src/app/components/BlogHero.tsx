@@ -86,7 +86,7 @@ export default function BlogHero({ post }: BlogHeroProps) {
               
               <div className="flex flex-col">
                 <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-gray-400 mb-2">Author</span>
-                <span className="text-sm font-medium text-gray-900">{post.authorV2?.name || "Indevie Editor"}</span>
+                <span className="text-sm font-medium text-gray-900">Indevie Editor Desk</span>
               </div>
               
               <div className="ml-0 md:ml-4 mt-2 md:mt-0 flex items-center gap-4">
