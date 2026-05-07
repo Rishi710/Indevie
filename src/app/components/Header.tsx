@@ -84,7 +84,7 @@ export default function Header({
               onClick={() => setIsMenuOpen(false)}
             >
               <Image
-                src="/images/logo.png"
+                src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/logo_3.webp?v=1778164066"
                 alt="INDEVIE"
                 fill
                 sizes="(max-width: 768px) 112px, 180px"

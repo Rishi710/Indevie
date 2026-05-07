@@ -1,8 +1,20 @@
 import { fetchProducts } from "@/lib/shopify";
 import ProductCard from "./ProductCard";
 
+function getCategoryRank(title: string, handle: string): number {
+  const t = title.toLowerCase();
+  const h = handle.toLowerCase();
+  if (t.includes("gift") || h.includes("gift")) return 2;
+  if (t.includes("mini") || h.includes("mini")) return 3;
+  // Single = anything that is not a gift box or mini
+  return 1;
+}
+
 export default async function ProductGridSection() {
-  const products = await fetchProducts(50);
+  const rawProducts = await fetchProducts(50);
+  const products = [...rawProducts].sort(
+    (a, b) => getCategoryRank(a.title, a.handle) - getCategoryRank(b.title, b.handle)
+  );
 
   if (!products || products.length === 0) {
     return (

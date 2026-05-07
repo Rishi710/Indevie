@@ -11,7 +11,6 @@ type UgcItem = {
   id: number;
   name: string;
   age: string;
-  concern: string;
   quote: string;
   location: string;
   rating: number;
@@ -25,7 +24,6 @@ const ugcData: UgcItem[] = [
     id: 1,
     name: "Tanu chokarika",
     age: "25",
-    concern: "Dullness",
     quote: "A non-sticky glow? Smells so good too.",
     location: "Bangalore",
     rating: 5,
@@ -36,7 +34,6 @@ const ugcData: UgcItem[] = [
     id: 2,
     name: "Kanika Maghav",
     age: "25",
-    concern: "Dullness",
     quote: "I had such a bad headache and in just 15 seconds, it blew like a wind.",
     location: "Bangalore",
     rating: 5,
@@ -47,7 +44,6 @@ const ugcData: UgcItem[] = [
     id: 3,
     name: "Sata Deekshitha",
     age: "25",
-    concern: "Dullness",
     quote: "Glow Maalish, my go to for every skin problem",
     location: "Bangalore",
     rating: 5,
@@ -58,7 +54,6 @@ const ugcData: UgcItem[] = [
     id: 4,
     name: "Ishita phatak",
     age: "30",
-    concern: "Dryness",
     quote: "Indevie is supposed to make you remember who you are truly. Channel your inner devi and never stop taking care of yourself.",
     location: "Indore",
     rating: 5,
@@ -69,7 +64,6 @@ const ugcData: UgcItem[] = [
     id: 5,
     name: "Shweta Patil",
     age: "28",
-    concern: "Dryness",
     quote: "I was going to get merried in 7 days and this body oil helped me recover my glow in just 3 days.",
     location: "Alibag",
     rating: 5,
@@ -80,7 +74,6 @@ const ugcData: UgcItem[] = [
     id: 6,
     name: "Sazleen kaur",
     age: "28",
-    concern: "Dryness",
     quote: "Being a new mother, baby duties has made my life chaotic. The calm balm is my escape to every problem now.",
     location: "Delhi",
     rating: 5,
@@ -116,6 +109,7 @@ const UgcVideoCard = ({
 
   const productImageUrl = product?.images?.nodes?.[0]?.url;
   const productPrice = product?.variants?.nodes?.[0]?.price?.amount;
+  const productCompareAtPrice = product?.variants?.nodes?.[0]?.compareAtPrice?.amount;
 
   return (
     <div
@@ -172,10 +166,16 @@ const UgcVideoCard = ({
              <div className="w-12 h-12 rounded-xl bg-[#e8decb] shrink-0 animate-pulse" />
           )}
           <div className="flex flex-col min-w-0 pr-2">
-            <span className="text-sm font-poppins font-semibold text-[#1a1a1a] truncate">{product?.title || "Indevie Product"}</span>
-            {productPrice && (
-              <span className="text-[11px] text-gray-500 font-medium font-poppins">₹{Math.round(productPrice)}</span>
-            )}
+            <span className="text-[11px] font-poppins font-bold text-amber-500 tracking-wide">★★★★★</span>
+            <span className="text-sm font-poppins font-semibold text-[#1a1a1a] truncate leading-tight">{product?.title || "Indevie Product"}</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {productPrice && (
+                <span className="text-[11px] text-[#1a1a1a] font-bold font-poppins">₹{Math.round(productPrice)}</span>
+              )}
+              {productCompareAtPrice && parseFloat(productCompareAtPrice) > parseFloat(productPrice || "0") && (
+                <span className="text-[10px] text-gray-400 font-medium font-poppins line-through">₹{Math.round(parseFloat(productCompareAtPrice))}</span>
+              )}
+            </div>
           </div>
         </div>
         

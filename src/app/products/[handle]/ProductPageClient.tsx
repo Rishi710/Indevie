@@ -24,8 +24,10 @@ export default function ProductPageClient({
   const { cart, addItem } = useCart();
 
   const images = product.images?.nodes || [];
-  const firstImage = images[0];
-  const restImages = images.slice(1);
+
+  // Split images evenly across two columns
+  const col1Images = images.filter((_, i) => i % 2 === 0);
+  const col2Images = images.filter((_, i) => i % 2 === 1);
 
   const selectedVariant = product.variants?.nodes[0];
   const variantId = selectedVariant?.id;
@@ -61,45 +63,39 @@ export default function ProductPageClient({
 
   return (
     <div className="w-full bg-[#f5f1e6] min-h-screen">
-      <div className="max-w-[1500px] mx-auto w-full relative hidden md:grid md:grid-cols-[0.9fr_0.9fr_1.2fr] gap-0 pt-32 pb-20">
-        
-        {/* Column 1: Sticky First Image */}
-        <div className="sticky top-32 p-1 pb-0 pl-10 lg:pl-5 self-start">
-          <div className="w-full aspect-[4/4.5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
-            {firstImage ? (
-              <Image 
-                src={firstImage.url} 
-                alt={firstImage.altText || product.title} 
-                fill 
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover" 
-                priority
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500">No Image</div>
-            )}
-          </div>
-        </div>
+      <div className="max-w-[1500px] mx-auto w-full relative hidden md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 pt-32 pb-20">
 
-        {/* Column 2: Scrollable Content (Remaining Images) */}
-        <div className="sticky  p-1 pb-0 flex flex-col gap-1">
-          {restImages.length > 0 ? (
-             restImages.map((img, idx) => (
-               <div key={idx} className="w-full aspect-[4/4.5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
-                 <Image 
-                   src={img.url} 
-                   alt={img.altText || `${product.title} ${idx + 2}`} 
-                   fill 
-                   sizes="(max-width: 768px) 100vw, 33vw"
-                   className="object-cover" 
-                 />
-               </div>
-             ))
-          ) : (
-            <div className="w-full h-[50vh] flex items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 rounded-[14px]">
-               No additional images
-            </div>
-          )}
+        {/* Columns 1 & 2: Scrollable two-sub-column image gallery */}
+        <div className="pl-10 lg:pl-5 pr-2 flex gap-1">
+          {/* Sub-column 1: even-indexed images */}
+          <div className="flex-1 flex flex-col gap-1">
+            {col1Images.map((img, idx) => (
+              <div key={idx} className="w-full aspect-[4/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
+                <Image
+                  src={img.url}
+                  alt={img.altText || `${product.title} ${idx * 2 + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-cover"
+                  priority={idx === 0}
+                />
+              </div>
+            ))}
+          </div>
+          {/* Sub-column 2: odd-indexed images */}
+          <div className="flex-1 flex flex-col gap-1">
+            {col2Images.map((img, idx) => (
+              <div key={idx} className="w-full aspect-[4/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
+                <Image
+                  src={img.url}
+                  alt={img.altText || `${product.title} ${idx * 2 + 2}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Column 3: Sticky Product Info */}

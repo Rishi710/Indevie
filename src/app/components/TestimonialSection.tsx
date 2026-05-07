@@ -12,7 +12,7 @@ export default function TestimonialSection() {
       location: "Hyderabad",
       rating: 5,
       text: "I didn’t realise how much tension I carry in my body until I started using this. I apply Calm Balm on my neck and feet at night and within minutes, I feel calmer. It’s become my go-to wind-down ritual",
-      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/111.webp?v=1778094296" // Placeholder
+      image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/333.webp?v=1778163425" // Placeholder
     },
     {
       id: 2,
