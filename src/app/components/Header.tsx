@@ -356,10 +356,10 @@ export default function Header({
                               <Link href="/products/indevie-kalakand-body-lotion" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion</Link>
                               <Link href="/products/indevie-calm-balm" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm</Link>
                               <Link href="/products/the-ultimate-care-ritual-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">The Ultimate Care Ritual Set</Link>
+                              <Link href="/products/indevie-bodycare-gift-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Indevie Bodycare Gift Set</Link>
                               <Link href="/products/calm-balm-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm Mini</Link>
                               <Link href="/products/kalakand-body-lotion-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion Mini</Link>
                               <Link href="/products/maalish-oil-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil Mini</Link>
-                              <Link href="/products/indevie-bodycare-gift-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Indevie Bodycare Gift Set</Link>
                             </motion.div>
                           )}
                         </AnimatePresence>
