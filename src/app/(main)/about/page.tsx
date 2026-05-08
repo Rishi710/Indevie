@@ -468,33 +468,6 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
-      {/* 🌿 CLOSING STATEMENT / CTA */}
-      {/* <section className="relative z-20 bg-[#f5f1e6] py-24 px-6 lg:px-12 border-t border-[#6c3518]/10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl mx-auto text-center space-y-10"
-        >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
-            <Link 
-              href="/shop" 
-              className="group flex items-center justify-center gap-3 bg-[#6c3518] text-[#f5f1e6] px-8 py-4 rounded-full text-xs uppercase tracking-[0.2em] font-sans hover:bg-[#5a2c14] transition-all w-full sm:w-auto"
-            >
-              <span>Explore The Collection</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            
-            <Link 
-              href="/contact" 
-              className="group flex items-center justify-center gap-3 border border-[#6c3518]/20 bg-transparent text-[#6c3518] px-8 py-4 rounded-full text-xs uppercase tracking-[0.2em] font-sans hover:bg-[#6c3518]/5 transition-all w-full sm:w-auto"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </motion.div>
-      </section> */}
     </main>
   );
 }

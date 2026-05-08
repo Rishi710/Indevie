@@ -140,13 +140,16 @@ export default function FounderSection() {
                   
                   {/* Founder Socials */}
                   <div className="flex gap-4 items-center pt-2">
-                    <Link href="https://www.instagram.com/indeviebeauty/" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
+                    <Link href="https://www.instagram.com/indeviebeauty/" target="_blank"
+                      rel="noopener nreferrer" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </Link>
-                    <Link href="https://www.reddit.com/user/IndevieBeauty/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
+                    <Link href="https://www.reddit.com/user/IndevieBeauty/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"  target="_blank"
+                      rel="noopener nreferrer" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M17 11.5a4.5 4.5 0 0 0-9 0"></path><path d="M12 11.5v4"></path><path d="M9 14h6"></path><circle cx="8.5" cy="8.5" r=".5" fill="currentColor"></circle><circle cx="15.5" cy="8.5" r=".5" fill="currentColor"></circle></svg>
                     </Link>
-                    <Link href="#" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
+                    <Link href="https://www.linkedin.com/in/ishita-pathak-188bb9378/"   target="_blank"
+                      rel="noopener nreferrer" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </Link>
                   </div>

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function RefundPolicyPage() {
   return (
     <div className="min-h-screen bg-[#faf9f6] py-16 md:py-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
         <div className="text-center mb-16 space-y-4">
@@ -21,7 +21,8 @@ export default function RefundPolicyPage() {
           </p> */}
 
           <p className="text-sm text-stone-500 uppercase tracking-widest">
-            Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            {/* Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} */}
+            Last Updated: February 20, 2026
           </p>
         </div>
 

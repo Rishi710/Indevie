@@ -39,9 +39,9 @@ export default async function ProductGridSection() {
         </div>
         
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 px-4 md:px-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {products.map((product) => (
+          {products.map((product, idx) => (
             <div key={product.id} className="min-w-[85vw] sm:min-w-[45vw] lg:min-w-[22vw] snap-center shrink-0">
-              <ProductCard product={product} />
+              <ProductCard product={product} priority={idx === 0} />
             </div>
           ))}
         </div>

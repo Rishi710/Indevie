@@ -32,7 +32,7 @@ const slides = [
     id: 3,
     image: "/images/DSC_6451.jpg",
     title: "Indulgence in Every Drop",
-    subtitle: "A body lotion inspired by Kalakand",
+    subtitle: "A body lotion inspired by Dessert",
     cta: "SHOP LOTION",
     link: "products/indevie-kalakand-body-lotion",
   },

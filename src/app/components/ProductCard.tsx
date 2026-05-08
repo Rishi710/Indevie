@@ -10,9 +10,10 @@ import ProductRatingBadge from "./ProductRatingBadge";
 
 interface ProductCardProps {
   product: ShopifyProduct;
+  priority?: boolean;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, priority = false }: ProductCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
@@ -64,6 +65,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                    src={img?.url}
                    alt={img?.altText || product.title}
                    fill
+                   priority={priority && idx === 0}
                    className="object-cover transition-transform duration-500 group-hover/image:scale-[1.03]"
                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                  />

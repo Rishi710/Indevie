@@ -45,7 +45,7 @@ export default function IntroductionSection() {
             className="relative w-full aspect-[4/4.5] md:aspect-auto md:h-full min-h-[400px] md:min-h-[600px] rounded-[10px] md:rounded-[40px] overflow-hidden"
           >
             <Image
-              src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/intro.webp?v=1778101634"
+              src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/ig-6.webp?v=1778254042"
               alt="Indevie Product Introduction"
               fill
               className="object-cover"
