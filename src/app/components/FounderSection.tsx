@@ -122,7 +122,7 @@ export default function FounderSection() {
                 <p>
                   What started as a personal quest for pure, effective rituals is now a collective mission: to raise the bar for modern botanical beauty, rooted in ancient <strong className="text-[#ffffff]/90 font-medium">Genurveda™</strong> wisdom.
                 </p>
-                <p className="italic font-serif text-[#ffffff]/50 text-xl md:text-3xl pt-2">
+                <p className="italic font-poppins text-[#ffffff] text-xl md:text-3xl pt-2">
                   &quot;Selfcare starts the moment you borrow that first comb from your parents to comb your own hair.&quot;
                 </p>
               </div>

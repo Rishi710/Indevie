@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import ShaderBackground from '../components/ShaderBackground';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Indevie Beauty',
@@ -9,22 +10,22 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-[#f5f1eb] pt-20 md:pt-34 pb-40">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative bg-[#81341a] min-h-screen pt-35 md:pt-35 pb-20">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
         <div className="text-center mb-16 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-medium text-stone-900 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-medium text-white tracking-tight">
             Privacy Policy
           </h1>
-          <p className="text-sm text-stone-500 uppercase tracking-widest">
+          <p className="text-sm text-white/80 uppercase tracking-widest">
             {/* Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} */}
             Last Updated: February 20, 2026
           </p>
         </div>
 
         {/* Content Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-8 md:p-12">
+        <div className="bg-white backdrop-blur-md rounded-2xl shadow-sm border border-stone-100 p-8 md:p-12">
           <div className="prose prose-stone max-w-none space-y-5 text-stone-700 leading-tight">
             
             {/* Introduction */}

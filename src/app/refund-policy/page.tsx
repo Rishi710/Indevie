@@ -8,19 +8,19 @@ export const metadata: Metadata = {
 
 export default function RefundPolicyPage() {
   return (
-    <div className="min-h-screen bg-[#faf9f6] py-16 md:py-24">
+    <div className="min-h-screen bg-[#81341a] py-35 md:py-35">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
         <div className="text-center mb-16 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-medium text-stone-900 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-medium text-white tracking-tight">
             Refund & Return Policy
           </h1>
           {/* <p className="text-sm text-stone-500 uppercase tracking-widest">
             India Only
           </p> */}
 
-          <p className="text-sm text-stone-500 uppercase tracking-widest">
+          <p className="text-sm text-white/80 uppercase tracking-widest">
             {/* Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} */}
             Last Updated: February 20, 2026
           </p>

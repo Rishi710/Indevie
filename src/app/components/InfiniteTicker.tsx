@@ -28,7 +28,7 @@ export default function InfiniteTicker() {
           <div key={i} className="flex items-center">
             {tickerItems.map((item, index) => (
               <React.Fragment key={index}>
-                <span className="text-sm md:text-lg lg:text-xl font-poppins font-medium text-[#6c3518] uppercase tracking-[0.15em] px-8">
+                <span className="text-sm md:text-lg lg:text-lg font-poppins font-medium text-[#6c3518] uppercase tracking-[0.15em] px-8">
                   {item}
                 </span>
                 {/* Rounded Black Dot Divider */}
