@@ -11,11 +11,11 @@ interface CartContextType {
   isCartOpen: boolean;
   isUpdating: boolean;
   setIsCartOpen: (open: boolean) => void;
-  addItem: (variantId: string, quantity?: number) => Promise<void>;
+  addItem: (variantId: string, quantity?: number) => Promise<any>;
   removeItem: (lineId: string) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   totalQuantity: number;
-  updateBuyerIdentity: (customerAccessToken: string) => Promise<void>;
+  updateBuyerIdentity: (customerAccessToken: string) => Promise<any>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -45,7 +45,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addItem = async (variantId: string, quantity = 1) => {
-    if (isUpdating) return;
+    if (isUpdating) return null;
     setIsUpdating(true);
     try {
       let currentCartId = Cookies.get(CART_COOKIE_KEY);
@@ -63,7 +63,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (updatedCart) {
         setCart(updatedCart);
         setIsCartOpen(true); // Open drawer automatically when item is added
+        return updatedCart;
       }
+      return null;
     } finally {
       setIsUpdating(false);
     }
@@ -104,18 +106,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setIsUpdating(false);
     }
   };
-  
+
   const updateBuyerIdentity = useCallback(async (customerAccessToken: string) => {
-    if (isUpdating) return;
+    if (isUpdating) return null;
     setIsUpdating(true);
     try {
       const currentCartId = Cookies.get(CART_COOKIE_KEY);
-      if (!currentCartId) return;
+      if (!currentCartId) return null;
 
       const updatedCart = await updateCartBuyerIdentity(currentCartId, customerAccessToken);
       if (updatedCart) {
         setCart(updatedCart);
+        return updatedCart;
       }
+      return null;
     } finally {
       setIsUpdating(false);
     }

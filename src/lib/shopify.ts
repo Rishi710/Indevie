@@ -771,3 +771,31 @@ export async function updateCartBuyerIdentity(cartId: string, customerAccessToke
   }
 }
 
+/**
+ * Sanitizes the checkout URL to ensure it points to the Shopify store domain
+ * instead of the headless site domain (which might happen if fonts/links use primary domain).
+ */
+export function getSafeCheckoutUrl(checkoutUrl: string): string {
+  if (!checkoutUrl) return "";
+
+  try {
+    const url = new URL(checkoutUrl);
+    // Use the env var or a hardcoded fallback if env var is missing during dev
+    const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || "indevie-beauty.myshopify.com";
+
+    // If it's already pointing to the shopify domain, we are good
+    if (url.hostname.includes("myshopify.com")) {
+      return url.toString();
+    }
+
+    // Force the hostname to the Shopify domain
+    if (shopDomain) {
+      url.hostname = shopDomain;
+    }
+
+    return url.toString();
+  } catch (error) {
+    console.error("Error parsing checkout URL:", error);
+    return checkoutUrl;
+  }
+}

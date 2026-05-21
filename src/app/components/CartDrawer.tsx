@@ -4,18 +4,19 @@ import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { getSafeCheckoutUrl } from "@/lib/shopify";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function CartDrawer() {
-  const { 
-    cart, 
-    isCartOpen, 
-    isUpdating, 
-    setIsCartOpen, 
-    removeItem, 
-    updateQuantity, 
+  const {
+    cart,
+    isCartOpen,
+    isUpdating,
+    setIsCartOpen,
+    removeItem,
+    updateQuantity,
     totalQuantity,
     updateBuyerIdentity
   } = useCart();
@@ -36,15 +37,23 @@ export default function CartDrawer() {
 
   const handleCheckout = async () => {
     if (isUpdating) return;
-    
+
+    let currentCart = cart;
     const token = Cookies.get("customerAccessToken");
+
     if (token && cart?.id) {
       // Sync buyer identity before checkout if logged in
-      await updateBuyerIdentity(token);
+      const updatedCart = await updateBuyerIdentity(token);
+      if (updatedCart) {
+        currentCart = updatedCart;
+      }
     }
-    
-    if (cart?.checkoutUrl) {
-      window.location.href = cart.checkoutUrl;
+
+    if (currentCart?.checkoutUrl) {
+      const safeUrl = getSafeCheckoutUrl(currentCart.checkoutUrl);
+      window.location.href = safeUrl;
+    } else {
+      console.error("No checkout URL found", currentCart);
     }
   };
 
@@ -107,18 +116,18 @@ export default function CartDrawer() {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="flex-1 flex flex-col justify-between py-1">
                       <div>
                         <div className="flex justify-between items-start">
-                          <Link 
+                          <Link
                             href={`/products/${line.merchandise.product.handle}`}
                             onClick={() => setIsCartOpen(false)}
                             className="text-sm font-poppins font-medium text-[#6c3518] hover:opacity-70 transition-opacity"
                           >
                             {line.merchandise.product.title}
                           </Link>
-                          <button 
+                          <button
                             onClick={() => removeItem(line.id)}
                             disabled={isUpdating}
                             className="text-[#6c3518]/40 hover:text-red-500 transition-colors disabled:opacity-30"
@@ -205,7 +214,7 @@ export default function CartDrawer() {
                   </span>
                   <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </button>
-                
+
                 <p className="text-[9px] text-center text-gray-800 uppercase tracking-[0.3em] font-light">
                   SECURE SHOPPING • FAST SHIPPING • SATISFACTION GUARANTEED
                 </p>
