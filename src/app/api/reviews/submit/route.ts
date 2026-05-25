@@ -25,13 +25,15 @@ export async function POST(request: Request) {
       shop_domain: domain,
       platform: 'shopify',
       api_token: token,
-      id: id,
+      id: id, // Since platform is 'shopify', this should be the Shopify Product ID
       name: name,
       email: email,
-      rating: parseInt(rating, 10),
+      rating: parseInt(String(rating), 10),
       title: "",
       body: formattedBody,
     };
+
+    console.log("Submitting review to Judge.me with payload:", { ...payload, api_token: '***' });
 
     const res = await fetch(`https://judge.me/api/v1/reviews`, {
       method: 'POST',
@@ -44,11 +46,16 @@ export async function POST(request: Request) {
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error("Judge.me Submission Error:", errorText);
-      return NextResponse.json({ error: 'Failed to submit review' }, { status: res.status });
+      console.error("Judge.me Submission Error Status:", res.status);
+      console.error("Judge.me Submission Error Body:", errorText);
+      return NextResponse.json({
+        error: 'Failed to submit review',
+        details: errorText
+      }, { status: res.status });
     }
 
     const data = await res.json();
+    console.log("Judge.me Submission Success:", data);
     // Judge.me usually returns HTTP 201 Created and the review object inside `review`
     return NextResponse.json({ success: true, data: data }, { status: 201 });
 

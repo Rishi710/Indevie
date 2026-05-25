@@ -366,8 +366,6 @@ export default function ProductPageClient({
         </div>
       </div>
 
-      {/* Hardcoded Featured Testimonials */}
-      <TestimonialSection />
 
 
       {/* Judge.me Reviews Section */}
@@ -376,6 +374,9 @@ export default function ProductPageClient({
           <ReviewSection productId={product.id} />
         </div>
       </div>
+
+      {/* Hardcoded Featured Testimonials */}
+      <TestimonialSection />
 
       {/* Dynamic Product FAQs */}
       <ProductFaqSection productHandle={product.handle} />

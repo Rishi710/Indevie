@@ -78,11 +78,12 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
           setFormData({ name: "", email: "", location: "", age: "", rating: 5, body: "" });
         }, 5000);
       } else {
-        alert("Failed to submit review. Please try again.");
+        const errorData = await res.json().catch(() => ({}));
+        alert(`Failed to submit review: ${errorData.error || 'Please try again.'}`);
       }
     } catch (err) {
       console.error(err);
-      alert("An error occurred.");
+      alert("An error occurred. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }
@@ -97,9 +98,8 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
             type={interactive ? "button" : "submit"}
             disabled={!interactive}
             onClick={() => interactive && setFormData({ ...formData, rating: star })}
-            className={`transition-colors ${
-              interactive ? "hover:scale-110 cursor-pointer" : "cursor-default"
-            }`}
+            className={`transition-colors ${interactive ? "hover:scale-110 cursor-pointer" : "cursor-default"
+              }`}
           >
             <Star
               size={interactive ? 24 : 16}
@@ -146,7 +146,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
               <h3 className="text-lg text-[#2a2a2a] font-medium border-b border-[#e5e5e5] pb-3">
                 Rate & Review
               </h3>
-              
+
               <div className="flex flex-col gap-2">
                 <label className="text-xs font-semibold text-gray-600 uppercase tracking-widest">
                   Overall Rating
@@ -233,9 +233,9 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
       ) : reviews.length === 0 ? (
         <div className="text-center py-16 bg-[#e5e5e5]/20 rounded-[14px]">
           <p className="text-gray-500 mb-4">Make the first move. Let us know how this product feels.</p>
-          <button 
-             onClick={() => setIsWriting(true)}
-             className="text-[#6c3518] underline font-medium hover:text-black transition-colors"
+          <button
+            onClick={() => setIsWriting(true)}
+            className="text-[#6c3518] underline font-medium hover:text-black transition-colors"
           >
             Be the first to review
           </button>
@@ -246,7 +246,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
             // Parse out the embedded location & age string
             const metaRegex = /\n\n---\n🌍 Location: (.*?)\n👤 Age: (.*)$/;
             const match = review.body.match(metaRegex);
-            
+
             let cleanBody = review.body;
             let location = "";
             let age = "";
@@ -260,10 +260,10 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
             return (
               <div key={review.id} className="bg-white p-6 rounded-[14px] border border-[#e5e5e5]/80 shadow-sm flex flex-col gap-3">
                 <div className="flex justify-between items-start mb-1">
-                   {renderStars(review.rating)}
-                   <span className="text-xs text-gray-400">
-                      {new Date(review.created_at).toLocaleDateString()}
-                   </span>
+                  {renderStars(review.rating)}
+                  <span className="text-xs text-gray-400">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </span>
                 </div>
                 {review.title && (
                   <h4 className="font-semibold text-[15px] text-[#2a2a2a] leading-tight flex flex-col">
