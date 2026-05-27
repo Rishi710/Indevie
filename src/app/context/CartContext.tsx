@@ -15,7 +15,7 @@ interface CartContextType {
   removeItem: (lineId: string) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   totalQuantity: number;
-  updateBuyerIdentity: (customerAccessToken: string) => Promise<any>;
+  updateBuyerIdentity: (customerAccessToken?: string, email?: string, phone?: string) => Promise<any>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -107,14 +107,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const updateBuyerIdentity = useCallback(async (customerAccessToken: string) => {
+  const updateBuyerIdentity = useCallback(async (customerAccessToken?: string, email?: string, phone?: string) => {
     if (isUpdating) return null;
     setIsUpdating(true);
     try {
       const currentCartId = Cookies.get(CART_COOKIE_KEY);
       if (!currentCartId) return null;
 
-      const updatedCart = await updateCartBuyerIdentity(currentCartId, customerAccessToken);
+      const buyerIdentityInput: any = {};
+      if (customerAccessToken) buyerIdentityInput.customerAccessToken = customerAccessToken;
+      if (email) buyerIdentityInput.email = email;
+      if (phone) buyerIdentityInput.phone = phone;
+
+      // If we only have a token but no info, we could fetch customer info here if needed
+      // but for now we'll just pass what we have.
+
+      const updatedCart = await updateCartBuyerIdentity(currentCartId, buyerIdentityInput);
       if (updatedCart) {
         setCart(updatedCart);
         return updatedCart;

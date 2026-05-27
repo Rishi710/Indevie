@@ -758,11 +758,19 @@ export async function fetchCart(cartId: string): Promise<any> {
   }
 }
 
-export async function updateCartBuyerIdentity(cartId: string, customerAccessToken: string): Promise<any> {
+export async function updateCartBuyerIdentity(
+  cartId: string,
+  buyerIdentityInput: {
+    customerAccessToken?: string;
+    email?: string;
+    phone?: string;
+    countryCode?: string;
+  }
+): Promise<any> {
   try {
     const data: any = await storefrontClient.request(CART_BUYER_IDENTITY_UPDATE_MUTATION, {
       cartId,
-      buyerIdentity: { customerAccessToken },
+      buyerIdentity: buyerIdentityInput,
     });
     return data.cartBuyerIdentityUpdate.cart;
   } catch (error) {
