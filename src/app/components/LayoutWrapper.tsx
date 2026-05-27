@@ -15,10 +15,9 @@ interface LayoutWrapperProps {
 
 export default function LayoutWrapper({ children, isLoggedIn, userName }: LayoutWrapperProps) {
   const pathname = usePathname();
-  
-  // Define routes that should NOT have Header and Footer
+
   const authRoutes = ["/login", "/register", "/forgot-password"];
-  const isAuthPage = authRoutes.includes(pathname);
+  const isAuthPage = authRoutes.includes(pathname) || pathname.startsWith("/account/activate");
 
   if (isAuthPage) {
     return <>{children}</>;

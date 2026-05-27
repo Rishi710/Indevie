@@ -547,6 +547,38 @@ export async function recoverCustomer(email: string) {
   }
 }
 
+export const CUSTOMER_ACTIVATE_MUTATION = `
+  mutation customerActivate($id: ID!, $input: CustomerActivateInput!) {
+    customerActivate(id: $id, input: $input) {
+      customer {
+        id
+      }
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function activateCustomer(id: string, input: any) {
+  try {
+    const data: any = await storefrontClient.request(CUSTOMER_ACTIVATE_MUTATION, {
+      id,
+      input,
+    });
+    return data.customerActivate;
+  } catch (error) {
+    console.error("Activation Error:", error);
+    return null;
+  }
+}
+
 export const CUSTOMER_UPDATE_MUTATION = `
   mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
     customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
