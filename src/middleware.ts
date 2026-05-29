@@ -1,0 +1,43 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+/**
+ * Middleware to handle Shopify account URL patterns.
+ *
+ * Shopify's password reset / activate emails send links in the format:
+ *   /account/reset/[customerId]/[token]
+ *   /account/activate/[customerId]/[token]
+ *
+ * These match our Next.js routes exactly, so they should work automatically
+ * when the email template is updated to point to the headless domain.
+ *
+ * This middleware also protects the /account route so unauthenticated users
+ * are redirected to /login.
+ */
+export function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+
+    // Allow reset and activate routes to pass through without auth check
+    if (
+        pathname.startsWith("/account/reset") ||
+        pathname.startsWith("/account/activate")
+    ) {
+        return NextResponse.next();
+    }
+
+    // Protect /account routes - redirect to login if no token
+    if (pathname.startsWith("/account")) {
+        const token = request.cookies.get("customerAccessToken");
+        if (!token) {
+            const loginUrl = new URL("/login", request.url);
+            loginUrl.searchParams.set("redirect", pathname);
+            return NextResponse.redirect(loginUrl);
+        }
+    }
+
+    return NextResponse.next();
+}
+
+export const config = {
+    matcher: ["/account/:path*"],
+};

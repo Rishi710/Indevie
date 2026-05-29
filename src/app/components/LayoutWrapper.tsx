@@ -17,7 +17,7 @@ export default function LayoutWrapper({ children, isLoggedIn, userName }: Layout
   const pathname = usePathname();
 
   const authRoutes = ["/login", "/register", "/forgot-password"];
-  const isAuthPage = authRoutes.includes(pathname) || pathname.startsWith("/account/activate");
+  const isAuthPage = authRoutes.includes(pathname) || pathname.startsWith("/account/activate") || pathname.startsWith("/account/reset");
 
   if (isAuthPage) {
     return <>{children}</>;

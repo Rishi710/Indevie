@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { loginCustomer, registerCustomer, recoverCustomer, updateCustomer, activateCustomer } from "@/lib/shopify";
+import { loginCustomer, registerCustomer, recoverCustomer, updateCustomer, activateCustomer, resetCustomer, resetCustomerByUrl } from "@/lib/shopify";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -177,3 +177,92 @@ export async function activateAction(prevState: any, formData: FormData) {
 
   return { success: false, error: "Activation failed" };
 }
+
+export async function resetAction(prevState: any, formData: FormData) {
+  const customerId = formData.get("customerId") as string;
+  const resetToken = formData.get("resetToken") as string;
+  const password = formData.get("password") as string;
+  const passwordConfirm = formData.get("passwordConfirm") as string;
+
+  if (!password || !passwordConfirm) {
+    return { success: false, error: "Password and confirmation are required" };
+  }
+
+  if (password !== passwordConfirm) {
+    return { success: false, error: "Passwords do not match" };
+  }
+
+  if (password.length < 8) {
+    return { success: false, error: "Password must be at least 8 characters" };
+  }
+
+  const gid = customerId.startsWith("gid://") ? customerId : `gid://shopify/Customer/${customerId}`;
+
+  const result = await resetCustomer(gid, {
+    resetToken,
+    password,
+  });
+
+  if (result?.customerUserErrors?.length > 0) {
+    return { success: false, error: result.customerUserErrors[0].message };
+  }
+
+  if (result?.customerAccessToken?.accessToken) {
+    const cookieStore = await cookies();
+    cookieStore.set("customerAccessToken", result.customerAccessToken.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: new Date(result.customerAccessToken.expiresAt),
+      path: "/",
+    });
+
+    return { success: true, error: null };
+  }
+
+  return { success: false, error: "Password reset failed" };
+}
+
+export async function resetByUrlAction(prevState: any, formData: FormData) {
+  const resetUrl = formData.get("resetUrl") as string;
+  const password = formData.get("password") as string;
+  const passwordConfirm = formData.get("passwordConfirm") as string;
+
+  if (!resetUrl) {
+    return { success: false, error: "Invalid or expired reset link. Please request a new one." };
+  }
+
+  if (!password || !passwordConfirm) {
+    return { success: false, error: "Password and confirmation are required" };
+  }
+
+  if (password !== passwordConfirm) {
+    return { success: false, error: "Passwords do not match" };
+  }
+
+  if (password.length < 8) {
+    return { success: false, error: "Password must be at least 8 characters" };
+  }
+
+  const result = await resetCustomerByUrl(resetUrl, password);
+
+  if (result?.customerUserErrors?.length > 0) {
+    return { success: false, error: result.customerUserErrors[0].message };
+  }
+
+  if (result?.customerAccessToken?.accessToken) {
+    const cookieStore = await cookies();
+    cookieStore.set("customerAccessToken", result.customerAccessToken.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: new Date(result.customerAccessToken.expiresAt),
+      path: "/",
+    });
+
+    return { success: true, error: null };
+  }
+
+  return { success: false, error: "Password reset failed. The link may have expired." };
+}
+

@@ -566,6 +566,25 @@ export const CUSTOMER_ACTIVATE_MUTATION = `
   }
 `;
 
+export const CUSTOMER_RESET_MUTATION = `
+  mutation customerReset($id: ID!, $input: CustomerResetInput!) {
+    customerReset(id: $id, input: $input) {
+      customer {
+        id
+      }
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
 export async function activateCustomer(id: string, input: any) {
   try {
     const data: any = await storefrontClient.request(CUSTOMER_ACTIVATE_MUTATION, {
@@ -575,6 +594,51 @@ export async function activateCustomer(id: string, input: any) {
     return data.customerActivate;
   } catch (error) {
     console.error("Activation Error:", error);
+    return null;
+  }
+}
+
+export async function resetCustomer(id: string, input: any) {
+  try {
+    const data: any = await storefrontClient.request(CUSTOMER_RESET_MUTATION, {
+      id,
+      input,
+    });
+    return data.customerReset;
+  } catch (error) {
+    console.error("Reset Password Error:", error);
+    return null;
+  }
+}
+
+export const CUSTOMER_RESET_BY_URL_MUTATION = `
+  mutation customerResetByUrl($resetUrl: URL!, $password: String!) {
+    customerResetByUrl(resetUrl: $resetUrl, password: $password) {
+      customer {
+        id
+      }
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function resetCustomerByUrl(resetUrl: string, password: string) {
+  try {
+    const data: any = await storefrontClient.request(
+      CUSTOMER_RESET_BY_URL_MUTATION,
+      { resetUrl, password }
+    );
+    return data.customerResetByUrl;
+  } catch (error) {
+    console.error("Reset By URL Error:", error);
     return null;
   }
 }
