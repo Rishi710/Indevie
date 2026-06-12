@@ -4,12 +4,13 @@ import { cookies } from "next/headers";
 import { fetchCustomer } from "@/lib/shopify";
 import { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const poppins = Poppins({ 
-  subsets: ["latin"], 
+const poppins = Poppins({
+  subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins" 
+  variable: "--font-poppins"
 });
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const token = cookieStore.get("customerAccessToken")?.value;
   const isLoggedIn = !!token;
-  
+
   let userName = null;
   if (isLoggedIn && token) {
     const customer = await fetchCustomer(token);
@@ -39,6 +40,7 @@ export default async function RootLayout({
         <LayoutWrapper isLoggedIn={isLoggedIn} userName={userName}>
           {children}
         </LayoutWrapper>
+        <Analytics />
       </body>
     </html>
   );
