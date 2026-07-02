@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 /**
- * Middleware to handle Shopify account URL patterns.
+ * Proxy to handle Shopify account URL patterns.
  *
  * Shopify's password reset / activate emails send links in the format:
  *   /account/reset/[customerId]/[token]
@@ -11,10 +11,10 @@ import type { NextRequest } from "next/server";
  * These match our Next.js routes exactly, so they should work automatically
  * when the email template is updated to point to the headless domain.
  *
- * This middleware also protects the /account route so unauthenticated users
+ * This proxy also protects the /account route so unauthenticated users
  * are redirected to /login.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Allow reset and activate routes to pass through without auth check

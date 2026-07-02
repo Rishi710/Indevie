@@ -2,9 +2,9 @@ import { fetchProduct, fetchRecommendedProducts } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 import ProductPageClient from "@/app/products/[handle]/ProductPageClient";
 
-export default async function ProductPage({ params }: { params: Promise<{ handle: string }> | { handle: string } }) {
-  const resolvedParams = await Promise.resolve(params);
-  const product = await fetchProduct(resolvedParams.handle);
+export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
+  const { handle } = await params;
+  const product = await fetchProduct(handle);
 
   if (!product) {
     return notFound();
