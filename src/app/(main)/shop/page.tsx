@@ -25,10 +25,22 @@ export default function ShopPage() {
         if (singleCol) {
           const data = await fetchCollectionProducts(singleCol.handle);
           if (data && data.products.length > 0) {
+            const preferredHandles = [
+              "geeli-mitti-face-mist",
+              "gulkand-face-mist",
+              "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen",
+              "gulaaboo-tez-dhoop-sunshield-refill"
+            ];
+            const preferred = preferredHandles
+              .map(h => data.products.find((p: ShopifyProduct) => p.handle === h))
+              .filter(Boolean) as ShopifyProduct[];
+            const others = data.products.filter(
+              (p: ShopifyProduct) => !preferredHandles.includes(p.handle)
+            );
             collectionsToRender.push({
               title: singleCol.title,
-              heading: "Full Body Power Devi Range",  
-              products: data.products
+              heading: "Full Body Power Devi Range",
+              products: [...preferred, ...others]
             });
           }
         }
