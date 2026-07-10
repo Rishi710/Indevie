@@ -21,7 +21,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
     "geeli-mitti-face-mist",
     "gulkand-face-mist",
     "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen",
-    "gulaaboo-tez-dhoop-sunshield-refill"
+    "indevie-calm-balm"
   ];
 
   const sortedRaw = [...rawProducts].sort(
@@ -70,7 +70,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
 
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-6 px-4 md:px-0">
           {products.slice(0, 5).map((product, idx) => (
-            <div key={product.id}>
+            <div key={product.id} className={idx >= 4 ? "hidden lg:block" : ""}>
               <ProductCard product={product} priority={idx === 0} />
             </div>
           ))}
