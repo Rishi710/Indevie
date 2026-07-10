@@ -14,7 +14,7 @@ export default function ShopPage() {
     const getCollectionsData = async () => {
       try {
         const allCollections = await fetchCollections();
-        
+
         const fullBodyCol = allCollections.find(c => c.title.toLowerCase().includes("full body") || c.title.toLowerCase().includes("power devi"));
         const minisCol = allCollections.find(c => c.title.toLowerCase().includes("minis") || c.title.toLowerCase().includes("mini"));
         const giftCol = allCollections.find(c => c.title.toLowerCase().includes("share") || c.title.toLowerCase().includes("gift") || c.title.toLowerCase().includes("bundle"));
@@ -80,16 +80,16 @@ export default function ShopPage() {
 
         // Fallback: If no matching collections found, just show all non-empty collections
         if (collectionsToRender.length === 0 && allCollections.length > 0) {
-           for (const col of allCollections) {
-              const data = await fetchCollectionProducts(col.handle);
-              if (data && data.products.length > 0 && col.handle !== 'frontpage') {
-                 collectionsToRender.push({
-                    title: col.title,
-                    heading: col.title, // Use original title as fallback
-                    products: data.products
-                 });
-              }
-           }
+          for (const col of allCollections) {
+            const data = await fetchCollectionProducts(col.handle);
+            if (data && data.products.length > 0 && col.handle !== 'frontpage') {
+              collectionsToRender.push({
+                title: col.title,
+                heading: col.title, // Use original title as fallback
+                products: data.products
+              });
+            }
+          }
         }
 
         setCollections(collectionsToRender);
@@ -106,7 +106,7 @@ export default function ShopPage() {
     <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
       {/* 🌿 PARALLAX HERO SECTION (Modeled after Contact Page) */}
       <section className="relative h-[80vh] md:h-[100vh] w-full overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-100"
           style={{
             backgroundImage: "url('/images/DSC_6451.jpg')",
@@ -139,7 +139,7 @@ export default function ShopPage() {
       {/* 🍶 CONTENT SECTION */}
       <section className="relative z-20 bg-[#f5f1e6] pt-20 ">
         <div className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16">
-          
+
           {loading ? (
             <div className="space-y-32">
               {[...Array(2)].map((_, i) => (
@@ -166,22 +166,18 @@ export default function ShopPage() {
                       <h2 className="text-3xl md:text-4xl font-poppins font-bold text-center text-[#6c3518]">{collection.heading}</h2>
                       {/* <span className="px-3 py-1 bg-[#6c3518]/5 rounded-full text-[10px] font-bold text-[#6c3518]/60 uppercase tracking-widest">
                         {collection.products.length} Items
-                      </span> */} 
+                      </span> */}
                     </div>
                   </div>
-                  
-                  <div 
-                    className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-y-10 gap-x-4 md:gap-x-5 px-4 md:px-10 -mx-4 md:mx-0 pb-2 [&::-webkit-scrollbar]:hidden" 
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  >
+
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-y-10 gap-x-3 md:gap-x-5 px-4 md:px-10">
                     {collection.products.map((product, index) => (
-                      <motion.div 
-                        key={product.id} 
+                      <motion.div
+                        key={product.id}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.8, delay: index * 0.05 }}
-                        className="min-w-[85vw] sm:min-w-[45vw] snap-center shrink-0 md:min-w-0 md:shrink md:snap-align-none"
                       >
                         <ProductCard product={product} />
                       </motion.div>

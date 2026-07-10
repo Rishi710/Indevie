@@ -16,7 +16,7 @@ interface ProductGridSectionProps {
 
 export default async function ProductGridSection({ initialProducts }: ProductGridSectionProps) {
   const rawProducts = initialProducts || await fetchProducts(50);
-  
+
   const preferredHandles = [
     "geeli-mitti-face-mist",
     "gulkand-face-mist",
@@ -59,21 +59,30 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
     <section className="py-8 md:py-4 lg:py-4 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col items-center text-center mb-16 gap-5">
-           <h2 className="text-3xl md:text-4xl text-red-800 ">
-          <span className="font-semibold italic">
-            Channel your Inner Devi 
-           </span> 
-        </h2>
-           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#6c3518]">
-            with Indevie</span> 
+          <h2 className="text-3xl md:text-4xl text-red-800 ">
+            <span className="font-semibold italic">
+              Channel your Inner Devi
+            </span>
+          </h2>
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#6c3518]">
+            with Indevie</span>
         </div>
-        
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 lg:gap-6 px-4 md:px-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {products.map((product, idx) => (
-            <div key={product.id} className="min-w-[85vw] sm:min-w-[45vw] lg:min-w-[22vw] snap-center shrink-0">
+
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-6 px-4 md:px-0">
+          {products.slice(0, 5).map((product, idx) => (
+            <div key={product.id}>
               <ProductCard product={product} priority={idx === 0} />
             </div>
           ))}
+        </div>
+
+        <div className="flex justify-center mt-10">
+          <a
+            href="/shop"
+            className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase text-[#6c3518] border border-[#6c3518]/30 px-8 py-3 rounded-full hover:bg-[#6c3518] hover:text-white transition-all duration-300"
+          >
+            View All Products
+          </a>
         </div>
       </div>
     </section>

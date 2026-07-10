@@ -104,9 +104,9 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
            </>
          )}
 
-          {/* Floating Add to Cart Button */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full md:group-hover/image:translate-y-0 lg:opacity-0 lg:group-hover/image:opacity-100 transition-all duration-500 z-20 bg-gradient-to-t from-black/20 to-transparent block md:block">
-             <button 
+          {/* Floating Add to Cart Button — Desktop only (hover reveal) */}
+          <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover/image:translate-y-0 opacity-0 group-hover/image:opacity-100 transition-all duration-500 z-20 bg-gradient-to-t from-black/20 to-transparent hidden md:block">
+              <button 
                 onClick={(e) => {
                   e.preventDefault();
                   if (variantId) addItem(variantId);
@@ -156,6 +156,18 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           </div>
         </div>
       </div>
+
+      {/* Mobile Add to Cart Button — Always visible */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          if (variantId) addItem(variantId);
+        }}
+        className="md:hidden w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-2.5 rounded-[8px] active:bg-black transition-colors mt-3"
+      >
+        <ShoppingBag size={13} strokeWidth={1.5} />
+        <span className="text-[9px] font-poppins font-bold tracking-[0.15em] uppercase">Add to Cart</span>
+      </button>
 
     </Link>
   );
