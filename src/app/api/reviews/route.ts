@@ -21,38 +21,46 @@ export async function GET(request: Request) {
   try {
     console.log(`Fetching reviews for productId: ${externalId} on domain: ${domain}`);
 
-    // Fetch reviews specifically for this product to avoid the 100-global-limit issue.
-    // Try using product_id first. If the "large ID bug" is real, we fallback to all-review fetch.
-    const reviewsRes = await fetch(
-      `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&product_id=${externalId}&per_page=100`
-    );
-
-    if (!reviewsRes.ok) {
-      console.error(`Judge.me API error: ${reviewsRes.status} ${reviewsRes.statusText}`);
-      // Fallback: Fetch all reviews and filter (the original logic)
-      const fallbackRes = await fetch(
-        `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=100`
+    // 1. Resolve Shopify external ID to Judge.me internal product ID
+    let internalId = null;
+    try {
+      const productRes = await fetch(
+        `https://judge.me/api/v1/products/-1?shop_domain=${domain}&api_token=${token}&external_id=${externalId}`
       );
-      if (!fallbackRes.ok) {
-        return NextResponse.json({ reviews: [], averageRating: 0, total: 0 });
+      if (productRes.ok) {
+        const productData = await productRes.json();
+        internalId = productData.product?.id || productData.id;
       }
-      const allData = await fallbackRes.json();
-      const filtered = (allData.reviews || []).filter(
-        (r: any) => !r.hidden && String(r.product_external_id) === String(externalId)
-      );
-      return NextResponse.json(calculateStats(filtered));
+    } catch (e) {
+      console.warn("Failed to resolve Judge.me internal product ID:", e);
     }
 
-    const data = await reviewsRes.json();
-    const reviews = data.reviews || [];
+    // 2. Fetch reviews specifically for this product using the internal ID if found
+    if (internalId) {
+      const reviewsRes = await fetch(
+        `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&product_id=${internalId}&per_page=100`
+      );
 
-    // Filter to ensure we only show approved/published reviews matching this specific product
-    // Note: If product_id filter worked, this is redundant but safe.
-    const publishedReviews = reviews.filter(
-      (r: any) => !r.hidden && (String(r.product_external_id) === String(externalId) || String(r.product_id) === String(externalId))
+      if (reviewsRes.ok) {
+        const data = await reviewsRes.json();
+        const reviews = data.reviews || [];
+        const publishedReviews = reviews.filter((r: any) => !r.hidden);
+        return NextResponse.json(calculateStats(publishedReviews));
+      }
+    }
+
+    // 3. Fallback: Fetch all reviews and filter (if no internal ID was resolved or query failed)
+    const fallbackRes = await fetch(
+      `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=100`
     );
-
-    return NextResponse.json(calculateStats(publishedReviews));
+    if (!fallbackRes.ok) {
+      return NextResponse.json({ reviews: [], averageRating: 0, total: 0 });
+    }
+    const allData = await fallbackRes.json();
+    const filtered = (allData.reviews || []).filter(
+      (r: any) => !r.hidden && String(r.product_external_id) === String(externalId)
+    );
+    return NextResponse.json(calculateStats(filtered));
 
   } catch (error) {
     console.error("Error fetching reviews:", error);

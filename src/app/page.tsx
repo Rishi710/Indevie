@@ -6,6 +6,8 @@ import InfiniteTicker from "./components/InfiniteTicker";
 import BrandMantra from "./components/BrandMantra";
 import ProductGridSection from "./components/ProductGridSection";
 
+import { fetchProducts } from "@/lib/shopify";
+
 // Dynamic imports for components below the fold
 const ShopBanner = dynamic(() => import("./components/ShopBanner"));
 const IntroductionSection = dynamic(() => import("./components/IntroductionSection"));
@@ -15,15 +17,17 @@ const FounderSection = dynamic(() => import("./components/FounderSection"));
 const BlogsCarousel = dynamic(() => import("./components/BlogsCarousel"));
 const InstagramSection = dynamic(() => import("./components/InstagramSection"));
 
-export default function Home() {
+export default async function Home() {
+  const products = await fetchProducts(50);
+
   return (
     <main className="bg-[#f5f1e6] min-h-screen">
       <HeroSlider />
       <InfiniteTicker />
       <BrandMantra />
-      <ProductGridSection />
+      <ProductGridSection initialProducts={products} />
       <IntroductionSection />
-      <UgcSection />
+      <UgcSection initialProducts={products} />
       <HomeTestimonials />
       <FounderSection />
       <BlogsCarousel />

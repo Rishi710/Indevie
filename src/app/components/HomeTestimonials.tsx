@@ -115,7 +115,7 @@ export default function HomeTestimonials() {
 
             {/* Quote */}
             <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-poppins leading-[1.7] md:leading-[1.4] text-[#6c3518] italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
-                &quot; {testimonials[currentIndex].quote} &quot;
+              {"\"" + testimonials[currentIndex].quote + "\""}
             </h2>
 
             {/* Profile */}

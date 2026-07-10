@@ -190,13 +190,22 @@ const UgcVideoCard = ({
   );
 };
 
+interface UgcSectionProps {
+  initialProducts?: any[];
+}
+
 // ================= MAIN =================
-export default function UgcSection() {
+export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [productsMap, setProductsMap] = useState<Record<string, any>>({});
+  const [productsMap, setProductsMap] = useState<Record<string, any>>(() => {
+    const map: Record<string, any> = {};
+    initialProducts.forEach(p => map[p.handle] = p);
+    return map;
+  });
 
   useEffect(() => {
+    if (initialProducts.length > 0) return;
     import("../../lib/shopify").then(({ fetchProducts }) => {
       fetchProducts(20).then((products) => {
         const map: Record<string, any> = {};
@@ -204,7 +213,7 @@ export default function UgcSection() {
         setProductsMap(map);
       }).catch(console.error);
     });
-  }, []);
+  }, [initialProducts]);
 
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;

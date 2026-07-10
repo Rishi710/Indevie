@@ -10,11 +10,41 @@ function getCategoryRank(title: string, handle: string): number {
   return 1;
 }
 
-export default async function ProductGridSection() {
-  const rawProducts = await fetchProducts(50);
-  const products = [...rawProducts].sort(
+interface ProductGridSectionProps {
+  initialProducts?: any[];
+}
+
+export default async function ProductGridSection({ initialProducts }: ProductGridSectionProps) {
+  const rawProducts = initialProducts || await fetchProducts(50);
+  
+  const preferredHandles = [
+    "geeli-mitti-face-mist",
+    "gulkand-face-mist",
+    "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen",
+    "gulaaboo-tez-dhoop-sunshield-refill"
+  ];
+
+  const sortedRaw = [...rawProducts].sort(
     (a, b) => getCategoryRank(a.title, a.handle) - getCategoryRank(b.title, b.handle)
   );
+
+  const preferred: typeof sortedRaw = [];
+  const others: typeof sortedRaw = [];
+
+  preferredHandles.forEach(handle => {
+    const found = sortedRaw.find(p => p.handle === handle);
+    if (found) {
+      preferred.push(found);
+    }
+  });
+
+  sortedRaw.forEach(p => {
+    if (!preferredHandles.includes(p.handle)) {
+      others.push(p);
+    }
+  });
+
+  const products = [...preferred, ...others];
 
   if (!products || products.length === 0) {
     return (

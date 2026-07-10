@@ -342,10 +342,13 @@ export default function Header({
                               transition={{ duration: 0.3 }}
                               className="overflow-hidden pl-4 flex flex-col space-y-4 pt-4"
                             >
+                              <Link href="/products/geeli-mitti-face-mist" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Geeli Mitti Face Mist 30ml</Link>
+                              <Link href="/products/gulkand-face-mist" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulkand Face Mist 30ml</Link>
+                              <Link href="/products/gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaab Tez Dhoop Sunshield Sunscreen</Link>
+                              <Link href="/products/gulaaboo-tez-dhoop-sunshield-refill" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaaboo Tez Dhoop Sunshield Refill</Link>
                               <Link href="/products/indevie-glow-maalish-oil" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil (Jasmine)</Link>
                               <Link href="/products/indevie-kalakand-body-lotion" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion</Link>
                               <Link href="/products/indevie-calm-balm" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm</Link>
-                              <Link href="/products/gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaab Tez Dhoop Sunshield Ayurvedic SPF 50 PA+++ Sunscreen</Link>
                               <Link href="/products/the-ultimate-care-ritual-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">The Ultimate Care Ritual Set</Link>
                               <Link href="/products/indevie-bodycare-gift-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Indevie Bodycare Gift Set</Link>
                               <Link href="/products/calm-balm-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm Mini</Link>
