@@ -170,10 +170,10 @@ export default function ShopPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-y-10 gap-x-3 md:gap-x-5 px-4 md:px-10">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-10 gap-x-3 md:gap-x-3 px-2 md:px-5">
                     {collection.products.map((product, index) => (
-                      <motion.div 
-                        key={product.id} 
+                      <motion.div
+                        key={product.id}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
