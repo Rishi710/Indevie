@@ -44,131 +44,134 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     : null;
 
   return (
-    <Link href={`/products/${product.handle}`} className="flex flex-col group cursor-pointer hover:border-1 border-black p-1.5 rounded-[10px] bg-#6c3518">
-      {/* Image Container */}
-      <div className="group/image relative w-full aspect-[4/5] rounded-[10px] overflow-hidden bg-[#e5e5e5] mb-4">
-         {/* Image Slider */}
-         {displayedImages.length > 0 ? (
-           <div 
-             ref={scrollRef}
-             className="flex w-full h-full overflow-hidden [&::-webkit-scrollbar]:hidden"
-             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-             onScroll={(e) => {
-                const target = e.currentTarget;
-                const idx = Math.round(target.scrollLeft / target.clientWidth);
-                if (idx !== currentImageIndex) setCurrentImageIndex(idx);
-             }}
-           >
-             {displayedImages.map((img, idx) => (
-               <div key={idx} className="relative min-w-full h-full shrink-0">
-                 <Image
-                   src={img?.url}
-                   alt={img?.altText || product.title}
-                   fill
-                   priority={priority && idx === 0}
-                   className="object-cover transition-transform duration-500 group-hover/image:scale-[1.03]"
-                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                 />
+    <Link href={`/products/${product.handle}`} className="flex flex-col h-full justify-between group cursor-pointer hover:border-1 border-black p-1.5 rounded-[10px] bg-transparent">
+      <div className="flex flex-col flex-grow justify-between">
+        <div>
+          {/* Image Container */}
+          <div className="group/image relative w-full aspect-[4/5] rounded-[10px] overflow-hidden bg-[#e5e5e5] mb-4">
+             {/* Image Slider */}
+             {displayedImages.length > 0 ? (
+               <div 
+                 ref={scrollRef}
+                 className="flex w-full h-full overflow-hidden [&::-webkit-scrollbar]:hidden"
+                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                 onScroll={(e) => {
+                    const target = e.currentTarget;
+                    const idx = Math.round(target.scrollLeft / target.clientWidth);
+                    if (idx !== currentImageIndex) setCurrentImageIndex(idx);
+                 }}
+               >
+                 {displayedImages.map((img, idx) => (
+                   <div key={idx} className="relative min-w-full h-full shrink-0">
+                     <Image
+                       src={img?.url}
+                       alt={img?.altText || product.title}
+                       fill
+                       priority={priority && idx === 0}
+                       className="object-cover transition-transform duration-500 group-hover/image:scale-[1.03]"
+                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                     />
+                   </div>
+                 ))}
                </div>
-             ))}
-           </div>
-         ) : (
-           <div className="w-full h-full flex items-center justify-center bg-[#d3d3d3]">
-             <span className="text-gray-500 text-sm">No Image</span>
-           </div>
-         )}
+             ) : (
+               <div className="w-full h-full flex items-center justify-center bg-[#d3d3d3]">
+                 <span className="text-gray-500 text-sm">No Image</span>
+               </div>
+             )}
 
-         {/* Arrows */}
-         {displayedImages.length > 1 && (
-           <>
-             <button
-               onClick={(e) => {
-                 e.preventDefault();
-                 setCurrentImageIndex((prev) => (prev === 0 ? displayedImages.length - 1 : prev - 1));
-                 scrollToImage(currentImageIndex === 0 ? (displayedImages.length - 1) : currentImageIndex - 1);
-               }}
-               className="flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 text-black transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
-             >
-               <ArrowLeft size={16} strokeWidth={1.5} />
-             </button>
-             <button
-               onClick={(e) => {
-                 e.preventDefault();
-                 setCurrentImageIndex((prev) => (prev === displayedImages.length - 1 ? 0 : prev + 1));
-                 scrollToImage(currentImageIndex === (displayedImages.length - 1) ? 0 : currentImageIndex + 1);
-               }}
-               className="flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 text-black transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
-             >
-               <ArrowRight size={16} strokeWidth={1.5} />
-             </button>
-           </>
-         )}
+             {/* Arrows */}
+             {displayedImages.length > 1 && (
+               <>
+                 <button
+                   onClick={(e) => {
+                     e.preventDefault();
+                     setCurrentImageIndex((prev) => (prev === 0 ? displayedImages.length - 1 : prev - 1));
+                     scrollToImage(currentImageIndex === 0 ? (displayedImages.length - 1) : currentImageIndex - 1);
+                   }}
+                   className="flex absolute top-1/2 left-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 text-black transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
+                 >
+                   <ArrowLeft size={16} strokeWidth={1.5} />
+                 </button>
+                 <button
+                   onClick={(e) => {
+                     e.preventDefault();
+                     setCurrentImageIndex((prev) => (prev === displayedImages.length - 1 ? 0 : prev + 1));
+                     scrollToImage(currentImageIndex === (displayedImages.length - 1) ? 0 : currentImageIndex + 1);
+                   }}
+                   className="flex absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 items-center justify-center rounded-full bg-white/80 text-black transition-opacity duration-300 hover:bg-white z-10 shadow-sm"
+                 >
+                   <ArrowRight size={16} strokeWidth={1.5} />
+                 </button>
+               </>
+             )}
 
-          {/* Floating Add to Cart Button — Desktop only (hover reveal) */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover/image:translate-y-0 opacity-0 group-hover/image:opacity-100 transition-all duration-500 z-20 bg-gradient-to-t from-black/20 to-transparent hidden md:block">
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (variantId) addItem(variantId);
-                }}
-                className="w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-3 rounded-[8px] hover:bg-black transition-colors shadow-lg"
-              >
-                <ShoppingBag size={14} strokeWidth={1.5} />
-                <span className="text-[10px] font-poppins font-bold tracking-[0.15em] uppercase">Add to cart</span>
-              </button>
+              {/* Floating Add to Cart Button — Desktop only (hover reveal) */}
+              <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover/image:translate-y-0 opacity-0 group-hover/image:opacity-100 transition-all duration-500 z-20 bg-gradient-to-t from-black/20 to-transparent hidden md:block">
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (variantId) addItem(variantId);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-3 rounded-[8px] hover:bg-black transition-colors shadow-lg"
+                  >
+                    <ShoppingBag size={14} strokeWidth={1.5} />
+                    <span className="text-[10px] font-poppins font-bold tracking-[0.15em] uppercase">Add to cart</span>
+                  </button>
+              </div>
+
+             {/* Pagination Dots */}
+             {displayedImages.length > 1 && (
+               <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-1.5 z-10">
+                 {displayedImages.map((_, idx) => (
+                   <button
+                     key={idx}
+                     onClick={(e) => {
+                       e.preventDefault();
+                       scrollToImage(idx);
+                     }}
+                     className={`rounded-full transition-all duration-300 shadow-sm ${
+                       idx === currentImageIndex 
+                         ? "bg-white w-1.5 h-1.5" 
+                         : "bg-white/50 w-1 h-1 hover:bg-white/80"
+                     }`}
+                   />
+                 ))}
+               </div>
+             )}
           </div>
 
-         {/* Pagination Dots */}
-         {displayedImages.length > 1 && (
-           <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-1.5 z-10">
-             {displayedImages.map((_, idx) => (
-               <button
-                 key={idx}
-                 onClick={(e) => {
-                   e.preventDefault();
-                   scrollToImage(idx);
-                 }}
-                 className={`rounded-full transition-all duration-300 shadow-sm ${
-                   idx === currentImageIndex 
-                     ? "bg-white w-1.5 h-1.5" 
-                     : "bg-white/50 w-1 h-1 hover:bg-white/80"
-                 }`}
-               />
-             ))}
-           </div>
-         )}
-      </div>
-
-      {/* Info Container */}
-      <div className="flex flex-col px-1 mt-1">
-        <div className="flex flex-col gap-0.5">
-          <h3 className="text-[13px] font-poppins font-medium text-[#2a2a2a] leading-tight">
-            {product.title}
-          </h3>
-          <p className="text-[12px] font-poppins text-[#555] tracking-wide mt-1 flex items-center gap-2">
-             <span>{formattedPrice}</span>
-             {formattedComparePrice && (
-               <span className="text-gray-400 line-through">{formattedComparePrice}</span>
-             )}
-          </p>
-          <div className="mt-1">
-             <ProductRatingBadge productId={product.id} />
+          {/* Info Container */}
+          <div className="flex flex-col px-1 mt-1">
+            <div className="flex flex-col gap-0.5">
+              <h3 className="text-[13px] font-poppins font-medium text-[#2a2a2a] leading-tight line-clamp-2">
+                {product.title}
+              </h3>
+              <p className="text-[12px] font-poppins text-[#555] tracking-wide mt-1 flex items-center gap-2">
+                 <span>{formattedPrice}</span>
+                 {formattedComparePrice && (
+                   <span className="text-gray-400 line-through">{formattedComparePrice}</span>
+                 )}
+              </p>
+              <div className="mt-1">
+                 <ProductRatingBadge productId={product.id} />
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Add to Cart Button — Always visible */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            if (variantId) addItem(variantId);
+          }}
+          className="md:hidden w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-2.5 rounded-[8px] active:bg-black transition-colors mt-3"
+        >
+          <ShoppingBag size={13} strokeWidth={1.5} />
+          <span className="text-[9px] font-poppins font-bold tracking-[0.15em] uppercase">Add to Cart</span>
+        </button>
       </div>
-
-      {/* Mobile Add to Cart Button — Always visible */}
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          if (variantId) addItem(variantId);
-        }}
-        className="md:hidden w-full flex items-center justify-center gap-2 bg-[#6c3518] text-white py-2.5 rounded-[8px] active:bg-black transition-colors mt-3"
-      >
-        <ShoppingBag size={13} strokeWidth={1.5} />
-        <span className="text-[9px] font-poppins font-bold tracking-[0.15em] uppercase">Add to Cart</span>
-      </button>
-
     </Link>
   );
 }

@@ -70,7 +70,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
 
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-1 md:gap-2 px-1 md:px-0">
           {products.slice(0, 5).map((product, idx) => (
-            <div key={product.id} className={idx >= 4 ? "hidden lg:block" : ""}>
+            <div key={product.id} className={idx >= 4 ? "hidden lg:block h-full" : "h-full"}>
               <ProductCard product={product} priority={idx === 0} />
             </div>
           ))}
