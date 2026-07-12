@@ -69,8 +69,8 @@ export default function Header({
 
       <header
         className={`w-full transition-all duration-300 relative z-50 ${shouldBeSolid
-            ? "bg-white border-b border-gray-100 py-4 shadow-sm"
-            : "bg-transparent border-transparent py-6"
+          ? "bg-white border-b border-gray-100 py-4 shadow-sm"
+          : "bg-transparent border-transparent py-6"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -344,8 +344,8 @@ export default function Header({
                             >
                               <Link href="/products/geeli-mitti-face-mist" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Geeli Mitti Face Mist 30ml</Link>
                               <Link href="/products/gulkand-face-mist" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulkand Face Mist 30ml</Link>
-                              <Link href="/products/gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaab Tez Dhoop Sunshield Sunscreen</Link>
-                              <Link href="/products/gulaaboo-tez-dhoop-sunshield-refill" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaaboo Tez Dhoop Sunshield Refill</Link>
+                              <Link href="/products/gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaabo Tez-Dhoop Sunshield Sunscreen</Link>
+                              <Link href="/products/gulaaboo-tez-dhoop-sunshield-refill" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaabo Tez-Dhoop Sunshield Refill</Link>
                               <Link href="/products/indevie-glow-maalish-oil" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil (Jasmine)</Link>
                               <Link href="/products/indevie-kalakand-body-lotion" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion</Link>
                               <Link href="/products/indevie-calm-balm" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm</Link>
