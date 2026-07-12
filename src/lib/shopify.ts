@@ -7,10 +7,13 @@ if (!domain || !storefrontAccessToken) {
   throw new Error("Missing Shopify environment variables");
 }
 
-const endpoint = `https://${domain}/api/2024-01/graphql.json`;
+const isBrowser = typeof window !== "undefined";
+const endpoint = isBrowser 
+  ? `${window.location.origin}/api/shopify` 
+  : `https://${domain}/api/2024-01/graphql.json`;
 
 export const storefrontClient = new GraphQLClient(endpoint, {
-  headers: {
+  headers: isBrowser ? {} : {
     "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
   },
 });
