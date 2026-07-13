@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import AnnouncementBar from "./AnnouncementBar";
 import { usePathname } from "next/navigation";
 import { useCart } from "../context/CartContext";
+import SearchBar from "./SearchBar";
 
 export default function Header({
   isLoggedIn = false,
@@ -183,6 +184,9 @@ export default function Header({
                   )}
                 </AnimatePresence>
               </div>
+              {/* Search Icon — shared overlay, works on all screen sizes */}
+              <SearchBar solidMode={shouldBeSolid} />
+
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="hover:opacity-70 transition-opacity relative group"

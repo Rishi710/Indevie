@@ -882,6 +882,56 @@ export async function updateCartBuyerIdentity(
  * Sanitizes the checkout URL to ensure it points to the Shopify store domain
  * instead of the headless site domain (which might happen if fonts/links use primary domain).
  */
+export const SEARCH_PRODUCTS_QUERY = `
+  query searchProducts($query: String!, $first: Int!) {
+    search(query: $query, first: $first, types: PRODUCT) {
+      nodes {
+        ... on Product {
+          id
+          title
+          handle
+          tags
+          variants(first: 1) {
+            nodes {
+              id
+              price {
+                amount
+                currencyCode
+              }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
+            }
+          }
+          images(first: 1) {
+            nodes {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function searchProducts(query: string, limit = 8): Promise<ShopifyProduct[]> {
+  if (!query || query.trim().length < 2) return [];
+  try {
+    const data: any = await storefrontClient.request(SEARCH_PRODUCTS_QUERY, {
+      query: query.trim(),
+      first: limit,
+    });
+    return data.search?.nodes || [];
+  } catch (error) {
+    console.error("Search Products Error:", error);
+    return [];
+  }
+}
+
 export function getSafeCheckoutUrl(checkoutUrl: string): string {
   if (!checkoutUrl) return "";
 
