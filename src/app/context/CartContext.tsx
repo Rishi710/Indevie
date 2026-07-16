@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import Cookies from "js-cookie";
 import { createCart, addToCart, updateCartLine, removeFromCart, fetchCart, updateCartBuyerIdentity } from "@/lib/shopify";
+import { pixelAddToCart } from "@/lib/pixel";
 
 const CART_COOKIE_KEY = "shopify_cart_id";
 
@@ -63,6 +64,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (updatedCart) {
         setCart(updatedCart);
         setIsCartOpen(true); // Open drawer automatically when item is added
+
+        // Fire Meta Pixel AddToCart event
+        // Find the newly added line to get price/title for richer data
+        const newLine = updatedCart?.lines?.nodes?.find((l: any) =>
+          l.merchandise?.id === variantId
+        );
+        pixelAddToCart({
+          id: newLine?.merchandise?.product?.id || variantId,
+          title: newLine?.merchandise?.product?.title || "Product",
+          price: newLine?.merchandise?.price?.amount || "0",
+          currencyCode: newLine?.merchandise?.price?.currencyCode || "INR",
+          quantity,
+        });
+
         return updatedCart;
       }
       return null;

@@ -75,7 +75,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
       fetch("/api/search?q=indevie")
         .then((r) => r.json())
         .then((d) => setFeaturedProducts((d.products || []).slice(0, 3)))
-        .catch(() => {});
+        .catch(() => { });
     }
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 80);

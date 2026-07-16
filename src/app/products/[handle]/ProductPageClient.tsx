@@ -2,7 +2,7 @@
 
 import { ShopifyProduct, getSafeCheckoutUrl } from "@/lib/shopify";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bookmark, ShoppingBag } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
 import { useCart } from "@/app/context/CartContext";
@@ -10,6 +10,7 @@ import ReviewSection from "@/app/components/ReviewSection";
 import ProductRatingBadge from "@/app/components/ProductRatingBadge";
 import TestimonialSection from "@/app/components/TestimonialSection";
 import ProductFaqSection from "@/app/components/ProductFaqSection";
+import { pixelViewContent } from "@/lib/pixel";
 
 export default function ProductPageClient({
   product,
@@ -22,6 +23,19 @@ export default function ProductPageClient({
   const [quantity, setQuantity] = useState(1);
   const [mobileImageIndex, setMobileImageIndex] = useState(0);
   const { cart, addItem } = useCart();
+
+  // Fire ViewContent pixel event when product page loads
+  useEffect(() => {
+    const price = product.variants?.nodes[0]?.price;
+    if (price) {
+      pixelViewContent({
+        id: product.id,
+        title: product.title,
+        price: price.amount,
+        currencyCode: price.currencyCode,
+      });
+    }
+  }, [product.id, product.title, product.variants]);
 
   const images = product.images?.nodes || [];
 

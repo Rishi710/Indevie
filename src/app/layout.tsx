@@ -5,6 +5,7 @@ import { fetchCustomer } from "@/lib/shopify";
 import { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import MetaPixel from "./components/MetaPixel";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -41,6 +42,7 @@ export default async function RootLayout({
           {children}
         </LayoutWrapper>
         <Analytics />
+        <MetaPixel />
       </body>
     </html>
   );

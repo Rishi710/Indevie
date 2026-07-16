@@ -103,7 +103,7 @@ export default function ShopPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
+    <main className="relative min-h-screen bg-[#ffffff  ] overflow-x-hidden">
       {/* 🌿 PARALLAX HERO SECTION (Modeled after Contact Page) */}
       <section className="relative h-[80vh] md:h-[100vh] w-full overflow-hidden">
         <div
