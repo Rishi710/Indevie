@@ -56,13 +56,16 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
   }
 
   return (
-    <section className="py-8 md:py-4 lg:py-4 px-0 md:px-10 lg:px-10 bg-[#f5f1e6] overflow-hidden">
+    <section className="py-8 md:py-4 lg:py-4 px-10 md:px-20 lg:px-20 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
-        <div className="flex flex-col items-center text-center mb-16 gap-5">
-          <h2 className="text-3xl md:text-4xl text-red-800 ">
+        <div className="flex flex-col items-center text-center mb-16 gap-5 mt-15">
+          {/* <h2 className="text-3xl md:text-4xl text-red-800 pt-14 font-serif">
             <span className="font-semibold italic">
               Channel your Inner Devi
             </span>
+          </h2> */}
+          <h2 className="text-3xl md:text-4xl text-[#6c3518] font-serif font-bold">
+            Channel your Inner Devi
           </h2>
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#6c3518]">
             with Indevie</span>

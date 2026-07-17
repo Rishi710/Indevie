@@ -19,21 +19,21 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const response = await fetch("https://formsubmit.co/ajax/support@indevie.com", {
         method: "POST",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
-            name: formState.name,
-            email: formState.email,
-            subject: formState.subject,
-            message: formState.message,
-            _subject: `New Contact Form Submission: ${formState.subject}`,
-            _template: "table"
+          name: formState.name,
+          email: formState.email,
+          subject: formState.subject,
+          message: formState.message,
+          _subject: `New Contact Form Submission: ${formState.subject}`,
+          _template: "table"
         })
       });
 
@@ -56,7 +56,7 @@ export default function ContactPage() {
     <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
       {/* 🌿 SIMPLIFIED HERO SECTION (Parallax) */}
       <section className="relative h-[95vh] md:h-[95vh] w-full overflow-hidden">
-        <div 
+        <div
           className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-90"
           style={{
             backgroundImage: "url('/images/connect.jpeg')",
@@ -75,7 +75,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-7xl font-Poppins italic text-white mb-4 drop-shadow-xl00">
+            <h1 className="text-4xl md:text-7xl font-serif text-white mb-4 drop-shadow-xl00">
               Connect With Us
             </h1>
             <p className="text-white/100 text-[10px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
@@ -88,9 +88,9 @@ export default function ContactPage() {
       {/* 🍶 CLEAN CONTENT SECTION */}
       <section className="relative z-20 bg-[#f5f1e6] pt-24 pb-40 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-          
+
           {/* --- LEFT: DETAILS --- */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -100,7 +100,7 @@ export default function ContactPage() {
             <div className="space-y-4">
               <h3 className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#6c3518]/40 italic">Enquiries</h3>
               <h2 className="text-4xl font-popins text-[#6c3518] leading-tight">
-                Get in touch with <br/> Indevie beauty experts.
+                Get in touch with <br /> Indevie beauty experts.
               </h2>
               <p className="text-sm md:text-base font-poppins text-[#6c3518] leading-relaxed max-w-md">
                 Whether you have a question about our products, need guidance on your skincare journey, or want to share your experience,we&apos;re here to listen.
@@ -135,7 +135,7 @@ export default function ContactPage() {
           </motion.div>
 
           {/* --- RIGHT: MINIMAL FORM --- */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -144,53 +144,53 @@ export default function ContactPage() {
           >
             <AnimatePresence mode="wait">
               {!isSubmitted ? (
-                <motion.form 
+                <motion.form
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit} 
+                  onSubmit={handleSubmit}
                   className="space-y-8 bg-white p-8 md:p-12 rounded-2xl border border-[#6c3518]/5"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       placeholder="YOUR NAME"
                       required
                       value={formState.name}
-                      onChange={(e) => setFormState({...formState, name: e.target.value})}
+                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                       className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] tracking-widest font-popins-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
                     />
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       placeholder="YOUR EMAIL"
                       required
                       value={formState.email}
-                      onChange={(e) => setFormState({...formState, email: e.target.value})}
+                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                       className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] tracking-widest font-popins-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
                     />
                   </div>
 
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="SUBJECT"
                     required
                     value={formState.subject}
-                    onChange={(e) => setFormState({...formState, subject: e.target.value})}
+                    onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
                     className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
                   />
 
-                  <textarea 
+                  <textarea
                     rows={4}
                     placeholder="MESSAGE"
                     required
                     value={formState.message}
-                    onChange={(e) => setFormState({...formState, message: e.target.value})}
+                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                     className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70 resize-none"
                   />
 
                   <div className="pt-4">
-                    <button 
+                    <button
                       type="submit"
                       disabled={isSubmitting}
                       className="group relative w-full h-[60px] bg-[#6c3518] text-[#f5f1e6] rounded-xl overflow-hidden transition-all hover:bg-[#5a2c14] disabled:bg-[#6c3518]/50"
@@ -205,7 +205,7 @@ export default function ContactPage() {
                   </div>
                 </motion.form>
               ) : (
-                <motion.div 
+                <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -216,9 +216,9 @@ export default function ContactPage() {
                   </div>
                   <h3 className="text-2xl md:text-3xl font-popins text-[#22c55e]">Form submitted successfully!</h3>
                   <p className="text-sm md:text-base font-poppins text-[#6c3518] leading-relaxed max-w-sm">
-                    Thank you {submittedName}! The form has been submitted successfully.<br/>We will reply to you soon!
+                    Thank you {submittedName}! The form has been submitted successfully.<br />We will reply to you soon!
                   </p>
-                  <button 
+                  <button
                     onClick={() => setIsSubmitted(false)}
                     className="mt-8 text-sm font-popins-medium text-[#8b5cf6] hover:text-[#7c3aed] transition-colors"
                   >

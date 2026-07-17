@@ -66,7 +66,7 @@ export default function IntroductionSection() {
                 Introducing Genurveda™
               </p>
               
-              <h2 className="text-3xl md:text-4xl lg:text-4xl font-poppins font-semibold leading-[1.1] text-[#6c3518]">
+              <h2 className="text-3xl md:text-4xl lg:text-4xl font-serif font-bold leading-[1.1] text-[#6c3518]">
                 Ancient Rituals. Updated Expectations.
               </h2>
               

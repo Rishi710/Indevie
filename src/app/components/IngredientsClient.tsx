@@ -21,18 +21,18 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
 
   const filteredIngredients = useMemo(() => {
     let result = ingredients;
-    
+
     if (searchQuery) {
       const lowerQuery = searchQuery.toLowerCase();
-      result = ingredients.filter(ing => 
-        ing.word.toLowerCase().includes(lowerQuery) || 
+      result = ingredients.filter(ing =>
+        ing.word.toLowerCase().includes(lowerQuery) ||
         (ing.about && ing.about.toLowerCase().includes(lowerQuery)) ||
         (ing.tags && ing.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
       );
     } else {
       result = ingredients.filter(ing => ing.word.toUpperCase().startsWith(activeLetter));
     }
-    
+
     // Sort alphabetically
     return result.sort((a, b) => a.word.localeCompare(b.word));
   }, [ingredients, activeLetter, searchQuery]);
@@ -78,7 +78,7 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
         {/* Hero Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           <div className="animate-fade-in-up">
-            <h1 className="text-4xl md:text-7xl font-Poppins italic text-white mb-4 drop-shadow-xl">
+            <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-xl">
               Meet the ingredients <br className="hidden md:block" /> behind the Devi Energy
             </h1>
           </div>
@@ -90,82 +90,83 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
         <div className="w-full mx-auto px-[10px]">
 
 
-        {/* Search Bar */}
-        <div className="relative mb-10 max-w-md mx-auto">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-[#6c3518]/50" />
+          {/* Search Bar */}
+          <div className="relative mb-10 max-w-md mx-auto">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-[#6c3518]/50" />
+            </div>
+            <input
+              type="text"
+              className="block w-full pl-10 pr-3 py-3 border border-[#6c3518]/20 rounded-full bg-white text-[#6c3518] placeholder-[#6c3518]/50 focus:outline-none focus:ring-2 focus:ring-[#6c3518]/30 font-sans transition-all"
+              placeholder="Search ingredients, benefits..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
-          <input
-            type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-[#6c3518]/20 rounded-full bg-white text-[#6c3518] placeholder-[#6c3518]/50 focus:outline-none focus:ring-2 focus:ring-[#6c3518]/30 font-sans transition-all"
-            placeholder="Search ingredients, benefits..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
 
-        {/* Alphabet Tabs */}
-        {!searchQuery && (
-          <div className="mb-12 relative">
-            <div className="flex overflow-x-auto hide-scrollbar bg-white sticky top-20 z-10 shadow-sm rounded-lg mx-auto max-w-xl">
-              <div className="flex mx-auto min-w-max px-2">
-                {ALPHABET.map((letter) => {
-                  const isAvailable = availableLetters.includes(letter);
-                  const isActive = activeLetter === letter;
-                  
-                  return (
-                    <button
-                      key={letter}
-                      onClick={() => isAvailable && handleLetterClick(letter)}
-                      disabled={!isAvailable}
-                      className={`
+          {/* Alphabet Tabs */}
+          {!searchQuery && (
+            <div className="mb-12 relative">
+              <div className="flex overflow-x-auto hide-scrollbar bg-white sticky top-20 z-10 shadow-sm rounded-lg mx-auto max-w-xl">
+                <div className="flex mx-auto min-w-max px-2">
+                  {ALPHABET.map((letter) => {
+                    const isAvailable = availableLetters.includes(letter);
+                    const isActive = activeLetter === letter;
+
+                    return (
+                      <button
+                        key={letter}
+                        onClick={() => isAvailable && handleLetterClick(letter)}
+                        disabled={!isAvailable}
+                        className={`
                         py-4 px-3 md:px-5 text-sm md:text-base font-sans font-medium transition-all
-                        ${isActive 
-                          ? 'text-[#6c3518] border-b-2 border-[#6c3518]' 
-                          : isAvailable 
-                            ? 'text-[#6c3518]/60 hover:text-[#6c3518]' 
-                            : 'text-[#6c3518]/20 cursor-not-allowed'}
+                        ${isActive
+                            ? 'text-[#6c3518] border-b-2 border-[#6c3518]'
+                            : isAvailable
+                              ? 'text-[#6c3518]/60 hover:text-[#6c3518]'
+                              : 'text-[#6c3518]/20 cursor-not-allowed'}
                       `}
-                    >
-                      {letter}
-                    </button>
-                  );
-                })}
+                      >
+                        {letter}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {/* Section Title (Letter or Search Results) */}
-        <div className="mb-8 flex items-center max-w-4xl mx-auto">
-          <div className="h-px bg-[#6c3518]/20 flex-grow"></div>
-          <h2 className="px-6 text-3xl md:text-4xl font-seasons font-semibold text-[#6c3518]">
-            {searchQuery ? "Search Results" : activeLetter}
-          </h2>
-          <div className="h-px bg-[#6c3518]/20 flex-grow"></div>
-        </div>
-
-        {/* Ingredients List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
-          {filteredIngredients.length === 0 ? (
-            <div className="col-span-full text-center py-12 text-[#6c3518]/60 font-inter">
-               No ingredients found matching your criteria.
-            </div>
-          ) : (
-            filteredIngredients.map((ing) => (
-              <IngredientCard 
-                key={ing.word} 
-                ing={ing} 
-                onToggle={() => toggleExpand(ing.word)} 
-              />
-            ))
           )}
-        </div>
+
+          {/* Section Title (Letter or Search Results) */}
+          <div className="mb-8 flex items-center max-w-4xl mx-auto">
+            <div className="h-px bg-[#6c3518]/20 flex-grow"></div>
+            <h2 className="px-6 text-3xl md:text-4xl font-serif font-bold text-[#6c3518]">
+              {searchQuery ? "Search Results" : activeLetter}
+            </h2>
+            <div className="h-px bg-[#6c3518]/20 flex-grow"></div>
+          </div>
+
+          {/* Ingredients List */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
+            {filteredIngredients.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-[#6c3518]/60 font-inter">
+                No ingredients found matching your criteria.
+              </div>
+            ) : (
+              filteredIngredients.map((ing) => (
+                <IngredientCard
+                  key={ing.word}
+                  ing={ing}
+                  onToggle={() => toggleExpand(ing.word)}
+                />
+              ))
+            )}
+          </div>
         </div>
       </section>
-      
+
       {/* Hide scrollbar styles */}
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -178,9 +179,9 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
       {/* Modal */}
       <AnimatePresence>
         {expandedWord && (
-          <IngredientModal 
-            ing={ingredients.find(i => i.word === expandedWord)} 
-            onClose={() => setExpandedWord(null)} 
+          <IngredientModal
+            ing={ingredients.find(i => i.word === expandedWord)}
+            onClose={() => setExpandedWord(null)}
           />
         )}
       </AnimatePresence>
@@ -211,27 +212,27 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         className="relative w-full max-w-[1000px] bg-white rounded-[32px] shadow-2xl flex flex-col md:flex-row z-10 max-h-[90vh] md:max-h-[85vh] overflow-hidden border border-[#6c3518]/10"
       >
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 flex items-center justify-center rounded-full border border-[#6c3518]/30 text-[#6c3518] hover:bg-gray-50 transition-colors z-20 bg-white shadow-sm"
         >
           <X size={24} strokeWidth={1.5} />
         </button>
-        
+
         {/* Left Side - Image & Title */}
         <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col relative bg-white">
-          <h2 className="text-4xl md:text-5xl font-seasons text-[#6c3518] mb-3">{ing.word}</h2>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#6c3518] mb-3">{ing.word}</h2>
           <p className="text-[#6c3518]/60 font-poppins text-sm md:text-sm mb-10">
-             {ing.tags?.join(' • ')}
+            {ing.tags?.join(' • ')}
           </p>
           <div className="w-full aspect-[4/3] md:aspect-[4/3] lg:aspect-square relative rounded-[24px] overflow-hidden shadow-sm mt-auto">
-             {imageUrl ? (
-               <Image src={imageUrl} alt={ing.word} fill className="object-cover" />
-             ) : (
-               <div className="w-full h-full flex items-center justify-center bg-[#f5f1e6] text-[#6c3518]/20">
-                 <span className="font-seasons text-2xl">No Image</span>
-               </div>
-             )}
+            {imageUrl ? (
+              <Image src={imageUrl} alt={ing.word} fill className="object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-[#f5f1e6] text-[#6c3518]/20">
+                <span className="font-seasons text-2xl">No Image</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -246,7 +247,7 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
               </p>
             </div>
           )}
-          
+
           {/* How it works */}
           {ing.work && (
             <div>
@@ -256,15 +257,15 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
               </p>
             </div>
           )}
-          
+
           {/* Found in */}
           {ing.foundIn && ing.foundIn.length > 0 && (
             <div>
               <h4 className="text-[11px] md:text-xs font-poppins tracking-[0.2em] text-[#6c3518] uppercase mb-4">Found In</h4>
               <div className="flex flex-col gap-2">
-                 {ing.foundIn.map((item, idx) => (
-                   <span key={idx} className="text-[#6c3518]/60 font-poppins text-sm md:text-sm">{item}</span>
-                 ))}
+                {ing.foundIn.map((item, idx) => (
+                  <span key={idx} className="text-[#6c3518]/60 font-poppins text-sm md:text-sm">{item}</span>
+                ))}
               </div>
             </div>
           )}

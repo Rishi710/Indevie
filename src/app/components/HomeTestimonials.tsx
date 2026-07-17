@@ -81,8 +81,8 @@ export default function HomeTestimonials() {
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
             Real Experiences
           </span>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#6c3518]">
-            <span className="font-poppins font-semibold italic">Hear it from the Enthusiasts</span>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#6c3518] font-serif font-bold">
+            Hear it from the Enthusiasts
           </h2>
         </div>
       <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[300px] md:h-[300px] flex items-center justify-center">

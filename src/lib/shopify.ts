@@ -133,6 +133,8 @@ export interface ShopifyProduct {
   handle: string;
   descriptionHtml?: string;
   description?: string;
+  productType?: string;
+  tags?: string[];
   options?: {
     id: string;
     name: string;
@@ -169,6 +171,9 @@ export const GET_PRODUCTS_QUERY = `
         id
         title
         handle
+        description
+        productType
+        tags
         variants(first: 1) {
           nodes {
             id
@@ -212,12 +217,15 @@ export const GET_COLLECTIONS_QUERY = `
         id
         title
         handle
+        image {
+          url
+        }
       }
     }
   }
 `;
 
-export async function fetchCollections(): Promise<{ id: string; title: string; handle: string }[]> {
+export async function fetchCollections(): Promise<{ id: string; title: string; handle: string, image?: { url: string } | null }[]> {
   try {
     const data: any = await storefrontClient.request(GET_COLLECTIONS_QUERY);
     return data.collections?.nodes || [];
@@ -237,6 +245,9 @@ export const GET_COLLECTION_PRODUCTS_QUERY = `
           id
           title
           handle
+          description
+          productType
+          tags
           variants(first: 1) {
             nodes {
               id

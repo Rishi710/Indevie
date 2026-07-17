@@ -1,215 +1,764 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchCollections, fetchCollectionProducts, ShopifyProduct } from "@/lib/shopify";
+import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
+import { SlidersHorizontal, ChevronDown, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+
+interface CollectionItem {
+  id: string;
+  title: string;
+  handle: string;
+  image?: { url: string } | null;
+}
 
 export default function ShopPage() {
-  const [collections, setCollections] = useState<{ title: string; heading: string; products: ShopifyProduct[] }[]>([]);
+  const [collections, setCollections] = useState<CollectionItem[]>([]);
+  const [activeCollection, setActiveCollection] = useState<string>("all");
+  const [products, setProducts] = useState<ShopifyProduct[]>([]);
+  const [allProducts, setAllProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+  // Filter States
+  const [selectedProductTypes, setSelectedProductTypes] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
+  const [selectedOthers, setSelectedOthers] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<string>("relevant");
+
+  // Fetch collections and products on load
   useEffect(() => {
-    const getCollectionsData = async () => {
+    const loadShopData = async () => {
       try {
-        const allCollections = await fetchCollections();
+        setLoading(true);
+        const fetchedCollections = await fetchCollections();
+        // Exclude system collections
+        const cleanCollections = fetchedCollections.filter(
+          (c) => !["frontpage", "homepage"].includes(c.handle.toLowerCase())
+        );
+        setCollections(cleanCollections);
 
-        const fullBodyCol = allCollections.find(c => c.title.toLowerCase().includes("full body") || c.title.toLowerCase().includes("power devi"));
-        const minisCol = allCollections.find(c => c.title.toLowerCase().includes("minis") || c.title.toLowerCase().includes("mini"));
-        const giftCol = allCollections.find(c => c.title.toLowerCase().includes("share") || c.title.toLowerCase().includes("gift") || c.title.toLowerCase().includes("bundle"));
-        const singleCol = allCollections.find(c => c.title.toLowerCase().includes("single"));
+        // Fetch all products to construct "Shop All" (guarantees all 20+ products are displayed)
+        const compiledProducts = await fetchProducts(100);
 
-        const collectionsToRender = [];
+        // Apply a default preferred sorting for Shop All (matching homepage sequence)
+        const preferredHandles = [
+          "geeli-mitti-face-mist",
+          "gulkand-face-mist",
+          "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen",
+          "indevie-calm-balm"
+        ];
+        const preferred = preferredHandles
+          .map(h => compiledProducts.find(p => p.handle === h))
+          .filter(Boolean) as ShopifyProduct[];
+        const others = compiledProducts.filter(p => !preferredHandles.includes(p.handle));
+        const sortedAll = [...preferred, ...others];
 
-        if (singleCol) {
-          const data = await fetchCollectionProducts(singleCol.handle);
-          if (data && data.products.length > 0) {
-            const preferredHandles = [
-              "geeli-mitti-face-mist",
-              "gulkand-face-mist",
-              "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen",
-              "gulaaboo-tez-dhoop-sunshield-refill"
-            ];
-            const preferred = preferredHandles
-              .map(h => data.products.find((p: ShopifyProduct) => p.handle === h))
-              .filter(Boolean) as ShopifyProduct[];
-            const others = data.products.filter(
-              (p: ShopifyProduct) => !preferredHandles.includes(p.handle)
-            );
-            collectionsToRender.push({
-              title: singleCol.title,
-              heading: "Full Body Power Devi Range",
-              products: [...preferred, ...others]
-            });
-          }
-        }
-
-        // if (fullBodyCol) {
-        //   const data = await fetchCollectionProducts(fullBodyCol.handle);
-        //   if (data && data.products.length > 0) {
-        //     collectionsToRender.push({
-        //       title: fullBodyCol.title,
-        //       heading: "‘Full Body’ Power Devi Range",
-        //       products: data.products
-        //     });
-        //   }
-        // }
-
-        if (minisCol) {
-          const data = await fetchCollectionProducts(minisCol.handle);
-          if (data && data.products.length > 0) {
-            collectionsToRender.push({
-              title: minisCol.title,
-              heading: "Power Devi ‘MINIS’ Range",
-              products: data.products
-            });
-          }
-        }
-
-        if (giftCol) {
-          const data = await fetchCollectionProducts(giftCol.handle);
-          if (data && data.products.length > 0) {
-            collectionsToRender.push({
-              title: giftCol.title,
-              heading: "Share the Devi Energy (Gifting Bundles)",
-              products: data.products
-            });
-          }
-        }
-
-        // Fallback: If no matching collections found, just show all non-empty collections
-        if (collectionsToRender.length === 0 && allCollections.length > 0) {
-          for (const col of allCollections) {
-            const data = await fetchCollectionProducts(col.handle);
-            if (data && data.products.length > 0 && col.handle !== 'frontpage') {
-              collectionsToRender.push({
-                title: col.title,
-                heading: col.title, // Use original title as fallback
-                products: data.products
-              });
-            }
-          }
-        }
-
-        setCollections(collectionsToRender);
+        setAllProducts(sortedAll);
+        setProducts(sortedAll);
       } catch (error) {
-        console.error("Error fetching collections:", error);
+        console.error("Error loading shop catalog:", error);
       } finally {
         setLoading(false);
       }
     };
-    getCollectionsData();
+
+    loadShopData();
   }, []);
 
+  // Fetch products for a specific collection when activeCollection changes
+  useEffect(() => {
+    if (activeCollection === "all") {
+      setProducts(allProducts);
+      return;
+    }
+
+    const loadCollectionProducts = async () => {
+      try {
+        setLoading(true);
+        const colData = await fetchCollectionProducts(activeCollection, 50);
+        if (colData) {
+          setProducts(colData.products);
+        }
+      } catch (error) {
+        console.error("Error loading collection products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCollectionProducts();
+  }, [activeCollection, allProducts]);
+
+  // Compute available filter items from products
+  const filterOptions = useMemo(() => {
+    const types = new Set<string>();
+    const sizes = new Set<string>();
+    const concerns = new Set<string>();
+    const others = new Set<string>();
+
+    products.forEach((p) => {
+      // 1. Product type
+      if (p.productType) {
+        types.add(p.productType);
+      } else {
+        // Fallback checks
+        const titleLower = p.title.toLowerCase();
+        if (titleLower.includes("mist")) types.add("Face Mist");
+        else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) types.add("Sunscreen");
+        else if (titleLower.includes("calm balm")) types.add("Body Balm");
+        else if (titleLower.includes("lotion")) types.add("Body Lotion");
+        else if (titleLower.includes("oil")) types.add("Body Oil");
+        else if (titleLower.includes("set") || titleLower.includes("ritual")) types.add("Gift Set");
+      }
+
+      // 2. Sizes (derived from variants or tags)
+      const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
+      const sizeTag30ml = p.tags?.some(t => t.toLowerCase().includes("30ml")) || p.title.toLowerCase().includes("30ml");
+      const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
+
+      if (hasMini) {
+        sizes.add("Mini Size");
+      } else if (sizeTag30ml || sizeTag50gm || p.title.toLowerCase().includes("lotion") || p.title.toLowerCase().includes("oil")) {
+        sizes.add("Full Size");
+      } else {
+        sizes.add("Standard Size");
+      }
+
+      // 3. Concerns (derived from tags starting with concern: or standard matching tags)
+      const productTags = p.tags || [];
+      let foundExplicitConcern = false;
+
+      productTags.forEach((tag) => {
+        if (tag.toLowerCase().startsWith("concern:")) {
+          concerns.add(tag.split(":")[1].trim());
+          foundExplicitConcern = true;
+        }
+      });
+
+      if (!foundExplicitConcern) {
+        const titleLower = p.title.toLowerCase();
+        if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) {
+          concerns.add("Sun Protection");
+        }
+        if (titleLower.includes("mist") || titleLower.includes("lotion")) {
+          concerns.add("Deep Hydration");
+        }
+        if (titleLower.includes("oil") || titleLower.includes("gulkand")) {
+          concerns.add("Skin Glow");
+        }
+        if (titleLower.includes("calm balm") || titleLower.includes("mitti")) {
+          concerns.add("Calming & Soothing");
+        }
+      }
+
+      // 4. Others (Singles, Combos, Sets)
+      const isCombo = p.tags?.some(t => t.toLowerCase().includes("combo") || t.toLowerCase().includes("set") || t.toLowerCase().includes("ritual")) || p.title.toLowerCase().includes("set");
+      if (isCombo) {
+        others.add("Combos & Sets");
+      } else {
+        others.add("Singles");
+      }
+    });
+
+    return {
+      productTypes: Array.from(types).sort(),
+      sizes: Array.from(sizes).sort(),
+      concerns: Array.from(concerns).sort(),
+      others: Array.from(others).sort(),
+    };
+  }, [products]);
+
+  // Apply filters and sorting
+  const filteredAndSortedProducts = useMemo(() => {
+    let result = [...products];
+
+    // Filter by Product Type
+    if (selectedProductTypes.length > 0) {
+      result = result.filter((p) => {
+        const type = p.productType || (
+          p.title.toLowerCase().includes("mist") ? "Face Mist" :
+            (p.title.toLowerCase().includes("sunshield") || p.title.toLowerCase().includes("sunscreen")) ? "Sunscreen" :
+              p.title.toLowerCase().includes("calm balm") ? "Body Balm" :
+                p.title.toLowerCase().includes("lotion") ? "Body Lotion" :
+                  p.title.toLowerCase().includes("oil") ? "Body Oil" : "Gift Set"
+        );
+        return selectedProductTypes.includes(type);
+      });
+    }
+
+    // Filter by Size
+    if (selectedSizes.length > 0) {
+      result = result.filter((p) => {
+        const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
+        const sizeTag30ml = p.tags?.some(t => t.toLowerCase().includes("30ml")) || p.title.toLowerCase().includes("30ml");
+        const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
+
+        const size = hasMini ? "Mini Size" : (sizeTag30ml || sizeTag50gm || p.title.toLowerCase().includes("lotion") || p.title.toLowerCase().includes("oil") ? "Full Size" : "Standard Size");
+        return selectedSizes.includes(size);
+      });
+    }
+
+    // Filter by Concern
+    if (selectedConcerns.length > 0) {
+      result = result.filter((p) => {
+        const productTags = p.tags || [];
+        const concernsList: string[] = [];
+
+        productTags.forEach((tag) => {
+          if (tag.toLowerCase().startsWith("concern:")) {
+            concernsList.push(tag.split(":")[1].trim());
+          }
+        });
+
+        // Add defaults if none exist
+        if (concernsList.length === 0) {
+          const titleLower = p.title.toLowerCase();
+          if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) concernsList.push("Sun Protection");
+          if (titleLower.includes("mist") || titleLower.includes("lotion")) concernsList.push("Deep Hydration");
+          if (titleLower.includes("oil") || titleLower.includes("gulkand")) concernsList.push("Skin Glow");
+          if (titleLower.includes("calm balm") || titleLower.includes("mitti")) concernsList.push("Calming & Soothing");
+        }
+
+        return concernsList.some(concern => selectedConcerns.includes(concern));
+      });
+    }
+
+    // Filter by Others
+    if (selectedOthers.length > 0) {
+      result = result.filter((p) => {
+        const isCombo = p.tags?.some(t => t.toLowerCase().includes("combo") || t.toLowerCase().includes("set") || t.toLowerCase().includes("ritual")) || p.title.toLowerCase().includes("set");
+        const category = isCombo ? "Combos & Sets" : "Singles";
+        return selectedOthers.includes(category);
+      });
+    }
+
+    // Apply Sorting
+    if (sortBy === "price-asc") {
+      result.sort((a, b) => parseFloat(a.variants.nodes[0]?.price?.amount || "0") - parseFloat(b.variants.nodes[0]?.price?.amount || "0"));
+    } else if (sortBy === "price-desc") {
+      result.sort((a, b) => parseFloat(b.variants.nodes[0]?.price?.amount || "0") - parseFloat(a.variants.nodes[0]?.price?.amount || "0"));
+    } else if (sortBy === "alpha") {
+      result.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    return result;
+  }, [products, selectedProductTypes, selectedSizes, selectedConcerns, selectedOthers, sortBy]);
+
+  // Toggle Filters
+  const handleTypeToggle = (type: string) => {
+    setSelectedProductTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
+  };
+
+  const handleSizeToggle = (size: string) => {
+    setSelectedSizes(prev =>
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    );
+  };
+
+  const handleConcernToggle = (concern: string) => {
+    setSelectedConcerns(prev =>
+      prev.includes(concern) ? prev.filter(c => c !== concern) : [...prev, concern]
+    );
+  };
+
+  const handleOtherToggle = (other: string) => {
+    setSelectedOthers(prev =>
+      prev.includes(other) ? prev.filter(o => o !== other) : [...prev, other]
+    );
+  };
+
+  const clearAllFilters = () => {
+    setSelectedProductTypes([]);
+    setSelectedSizes([]);
+    setSelectedConcerns([]);
+    setSelectedOthers([]);
+  };
+
+  // Find thumbnail for collections
+  const getCollectionThumbnail = (col: CollectionItem) => {
+    if (col.image?.url) return col.image.url;
+    return "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/logo_3.webp?v=1778164066";
+  };
+
   return (
-    <main className="relative min-h-screen bg-[#ffffff  ] overflow-x-hidden">
-      {/* 🌿 PARALLAX HERO SECTION (Modeled after Contact Page) */}
-      <section className="relative h-[80vh] md:h-[100vh] w-full overflow-hidden">
+    <main className="relative min-h-screen bg-[#F5F1E6] overflow-x-hidden">
+
+      {/* 🌿 PARALLAX HERO SECTION */}
+      <section className="relative h-[45vh] md:h-[60vh] w-full overflow-hidden">
         <div
-          className="absolute inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-100"
+          className="absolute inset-0 w-full h-[65vh] md:h-[80vh] z-0 opacity-100"
           style={{
             backgroundImage: "url('/images/DSC_6451.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         >
-          {/* Soft Overlay for depth */}
-          <div className="absolute inset-0 bg-[#6c3518]/30" />
+          {/* Soft Overlay */}
+          <div className="absolute inset-0 bg-[#6c3518]/25" />
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 1.0, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <h1 className="text-5xl md:text-8xl font-poppins-light italic text-white mb-6 drop-shadow-2xl">
+            <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-2xl font-light">
               The Ritual Library
             </h1>
-            <p className="text-white/90 text-[10px] md:text-xs uppercase tracking-[0.6em] font-light max-w-lg mx-auto leading-loose drop-shadow-lg">
+            <p className="text-white/95 text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
               Curated botanical treasures for your daily sanctuary.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* 🍶 CONTENT SECTION */}
-      <section className="relative z-20 bg-[#f5f1e6] pt-20 ">
-        <div className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16">
+      {/* CAROUSEL / CATEGORIES TABS */}
+      <div className="w-full bg-transparent border-b border-[#6c3518]/10 py-8 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-8 md:gap-16 min-w-max pb-2">
 
-          {loading ? (
-            <div className="space-y-32">
-              {[...Array(2)].map((_, i) => (
-                <div key={i}>
-                  <div className="h-8 bg-gray-200 rounded w-1/3 mb-12 animate-pulse" />
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
-                    {[...Array(4)].map((_, j) => (
-                      <div key={j} className="animate-pulse space-y-4">
-                        <div className="aspect-[4/5] bg-gray-200 rounded-2xl" />
-                        <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : collections && collections.length > 0 ? (
-            <div className="space-y-12">
-              {collections.map((collection, colIndex) => (
-                <div key={colIndex}>
-                  <div className="flex flex-col md:flex-row justify-between items-center gap-2 mb-8 pb-6 border-b border-[#6c3518]/10">
-                    <div className="flex flex-wrap items-center gap-4">
-                      {/* <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#6c3518]/40 italic">Collection</span> */}
-                      <h2 className="text-3xl md:text-4xl font-poppins font-bold text-center text-[#6c3518]">{collection.heading}</h2>
-                      {/* <span className="px-3 py-1 bg-[#6c3518]/5 rounded-full text-[10px] font-bold text-[#6c3518]/60 uppercase tracking-widest">
-                        {collection.products.length} Items
-                      </span> */}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-10 gap-x-3 md:gap-x-3 px-2 md:px-5">
-                    {collection.products.map((product, index) => (
-                      <motion.div
-                        key={product.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.8, delay: index * 0.05 }}
-                        className="h-full"
-                      >
-                        <ProductCard product={product} />
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20">
-              <h2 className="text-2xl font-serif italic text-[#6c3518] mb-4">Our rituals are currently being prepared.</h2>
-              <Link href="/" className="text-[11px] font-bold tracking-[0.3em] uppercase text-[#6c3518]/60 hover:text-[#6c3518] border-b border-transparent hover:border-[#6c3518] transition-all pb-1">
-                Explore our Story
-              </Link>
-            </div>
-          )}
-
-          {/* Bottom Aesthetic Note */}
-          <div className="mt-48 text-center">
-            <div className="max-w-2xl mx-auto space-y-12">
-              <div className="h-[1px] w-24 bg-[#6c3518]/20 mx-auto" />
-              <p className="text-[11px] font-bold tracking-[0.4em] uppercase text-[#6c3518]/30">
-                Ethically Sourced • Botanically Pure • Timeless Wisdom
-              </p>
-              <div className="text-4xl md:text-6xl font-serif italic text-[#6c3518]/5 select-none pointer-events-none">
-                Indevie Beauty
+          {/* Shop All Tab */}
+          <button
+            onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
+            className="flex flex-col items-center gap-3 group relative cursor-pointer outline-none animate-in fade-in"
+          >
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border border-[#6c3518] p-0.5 transition-transform group-hover:scale-105">
+              <div className="w-full h-full rounded-full bg-[#f5f1e6] flex items-center justify-center font-poppins font-bold text-[9px] tracking-wider text-[#6c3518] text-center px-2">
+                SHOP ALL
               </div>
+              {/* Highlight shape if active */}
+              {activeCollection === "all" && (
+                <div className="absolute inset-0 bg-[#6c3518]/10 border-2 border-[#6c3518] rounded-full pointer-events-none" />
+              )}
             </div>
+            <span className={`text-[11px] font-poppins font-bold uppercase tracking-wider ${activeCollection === "all" ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
+              Shop All
+            </span>
+          </button>
+
+          {/* Collection Dynamic Tabs */}
+          {collections.map((col) => {
+            const isActive = activeCollection === col.handle;
+            const thumbnail = getCollectionThumbnail(col);
+
+            return (
+              <button
+                key={col.id}
+                onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
+                className="flex flex-col items-center gap-3 group relative cursor-pointer outline-none"
+              >
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border border-[#6c3518]/40 p-0.5 transition-transform group-hover:scale-105 bg-white">
+                  <div className="w-full h-full rounded-full overflow-hidden relative">
+                    <Image
+                      src={thumbnail}
+                      alt={col.title}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                    />
+                  </div>
+                  {/* Highlight shape if active */}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-[#6c3518]/10 border border-[#6c3518] rounded-full pointer-events-none" />
+                  )}
+                </div>
+                <span className={`text-[11px] font-poppins font-bold uppercase tracking-wider ${isActive ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
+                  {col.title.replace("Range", "").replace("Collection", "").trim()}
+                </span>
+              </button>
+            );
+          })}
+
+        </div>
+      </div>
+
+      {/* CATALOG MAIN CONTENT */}
+      <section className="relative z-20 bg-transparent py-12">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-16">
+
+          {/* Header Title & Quote */}
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-serif font-light text-black uppercase tracking-wider">
+              {activeCollection === "all" ? "All Indevie Products" : collections.find(c => c.handle === activeCollection)?.title}
+            </h2>
+            <p className="text-xs text-gray-500 font-poppins italic mt-2 tracking-wide font-light">
+              THE POWER OF INNER BEAUTY
+            </p>
           </div>
+
+          <div className="flex flex-col lg:flex-row gap-10">
+
+            {/* 1. FILTER SIDEBAR — Desktop only */}
+            <aside className="hidden lg:block w-[240px] shrink-0 space-y-8 sticky top-28 self-start">
+
+              {/* Product Type Filter */}
+              {filterOptions.productTypes.length > 0 && (
+                <div className="border-b border-[#6c3518]/10 pb-6">
+                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Product type</h4>
+                  <ul className="space-y-3">
+                    {filterOptions.productTypes.map((type) => (
+                      <li key={type} className="flex items-center gap-2.5">
+                        <input
+                          type="checkbox"
+                          id={`type-${type}`}
+                          checked={selectedProductTypes.includes(type)}
+                          onChange={() => handleTypeToggle(type)}
+                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                        />
+                        <label htmlFor={`type-${type}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                          {type}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Shop by Concern Filter */}
+              {filterOptions.concerns.length > 0 && (
+                <div className="border-b border-[#6c3518]/10 pb-6">
+                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Shop by Concern</h4>
+                  <ul className="space-y-3">
+                    {filterOptions.concerns.map((concern) => (
+                      <li key={concern} className="flex items-center gap-2.5">
+                        <input
+                          type="checkbox"
+                          id={`concern-${concern}`}
+                          checked={selectedConcerns.includes(concern)}
+                          onChange={() => handleConcernToggle(concern)}
+                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                        />
+                        <label htmlFor={`concern-${concern}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                          {concern}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Size Filter */}
+              {filterOptions.sizes.length > 0 && (
+                <div className="border-b border-[#6c3518]/10 pb-6">
+                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Size</h4>
+                  <ul className="space-y-3">
+                    {filterOptions.sizes.map((size) => (
+                      <li key={size} className="flex items-center gap-2.5">
+                        <input
+                          type="checkbox"
+                          id={`size-${size}`}
+                          checked={selectedSizes.includes(size)}
+                          onChange={() => handleSizeToggle(size)}
+                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                        />
+                        <label htmlFor={`size-${size}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                          {size}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Others Filter */}
+              {filterOptions.others.length > 0 && (
+                <div className="border-b border-[#6c3518]/10 pb-6">
+                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Others</h4>
+                  <ul className="space-y-3">
+                    {filterOptions.others.map((other) => (
+                      <li key={other} className="flex items-center gap-2.5">
+                        <input
+                          type="checkbox"
+                          id={`other-${other}`}
+                          checked={selectedOthers.includes(other)}
+                          onChange={() => handleOtherToggle(other)}
+                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                        />
+                        <label htmlFor={`other-${other}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                          {other}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Sort By Filter */}
+              <div>
+                <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-3">Sort by</h4>
+                <div className="relative">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full bg-white border border-[#6c3518] text-[#6c3518] rounded-[4px] px-3 py-2.5 text-xs font-poppins uppercase font-bold outline-none cursor-pointer appearance-none"
+                  >
+                    <option value="relevant">Most Relevant</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="alpha">Alphabetical</option>
+                  </select>
+                  <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#6c3518]" />
+                </div>
+              </div>
+
+              {/* Clear filters shortcut */}
+              {(selectedProductTypes.length > 0 || selectedSizes.length > 0 || selectedConcerns.length > 0 || selectedOthers.length > 0) && (
+                <button
+                  onClick={clearAllFilters}
+                  className="w-full py-2 bg-[#f5f1e6] hover:bg-[#6c3518] hover:text-white border border-[#6c3518] rounded-[4px] text-[10px] font-poppins font-bold uppercase tracking-wider transition-colors duration-200 text-[#6c3518]"
+                >
+                  Clear Filters
+                </button>
+              )}
+
+            </aside>
+
+            {/* 2. PRODUCT GRID SECTION */}
+            <div className="flex-1 space-y-6">
+
+              {/* Toolbar: Mob filters trigger & Desktop result count */}
+              <div className="flex justify-between items-center border-b border-gray-150 pb-4">
+                <p className="text-xs font-poppins text-gray-500 font-medium">
+                  Showing {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
+                </p>
+
+                {/* Mobile Filter Button */}
+                <button
+                  onClick={() => setIsMobileFilterOpen(true)}
+                  className="lg:hidden flex items-center gap-2 border border-[#6c3518] px-4 py-2 rounded-[4px] bg-[#f5f1e6] hover:bg-[#6c3518] hover:text-white text-[#6c3518] transition-colors duration-200 cursor-pointer"
+                >
+                  <SlidersHorizontal size={14} />
+                  <span className="text-xs font-poppins font-bold uppercase tracking-wider">Filters</span>
+                </button>
+              </div>
+
+              {loading ? (
+                /* Loading Skeleton */
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="animate-pulse space-y-3 border border-gray-200 rounded overflow-hidden">
+                      <div className="aspect-square bg-gray-100" />
+                      <div className="h-3 bg-gray-100 mx-3 rounded w-2/3" />
+                      <div className="h-3 bg-gray-100 mx-3 rounded w-1/2" />
+                      <div className="h-8 bg-gray-100 mx-3 mb-3 rounded w-full" />
+                    </div>
+                  ))}
+                </div>
+              ) : filteredAndSortedProducts.length > 0 ? (
+                /* Real Grid Card mapping */
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  {filteredAndSortedProducts.map((product, idx) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: Math.min(idx * 0.04, 0.5) }}
+                      className="h-full"
+                    >
+                      <ProductCard product={product} priority={idx < 4} />
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                /* Empty state */
+                <div className="text-center py-20 bg-[#faf8f3] rounded-xl border border-dashed border-[#6c3518]/20">
+                  <p className="text-sm font-poppins text-gray-500 italic">No products match your filter selection.</p>
+                  <button
+                    onClick={clearAllFilters}
+                    className="mt-4 px-6 py-2.5 bg-[#6c3518] text-white text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] hover:bg-black transition-colors"
+                  >
+                    Clear Filter Checkboxes
+                  </button>
+                </div>
+              )}
+
+            </div>
+
+          </div>
+
         </div>
       </section>
+
+      {/* 3. MOBILE FILTER DRAWER */}
+      <AnimatePresence>
+        {isMobileFilterOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileFilterOpen(false)}
+              className="fixed inset-0 bg-black/50 z-[1000] lg:hidden"
+            />
+
+            {/* Slide up panel */}
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-2xl z-[1010] flex flex-col lg:hidden border-t border-[#6c3518] overflow-hidden shadow-2xl animate-in slide-in-from-bottom"
+            >
+              {/* Modal header */}
+              <div className="flex items-center justify-between p-5 border-b border-gray-150">
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal size={16} className="text-[#6c3518]" />
+                  <h3 className="text-sm font-poppins font-bold uppercase tracking-wider text-black">Filter By</h3>
+                </div>
+                <button
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="p-1 hover:bg-gray-100 rounded-full"
+                >
+                  <X size={20} className="text-black" />
+                </button>
+              </div>
+
+              {/* Scrollable list options */}
+              <div className="flex-1 overflow-y-auto p-5 space-y-6">
+
+                {/* Product Type checkboxes */}
+                {filterOptions.productTypes.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Product type</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {filterOptions.productTypes.map((type) => (
+                        <div key={type} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id={`mob-type-${type}`}
+                            checked={selectedProductTypes.includes(type)}
+                            onChange={() => handleTypeToggle(type)}
+                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                          />
+                          <label htmlFor={`mob-type-${type}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
+                            {type}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Shop by Concern checkboxes */}
+                {filterOptions.concerns.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Shop by Concern</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {filterOptions.concerns.map((concern) => (
+                        <div key={concern} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id={`mob-concern-${concern}`}
+                            checked={selectedConcerns.includes(concern)}
+                            onChange={() => handleConcernToggle(concern)}
+                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                          />
+                          <label htmlFor={`mob-concern-${concern}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
+                            {concern}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Size checkboxes */}
+                {filterOptions.sizes.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Size</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {filterOptions.sizes.map((size) => (
+                        <div key={size} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id={`mob-size-${size}`}
+                            checked={selectedSizes.includes(size)}
+                            onChange={() => handleSizeToggle(size)}
+                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                          />
+                          <label htmlFor={`mob-size-${size}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
+                            {size}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Others checkboxes */}
+                {filterOptions.others.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Others</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {filterOptions.others.map((other) => (
+                        <div key={other} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id={`mob-other-${other}`}
+                            checked={selectedOthers.includes(other)}
+                            onChange={() => handleOtherToggle(other)}
+                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                          />
+                          <label htmlFor={`mob-other-${other}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
+                            {other}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Sort selector */}
+                <div>
+                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Sort by</h4>
+                  <div className="relative">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="w-full bg-white border border-[#6c3518] text-[#6c3518] rounded-[4px] px-3 py-2.5 text-xs font-poppins uppercase font-bold outline-none"
+                    >
+                      <option value="relevant">Most Relevant</option>
+                      <option value="price-asc">Price: Low to High</option>
+                      <option value="price-desc">Price: High to Low</option>
+                      <option value="alpha">Alphabetical</option>
+                    </select>
+                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#6c3518]" />
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Bottom Apply Bar */}
+              <div className="p-4 bg-gray-50 border-t border-gray-150 flex gap-4">
+                <button
+                  onClick={clearAllFilters}
+                  className="flex-1 py-3 border border-[#6c3518] text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] bg-white text-[#6c3518] active:bg-[#f5f1e6]"
+                >
+                  Clear All
+                </button>
+                <button
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="flex-1 py-3 bg-[#6c3518] text-white text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] active:bg-black transition-colors"
+                >
+                  Apply Filters
+                </button>
+              </div>
+
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
     </main>
   );
 }

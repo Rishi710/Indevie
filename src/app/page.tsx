@@ -24,7 +24,7 @@ export default async function Home() {
     <main className="bg-[#f5f1e6] min-h-screen">
       <HeroSlider />
       <InfiniteTicker />
-      <BrandMantra />
+      {/* <BrandMantra /> */}
       <ProductGridSection initialProducts={products} />
       <IntroductionSection />
       <UgcSection initialProducts={products} />

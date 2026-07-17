@@ -4,10 +4,10 @@ import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
+import {
+  Mail,
+  Phone,
+  MapPin,
   ArrowUpRight
 } from "lucide-react";
 
@@ -29,7 +29,7 @@ const Magnetic = ({ children }: { children: React.ReactNode }) => {
     const centerY = top + height / 2;
     const distanceX = clientX - centerX;
     const distanceY = clientY - centerY;
-    
+
     x.set(distanceX * 0.35);
     y.set(distanceY * 0.35);
   };
@@ -96,7 +96,7 @@ const Footer = () => {
       label: "Pinterest",
       href: "https://in.pinterest.com/indeviebeauty/?invite_code=39fa11aa4e2442eea028c46f356a40b5&sender=1070097698868490460",
       SVG: () => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.853 0 1.267.64 1.267 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.135-1.867 3.135-4.56 0-2.385-1.715-4.052-4.163-4.052-2.836 0-4.5 2.127-4.5 4.326 0 .856.33 1.775.741 2.276a.3.3 0 0 1 .069.286c-.076.313-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.967-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.522 0 10-4.477 10-10S17.522 2 12 2z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.853 0 1.267.64 1.267 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.135-1.867 3.135-4.56 0-2.385-1.715-4.052-4.163-4.052-2.836 0-4.5 2.127-4.5 4.326 0 .856.33 1.775.741 2.276a.3.3 0 0 1 .069.286c-.076.313-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.967-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.522 0 10-4.477 10-10S17.522 2 12 2z" /></svg>
       )
     }
   ];
@@ -112,7 +112,7 @@ const Footer = () => {
 
   return (
     <>
-      <div className="w-full bg-[#fffaf4] text-[#6c3518] leading-[0] overflow-hidden -mb-[1px]">
+      <div className="w-full bg-[#B40417] text-[#6c3518] leading-[0] overflow-hidden -mb-[1px]">
         <svg className="relative block w-full h-[50px] md:h-[50px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
           <defs>
             <path id="wave-3" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path>
@@ -131,48 +131,48 @@ const Footer = () => {
           </g>
         </svg>
       </div>
-      <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-poppins pt-20 pb-12 overflow-hidden">
-      {/*  Floating Botanical Detail (GPU Accelerated) */}
-      <motion.div 
-        animate={{ 
-          y: [0, -40, 0],
-          x: [0, 20, 0],
-          rotate: [0, 10, 0]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 right-[15%] opacity-[0.08] pointer-events-none will-change-transform"
-      >
-        {/* <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
+      <footer className="relative bg-[#B40417] text-[#f5f1e6] font-poppins pt-20 pb-12 overflow-hidden">
+        {/*  Floating Botanical Detail (GPU Accelerated) */}
+        <motion.div
+          animate={{
+            y: [0, -40, 0],
+            x: [0, 20, 0],
+            rotate: [0, 10, 0]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-20 right-[15%] opacity-[0.08] pointer-events-none will-change-transform"
+        >
+          {/* <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
           <path d="M12 2L12 22M12 2C12 2 4 7 4 12C4 17 12 22 12 22M12 2C12 2 20 7 20 12C20 17 12 22 12 22M4 12H20" />
         </svg> */}
-      </motion.div>
+        </motion.div>
 
-      {/* 🌫️ Ambient Organic Blobs (GPU Accelerated) */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.4, 1],
-            x: ["-10%", "10%", "-10%"],
-            opacity: [0.04, 0.08, 0.04]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] -left-[10%] w-[80%] h-[120%] bg-[#8B4513] rounded-[40%_60%_70%_30%_/_50%_40%_60%_50%] blur-[120px] will-change-transform" 
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1.3, 1, 1.3],
-            x: ["10%", "-10%", "10%"],
-            opacity: [0.03, 0.06, 0.03]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-[20%] -right-[10%] w-[70%] h-[100%] bg-[#A0522D] rounded-[60%_40%_30%_70%_/_40%_50%_50%_60%] blur-[100px] will-change-transform" 
-        />
-      </div>
+        {/* 🌫️ Ambient Organic Blobs (GPU Accelerated) */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden">
+          <motion.div
+            animate={{
+              scale: [1, 1.4, 1],
+              x: ["-10%", "10%", "-10%"],
+              opacity: [0.04, 0.08, 0.04]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[20%] -left-[10%] w-[80%] h-[120%] bg-[#8B4513] rounded-[40%_60%_70%_30%_/_50%_40%_60%_50%] blur-[120px] will-change-transform"
+          />
+          <motion.div
+            animate={{
+              scale: [1.3, 1, 1.3],
+              x: ["10%", "-10%", "10%"],
+              opacity: [0.03, 0.06, 0.03]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-[20%] -right-[10%] w-[70%] h-[100%] bg-[#A0522D] rounded-[60%_40%_30%_70%_/_40%_50%_50%_60%] blur-[100px] will-change-transform"
+          />
+        </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-        
-        {/* --- NEWSLETTER SECTION: Enter the Ritual --- */}
-        {/* <motion.div 
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+
+          {/* --- NEWSLETTER SECTION: Enter the Ritual --- */}
+          {/* <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -216,134 +216,134 @@ const Footer = () => {
           </form>
         </motion.div> */}
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 lg:gap-8 mb-24">
-          
-          {/* COLUMN 1: IDENTITY */}
-          <div className="col-span-2 sm:col-span-1 space-y-10">
-             <Link href="/" className="inline-block relative w-44 h-20 group overflow-hidden">
-                <Image 
-                  src="/images/logo.png" 
-                  alt="INDEVIE" 
-                  fill 
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 lg:gap-8 mb-24">
+
+            {/* COLUMN 1: IDENTITY */}
+            <div className="col-span-2 sm:col-span-1 space-y-10">
+              <Link href="/" className="inline-block relative w-44 h-20 group overflow-hidden">
+                <Image
+                  src="/images/logo.png"
+                  alt="INDEVIE"
+                  fill
                   sizes="176px"
-                  className="object-contain brightness-0 invert opacity-90 transition-transform duration-700 group-hover:scale-[1.03]" 
+                  className="object-contain brightness-0 invert opacity-90 transition-transform duration-700 group-hover:scale-[1.03]"
                   priority
                 />
-            </Link>
-            <p className="text-[14px] font-light leading-relaxed text-[#f5f1e6]/60 max-w-[280px] tracking-wide">
-              Botanical treasures handcrafted with ancient wisdom to nurture your modern radiance, naturally.
-            </p>
-            <div className="flex items-center gap-3 opacity-20 pt-4">
-               <MapPin size={10} strokeWidth={2.5} />
-               <span className="text-[9px] uppercase tracking-[0.4em] font-bold">Indore, India</span>
-            </div>
-          </div>
-
-          {/* COLUMN 2: EXPLORE */}
-          <div className="space-y-10 lg:pl-12">
-            <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Explore</h4>
-            <ul className="space-y-5">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#f5f1e6]/70 hover:text-white transition-colors">
-                    <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
-                    <span>{link.name}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* COLUMN 3: SERVICES */}
-          <div className="space-y-10">
-            <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Services</h4>
-            <ul className="space-y-5">
-              {supportLinks.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#f5f1e6]/70 hover:text-white transition-colors">
-                    <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
-                    <span>{link.name}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* COLUMN 4: CONNECT */}
-          <div className="col-span-2 sm:col-span-1 space-y-10">
-            <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Connect</h4>
-            <div className="space-y-8">
-              <div className="space-y-4">
-
-                <div className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
-                  <MapPin size={16} strokeWidth={1.5} />
-                  <span className="text-[14px] font-light tracking-wide">Indore, Madhya Pradesh, India</span>
-                </div>
-                <a href="mailto:care@indevie.com" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
-                  <Mail size={16} strokeWidth={1.5} />
-                  <span className="text-[14px] font-light tracking-wide">care@indevie.com</span>
-                </a>
-                <a href="tel:+919826604580" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
-                  <Phone size={16} strokeWidth={1.5} />
-                  <span className="text-[14px] font-light tracking-wide">+91 9826604580</span>
-                </a>
+              </Link>
+              <p className="text-[14px] font-light leading-relaxed text-[#f5f1e6]/60 max-w-[280px] tracking-wide">
+                Botanical treasures handcrafted with ancient wisdom to nurture your modern radiance, naturally.
+              </p>
+              <div className="flex items-center gap-3 opacity-20 pt-4">
+                <MapPin size={10} strokeWidth={2.5} />
+                <span className="text-[9px] uppercase tracking-[0.4em] font-bold">Indore, India</span>
               </div>
+            </div>
 
-              {/* Sophisticated Socials with Magnetic Pull */}
-              <div className="flex gap-4 pt-4">
-                {socialIcons.map(({ SVG, href, label }) => (
-                  <Magnetic key={label}>
-                    <Link 
-                      href={href}
-                      target="_blank"
-                      rel="noopener nreferrer"
-                      className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/40 hover:bg-white/5 transition-all duration-500 group"
-                      aria-label={label}
-                    >
-                      <span className="relative z-10 transition-transform duration-500 scale-90 group-hover:scale-[1.15]">
-                        <SVG />
-                      </span>
+            {/* COLUMN 2: EXPLORE */}
+            <div className="space-y-10 lg:pl-12">
+              <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Explore</h4>
+              <ul className="space-y-5">
+                {quickLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#f5f1e6]/70 hover:text-white transition-colors">
+                      <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
+                      <span>{link.name}</span>
                     </Link>
-                  </Magnetic>
+                  </li>
                 ))}
+              </ul>
+            </div>
+
+            {/* COLUMN 3: SERVICES */}
+            <div className="space-y-10">
+              <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Services</h4>
+              <ul className="space-y-5">
+                {supportLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#f5f1e6]/70 hover:text-white transition-colors">
+                      <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* COLUMN 4: CONNECT */}
+            <div className="col-span-2 sm:col-span-1 space-y-10">
+              <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Connect</h4>
+              <div className="space-y-8">
+                <div className="space-y-4">
+
+                  <div className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                    <MapPin size={16} strokeWidth={1.5} />
+                    <span className="text-[14px] font-light tracking-wide">Indore, Madhya Pradesh, India</span>
+                  </div>
+                  <a href="mailto:care@indevie.com" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                    <Mail size={16} strokeWidth={1.5} />
+                    <span className="text-[14px] font-light tracking-wide">care@indevie.com</span>
+                  </a>
+                  <a href="tel:+919826604580" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                    <Phone size={16} strokeWidth={1.5} />
+                    <span className="text-[14px] font-light tracking-wide">+91 9826604580</span>
+                  </a>
+                </div>
+
+                {/* Sophisticated Socials with Magnetic Pull */}
+                <div className="flex gap-4 pt-4">
+                  {socialIcons.map(({ SVG, href, label }) => (
+                    <Magnetic key={label}>
+                      <Link
+                        href={href}
+                        target="_blank"
+                        rel="noopener nreferrer"
+                        className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/40 hover:bg-white/5 transition-all duration-500 group"
+                        aria-label={label}
+                      >
+                        <span className="relative z-10 transition-transform duration-500 scale-90 group-hover:scale-[1.15]">
+                          <SVG />
+                        </span>
+                      </Link>
+                    </Magnetic>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
+
+          {/* BOTTOM BAR: The Signature Line */}
+          <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
+            <p className="text-[9px] uppercase tracking-[0.4em] font-light opacity-30 text-center md:text-left">
+              © {new Date().getFullYear()} All rights are reserved for INDEVIE Beauty.
+            </p>
+
+            <Magnetic>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="group flex items-center gap-4 text-[9px] uppercase tracking-[0.5em] font-bold"
+              >
+                <span className="opacity-30 group-hover:opacity-100 transition-opacity">Back to top</span>
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#f5f1e6] group-hover:text-black transition-all duration-500 shadow-xl">
+                  <ArrowUpRight size={18} className="transition-transform duration-500 group-hover:rotate-45" />
+                </div>
+              </button>
+            </Magnetic>
+          </div>
         </div>
 
-        {/* BOTTOM BAR: The Signature Line */}
-        <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
-          <p className="text-[9px] uppercase tracking-[0.4em] font-light opacity-30 text-center md:text-left">
-            © {new Date().getFullYear()} All rights are reserved for INDEVIE Beauty.
-          </p>
-          
-          <Magnetic>
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="group flex items-center gap-4 text-[9px] uppercase tracking-[0.5em] font-bold"
-            >
-              <span className="opacity-30 group-hover:opacity-100 transition-opacity">Back to top</span>
-              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#f5f1e6] group-hover:text-black transition-all duration-500 shadow-xl">
-                 <ArrowUpRight size={18} className="transition-transform duration-500 group-hover:rotate-45" />
-              </div>
-            </button>
-          </Magnetic>
-        </div>
-      </div>
-      
-      {/* 🎭 GIANT PARALLAX SIGNATURE (Reveal on Scroll) */}
-      <motion.div 
-        initial={{ opacity: 0, y: 100 }}
-        whileInView={{ opacity: 0.03, y: 20 }}
-        viewport={{ once: false, amount: 0.1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-        className="absolute -bottom-[1vw] left-0 w-full select-none pointer-events-none text-center"
-      >
-         <h2 className="text-[30vw] font-serif italic tracking-tighter leading-none whitespace-nowrap overflow-hidden">
-           Indevie
-         </h2>
-      </motion.div>
-    </footer>
+        {/* 🎭 GIANT PARALLAX SIGNATURE (Reveal on Scroll) */}
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 0.03, y: 20 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute -bottom-[1vw] left-0 w-full select-none pointer-events-none text-center"
+        >
+          <h2 className="text-[30vw] font-serif italic tracking-tighter leading-none whitespace-nowrap overflow-hidden">
+            Indevie
+          </h2>
+        </motion.div>
+      </footer>
     </>
   );
 };

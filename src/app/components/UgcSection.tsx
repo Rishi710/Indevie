@@ -251,8 +251,8 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
          <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-red-800">
           Hear it from our
          </span>
-         <h2 className="text-4xl md:text-5xl text-[#6c3518] ">
-          <span className="font-semibold italic">Power Devi's</span>
+         <h2 className="text-4xl md:text-5xl text-[#6c3518] font-serif font-bold">
+          Power Devi's
         </h2>
          <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
           Real people, real routines, and moments of care that truly make a difference.

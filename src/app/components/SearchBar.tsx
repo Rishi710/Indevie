@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -34,7 +34,8 @@ function formatPrice(amount: string, currencyCode: string) {
   }).format(parseFloat(amount));
 }
 
-const QUICK_SEARCHES = [
+// Bestseller product handles - replaces Quick Search chips
+const BESTSELLER_HANDLES = [
   { label: "Face Mist", query: "mist" },
   { label: "Sunscreen", query: "sunscreen" },
   { label: "Calm Balm", query: "calm balm" },
@@ -43,46 +44,138 @@ const QUICK_SEARCHES = [
   { label: "Gift Set", query: "gift" },
 ];
 
-const CONCERNS = [
-  "Sun Protection",
-  "Deep Hydration",
-  "Skin Glow",
-  "Calming & Soothing",
-  "Natural Ingredients",
-];
-
-// Featured products shown in the default (empty query) state
+// Featured products shown in the default state when no concern is selected
 const FEATURED_HANDLES = [
+  { handle: "indevie-calm-balm", title: "Calm Balm 50gm" },
   { handle: "geeli-mitti-face-mist", title: "Geeli Mitti Face Mist" },
-  { handle: "indevie-calm-balm", title: "Calm Balm" },
-  { handle: "indevie-glow-maalish-oil", title: "Glow Maalish Oil" },
+  { handle: "gulkand-face-mist", title: "Gulkand Face Mist" },
+  { handle: "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen", title: "Gulaab Tez Dhoop Sunshield" },
 ];
 
 export default function SearchBar({ solidMode }: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchProduct[]>([]);
-  const [featuredProducts, setFeaturedProducts] = useState<SearchProduct[]>([]);
+  
+  // Dynamic Shopify catalog and filters
+  const [allProducts, setAllProducts] = useState<SearchProduct[]>([]);
+  const [dynamicConcerns, setDynamicConcerns] = useState<string[]>([]);
+  const [activeConcern, setActiveConcern] = useState<string | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Pre-fetch featured products once overlay opens
+  // Fetch Shopify product catalog to build concern tags and local concern filtering
   useEffect(() => {
-    if (isOpen && featuredProducts.length === 0) {
-      fetch("/api/search?q=indevie")
-        .then((r) => r.json())
-        .then((d) => setFeaturedProducts((d.products || []).slice(0, 3)))
-        .catch(() => { });
+    if (isOpen) {
+      const fetchCatalog = async () => {
+        try {
+          const fetchProductsQuery = {
+            query: `
+              query getSearchProducts {
+                products(first: 50) {
+                  nodes {
+                    id
+                    title
+                    handle
+                    tags
+                    variants(first: 1) {
+                      nodes {
+                        id
+                        price {
+                          amount
+                          currencyCode
+                        }
+                        compareAtPrice {
+                          amount
+                          currencyCode
+                        }
+                      }
+                    }
+                    images(first: 1) {
+                      nodes {
+                        url
+                        altText
+                      }
+                    }
+                  }
+                }
+              }
+            `
+          };
+
+          const response = await fetch("/api/shopify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(fetchProductsQuery),
+          });
+          const res = await response.json();
+          const products: SearchProduct[] = res.data?.products?.nodes || [];
+          setAllProducts(products);
+
+          // Compile unique concern tags
+          const uniqueConcerns = new Set<string>();
+          products.forEach((p) => {
+            const tags = p.tags || [];
+            tags.forEach((tag) => {
+              if (tag.toLowerCase().startsWith("concern:")) {
+                const concernLabel = tag.split(":")[1].trim();
+                uniqueConcerns.add(concernLabel);
+              }
+            });
+          });
+
+          const concernsList = Array.from(uniqueConcerns).sort((a, b) => a.localeCompare(b));
+          if (concernsList.length > 0) {
+            setDynamicConcerns(concernsList);
+          } else {
+            // Default static concerns if Shopify tag inventory has no concern tags yet
+            setDynamicConcerns([
+              "Sun Protection",
+              "Dry Skin",
+              "Skin Hydration",
+              "Sleep Inducing",
+              "Muscle Relaxation",
+              "Scalp Repair",
+              "Sensitive Skin",
+              "SPF Powered",
+              "Brightening",
+              "Dark Circles",
+              "Hair strengthening",
+            ]);
+          }
+        } catch (err) {
+          console.error("Error loading products/concerns from Shopify:", err);
+          // Fallback static concerns on network fail
+          setDynamicConcerns([
+            "Sun Protection",
+            "Dry Skin",
+            "Skin Hydration",
+            "Sleep Inducing",
+            "Muscle Relaxation",
+            "Scalp Repair",
+            "Sensitive Skin",
+            "SPF Powered",
+            "Brightening",
+            "Dark Circles",
+            "Hair strengthening",
+          ]);
+        }
+      };
+
+      fetchCatalog();
     }
+
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 80);
     } else {
       setQuery("");
       setResults([]);
       setHasSearched(false);
+      setActiveConcern(null);
     }
   }, [isOpen]);
 
@@ -152,7 +245,39 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
 
   const handleResultClick = useCallback(() => close(), [close]);
 
+  const handleConcernClick = useCallback((concern: string) => {
+    setActiveConcern((prev) => (prev === concern ? null : concern));
+  }, []);
+
   const showDefault = !query || query.trim().length < 2;
+
+  // Retrieve popular default products
+  const displayFeatured = useMemo(() => {
+    if (allProducts.length === 0) return [];
+    const matched = FEATURED_HANDLES.map((fh) =>
+      allProducts.find((p) => p.handle === fh.handle)
+    ).filter(Boolean) as SearchProduct[];
+
+    if (matched.length > 0) return matched;
+    return allProducts.slice(0, 4);
+  }, [allProducts]);
+
+  // Dynamically filter products to display by the selected concern
+  const displayedProductsByConcern = useMemo(() => {
+    if (activeConcern) {
+      const normalizedConcern = activeConcern.toLowerCase().trim();
+      return allProducts.filter((p) =>
+        p.tags?.some((t) => {
+          const lowerTag = t.toLowerCase().trim();
+          return (
+            lowerTag === `concern:${normalizedConcern}` ||
+            lowerTag === normalizedConcern
+          );
+        })
+      );
+    }
+    return displayFeatured;
+  }, [activeConcern, allProducts, displayFeatured]);
 
   return (
     <>
@@ -189,7 +314,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
               onClick={close}
             />
 
-            {/* Search Panel — true 100vw, no right gap */}
+            {/* Search Panel */}
             <motion.div
               initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -204,7 +329,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
               {/* ── Input Row ── */}
               <div className="w-full px-4 sm:px-8 lg:px-16 pt-5 pb-4 border-b border-gray-100">
                 <div className="flex items-center gap-3">
-                  {/* Search Icon */}
+                  {/* Search Icon / Spinner */}
                   {isLoading ? (
                     <svg className="animate-spin w-5 h-5 text-[#6c3518] shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -229,7 +354,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     spellCheck={false}
                   />
 
-                  {/* Clear query button (only when typing) */}
+                  {/* Clear query button */}
                   <AnimatePresence>
                     {query && (
                       <motion.button
@@ -248,7 +373,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     )}
                   </AnimatePresence>
 
-                  {/* Close button — X only, no ESC text */}
+                  {/* Close button */}
                   <button
                     onClick={close}
                     className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors shrink-0 ml-1"
@@ -264,25 +389,30 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                 <div className="mt-3 h-[1.5px] w-full bg-gradient-to-r from-[#6c3518]/40 via-[#6c3518]/10 to-transparent rounded-full" />
               </div>
 
-              {/* ── Body ── max-h + scroll */}
-              <div className="w-full max-h-[70vh] overflow-y-auto overscroll-contain px-4 sm:px-8 lg:px-16 py-5">
+              {/* ── Body ── */}
+              <div className="w-full max-h-[70vh] overflow-y-auto overscroll-contain px-4 sm:px-8 lg:px-16 py-6">
 
-                {/* ─── DEFAULT STATE: two-column layout ─── */}
+                {/* ─── DEFAULT STATE ─── */}
                 {showDefault && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
 
-                    {/* Left: Quick Searches + Concerns */}
-                    <div className="space-y-6">
+                    {/* LEFT: Bestsellers + Browse by Concern */}
+                    <div className="space-y-7">
+
+                      {/* BESTSELLERS chips */}
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-poppins font-semibold mb-3">
-                          Quick Searches
-                        </p>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-poppins font-bold">
+                            Bestsellers
+                          </p>
+                        </div>
                         <div className="flex flex-wrap gap-2">
-                          {QUICK_SEARCHES.map((item) => (
+                          {BESTSELLER_HANDLES.map((item) => (
                             <button
                               key={item.query}
                               onClick={() => triggerQuick(item.query, item.label)}
-                              className="text-xs font-poppins font-medium px-3.5 py-1.5 bg-[#f5f1e6] text-[#6c3518] rounded-full hover:bg-[#6c3518] hover:text-white transition-all duration-200"
+                              className="text-xs font-poppins font-semibold px-3.5 py-1.5 bg-[#f5f1e6] text-[#6c3518] border border-[#6c3518]/20 rounded-full hover:bg-[#6c3518] hover:text-white hover:border-[#6c3518] transition-all duration-200"
                             >
                               {item.label}
                             </button>
@@ -290,75 +420,95 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                         </div>
                       </div>
 
+                      {/* BROWSE BY CONCERN — Clean grid pills, icons removed */}
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-poppins font-semibold mb-3">
-                          Browse by Concern
-                        </p>
-                        <ul className="space-y-2">
-                          {CONCERNS.map((concern) => (
-                            <li key={concern}>
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-poppins font-bold">
+                            Shop by Concern
+                          </p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {dynamicConcerns.map((concern) => {
+                            const isActive = activeConcern === concern;
+                            return (
                               <button
-                                onClick={() => triggerQuick(concern, concern)}
-                                className="flex items-center gap-2 text-sm font-poppins text-gray-600 hover:text-[#6c3518] transition-colors group"
+                                key={concern}
+                                onClick={() => handleConcernClick(concern)}
+                                className={`px-4 py-3 rounded-xl text-[11px] font-poppins font-bold uppercase tracking-wider transition-all duration-200 text-left border ${
+                                  isActive
+                                    ? "bg-[#6c3518] border-[#6c3518] text-white shadow-md scale-[1.01]"
+                                    : "bg-[#faf8f4] border-[#6c3518]/10 hover:border-[#6c3518]/30 hover:bg-[#faf8f3] text-gray-700"
+                                }`}
                               >
-                                <span className="w-1 h-1 rounded-full bg-[#6c3518]/30 group-hover:bg-[#6c3518] transition-colors" />
                                 {concern}
                               </button>
-                            </li>
-                          ))}
-                        </ul>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Right: Featured Products */}
+                    {/* RIGHT: Featured Products list, filtered dynamically by active concern */}
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-poppins font-semibold mb-3">
-                        Popular Products
-                      </p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
+                        <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-poppins font-bold">
+                          {activeConcern ? `Products for ${activeConcern}` : "Popular Products"}
+                        </p>
+                      </div>
+
                       <div className="space-y-2">
-                        {(featuredProducts.length > 0 ? featuredProducts : FEATURED_HANDLES.map((f) => ({ ...f, id: f.handle, tags: [], variants: { nodes: [] }, images: { nodes: [] } } as SearchProduct))).map((product) => {
-                          const image = product.images?.nodes?.[0];
-                          const price = product.variants?.nodes?.[0]?.price;
-                          return (
-                            <Link
-                              key={product.id}
-                              href={`/products/${product.handle}`}
-                              onClick={handleResultClick}
-                              className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#faf8f3] group transition-colors duration-150"
-                            >
-                              <div className="w-12 h-12 rounded-lg bg-[#f5f1e6] overflow-hidden shrink-0 relative">
-                                {image ? (
-                                  <Image src={image.url} alt={image.altText || product.title} fill className="object-cover" sizes="48px" />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5 text-[#6c3518]/20">
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
-                                    </svg>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-poppins font-medium text-gray-700 group-hover:text-[#6c3518] transition-colors truncate">
-                                  {product.title}
-                                </p>
-                                {price && (
-                                  <p className="text-xs font-poppins text-[#6c3518]/70 mt-0.5">
-                                    {formatPrice(price.amount, price.currencyCode)}
+                        {displayedProductsByConcern.length > 0 ? (
+                          displayedProductsByConcern.map((product) => {
+                            const image = product.images?.nodes?.[0];
+                            const price = product.variants?.nodes?.[0]?.price;
+                            return (
+                              <Link
+                                key={product.id}
+                                href={`/products/${product.handle}`}
+                                onClick={handleResultClick}
+                                className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#faf8f3] group transition-colors duration-150 border border-transparent hover:border-[#6c3518]/10 bg-[#faf8f4]/60"
+                              >
+                                <div className="w-12 h-12 rounded-lg bg-[#f5f1e6] overflow-hidden shrink-0 relative border border-gray-100">
+                                  {image ? (
+                                    <Image src={image.url} alt={image.altText || product.title} fill className="object-cover" sizes="48px" />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5 text-[#6c3518]/20">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-poppins font-medium text-gray-700 group-hover:text-[#6c3518] transition-colors truncate">
+                                    {product.title}
                                   </p>
-                                )}
-                              </div>
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#6c3518] group-hover:translate-x-0.5 transition-all shrink-0">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                              </svg>
-                            </Link>
-                          );
-                        })}
+                                  {price && (
+                                    <p className="text-xs font-poppins text-[#6c3518]/70 mt-0.5 font-bold">
+                                      {formatPrice(price.amount, price.currencyCode)}
+                                    </p>
+                                  )}
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#6c3518] group-hover:translate-x-0.5 transition-all shrink-0">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg>
+                              </Link>
+                            );
+                          })
+                        ) : (
+                          <div className="py-8 text-center text-gray-400 text-xs font-poppins italic">
+                            No products currently loaded for this concern.
+                          </div>
+                        )}
                       </div>
                     </div>
+
                   </div>
                 )}
 
-                {/* ─── RESULTS STATE: compact scrollable list ─── */}
+                {/* ─── RESULTS STATE ─── */}
                 {!showDefault && (
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -374,7 +524,6 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                             {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
                           </p>
 
-                          {/* Compact suggestion list — scrollable via parent */}
                           <ul className="space-y-1">
                             {results.map((product) => {
                               const price = product.variants.nodes[0]?.price;

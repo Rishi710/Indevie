@@ -24,9 +24,9 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
              Indevie Journals
            </span>
-           <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#6c3518]">
-             <span className="font-poppins font-semibold italic">Selfcare to Soulcare</span>
-        </h2>
+           <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#6c3518] font-serif font-bold">
+             Selfcare to Soulcare
+           </h2>
         </div>
 
         {/* Carousel Section */}

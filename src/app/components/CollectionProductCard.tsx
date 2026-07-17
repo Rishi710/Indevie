@@ -3,16 +3,16 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Plus, Minus } from "lucide-react";
+import { ShoppingBag, Star, Plus, Minus } from "lucide-react";
 import { ShopifyProduct } from "@/lib/shopify";
 import { useCart } from "../context/CartContext";
 
-interface ProductCardProps {
+interface CollectionProductCardProps {
   product: ShopifyProduct;
   priority?: boolean;
 }
 
-export default function ProductCard({ product, priority = false }: ProductCardProps) {
+export default function CollectionProductCard({ product, priority = false }: CollectionProductCardProps) {
   const { cart, addItem, updateQuantity, removeItem, isUpdating } = useCart();
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
@@ -54,10 +54,31 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     ? `₹${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`
     : null;
 
-  // Extract banners from tags, or use smart fallbacks
+  // Extract badges & banners from tags, or use smart fallbacks
   const tags = product.tags || [];
+  
+  // 1. Badge matching
+  let badgeText = "";
+  const customBadgeTag = tags.find(t => t.toLowerCase().startsWith("badge:"));
+  if (customBadgeTag) {
+    badgeText = customBadgeTag.split(":")[1].toUpperCase();
+  } else if (tags.some(t => t.toLowerCase().includes("bestseller"))) {
+    badgeText = "BESTSELLER";
+  } else if (tags.some(t => t.toLowerCase().includes("hot drop") || t.toLowerCase().includes("popular"))) {
+    badgeText = "HOT DROP";
+  } else if (tags.some(t => t.toLowerCase().includes("new"))) {
+    badgeText = "NEW LAUNCH";
+  } else {
+    // Smart defaults based on title / handle
+    const titleLower = product.title.toLowerCase();
+    if (titleLower.includes("mist")) badgeText = "BESTSELLER";
+    else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) badgeText = "HOT DROP";
+    else if (titleLower.includes("calm balm")) badgeText = "MOST RE-ORDERED";
+    else if (titleLower.includes("lotion")) badgeText = "NEW LAUNCH";
+    else if (titleLower.includes("set") || titleLower.includes("ritual")) badgeText = "GIFT EXCLUSIVE";
+  }
 
-  // Banner matching
+  // 2. Banner matching
   let bannerText = "";
   const customBannerTag = tags.find(t => t.toLowerCase().startsWith("banner:"));
   if (customBannerTag) {
@@ -75,7 +96,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     else bannerText = "GENURVEDA™ APPROVED";
   }
 
-  // Subtitle / snippet description
+  // 3. Subtitle / snippet description
   let subtitle = "";
   if (product.description) {
     // Get the first sentence of the description as subtitle
@@ -119,9 +140,12 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
   return (
     <div className="flex flex-col h-full bg-white border border-black rounded-[4px] overflow-hidden group shadow-sm hover:shadow-md transition-shadow">
-
-      {/* Image Wrapper */}
+      
+      {/* Image & Badge Wrapper */}
       <Link href={`/products/${product.handle}`} className="relative block aspect-square bg-[#fafafa] overflow-hidden shrink-0">
+        
+
+
         {/* Product image */}
         {mainImage ? (
           <Image
@@ -141,22 +165,22 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-[#B40417] text-white text-[8px] font-sans font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
+        <div className="bg-black text-white text-[8px] font-poppins font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
           {bannerText}
         </div>
       )}
 
       {/* Info Container */}
-      <div className="flex flex-col flex-1 p-3.5 justify-between gap-3 bg-white">
-
+      <div className="flex flex-col flex-1 p-3.5 justify-between gap-3">
+        
         {/* Title & Subtitle */}
         <div className="space-y-1.5">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-sm font-sans font-bold text-[#6c3518] group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-sm font-poppins font-bold text-gray-900 group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
               {product.title}
             </h3>
           </Link>
-
+          
           {subtitle && (
             <p className="text-[11px] font-poppins text-gray-500 line-clamp-1 italic font-light">
               {subtitle}
@@ -188,6 +212,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
         {/* Add to Cart Container */}
         <div className="space-y-3 mt-auto">
+
           {/* Quantity Controls / Add to Cart button */}
           <div className="w-full">
             {quantityInCart > 0 ? (
@@ -216,7 +241,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
               <button
                 onClick={handleAddToCart}
                 disabled={isUpdating}
-                className="w-full h-[38px] flex items-center justify-center gap-1.5 bg-[#B40417] hover:bg-black active:bg-black text-white font-poppins font-bold text-[10px] tracking-[0.15em] uppercase border border-[#6c3518] rounded-[4px] transition-colors disabled:opacity-50"
+                className="w-full h-[38px] flex items-center justify-center gap-1.5 bg-[#6c3518] hover:bg-black active:bg-black text-white font-poppins font-bold text-[10px] tracking-[0.15em] uppercase border border-[#6c3518] rounded-[4px] transition-colors disabled:opacity-50"
               >
                 <ShoppingBag size={13} className="text-white shrink-0" />
                 Add To Cart

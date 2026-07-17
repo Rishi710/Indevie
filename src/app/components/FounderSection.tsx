@@ -38,7 +38,7 @@ export default function FounderSection() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-          
+
           {/* Visual Side (LHS) */}
           <div className="lg:col-span-6 relative group">
             <motion.div
@@ -60,7 +60,7 @@ export default function FounderSection() {
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
               />
-              
+
               {/* Central Play Button Overlay */}
               {!isPlaying && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-opacity z-10">
@@ -73,7 +73,7 @@ export default function FounderSection() {
               )}
 
               {/* Mute/Unmute Toggle Overlay */}
-              <button 
+              <button
                 onClick={toggleMute}
                 className="absolute top-6 right-6 z-20 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 text-[#6c3518]"
               >
@@ -85,7 +85,7 @@ export default function FounderSection() {
                 <p className="text-white text-[10px] uppercase tracking-[0.3em] font-medium font-poppins">A Journey of Intention — Ar. Ishita Pathak</p>
               </div>  */}
             </motion.div>
-            
+
             {/* Border Accents */}
             <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-[#6c3518]/20 rounded-tl-3xl -z-10" />
             <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-[#6c3518]/20 rounded-br-3xl -z-10" />
@@ -104,10 +104,10 @@ export default function FounderSection() {
                 <span className="text-[11px] font-poppins font-bold tracking-[0.5em] uppercase text-[#ffffff] block italic">
                   From Our Founder
                 </span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-seasons leading-[1.1] text-[#ffffff] tracking-tight">
+                <h2 className="text-4xl md:text-4xl lg:text-6xl font-serif leading-[1.1] text-[#ffffff] tracking-tight">
                   We're Indevie <br />
                   -Your Inner Devi <span className="relative">
-                    
+
                     <svg className="absolute -bottom-2 left-0 w-full h-2 text-[#6c3518]/10" viewBox="0 0 100 10" preserveAspectRatio="none">
                       <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
                     </svg>
@@ -137,18 +137,18 @@ export default function FounderSection() {
                       Founder, Indevie Beauty
                     </p>
                   </div>
-                  
+
                   {/* Founder Socials */}
                   <div className="flex gap-4 items-center pt-2">
                     <Link href="https://www.instagram.com/indeviebeauty/" target="_blank"
                       rel="noopener nreferrer" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </Link>
-                    <Link href="https://www.reddit.com/user/IndevieBeauty/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"  target="_blank"
+                    <Link href="https://www.reddit.com/user/IndevieBeauty/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button" target="_blank"
                       rel="noopener nreferrer" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M17 11.5a4.5 4.5 0 0 0-9 0"></path><path d="M12 11.5v4"></path><path d="M9 14h6"></path><circle cx="8.5" cy="8.5" r=".5" fill="currentColor"></circle><circle cx="15.5" cy="8.5" r=".5" fill="currentColor"></circle></svg>
                     </Link>
-                    <Link href="https://www.linkedin.com/in/ishita-pathak-188bb9378/"   target="_blank"
+                    <Link href="https://www.linkedin.com/in/ishita-pathak-188bb9378/" target="_blank"
                       rel="noopener nreferrer" className="text-[#ffffff]/40 hover:text-[#ffffff] transition-colors">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </Link>

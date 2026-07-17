@@ -1,4 +1,8 @@
 import { NextResponse } from 'next/server';
+import dns from "dns";
+
+// Force IPv4 resolution first to avoid Node IPv6 connection failures
+dns.setDefaultResultOrder("ipv4first");
 
 export const dynamic = 'force-dynamic';
 
