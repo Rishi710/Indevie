@@ -112,7 +112,7 @@ const Footer = () => {
 
   return (
     <>
-      <div className="w-full bg-[#B40417] text-[#6c3518] leading-[0] overflow-hidden -mb-[1px]">
+      <div className="w-full bg-[#ffffff] text-[#6c3518] leading-[0] overflow-hidden -mb-[1px]">
         <svg className="relative block w-full h-[50px] md:h-[50px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
           <defs>
             <path id="wave-3" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path>
@@ -131,7 +131,7 @@ const Footer = () => {
           </g>
         </svg>
       </div>
-      <footer className="relative bg-[#B40417] text-[#f5f1e6] font-poppins pt-20 pb-12 overflow-hidden">
+      <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-poppins pt-20 pb-12 overflow-hidden">
         {/*  Floating Botanical Detail (GPU Accelerated) */}
         <motion.div
           animate={{

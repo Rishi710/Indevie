@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { getSafeCheckoutUrl } from "@/lib/shopify";
-import { pixelInitiateCheckout } from "@/lib/pixel";
+import { pixelInitiateCheckout, toShopifyContentId } from "@/lib/pixel";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
@@ -57,7 +57,7 @@ export default function CartDrawer() {
         numItems: currentCart?.totalQuantity || 0,
         value: parseFloat(currentCart?.cost?.subtotalAmount?.amount || "0"),
         currencyCode: currentCart?.cost?.subtotalAmount?.currencyCode || "INR",
-        contentIds: lines.map((l: any) => l.merchandise?.product?.id).filter(Boolean),
+        contentIds: lines.map((l: any) => toShopifyContentId(l.merchandise?.product?.id, l.merchandise?.id)).filter(Boolean),
       });
 
       const safeUrl = getSafeCheckoutUrl(currentCart.checkoutUrl);

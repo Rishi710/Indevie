@@ -56,9 +56,9 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
   }
 
   return (
-    <section className="py-8 md:py-4 lg:py-4 px-10 md:px-20 lg:px-20 bg-[#f5f1e6] overflow-hidden">
+    <section className="py-10 md:py-16 px-4 sm:px-10 md:px-20 lg:px-20 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
-        <div className="flex flex-col items-center text-center mb-16 gap-5 mt-15">
+        <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5 mt-4 md:mt-12">
           {/* <h2 className="text-3xl md:text-4xl text-red-800 pt-14 font-serif">
             <span className="font-semibold italic">
               Channel your Inner Devi
@@ -71,7 +71,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
             with Indevie</span>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-1 md:gap-2 px-1 md:px-0">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 px-0">
           {products.slice(0, 5).map((product, idx) => (
             <div key={product.id} className={idx >= 4 ? "hidden lg:block h-full" : "h-full"}>
               <ProductCard product={product} priority={idx === 0} />
