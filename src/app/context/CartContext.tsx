@@ -72,6 +72,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         );
         pixelAddToCart({
           id: newLine?.merchandise?.product?.id || variantId,
+          variantId: newLine?.merchandise?.id ?? variantId,
           title: newLine?.merchandise?.product?.title || "Product",
           price: newLine?.merchandise?.price?.amount || "0",
           currencyCode: newLine?.merchandise?.price?.currencyCode || "INR",

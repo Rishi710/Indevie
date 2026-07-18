@@ -134,6 +134,7 @@ export interface ShopifyProduct {
   descriptionHtml?: string;
   description?: string;
   productType?: string;
+  vendor?: string;
   tags?: string[];
   options?: {
     id: string;
@@ -153,6 +154,7 @@ export interface ShopifyProduct {
         amount: string;
         currencyCode: string;
       } | null;
+      image?: ShopifyImage | null;
       selectedOptions?: {
         name: string;
         value: string;
@@ -967,3 +969,76 @@ export function getSafeCheckoutUrl(checkoutUrl: string): string {
     return checkoutUrl;
   }
 }
+
+export const GET_FEED_PRODUCTS_QUERY = `
+  query getFeedProducts($first: Int!, $after: String) {
+    products(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        title
+        handle
+        description
+        productType
+        vendor
+        tags
+        variants(first: 250) {
+          nodes {
+            id
+            title
+            availableForSale
+            price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
+              amount
+              currencyCode
+            }
+            image {
+              url
+              altText
+            }
+          }
+        }
+        images(first: 10) {
+          nodes {
+            url
+            altText
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function fetchAllFeedProducts(): Promise<ShopifyProduct[]> {
+  let allProducts: ShopifyProduct[] = [];
+  let hasNextPage = true;
+  let cursor: string | null = null;
+  const limit = 100; // Fetch 100 products at a time to be safe
+
+  while (hasNextPage) {
+    try {
+      const data: any = await storefrontClient.request(GET_FEED_PRODUCTS_QUERY, {
+        first: limit,
+        after: cursor,
+      });
+
+      const products = data?.products?.nodes || [];
+      allProducts = [...allProducts, ...products];
+
+      hasNextPage = data?.products?.pageInfo?.hasNextPage || false;
+      cursor = data?.products?.pageInfo?.endCursor || null;
+    } catch (error) {
+      console.error("Error fetching page of feed products:", error);
+      break;
+    }
+  }
+
+  return allProducts;
+}
+

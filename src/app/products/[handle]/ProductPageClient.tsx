@@ -26,10 +26,12 @@ export default function ProductPageClient({
 
   // Fire ViewContent pixel event when product page loads
   useEffect(() => {
-    const price = product.variants?.nodes[0]?.price;
+    const variant = product.variants?.nodes[0];
+    const price = variant?.price;
     if (price) {
       pixelViewContent({
         id: product.id,
+        variantId: variant?.id ?? null,
         title: product.title,
         price: price.amount,
         currencyCode: price.currencyCode,

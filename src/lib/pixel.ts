@@ -17,6 +17,25 @@ declare global {
 
 export const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "";
 
+/**
+ * Converts a Shopify GID to the "shopify_IN_<productId>_<variantId>" format
+ * that the Shopify → Meta Catalog sync uses as the canonical content ID.
+ *
+ * - Product GID  → `gid://shopify/Product/123`         → `shopify_IN_123_<variantId>`
+ * - Variant GID  → `gid://shopify/ProductVariant/456`   → `shopify_IN_<productId>_456`
+ *
+ * Pass BOTH product and variant GIDs for the most precise match.
+ */
+export function toShopifyContentId(
+  productGid: string,
+  variantGid?: string | null
+): string {
+  const country = "IN"; // Change to match your store's target country if needed
+  const productId = productGid.split("/").pop() || productGid;
+  const variantId = variantGid ? variantGid.split("/").pop() : productId;
+  return `shopify_${country}_${productId}_${variantId}`;
+}
+
 /** Fire a standard fbq event safely (no-ops if fbq hasn't loaded yet) */
 function fbq(eventType: "track" | "trackCustom" | "init", eventName: string, data?: Record<string, any>) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
@@ -40,17 +59,19 @@ export function pixelPageView() {
  */
 export function pixelViewContent({
   id,
+  variantId,
   title,
   price,
   currencyCode = "INR",
 }: {
   id: string;
+  variantId?: string | null;
   title: string;
   price: string;
   currencyCode?: string;
 }) {
   fbq("track", "ViewContent", {
-    content_ids: [id],
+    content_ids: [toShopifyContentId(id, variantId)],
     content_name: title,
     content_type: "product",
     value: parseFloat(price),
@@ -63,19 +84,21 @@ export function pixelViewContent({
  */
 export function pixelAddToCart({
   id,
+  variantId,
   title,
   price,
   currencyCode = "INR",
   quantity = 1,
 }: {
   id: string;
+  variantId?: string | null;
   title: string;
   price: string;
   currencyCode?: string;
   quantity?: number;
 }) {
   fbq("track", "AddToCart", {
-    content_ids: [id],
+    content_ids: [toShopifyContentId(id, variantId)],
     content_name: title,
     content_type: "product",
     value: parseFloat(price) * quantity,
