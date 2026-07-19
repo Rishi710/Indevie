@@ -2,7 +2,8 @@
 
 import { ShopifyProduct, getSafeCheckoutUrl } from "@/lib/shopify";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import { Bookmark, ShoppingBag } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
 import { useCart } from "@/app/context/CartContext";
@@ -40,6 +41,14 @@ export default function ProductPageClient({
   }, [product.id, product.title, product.variants]);
 
   const images = product.images?.nodes || [];
+
+  // Sanitize merchant-authored HTML before rendering — descriptions come from
+  // Shopify admin, but a compromised/misused admin account or pasted rich text
+  // could otherwise inject executable markup into every visitor's browser.
+  const safeDescriptionHtml = useMemo(
+    () => (product.descriptionHtml ? DOMPurify.sanitize(product.descriptionHtml) : ""),
+    [product.descriptionHtml]
+  );
 
   // Split images evenly across two columns
   const col1Images = images.filter((_, i) => i % 2 === 0);
@@ -209,8 +218,8 @@ export default function ProductPageClient({
             <div className="text-[13px] text-gray-600 prose prose-sm max-w-none leading-relaxed min-h-[120px]">
               {activeTab === "details" && (
                 <div className="animate-in fade-in duration-300">
-                  {product.descriptionHtml ? (
-                    <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+                  {safeDescriptionHtml ? (
+                    <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
                   ) : (
                     <p>{product.description || "No description available."}</p>
                   )}
@@ -361,8 +370,8 @@ export default function ProductPageClient({
           <div className="text-[13px] text-gray-600 prose prose-sm max-w-none leading-relaxed min-h-[120px]">
             {activeTab === "details" && (
               <div className="animate-in fade-in duration-300">
-                {product.descriptionHtml ? (
-                  <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+                {safeDescriptionHtml ? (
+                  <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
                 ) : (
                   <p>{product.description || "No description available."}</p>
                 )}

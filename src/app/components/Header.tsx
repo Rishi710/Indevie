@@ -8,6 +8,7 @@ import AnnouncementBar from "./AnnouncementBar";
 import { usePathname } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import SearchBar from "./SearchBar";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 export default function Header({
   isLoggedIn = false,
@@ -36,13 +37,7 @@ export default function Header({
   }, []);
 
   // Lock scroll when menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [isMenuOpen]);
+  useScrollLock(isMenuOpen);
 
   const links = [
     { name: "Shop", href: "/shop" },

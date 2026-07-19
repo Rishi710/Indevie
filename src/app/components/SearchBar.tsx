@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 interface SearchProduct {
   id: string;
@@ -180,20 +181,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
   }, [isOpen]);
 
   // Lock body scroll and compensate for scrollbar width to prevent layout shift
-  useEffect(() => {
-    if (isOpen) {
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-    };
-  }, [isOpen]);
+  useScrollLock(isOpen);
 
   const close = useCallback(() => setIsOpen(false), []);
 

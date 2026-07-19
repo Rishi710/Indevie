@@ -15,6 +15,21 @@ interface CollectionItem {
   image?: { url: string } | null;
 }
 
+// Derives a product's display "type" — the single source of truth used both
+// when building the filter option list and when applying filters, so a
+// product can never be miscategorized between the two.
+function getProductType(p: ShopifyProduct): string | null {
+  if (p.productType) return p.productType;
+  const title = p.title.toLowerCase();
+  if (title.includes("mist")) return "Face Mist";
+  if (title.includes("sunshield") || title.includes("sunscreen")) return "Sunscreen";
+  if (title.includes("calm balm")) return "Body Balm";
+  if (title.includes("lotion")) return "Body Lotion";
+  if (title.includes("oil")) return "Body Oil";
+  if (title.includes("set") || title.includes("ritual")) return "Gift Set";
+  return null;
+}
+
 export default function ShopPage() {
   const [collections, setCollections] = useState<CollectionItem[]>([]);
   const [activeCollection, setActiveCollection] = useState<string>("all");
@@ -101,21 +116,28 @@ export default function ShopPage() {
       return;
     }
 
+    let cancelled = false;
+
     const loadCollectionProducts = async () => {
       try {
         setLoading(true);
         const colData = await fetchCollectionProducts(activeCollection, 50);
-        if (colData) {
+        // Ignore this response if activeCollection changed again while it was in flight
+        if (!cancelled && colData) {
           setProducts(colData.products);
         }
       } catch (error) {
-        console.error("Error loading collection products:", error);
+        if (!cancelled) console.error("Error loading collection products:", error);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     loadCollectionProducts();
+
+    return () => {
+      cancelled = true;
+    };
   }, [activeCollection, allProducts]);
 
   // Compute available filter items from products
@@ -127,17 +149,8 @@ export default function ShopPage() {
 
     products.forEach((p) => {
       // 1. Product type
-      if (p.productType) {
-        types.add(p.productType);
-      } else {
-        const titleLower = p.title.toLowerCase();
-        if (titleLower.includes("mist")) types.add("Face Mist");
-        else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) types.add("Sunscreen");
-        else if (titleLower.includes("calm balm")) types.add("Body Balm");
-        else if (titleLower.includes("lotion")) types.add("Body Lotion");
-        else if (titleLower.includes("oil")) types.add("Body Oil");
-        else if (titleLower.includes("set") || titleLower.includes("ritual")) types.add("Gift Set");
-      }
+      const type = getProductType(p);
+      if (type) types.add(type);
 
       // 2. Sizes
       const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
@@ -194,29 +207,14 @@ export default function ShopPage() {
 
     // Filter by product type pill
     if (activeProductType !== "all") {
-      result = result.filter((p) => {
-        const type = p.productType || (
-          p.title.toLowerCase().includes("mist") ? "Face Mist" :
-            (p.title.toLowerCase().includes("sunshield") || p.title.toLowerCase().includes("sunscreen")) ? "Sunscreen" :
-              p.title.toLowerCase().includes("calm balm") ? "Body Balm" :
-                p.title.toLowerCase().includes("lotion") ? "Body Lotion" :
-                  p.title.toLowerCase().includes("oil") ? "Body Oil" : "Gift Set"
-        );
-        return type === activeProductType;
-      });
+      result = result.filter((p) => getProductType(p) === activeProductType);
     }
 
     // Filter by Product Type (sidebar checkboxes)
     if (selectedProductTypes.length > 0) {
       result = result.filter((p) => {
-        const type = p.productType || (
-          p.title.toLowerCase().includes("mist") ? "Face Mist" :
-            (p.title.toLowerCase().includes("sunshield") || p.title.toLowerCase().includes("sunscreen")) ? "Sunscreen" :
-              p.title.toLowerCase().includes("calm balm") ? "Body Balm" :
-                p.title.toLowerCase().includes("lotion") ? "Body Lotion" :
-                  p.title.toLowerCase().includes("oil") ? "Body Oil" : "Gift Set"
-        );
-        return selectedProductTypes.includes(type);
+        const type = getProductType(p);
+        return !!type && selectedProductTypes.includes(type);
       });
     }
 

@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { getSafeCheckoutUrl } from "@/lib/shopify";
 import { pixelInitiateCheckout, toShopifyContentId } from "@/lib/pixel";
+import { useScrollLock } from "@/lib/useScrollLock";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,16 +24,7 @@ export default function CartDrawer() {
   } = useCart();
 
   // Prevent body scroll when drawer is open
-  useEffect(() => {
-    if (isCartOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isCartOpen]);
+  useScrollLock(isCartOpen);
 
   const subtotal = cart?.cost?.subtotalAmount;
 

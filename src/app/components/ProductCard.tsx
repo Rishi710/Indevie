@@ -166,11 +166,16 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
         {/* Rating & Pricing Row */}
         <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0.5 shrink-0">
-          {/* Left: Star Rating */}
+          {/* Left: Star Rating — kept as an empty flex item (rather than omitted)
+              so the price on the right stays aligned via justify-between */}
           <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[11px] font-poppins text-gray-800 font-medium shrink-0">
-            <span className="text-black text-[10px] sm:text-xs leading-none">★</span>
-            <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
-            <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
+            {totalReviews > 0 && (
+              <>
+                <span className="text-black text-[10px] sm:text-xs leading-none">★</span>
+                <span>{averageRating.toFixed(1)}</span>
+                <span className="text-gray-400 font-normal">({totalReviews})</span>
+              </>
+            )}
           </div>
 
           {/* Right: Pricing */}
