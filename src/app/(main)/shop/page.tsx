@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
@@ -23,12 +23,35 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+  // Sticky collection tabs state
+  const [isTabsSticky, setIsTabsSticky] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+
+  // Active product type filter (from the horizontal pill row)
+  const [activeProductType, setActiveProductType] = useState<string>("all");
+
   // Filter States
   const [selectedProductTypes, setSelectedProductTypes] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
   const [selectedOthers, setSelectedOthers] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("relevant");
+
+  // Sticky tabs — pin when they scroll past the header (~108px)
+  useEffect(() => {
+    const sentinel = tabsRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsTabsSticky(!entry.isIntersecting);
+      },
+      { rootMargin: "-108px 0px 0px 0px", threshold: 0 }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
 
   // Fetch collections and products on load
   useEffect(() => {
@@ -42,10 +65,9 @@ export default function ShopPage() {
         );
         setCollections(cleanCollections);
 
-        // Fetch all products to construct "Shop All" (guarantees all 20+ products are displayed)
+        // Fetch all products to construct "Shop All"
         const compiledProducts = await fetchProducts(100);
 
-        // Apply a default preferred sorting for Shop All (matching homepage sequence)
         const preferredHandles = [
           "geeli-mitti-face-mist",
           "gulkand-face-mist",
@@ -72,6 +94,8 @@ export default function ShopPage() {
 
   // Fetch products for a specific collection when activeCollection changes
   useEffect(() => {
+    setActiveProductType("all"); // Reset type filter on collection change
+
     if (activeCollection === "all") {
       setProducts(allProducts);
       return;
@@ -106,7 +130,6 @@ export default function ShopPage() {
       if (p.productType) {
         types.add(p.productType);
       } else {
-        // Fallback checks
         const titleLower = p.title.toLowerCase();
         if (titleLower.includes("mist")) types.add("Face Mist");
         else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) types.add("Sunscreen");
@@ -116,7 +139,7 @@ export default function ShopPage() {
         else if (titleLower.includes("set") || titleLower.includes("ritual")) types.add("Gift Set");
       }
 
-      // 2. Sizes (derived from variants or tags)
+      // 2. Sizes
       const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
       const sizeTag30ml = p.tags?.some(t => t.toLowerCase().includes("30ml")) || p.title.toLowerCase().includes("30ml");
       const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
@@ -129,7 +152,7 @@ export default function ShopPage() {
         sizes.add("Standard Size");
       }
 
-      // 3. Concerns (derived from tags starting with concern: or standard matching tags)
+      // 3. Concerns
       const productTags = p.tags || [];
       let foundExplicitConcern = false;
 
@@ -142,21 +165,13 @@ export default function ShopPage() {
 
       if (!foundExplicitConcern) {
         const titleLower = p.title.toLowerCase();
-        if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) {
-          concerns.add("Sun Protection");
-        }
-        if (titleLower.includes("mist") || titleLower.includes("lotion")) {
-          concerns.add("Deep Hydration");
-        }
-        if (titleLower.includes("oil") || titleLower.includes("gulkand")) {
-          concerns.add("Skin Glow");
-        }
-        if (titleLower.includes("calm balm") || titleLower.includes("mitti")) {
-          concerns.add("Calming & Soothing");
-        }
+        if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) concerns.add("Sun Protection");
+        if (titleLower.includes("mist") || titleLower.includes("lotion")) concerns.add("Deep Hydration");
+        if (titleLower.includes("oil") || titleLower.includes("gulkand")) concerns.add("Skin Glow");
+        if (titleLower.includes("calm balm") || titleLower.includes("mitti")) concerns.add("Calming & Soothing");
       }
 
-      // 4. Others (Singles, Combos, Sets)
+      // 4. Others
       const isCombo = p.tags?.some(t => t.toLowerCase().includes("combo") || t.toLowerCase().includes("set") || t.toLowerCase().includes("ritual")) || p.title.toLowerCase().includes("set");
       if (isCombo) {
         others.add("Combos & Sets");
@@ -177,7 +192,21 @@ export default function ShopPage() {
   const filteredAndSortedProducts = useMemo(() => {
     let result = [...products];
 
-    // Filter by Product Type
+    // Filter by product type pill
+    if (activeProductType !== "all") {
+      result = result.filter((p) => {
+        const type = p.productType || (
+          p.title.toLowerCase().includes("mist") ? "Face Mist" :
+            (p.title.toLowerCase().includes("sunshield") || p.title.toLowerCase().includes("sunscreen")) ? "Sunscreen" :
+              p.title.toLowerCase().includes("calm balm") ? "Body Balm" :
+                p.title.toLowerCase().includes("lotion") ? "Body Lotion" :
+                  p.title.toLowerCase().includes("oil") ? "Body Oil" : "Gift Set"
+        );
+        return type === activeProductType;
+      });
+    }
+
+    // Filter by Product Type (sidebar checkboxes)
     if (selectedProductTypes.length > 0) {
       result = result.filter((p) => {
         const type = p.productType || (
@@ -197,7 +226,6 @@ export default function ShopPage() {
         const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
         const sizeTag30ml = p.tags?.some(t => t.toLowerCase().includes("30ml")) || p.title.toLowerCase().includes("30ml");
         const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
-
         const size = hasMini ? "Mini Size" : (sizeTag30ml || sizeTag50gm || p.title.toLowerCase().includes("lotion") || p.title.toLowerCase().includes("oil") ? "Full Size" : "Standard Size");
         return selectedSizes.includes(size);
       });
@@ -215,7 +243,6 @@ export default function ShopPage() {
           }
         });
 
-        // Add defaults if none exist
         if (concernsList.length === 0) {
           const titleLower = p.title.toLowerCase();
           if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) concernsList.push("Sun Protection");
@@ -247,7 +274,7 @@ export default function ShopPage() {
     }
 
     return result;
-  }, [products, selectedProductTypes, selectedSizes, selectedConcerns, selectedOthers, sortBy]);
+  }, [products, activeProductType, selectedProductTypes, selectedSizes, selectedConcerns, selectedOthers, sortBy]);
 
   // Toggle Filters
   const handleTypeToggle = (type: string) => {
@@ -279,6 +306,7 @@ export default function ShopPage() {
     setSelectedSizes([]);
     setSelectedConcerns([]);
     setSelectedOthers([]);
+    setActiveProductType("all");
   };
 
   // Find thumbnail for collections
@@ -287,11 +315,74 @@ export default function ShopPage() {
     return "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/logo_3.webp?v=1778164066";
   };
 
+  // Active collection display name
+  const activeCollectionName = useMemo(() => {
+    if (activeCollection === "all") return "All Products";
+    const col = collections.find(c => c.handle === activeCollection);
+    return col ? col.title.replace("Range", "").replace("Collection", "").trim() : "Products";
+  }, [activeCollection, collections]);
+
+  // The pill tab bar JSX — reused for both inline and sticky copy
+  const CollectionTabBar = () => (
+    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-6 md:gap-12 min-w-max pb-1">
+
+      {/* Shop All Tab */}
+      <button
+        onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
+        className="flex flex-col items-center gap-2 group relative cursor-pointer outline-none animate-in fade-in"
+      >
+        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-[#6c3518] p-0.5 transition-transform group-hover:scale-105">
+          <div className="w-full h-full rounded-full bg-[#f5f1e6] flex items-center justify-center font-poppins font-bold text-[8px] tracking-wider text-[#6c3518] text-center px-1">
+            SHOP ALL
+          </div>
+          {activeCollection === "all" && (
+            <div className="absolute inset-0 bg-[#6c3518]/10 border-2 border-[#6c3518] rounded-full pointer-events-none" />
+          )}
+        </div>
+        <span className={`text-[10px] font-poppins font-bold uppercase tracking-wider ${activeCollection === "all" ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
+          Shop All
+        </span>
+      </button>
+
+      {/* Collection Dynamic Tabs */}
+      {collections.map((col) => {
+        const isActive = activeCollection === col.handle;
+        const thumbnail = getCollectionThumbnail(col);
+
+        return (
+          <button
+            key={col.id}
+            onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
+            className="flex flex-col items-center gap-2 group relative cursor-pointer outline-none"
+          >
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-[#6c3518]/40 p-0.5 transition-transform group-hover:scale-105 bg-white">
+              <div className="w-full h-full rounded-full overflow-hidden relative">
+                <Image
+                  src={thumbnail}
+                  alt={col.title}
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                />
+              </div>
+              {isActive && (
+                <div className="absolute inset-0 bg-[#6c3518]/10 border border-[#6c3518] rounded-full pointer-events-none" />
+              )}
+            </div>
+            <span className={`text-[10px] font-poppins font-bold uppercase tracking-wider ${isActive ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
+              {col.title.replace("Range", "").replace("Collection", "").trim()}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+
   return (
     <main className="relative min-h-screen bg-[#F5F1E6] overflow-x-hidden">
 
       {/* 🌿 PARALLAX HERO SECTION */}
-      <section className="relative h-[45vh] md:h-[60vh] w-full overflow-hidden">
+      <section className="relative h-[45vh] md:h-[80vh] w-full overflow-hidden">
         <div
           className="absolute inset-0 w-full h-[65vh] md:h-[80vh] z-0 opacity-100"
           style={{
@@ -322,78 +413,65 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* CAROUSEL / CATEGORIES TABS */}
-      <div className="w-full bg-transparent border-b border-[#6c3518]/10 py-8 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-        <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-8 md:gap-16 min-w-max pb-2">
+      {/* ── SENTINEL — this element triggers sticky when it leaves the viewport ── */}
+      <div ref={tabsRef} className="h-0 w-full" />
 
-          {/* Shop All Tab */}
-          <button
-            onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
-            className="flex flex-col items-center gap-3 group relative cursor-pointer outline-none animate-in fade-in"
-          >
-            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border border-[#6c3518] p-0.5 transition-transform group-hover:scale-105">
-              <div className="w-full h-full rounded-full bg-[#f5f1e6] flex items-center justify-center font-poppins font-bold text-[9px] tracking-wider text-[#6c3518] text-center px-2">
-                SHOP ALL
-              </div>
-              {/* Highlight shape if active */}
-              {activeCollection === "all" && (
-                <div className="absolute inset-0 bg-[#6c3518]/10 border-2 border-[#6c3518] rounded-full pointer-events-none" />
-              )}
-            </div>
-            <span className={`text-[11px] font-poppins font-bold uppercase tracking-wider ${activeCollection === "all" ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
-              Shop All
-            </span>
-          </button>
-
-          {/* Collection Dynamic Tabs */}
-          {collections.map((col) => {
-            const isActive = activeCollection === col.handle;
-            const thumbnail = getCollectionThumbnail(col);
-
-            return (
-              <button
-                key={col.id}
-                onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
-                className="flex flex-col items-center gap-3 group relative cursor-pointer outline-none"
-              >
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border border-[#6c3518]/40 p-0.5 transition-transform group-hover:scale-105 bg-white">
-                  <div className="w-full h-full rounded-full overflow-hidden relative">
-                    <Image
-                      src={thumbnail}
-                      alt={col.title}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                  {/* Highlight shape if active */}
-                  {isActive && (
-                    <div className="absolute inset-0 bg-[#6c3518]/10 border border-[#6c3518] rounded-full pointer-events-none" />
-                  )}
-                </div>
-                <span className={`text-[11px] font-poppins font-bold uppercase tracking-wider ${isActive ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
-                  {col.title.replace("Range", "").replace("Collection", "").trim()}
-                </span>
-              </button>
-            );
-          })}
-
-        </div>
+      {/* CAROUSEL / COLLECTION TABS — inline version */}
+      <div className="w-full bg-[#f5f1e6] border-b border-[#6c3518]/10 py-5 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <CollectionTabBar />
       </div>
 
-      {/* CATALOG MAIN CONTENT */}
-      <section className="relative z-20 bg-transparent py-12">
-        <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-16">
+      {/* STICKY COLLECTION TABS — clones tab bar, floats below header when scrolled */}
+      <AnimatePresence>
+        {isTabsSticky && (
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="fixed top-[68px] left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#6c3518]/15 shadow-sm py-3 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+          >
+            <CollectionTabBar />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {/* Header Title & Quote */}
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-serif font-light text-black uppercase tracking-wider">
-              {activeCollection === "all" ? "All Indevie Products" : collections.find(c => c.handle === activeCollection)?.title}
-            </h2>
-            <p className="text-xs text-gray-500 font-poppins italic mt-2 tracking-wide font-light">
-              THE POWER OF INNER BEAUTY
-            </p>
+      {/* PRODUCT TYPE PILL ROW — horizontal scrollable filter strip */}
+      {filterOptions.productTypes.length > 0 && (
+        <div className="w-full bg-[#f5f1e6] border-b border-[#6c3518]/10 px-4 sm:px-10 lg:px-16 py-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-2 min-w-max">
+            {/* All pill */}
+            <button
+              onClick={() => setActiveProductType("all")}
+              className={`px-4 py-1.5 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                activeProductType === "all"
+                  ? "bg-[#6c3518] text-white border-[#6c3518]"
+                  : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
+              }`}
+            >
+              All
+            </button>
+
+            {filterOptions.productTypes.map((type) => (
+              <button
+                key={type}
+                onClick={() => setActiveProductType(activeProductType === type ? "all" : type)}
+                className={`px-4 py-1.5 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                  activeProductType === type
+                    ? "bg-[#6c3518] text-white border-[#6c3518]"
+                    : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
           </div>
+        </div>
+      )}
+
+      {/* CATALOG MAIN CONTENT */}
+      <section className="relative z-20 bg-transparent py-10">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-16">
 
           <div className="flex flex-col lg:flex-row gap-10">
 
@@ -525,21 +603,26 @@ export default function ShopPage() {
             {/* 2. PRODUCT GRID SECTION */}
             <div className="flex-1 space-y-6">
 
-              {/* Toolbar: Mob filters trigger & Desktop result count */}
-              <div className="flex justify-between items-center border-b border-gray-150 pb-4">
-                <p className="text-xs font-poppins text-gray-500 font-medium">
-                  Showing {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
-                </p>
-
-                {/* Mobile Filter Button */}
-                <button
-                  onClick={() => setIsMobileFilterOpen(true)}
-                  className="lg:hidden flex items-center gap-2 border border-[#6c3518] px-4 py-2 rounded-[4px] bg-[#f5f1e6] hover:bg-[#6c3518] hover:text-white text-[#6c3518] transition-colors duration-200 cursor-pointer"
+              {/* Dynamic Collection Heading */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCollection + activeProductType}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="border-b border-[#6c3518]/15 pb-5"
                 >
-                  <SlidersHorizontal size={14} />
-                  <span className="text-xs font-poppins font-bold uppercase tracking-wider">Filters</span>
-                </button>
-              </div>
+                  <h2 className="text-xl md:text-2xl font-serif italic text-[#6c3518] font-light tracking-wide">
+                    {activeProductType !== "all"
+                      ? activeProductType
+                      : activeCollectionName}
+                  </h2>
+                  <p className="text-[10px] font-poppins text-gray-400 uppercase tracking-[0.2em] mt-1 font-light">
+                    {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
 
               {loading ? (
                 /* Loading Skeleton */
@@ -588,6 +671,20 @@ export default function ShopPage() {
         </div>
       </section>
 
+      {/* ── MOBILE: Floating Filter Button — fixed bottom-right ── */}
+      <button
+        onClick={() => setIsMobileFilterOpen(true)}
+        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center gap-2 bg-[#6c3518] text-white shadow-lg px-5 py-3 rounded-full font-poppins font-bold text-[11px] uppercase tracking-wider active:scale-95 transition-transform"
+      >
+        <SlidersHorizontal size={15} />
+        Filters
+        {(selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length) > 0 && (
+          <span className="ml-0.5 bg-white text-[#6c3518] rounded-full w-4 h-4 flex items-center justify-center text-[9px] font-bold">
+            {selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length}
+          </span>
+        )}
+      </button>
+
       {/* 3. MOBILE FILTER DRAWER */}
       <AnimatePresence>
         {isMobileFilterOpen && (
@@ -607,7 +704,7 @@ export default function ShopPage() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-2xl z-[1010] flex flex-col lg:hidden border-t border-[#6c3518] overflow-hidden shadow-2xl animate-in slide-in-from-bottom"
+              className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-2xl z-[1010] flex flex-col lg:hidden border-t border-[#6c3518] overflow-hidden shadow-2xl"
             >
               {/* Modal header */}
               <div className="flex items-center justify-between p-5 border-b border-gray-150">
