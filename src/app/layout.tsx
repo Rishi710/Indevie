@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Indévie Beauty | Modern Botanical Skincare rooted in Genurveda™",
   description: "Discover Indévie Beauty's range of clean, effective, and intentional skincare rituals. Built with intention, backed by conviction.",
   keywords: ["skincare", "botanical beauty", "Genurveda", "clean beauty", "intentional skincare"],
+  other: {
+    "facebook-domain-verification": "m2b63pt96o6nhkqkt1wk154bcexgf2",
+  },
 };
 
 export default async function RootLayout({
