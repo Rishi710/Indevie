@@ -61,6 +61,18 @@ function getCookie(name: string): string {
 }
 
 /**
+ * True on localhost/dev origins. All exported event functions below no-op
+ * here so local testing never pollutes the real Meta dataset / catalog
+ * match-rate metrics with dev traffic (this is how "localhost:3000" source
+ * URLs end up as unmatched events in Meta Commerce Manager).
+ */
+function isLocalOrigin(): boolean {
+  if (typeof window === "undefined") return false;
+  const host = window.location.hostname;
+  return host === "localhost" || host === "127.0.0.1" || host === "0.0.0.0";
+}
+
+/**
  * Sends an event to our /api/meta-events relay which forwards it to
  * Meta's Conversions API from the server.
  * This is non-blocking — UX is never delayed if CAPI fails.
@@ -104,6 +116,7 @@ function fireBrowserPixel(
 
 /** PageView — fire on every route change */
 export function pixelPageView(): void {
+  if (isLocalOrigin()) return;
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
   window.fbq("track", "PageView");
 }
@@ -125,6 +138,7 @@ export function pixelViewContent({
   price: string;
   currencyCode?: string;
 }): void {
+  if (isLocalOrigin()) return;
   const eventId = generateEventId();
   const eventData = {
     content_ids: [toShopifyContentId(id, variantId)],
@@ -157,6 +171,7 @@ export function pixelAddToCart({
   currencyCode?: string;
   quantity?: number;
 }): void {
+  if (isLocalOrigin()) return;
   const eventId = generateEventId();
   const eventData = {
     content_ids: [toShopifyContentId(id, variantId)],
@@ -186,6 +201,7 @@ export function pixelInitiateCheckout({
   currencyCode?: string;
   contentIds: string[];
 }): void {
+  if (isLocalOrigin()) return;
   const eventId = generateEventId();
   const eventData = {
     content_ids: contentIds,
@@ -217,6 +233,7 @@ export function pixelPurchase({
   contentIds: string[];
   numItems: number;
 }): void {
+  if (isLocalOrigin()) return;
   const eventId = generateEventId();
   const eventData = {
     content_ids: contentIds,

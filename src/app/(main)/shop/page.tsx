@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
@@ -38,10 +38,8 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  // Sticky collection tabs state
-  const [isTabsSticky, setIsTabsSticky] = useState(false);
-  const tabsRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
+  // Measure actual header height so sticky tab bar snaps flush below it
+  const [headerHeight, setHeaderHeight] = useState(108);
 
   // Active product type filter (from the horizontal pill row)
   const [activeProductType, setActiveProductType] = useState<string>("all");
@@ -53,19 +51,21 @@ export default function ShopPage() {
   const [selectedOthers, setSelectedOthers] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("relevant");
 
-  // Sticky tabs — pin when they scroll past the header (~108px)
+  // Dynamically measure header height so sticky top is always accurate
   useEffect(() => {
-    const sentinel = tabsRef.current;
-    if (!sentinel) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsTabsSticky(!entry.isIntersecting);
-      },
-      { rootMargin: "-108px 0px 0px 0px", threshold: 0 }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
+    const measureHeader = () => {
+      const headerEl =
+        (document.querySelector("[data-header-wrapper]") as HTMLElement | null) ||
+        (document.querySelector("header")?.parentElement as HTMLElement | null);
+      if (headerEl) setHeaderHeight(headerEl.getBoundingClientRect().height);
+    };
+    measureHeader();
+    const ro = new ResizeObserver(measureHeader);
+    const headerEl =
+      (document.querySelector("[data-header-wrapper]") as HTMLElement | null) ||
+      (document.querySelector("header")?.parentElement as HTMLElement | null);
+    if (headerEl) ro.observe(headerEl);
+    return () => ro.disconnect();
   }, []);
 
   // Fetch collections and products on load
@@ -320,24 +320,25 @@ export default function ShopPage() {
     return col ? col.title.replace("Range", "").replace("Collection", "").trim() : "Products";
   }, [activeCollection, collections]);
 
-  // The pill tab bar JSX — reused for both inline and sticky copy
-  const CollectionTabBar = () => (
-    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-6 md:gap-12 min-w-max pb-1">
+  // The pill tab bar JSX
+  const CollectionTabBar = useCallback(() => (
+    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-5 md:gap-10 min-w-max">
 
       {/* Shop All Tab */}
       <button
         onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
-        className="flex flex-col items-center gap-2 group relative cursor-pointer outline-none animate-in fade-in"
+        className="flex flex-col items-center gap-1.5 group relative cursor-pointer outline-none"
       >
-        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-[#6c3518] p-0.5 transition-transform group-hover:scale-105">
-          <div className="w-full h-full rounded-full bg-[#f5f1e6] flex items-center justify-center font-poppins font-bold text-[8px] tracking-wider text-[#6c3518] text-center px-1">
+        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
+          <div className={`w-full h-full rounded-full flex items-center justify-center font-poppins font-bold text-[7px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
+              ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
+              : "bg-[#f5f1e6] text-[#6c3518]"
+            }`}>
             SHOP ALL
           </div>
-          {activeCollection === "all" && (
-            <div className="absolute inset-0 bg-[#6c3518]/10 border-2 border-[#6c3518] rounded-full pointer-events-none" />
-          )}
         </div>
-        <span className={`text-[10px] font-poppins font-bold uppercase tracking-wider ${activeCollection === "all" ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
+        <span className={`text-[9px] font-poppins font-bold uppercase tracking-wider transition-colors ${activeCollection === "all" ? "text-[#6c3518]" : "text-gray-400 group-hover:text-[#6c3518]"
+          }`}>
           Shop All
         </span>
       </button>
@@ -351,101 +352,90 @@ export default function ShopPage() {
           <button
             key={col.id}
             onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
-            className="flex flex-col items-center gap-2 group relative cursor-pointer outline-none"
+            className="flex flex-col items-center gap-1.5 group relative cursor-pointer outline-none"
           >
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-[#6c3518]/40 p-0.5 transition-transform group-hover:scale-105 bg-white">
-              <div className="w-full h-full rounded-full overflow-hidden relative">
+            <div className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
+                ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
+                : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
+              }`}>
+              <div className="w-full h-full rounded-full overflow-hidden relative bg-white">
                 <Image
                   src={thumbnail}
                   alt={col.title}
                   fill
                   className="object-cover"
-                  sizes="64px"
+                  sizes="56px"
                 />
               </div>
               {isActive && (
-                <div className="absolute inset-0 bg-[#6c3518]/10 border border-[#6c3518] rounded-full pointer-events-none" />
+                <div className="absolute inset-0 bg-[#6c3518]/10 rounded-full pointer-events-none" />
               )}
             </div>
-            <span className={`text-[10px] font-poppins font-bold uppercase tracking-wider ${isActive ? "text-[#6c3518]" : "text-gray-500 group-hover:text-black"}`}>
+            <span className={`text-[9px] font-poppins font-bold uppercase tracking-wider transition-colors max-w-[70px] text-center leading-tight ${isActive ? "text-[#6c3518]" : "text-gray-400 group-hover:text-[#6c3518]"
+              }`}>
               {col.title.replace("Range", "").replace("Collection", "").trim()}
             </span>
           </button>
         );
       })}
     </div>
-  );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [collections, activeCollection]);
 
   return (
-    <main className="relative min-h-screen bg-[#F5F1E6] overflow-x-hidden">
+    <main className="relative min-h-screen bg-white overflow-x-clip">
 
-      {/* 🌿 PARALLAX HERO SECTION */}
-      <section className="relative h-[45vh] md:h-[80vh] w-full overflow-hidden">
+      {/* 🌿 HERO SECTION — transparent header floats over it, so no paddingTop needed */}
+      <section className="relative w-full overflow-hidden">
         <div
-          className="absolute inset-0 w-full h-[65vh] md:h-[80vh] z-0 opacity-100"
+          className="relative w-full h-[55vh] md:h-[80vh] z-0"
           style={{
             backgroundImage: "url('/images/DSC_6451.jpg')",
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "center top",
           }}
         >
           {/* Soft Overlay */}
           <div className="absolute inset-0 bg-[#6c3518]/25" />
-        </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.0, ease: "easeOut" }}
-            className="flex flex-col items-center"
-          >
-            <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-2xl font-light">
-              The Ritual Library
-            </h1>
-            <p className="text-white/95 text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
-              Curated botanical treasures for your daily sanctuary.
-            </p>
-          </motion.div>
+          {/* Hero Content — centered with top padding to clear the fixed header visually */}
+          <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6" style={{ paddingTop: headerHeight }}>
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.0, ease: "easeOut" }}
+              className="flex flex-col items-center"
+            >
+              <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-2xl font-light">
+                The Ritual Library
+              </h1>
+              <p className="text-white/95 text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
+                Curated botanical treasures for your daily sanctuary.
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ── SENTINEL — this element triggers sticky when it leaves the viewport ── */}
-      <div ref={tabsRef} className="h-0 w-full" />
-
-      {/* CAROUSEL / COLLECTION TABS — inline version */}
-      <div className="w-full bg-[#f5f1e6] border-b border-[#6c3518]/10 py-5 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+      {/* ── STICKY COLLECTION TAB BAR ── */}
+      <div
+        className="w-full bg-white py-3.5 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden z-40"
+        style={{ position: "sticky", top: headerHeight }}
+      >
         <CollectionTabBar />
       </div>
 
-      {/* STICKY COLLECTION TABS — clones tab bar, floats below header when scrolled */}
-      <AnimatePresence>
-        {isTabsSticky && (
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed top-[68px] left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#6c3518]/15 shadow-sm py-3 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden"
-          >
-            <CollectionTabBar />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* PRODUCT TYPE PILL ROW — horizontal scrollable filter strip */}
       {filterOptions.productTypes.length > 0 && (
-        <div className="w-full bg-[#f5f1e6] border-b border-[#6c3518]/10 px-4 sm:px-10 lg:px-16 py-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          <div className="flex items-center gap-2 min-w-max">
+        <div className="w-full bg-white border-b border-gray-100 px-4 sm:px-10 lg:px-16 py-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-2.5 min-w-max">
             {/* All pill */}
             <button
               onClick={() => setActiveProductType("all")}
-              className={`px-4 py-1.5 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                activeProductType === "all"
+              className={`px-5 py-2 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === "all"
                   ? "bg-[#6c3518] text-white border-[#6c3518]"
                   : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
-              }`}
+                }`}
             >
               All
             </button>
@@ -454,11 +444,10 @@ export default function ShopPage() {
               <button
                 key={type}
                 onClick={() => setActiveProductType(activeProductType === type ? "all" : type)}
-                className={`px-4 py-1.5 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                  activeProductType === type
+                className={`px-5 py-2 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === type
                     ? "bg-[#6c3518] text-white border-[#6c3518]"
                     : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
-                }`}
+                  }`}
               >
                 {type}
               </button>
@@ -468,17 +457,17 @@ export default function ShopPage() {
       )}
 
       {/* CATALOG MAIN CONTENT */}
-      <section className="relative z-20 bg-transparent py-10">
+      <section className="relative z-20 bg-white py-8">
         <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-16">
 
           <div className="flex flex-col lg:flex-row gap-10">
 
             {/* 1. FILTER SIDEBAR — Desktop only */}
-            <aside className="hidden lg:block w-[240px] shrink-0 space-y-8 sticky top-28 self-start">
+            <aside className="hidden lg:block w-[220px] shrink-0 space-y-6 sticky self-start" style={{ top: headerHeight + 16 }}>
 
               {/* Product Type Filter */}
               {filterOptions.productTypes.length > 0 && (
-                <div className="border-b border-[#6c3518]/10 pb-6">
+                <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Product type</h4>
                   <ul className="space-y-3">
                     {filterOptions.productTypes.map((type) => (
@@ -501,7 +490,7 @@ export default function ShopPage() {
 
               {/* Shop by Concern Filter */}
               {filterOptions.concerns.length > 0 && (
-                <div className="border-b border-[#6c3518]/10 pb-6">
+                <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Shop by Concern</h4>
                   <ul className="space-y-3">
                     {filterOptions.concerns.map((concern) => (
@@ -524,7 +513,7 @@ export default function ShopPage() {
 
               {/* Size Filter */}
               {filterOptions.sizes.length > 0 && (
-                <div className="border-b border-[#6c3518]/10 pb-6">
+                <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Size</h4>
                   <ul className="space-y-3">
                     {filterOptions.sizes.map((size) => (
@@ -547,7 +536,7 @@ export default function ShopPage() {
 
               {/* Others Filter */}
               {filterOptions.others.length > 0 && (
-                <div className="border-b border-[#6c3518]/10 pb-6">
+                <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Others</h4>
                   <ul className="space-y-3">
                     {filterOptions.others.map((other) => (
@@ -590,7 +579,7 @@ export default function ShopPage() {
               {(selectedProductTypes.length > 0 || selectedSizes.length > 0 || selectedConcerns.length > 0 || selectedOthers.length > 0) && (
                 <button
                   onClick={clearAllFilters}
-                  className="w-full py-2 bg-[#f5f1e6] hover:bg-[#6c3518] hover:text-white border border-[#6c3518] rounded-[4px] text-[10px] font-poppins font-bold uppercase tracking-wider transition-colors duration-200 text-[#6c3518]"
+                  className="w-full py-2 bg-white hover:bg-[#6c3518] hover:text-white border border-[#6c3518] rounded-[4px] text-[10px] font-poppins font-bold uppercase tracking-wider transition-colors duration-200 text-[#6c3518]"
                 >
                   Clear Filters
                 </button>
@@ -609,24 +598,22 @@ export default function ShopPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.3 }}
-                  className="border-b border-[#6c3518]/15 pb-5"
+                  className="flex flex-col items-start text-left pb-6 md:pb-8"
                 >
-                  <h2 className="text-xl md:text-2xl font-serif italic text-[#6c3518] font-light tracking-wide">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif italic text-[#6c3518] font-light tracking-wide leading-tight">
                     {activeProductType !== "all"
                       ? activeProductType
                       : activeCollectionName}
                   </h2>
-                  <p className="text-[10px] font-poppins text-gray-400 uppercase tracking-[0.2em] mt-1 font-light">
-                    {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
-                  </p>
+                  <div className="w-14 h-[1.5px] bg-[#6c3518]/25 mt-3" />
                 </motion.div>
               </AnimatePresence>
 
               {loading ? (
                 /* Loading Skeleton */
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
                   {[...Array(8)].map((_, i) => (
-                    <div key={i} className="animate-pulse space-y-3 border border-gray-200 rounded overflow-hidden">
+                    <div key={i} className="animate-pulse space-y-3 border border-gray-100 rounded-xl overflow-hidden bg-gray-50">
                       <div className="aspect-square bg-gray-100" />
                       <div className="h-3 bg-gray-100 mx-3 rounded w-2/3" />
                       <div className="h-3 bg-gray-100 mx-3 rounded w-1/2" />
@@ -636,7 +623,7 @@ export default function ShopPage() {
                 </div>
               ) : filteredAndSortedProducts.length > 0 ? (
                 /* Real Grid Card mapping */
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
                   {filteredAndSortedProducts.map((product, idx) => (
                     <motion.div
                       key={product.id}
@@ -651,7 +638,7 @@ export default function ShopPage() {
                 </div>
               ) : (
                 /* Empty state */
-                <div className="text-center py-20 bg-[#faf8f3] rounded-xl border border-dashed border-[#6c3518]/20">
+                <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-[#6c3518]/20">
                   <p className="text-sm font-poppins text-gray-500 italic">No products match your filter selection.</p>
                   <button
                     onClick={clearAllFilters}
