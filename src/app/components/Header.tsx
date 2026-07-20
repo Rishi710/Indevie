@@ -20,8 +20,11 @@ export default function Header({
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isShopDropdownOpen, setIsShopDropdownOpen] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+
+  // Mobile nav accordions — expanded by default, collapse on tap
+  const [isFavouritesOpen, setIsFavouritesOpen] = useState(true);
+  const [isCollectionsOpen, setIsCollectionsOpen] = useState(true);
   const pathname = usePathname();
   const { setIsCartOpen, totalQuantity } = useCart();
 
@@ -39,6 +42,7 @@ export default function Header({
   // Lock scroll when menu is open
   useScrollLock(isMenuOpen);
 
+  // Full flat row for desktop nav
   const links = [
     { name: "Shop", href: "/shop" },
     { name: "About", href: "/about" },
@@ -47,6 +51,26 @@ export default function Header({
     { name: "Contact", href: "/contact" },
     { name: "FAQ", href: "/faq" },
   ];
+
+  // Mobile-only accordion sections — "collection" values map to real Shopify
+  // collection handles (fetched from Storefront API), read by the shop page
+  // via /shop?collection=<handle> to land directly on that tab.
+  const FAVOURITES_LINKS = [
+    { name: "Shop All", href: "/shop" },
+    { name: "New Launches", href: "/shop?collection=new-launches" },
+    { name: "Bestsellers", href: "/shop?collection=single" },
+  ];
+
+  const COLLECTIONS_LINKS = [
+    { name: "Travel Minis", href: "/shop?collection=minis" },
+    { name: "Gifting Box", href: "/shop?collection=gift-box" },
+    { name: "Face Care", href: "/shop?collection=face-care-1" },
+    { name: "Hair Care", href: "/shop?collection=hair-care" },
+    { name: "Body Care", href: "/shop?collection=body-care" },
+  ];
+
+  // Mobile flat links — same as desktop minus "Shop" (now under Favourites/Collections)
+  const mobileFlatLinks = links.filter((l) => l.name !== "Shop");
 
   return (
     <div className="fixed top-0 w-full z-50">
@@ -233,12 +257,116 @@ export default function Header({
             className="fixed inset-0 bg-white z-40 pt-24 pb-8 px-6 md:hidden will-change-transform overflow-y-auto flex flex-col"
           >
             <nav className="flex flex-col space-y-6 flex-grow">
-              {/* Mobile Account Section */}
+              {/* Favourites — expanded by default, collapsible */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 }}>
+                <button
+                  onClick={() => setIsFavouritesOpen(!isFavouritesOpen)}
+                  className="w-full flex items-center justify-between text-left"
+                >
+                  <span className="relative inline-block">
+                    <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
+                    <span className="relative text-3xl font-serif text-gray-900">Favourites</span>
+                  </span>
+                  <motion.svg
+                    animate={{ rotate: isFavouritesOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+                    className="text-gray-900 shrink-0"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </motion.svg>
+                </button>
+                <AnimatePresence>
+                  {isFavouritesOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden flex flex-col space-y-4 pt-4"
+                    >
+                      {FAVOURITES_LINKS.map((link) => (
+                        <Link
+                          key={link.name}
+                          href={link.href}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]"
+                        >
+                          {link.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Collections — expanded by default, collapsible */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="pt-2">
+                <button
+                  onClick={() => setIsCollectionsOpen(!isCollectionsOpen)}
+                  className="w-full flex items-center justify-between text-left"
+                >
+                  <span className="relative inline-block">
+                    <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
+                    <span className="relative text-3xl font-serif text-gray-900">Collections</span>
+                  </span>
+                  <motion.svg
+                    animate={{ rotate: isCollectionsOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+                    className="text-gray-900 shrink-0"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </motion.svg>
+                </button>
+                <AnimatePresence>
+                  {isCollectionsOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden flex flex-col space-y-4 pt-4"
+                    >
+                      {COLLECTIONS_LINKS.map((link) => (
+                        <Link
+                          key={link.name}
+                          href={link.href}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]"
+                        >
+                          {link.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Flat links */}
+              {mobileFlatLinks.map((link, idx) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + idx * 0.05 }}
+                >
+                  <Link
+                    href={link.href}
+                    className="text-3xl font-serif text-gray-900 hover:text-[#6c3518] transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+
+              {/* Account / Login — placed after the nav tabs */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.05 }}
-                className="pb-6 border-b border-gray-100"
+                transition={{ delay: 0.15 + mobileFlatLinks.length * 0.05 }}
+                className="pt-6 mt-2 border-t border-gray-100"
               >
                 {!isLoggedIn ? (
                   <Link
@@ -296,88 +424,6 @@ export default function Header({
                   </div>
                 )}
               </motion.div>
-
-              {links.map((link, idx) => {
-                if (link.name === "Shop") {
-                  return (
-                    <motion.div
-                      key={link.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + idx * 0.05 }}
-                    >
-                      <div className="flex flex-col">
-                        <div className="flex items-center justify-between">
-                          <Link
-                            href={link.href}
-                            className="text-3xl font-serif text-gray-900 hover:text-[#6c3518] transition-colors"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {link.name}
-                          </Link>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setIsShopDropdownOpen(!isShopDropdownOpen);
-                            }}
-                            className="p-2 text-gray-900 focus:outline-none"
-                            aria-label="Toggle shop dropdown"
-                          >
-                            <motion.svg
-                              animate={{ rotate: isShopDropdownOpen ? 180 : 0 }}
-                              transition={{ duration: 0.3 }}
-                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </motion.svg>
-                          </button>
-                        </div>
-                        <AnimatePresence>
-                          {isShopDropdownOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden pl-4 flex flex-col space-y-4 pt-4"
-                            >
-                              <Link href="/products/geeli-mitti-face-mist" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Geeli Mitti Face Mist 30ml</Link>
-                              <Link href="/products/gulkand-face-mist" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulkand Face Mist 30ml</Link>
-                              <Link href="/products/gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaabo Tez-Dhoop Sunshield Sunscreen</Link>
-                              <Link href="/products/gulaaboo-tez-dhoop-sunshield-refill" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Gulaabo Tez-Dhoop Sunshield Refill</Link>
-                              <Link href="/products/indevie-glow-maalish-oil" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil (Jasmine)</Link>
-                              <Link href="/products/indevie-kalakand-body-lotion" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion</Link>
-                              <Link href="/products/indevie-calm-balm" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm</Link>
-                              <Link href="/products/the-ultimate-care-ritual-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">The Ultimate Care Ritual Set</Link>
-                              <Link href="/products/indevie-bodycare-gift-set" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Indevie Bodycare Gift Set</Link>
-                              <Link href="/products/calm-balm-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Calm Balm Mini</Link>
-                              <Link href="/products/kalakand-body-lotion-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Kalakand Body Lotion Mini</Link>
-                              <Link href="/products/maalish-oil-mini" onClick={() => setIsMenuOpen(false)} className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]">Glow Maalish Oil Mini</Link>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
-                  );
-                }
-
-                return (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + idx * 0.05 }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-3xl font-serif text-gray-900 hover:text-[#6c3518] transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                );
-              })}
             </nav>
 
             {/* Mobile Menu Bottom Info */}

@@ -38,6 +38,15 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+  // Deep-link support: /shop?collection=<handle> (used by the header's mobile
+  // nav) jumps straight to that collection tab instead of always landing on
+  // "Shop All". Read via plain window.location rather than useSearchParams
+  // so this client component doesn't need a Suspense boundary.
+  useEffect(() => {
+    const collectionParam = new URLSearchParams(window.location.search).get("collection");
+    if (collectionParam) setActiveCollection(collectionParam);
+  }, []);
+
   // Measure actual header height so sticky tab bar snaps flush below it
   const [headerHeight, setHeaderHeight] = useState(108);
 
@@ -496,7 +505,7 @@ export default function ShopPage() {
 
       {/* ── STICKY COLLECTION TAB BAR ── */}
       <div
-        className="w-full bg-white py-3.5 px-4 sm:px-10 lg:px-16 z-40"
+        className="w-full bg-white py-3.5 px-2 sm:px-10 lg:px-16 z-40"
         style={{ position: "sticky", top: headerHeight }}
       >
         <div className="relative flex items-center max-w-[1500px] mx-auto">
@@ -522,7 +531,7 @@ export default function ShopPage() {
           <button
             onClick={() => scrollTabsBy(260)}
             aria-label="Scroll collections right"
-            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-transparent text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-5 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-transparent text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronRight size={16} />
