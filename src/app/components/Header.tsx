@@ -257,21 +257,23 @@ export default function Header({
             className="fixed inset-0 bg-white z-40 pt-24 pb-8 px-6 md:hidden will-change-transform overflow-y-auto flex flex-col"
           >
             <nav className="flex flex-col space-y-6 flex-grow">
-              {/* Favourites — expanded by default, collapsible */}
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 }}>
+              {/* Favourites — expanded by default, collapsible, cream panel */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 }}
+                className="bg-[#f5f1e6] rounded-2xl px-5 py-4"
+              >
                 <button
                   onClick={() => setIsFavouritesOpen(!isFavouritesOpen)}
                   className="w-full flex items-center justify-between text-left"
                 >
-                  <span className="relative inline-block">
-                    <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-serif text-gray-900">Favourites</span>
-                  </span>
+                  <span className="text-2xl font-serif text-[#6c3518]">Favourites</span>
                   <motion.svg
                     animate={{ rotate: isFavouritesOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
-                    className="text-gray-900 shrink-0"
+                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+                    className="text-[#6c3518] shrink-0"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                   </motion.svg>
@@ -283,14 +285,14 @@ export default function Header({
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="overflow-hidden flex flex-col space-y-4 pt-4"
+                      className="overflow-hidden flex flex-col space-y-3 pt-3"
                     >
                       {FAVOURITES_LINKS.map((link) => (
                         <Link
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]"
+                          className="text-base font-poppins text-[#6c3518]/70 hover:text-[#6c3518]"
                         >
                           {link.name}
                         </Link>
@@ -300,21 +302,23 @@ export default function Header({
                 </AnimatePresence>
               </motion.div>
 
-              {/* Collections — expanded by default, collapsible */}
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="pt-2">
+              {/* Collections — expanded by default, collapsible, white panel with brand-brown border */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-white border border-[#6c3518]/15 rounded-2xl px-5 py-4"
+              >
                 <button
                   onClick={() => setIsCollectionsOpen(!isCollectionsOpen)}
                   className="w-full flex items-center justify-between text-left"
                 >
-                  <span className="relative inline-block">
-                    <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-serif text-gray-900">Collections</span>
-                  </span>
+                  <span className="text-2xl font-serif text-[#6c3518]">Collections</span>
                   <motion.svg
                     animate={{ rotate: isCollectionsOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
-                    className="text-gray-900 shrink-0"
+                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
+                    className="text-[#6c3518] shrink-0"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                   </motion.svg>
@@ -326,14 +330,14 @@ export default function Header({
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="overflow-hidden flex flex-col space-y-4 pt-4"
+                      className="overflow-hidden flex flex-col space-y-3 pt-3"
                     >
                       {COLLECTIONS_LINKS.map((link) => (
                         <Link
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]"
+                          className="text-base font-poppins text-gray-600 hover:text-[#6c3518]"
                         >
                           {link.name}
                         </Link>
