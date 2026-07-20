@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
-import { SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { SlidersHorizontal, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -40,6 +40,22 @@ export default function ShopPage() {
 
   // Measure actual header height so sticky tab bar snaps flush below it
   const [headerHeight, setHeaderHeight] = useState(108);
+
+  // Collection tab row horizontal scroll + arrow affordance
+  const tabsScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollTabsLeft, setCanScrollTabsLeft] = useState(false);
+  const [canScrollTabsRight, setCanScrollTabsRight] = useState(false);
+
+  const updateTabsScrollState = useCallback(() => {
+    const el = tabsScrollRef.current;
+    if (!el) return;
+    setCanScrollTabsLeft(el.scrollLeft > 4);
+    setCanScrollTabsRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  const scrollTabsBy = (delta: number) => {
+    tabsScrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
+  };
 
   // Active product type filter (from the horizontal pill row)
   const [activeProductType, setActiveProductType] = useState<string>("all");
@@ -107,6 +123,13 @@ export default function ShopPage() {
     loadShopData();
   }, []);
 
+  // Re-check scroll arrow visibility whenever the tab row's content or the viewport changes
+  useEffect(() => {
+    updateTabsScrollState();
+    window.addEventListener("resize", updateTabsScrollState);
+    return () => window.removeEventListener("resize", updateTabsScrollState);
+  }, [collections, updateTabsScrollState]);
+
   // Fetch products for a specific collection when activeCollection changes
   useEffect(() => {
     setActiveProductType("all"); // Reset type filter on collection change
@@ -140,17 +163,18 @@ export default function ShopPage() {
     };
   }, [activeCollection, allProducts]);
 
-  // Compute available filter items from products
+  // Compute available filter items (with product counts) from products
   const filterOptions = useMemo(() => {
-    const types = new Set<string>();
-    const sizes = new Set<string>();
-    const concerns = new Set<string>();
-    const others = new Set<string>();
+    const types = new Map<string, number>();
+    const sizes = new Map<string, number>();
+    const concerns = new Map<string, number>();
+    const others = new Map<string, number>();
+    const bump = (map: Map<string, number>, key: string) => map.set(key, (map.get(key) || 0) + 1);
 
     products.forEach((p) => {
       // 1. Product type
       const type = getProductType(p);
-      if (type) types.add(type);
+      if (type) bump(types, type);
 
       // 2. Sizes
       const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
@@ -158,11 +182,11 @@ export default function ShopPage() {
       const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
 
       if (hasMini) {
-        sizes.add("Mini Size");
+        bump(sizes, "Mini Size");
       } else if (sizeTag30ml || sizeTag50gm || p.title.toLowerCase().includes("lotion") || p.title.toLowerCase().includes("oil")) {
-        sizes.add("Full Size");
+        bump(sizes, "Full Size");
       } else {
-        sizes.add("Standard Size");
+        bump(sizes, "Standard Size");
       }
 
       // 3. Concerns
@@ -171,33 +195,32 @@ export default function ShopPage() {
 
       productTags.forEach((tag) => {
         if (tag.toLowerCase().startsWith("concern:")) {
-          concerns.add(tag.split(":")[1].trim());
+          bump(concerns, tag.split(":")[1].trim());
           foundExplicitConcern = true;
         }
       });
 
       if (!foundExplicitConcern) {
         const titleLower = p.title.toLowerCase();
-        if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) concerns.add("Sun Protection");
-        if (titleLower.includes("mist") || titleLower.includes("lotion")) concerns.add("Deep Hydration");
-        if (titleLower.includes("oil") || titleLower.includes("gulkand")) concerns.add("Skin Glow");
-        if (titleLower.includes("calm balm") || titleLower.includes("mitti")) concerns.add("Calming & Soothing");
+        if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) bump(concerns, "Sun Protection");
+        if (titleLower.includes("mist") || titleLower.includes("lotion")) bump(concerns, "Deep Hydration");
+        if (titleLower.includes("oil") || titleLower.includes("gulkand")) bump(concerns, "Skin Glow");
+        if (titleLower.includes("calm balm") || titleLower.includes("mitti")) bump(concerns, "Calming & Soothing");
       }
 
       // 4. Others
       const isCombo = p.tags?.some(t => t.toLowerCase().includes("combo") || t.toLowerCase().includes("set") || t.toLowerCase().includes("ritual")) || p.title.toLowerCase().includes("set");
-      if (isCombo) {
-        others.add("Combos & Sets");
-      } else {
-        others.add("Singles");
-      }
+      bump(others, isCombo ? "Combos & Sets" : "Singles");
     });
 
+    const toSortedEntries = (map: Map<string, number>) =>
+      Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+
     return {
-      productTypes: Array.from(types).sort(),
-      sizes: Array.from(sizes).sort(),
-      concerns: Array.from(concerns).sort(),
-      others: Array.from(others).sort(),
+      productTypes: toSortedEntries(types),
+      sizes: toSortedEntries(sizes),
+      concerns: toSortedEntries(concerns),
+      others: toSortedEntries(others),
     };
   }, [products]);
 
@@ -322,14 +345,14 @@ export default function ShopPage() {
 
   // The pill tab bar JSX
   const CollectionTabBar = useCallback(() => (
-    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-5 md:gap-10 min-w-max">
+    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-6 md:gap-10 min-w-max py-1">
 
       {/* Shop All Tab */}
       <button
         onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
-        className="flex flex-col items-center gap-1.5 group relative cursor-pointer outline-none"
+        className="flex flex-col items-center gap-2.5 group relative cursor-pointer outline-none"
       >
-        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
+        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
           <div className={`w-full h-full rounded-full flex items-center justify-center font-poppins font-bold text-[7px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
               ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
               : "bg-[#f5f1e6] text-[#6c3518]"
@@ -337,9 +360,17 @@ export default function ShopPage() {
             SHOP ALL
           </div>
         </div>
-        <span className={`text-[9px] font-poppins font-bold uppercase tracking-wider transition-colors ${activeCollection === "all" ? "text-[#6c3518]" : "text-gray-400 group-hover:text-[#6c3518]"
-          }`}>
-          Shop All
+        <span className="relative inline-flex">
+          {activeCollection === "all" && (
+            <span
+              className="absolute inset-0 bg-[#6c3518]"
+              style={{ clipPath: "polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%)" }}
+            />
+          )}
+          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+            }`}>
+            Shop All
+          </span>
         </span>
       </button>
 
@@ -347,14 +378,15 @@ export default function ShopPage() {
       {collections.map((col) => {
         const isActive = activeCollection === col.handle;
         const thumbnail = getCollectionThumbnail(col);
+        const label = col.title.replace("Range", "").replace("Collection", "").trim();
 
         return (
           <button
             key={col.id}
             onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
-            className="flex flex-col items-center gap-1.5 group relative cursor-pointer outline-none"
+            className="flex flex-col items-center gap-2.5 group relative cursor-pointer outline-none"
           >
-            <div className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
+            <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
                 ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
                 : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
               }`}>
@@ -364,16 +396,24 @@ export default function ShopPage() {
                   alt={col.title}
                   fill
                   className="object-cover"
-                  sizes="56px"
+                  sizes="64px"
                 />
               </div>
               {isActive && (
                 <div className="absolute inset-0 bg-[#6c3518]/10 rounded-full pointer-events-none" />
               )}
             </div>
-            <span className={`text-[9px] font-poppins font-bold uppercase tracking-wider transition-colors max-w-[70px] text-center leading-tight ${isActive ? "text-[#6c3518]" : "text-gray-400 group-hover:text-[#6c3518]"
-              }`}>
-              {col.title.replace("Range", "").replace("Collection", "").trim()}
+            <span className="relative inline-flex max-w-[100px]">
+              {isActive && (
+                <span
+                  className="absolute inset-0 bg-[#6c3518]"
+                  style={{ clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)" }}
+                />
+              )}
+              <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider text-center leading-tight transition-colors ${isActive ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+                }`}>
+                {label}
+              </span>
             </span>
           </button>
         );
@@ -419,10 +459,38 @@ export default function ShopPage() {
 
       {/* ── STICKY COLLECTION TAB BAR ── */}
       <div
-        className="w-full bg-white py-3.5 px-4 sm:px-10 lg:px-16 overflow-x-auto [&::-webkit-scrollbar]:hidden z-40"
+        className="w-full bg-white py-3.5 px-4 sm:px-10 lg:px-16 z-40"
         style={{ position: "sticky", top: headerHeight }}
       >
-        <CollectionTabBar />
+        <div className="relative flex items-center max-w-[1500px] mx-auto">
+          {/* Left scroll arrow — desktop only, hidden when already at the start */}
+          <button
+            onClick={() => scrollTabsBy(-260)}
+            aria-label="Scroll collections left"
+            className={`hidden md:flex shrink-0 w-8 h-8 mr-2 items-center justify-center rounded-full border border-[#6c3518]/20 text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          <div
+            ref={tabsScrollRef}
+            onScroll={updateTabsScrollState}
+            className="flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+          >
+            <CollectionTabBar />
+          </div>
+
+          {/* Right scroll arrow — desktop only, hidden when already at the end */}
+          <button
+            onClick={() => scrollTabsBy(260)}
+            aria-label="Scroll collections right"
+            className={`hidden md:flex shrink-0 w-8 h-8 ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
 
       {/* PRODUCT TYPE PILL ROW — horizontal scrollable filter strip */}
@@ -440,7 +508,7 @@ export default function ShopPage() {
               All
             </button>
 
-            {filterOptions.productTypes.map((type) => (
+            {filterOptions.productTypes.map(([type]) => (
               <button
                 key={type}
                 onClick={() => setActiveProductType(activeProductType === type ? "all" : type)}
@@ -465,12 +533,17 @@ export default function ShopPage() {
             {/* 1. FILTER SIDEBAR — Desktop only */}
             <aside className="hidden lg:block w-[220px] shrink-0 space-y-6 sticky self-start" style={{ top: headerHeight + 16 }}>
 
+              {/* Section label */}
+              <div className="pb-3 border-b border-[#6c3518]/15">
+                <h3 className="text-sm font-poppins font-bold uppercase tracking-wider text-black">Filter:</h3>
+              </div>
+
               {/* Product Type Filter */}
               {filterOptions.productTypes.length > 0 && (
                 <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Product type</h4>
                   <ul className="space-y-3">
-                    {filterOptions.productTypes.map((type) => (
+                    {filterOptions.productTypes.map(([type, count]) => (
                       <li key={type} className="flex items-center gap-2.5">
                         <input
                           type="checkbox"
@@ -480,7 +553,7 @@ export default function ShopPage() {
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
                         <label htmlFor={`type-${type}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
-                          {type}
+                          {type} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
                     ))}
@@ -493,7 +566,7 @@ export default function ShopPage() {
                 <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Shop by Concern</h4>
                   <ul className="space-y-3">
-                    {filterOptions.concerns.map((concern) => (
+                    {filterOptions.concerns.map(([concern, count]) => (
                       <li key={concern} className="flex items-center gap-2.5">
                         <input
                           type="checkbox"
@@ -503,7 +576,7 @@ export default function ShopPage() {
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
                         <label htmlFor={`concern-${concern}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
-                          {concern}
+                          {concern} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
                     ))}
@@ -516,7 +589,7 @@ export default function ShopPage() {
                 <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Size</h4>
                   <ul className="space-y-3">
-                    {filterOptions.sizes.map((size) => (
+                    {filterOptions.sizes.map(([size, count]) => (
                       <li key={size} className="flex items-center gap-2.5">
                         <input
                           type="checkbox"
@@ -526,7 +599,7 @@ export default function ShopPage() {
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
                         <label htmlFor={`size-${size}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
-                          {size}
+                          {size} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
                     ))}
@@ -539,7 +612,7 @@ export default function ShopPage() {
                 <div className="pb-5">
                   <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Others</h4>
                   <ul className="space-y-3">
-                    {filterOptions.others.map((other) => (
+                    {filterOptions.others.map(([other, count]) => (
                       <li key={other} className="flex items-center gap-2.5">
                         <input
                           type="checkbox"
@@ -549,7 +622,7 @@ export default function ShopPage() {
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
                         <label htmlFor={`other-${other}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
-                          {other}
+                          {other} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
                     ))}
@@ -713,7 +786,7 @@ export default function ShopPage() {
                   <div>
                     <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Product type</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      {filterOptions.productTypes.map((type) => (
+                      {filterOptions.productTypes.map(([type, count]) => (
                         <div key={type} className="flex items-center gap-2">
                           <input
                             type="checkbox"
@@ -723,7 +796,7 @@ export default function ShopPage() {
                             className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
                           />
                           <label htmlFor={`mob-type-${type}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {type}
+                            {type} <span className="text-gray-400">({count})</span>
                           </label>
                         </div>
                       ))}
@@ -736,7 +809,7 @@ export default function ShopPage() {
                   <div>
                     <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Shop by Concern</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      {filterOptions.concerns.map((concern) => (
+                      {filterOptions.concerns.map(([concern, count]) => (
                         <div key={concern} className="flex items-center gap-2">
                           <input
                             type="checkbox"
@@ -746,7 +819,7 @@ export default function ShopPage() {
                             className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
                           />
                           <label htmlFor={`mob-concern-${concern}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {concern}
+                            {concern} <span className="text-gray-400">({count})</span>
                           </label>
                         </div>
                       ))}
@@ -759,7 +832,7 @@ export default function ShopPage() {
                   <div>
                     <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Size</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      {filterOptions.sizes.map((size) => (
+                      {filterOptions.sizes.map(([size, count]) => (
                         <div key={size} className="flex items-center gap-2">
                           <input
                             type="checkbox"
@@ -769,7 +842,7 @@ export default function ShopPage() {
                             className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
                           />
                           <label htmlFor={`mob-size-${size}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {size}
+                            {size} <span className="text-gray-400">({count})</span>
                           </label>
                         </div>
                       ))}
@@ -782,7 +855,7 @@ export default function ShopPage() {
                   <div>
                     <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Others</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      {filterOptions.others.map((other) => (
+                      {filterOptions.others.map(([other, count]) => (
                         <div key={other} className="flex items-center gap-2">
                           <input
                             type="checkbox"
@@ -792,7 +865,7 @@ export default function ShopPage() {
                             className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
                           />
                           <label htmlFor={`mob-other-${other}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {other}
+                            {other} <span className="text-gray-400">({count})</span>
                           </label>
                         </div>
                       ))}
