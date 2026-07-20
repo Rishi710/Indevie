@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
-import { SlidersHorizontal, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -382,7 +382,7 @@ export default function ShopPage() {
 
   // The pill tab bar JSX
   const CollectionTabBar = useCallback(() => (
-    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-6 md:gap-10 min-w-max py-1">
+    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-6 md:gap-10 min-w-max px-1 py-1">
 
       {/* Shop All Tab */}
       <button
@@ -513,7 +513,7 @@ export default function ShopPage() {
           <div
             ref={tabsScrollRef}
             onScroll={updateTabsScrollState}
-            className="flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+            className="flex-1 min-w-0 overflow-x-auto overscroll-x-contain [&::-webkit-scrollbar]:hidden"
           >
             <CollectionTabBar />
           </div>
@@ -769,9 +769,8 @@ export default function ShopPage() {
       {/* ── MOBILE: Floating Filter Button — fixed bottom-right ── */}
       <button
         onClick={() => setIsMobileFilterOpen(true)}
-        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center gap-2 bg-[#6c3518] text-white shadow-lg px-5 py-3 rounded-full font-poppins font-bold text-[11px] uppercase tracking-wider active:scale-95 transition-transform"
+        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center gap-2 bg-[#6c3518] text-white shadow-lg px-6 py-3 rounded-full font-poppins font-bold text-[11px] uppercase tracking-wider active:scale-95 transition-transform"
       >
-        <SlidersHorizontal size={15} />
         Filters
         {(selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length) > 0 && (
           <span className="ml-0.5 bg-white text-[#6c3518] rounded-full w-4 h-4 flex items-center justify-center text-[9px] font-bold">
