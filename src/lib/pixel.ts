@@ -22,22 +22,22 @@ export const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "";
 // ── ID Helpers ────────────────────────────────────────────────────────────────
 
 /**
- * Converts Shopify GIDs to the "shopify_IN_<productId>_<variantId>" format
- * that the Shopify → Meta Catalog sync uses as the canonical content ID.
- *
- * - Product GID  → gid://shopify/Product/123       → shopify_IN_123_<variantId>
- * - Variant GID  → gid://shopify/ProductVariant/456 → shopify_IN_<productId>_456
- *
- * Pass BOTH product and variant GIDs for the most precise match.
+ * Converts a Shopify product/variant GID to the content ID our connected
+ * Meta catalog actually uses: the bare numeric variant ID (confirmed by
+ * checking real catalog items in Commerce Manager — e.g. "Calm Balm Body
+ * Balm 50gm" is stored with Content ID "42746505068610", exactly its
+ * variant's numeric ID, with no "shopify_<country>_..." prefix at all).
+ * Falls back to the product's numeric ID if no variant is available.
  */
 export function toShopifyContentId(
   productGid: string,
   variantGid?: string | null
 ): string {
-  const country = "IN"; // Change if your store targets a different country
-  const productId = productGid.split("/").pop() || productGid;
-  const variantId = variantGid ? variantGid.split("/").pop() : productId;
-  return `shopify_${country}_${productId}_${variantId}`;
+  if (variantGid) {
+    const variantId = variantGid.split("/").pop();
+    if (variantId) return variantId;
+  }
+  return productGid.split("/").pop() || productGid;
 }
 
 // ── Internal Helpers ──────────────────────────────────────────────────────────
