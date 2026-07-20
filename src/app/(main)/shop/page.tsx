@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
-import { ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -504,7 +504,7 @@ export default function ShopPage() {
           <button
             onClick={() => scrollTabsBy(-260)}
             aria-label="Scroll collections left"
-            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 mr-1.5 sm:mr-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-white text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 mr-1.5 sm:mr-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-transparent text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronLeft size={16} />
@@ -522,7 +522,7 @@ export default function ShopPage() {
           <button
             onClick={() => scrollTabsBy(260)}
             aria-label="Scroll collections right"
-            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-white text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-transparent text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronRight size={16} />
@@ -766,14 +766,15 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* ── MOBILE: Floating Filter Button — fixed bottom-right ── */}
+      {/* ── MOBILE: Floating Filter Button — fixed bottom-right, icon only ── */}
       <button
         onClick={() => setIsMobileFilterOpen(true)}
-        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center gap-2 bg-[#6c3518] text-white shadow-lg px-6 py-3 rounded-full font-poppins font-bold text-[11px] uppercase tracking-wider active:scale-95 transition-transform"
+        aria-label="Open filters"
+        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center justify-center w-14 h-14 bg-[#6c3518] text-white shadow-lg rounded-full active:scale-95 transition-transform"
       >
-        Filters
+        <SlidersHorizontal size={20} />
         {(selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length) > 0 && (
-          <span className="ml-0.5 bg-white text-[#6c3518] rounded-full w-4 h-4 flex items-center justify-center text-[9px] font-bold">
+          <span className="absolute -top-1 -right-1 bg-white text-[#6c3518] rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-sm">
             {selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length}
           </span>
         )}
