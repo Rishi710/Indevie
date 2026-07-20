@@ -67,6 +67,15 @@ export default function ShopPage() {
   const [selectedOthers, setSelectedOthers] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("relevant");
 
+  // Mobile filter drawer: which drill-down screen is showing (root list, or one category's options)
+  type MobileFilterView = "root" | "productType" | "concern" | "size" | "others" | "sort";
+  const [mobileFilterView, setMobileFilterView] = useState<MobileFilterView>("root");
+
+  // Always start at the category list whenever the drawer is (re)opened
+  useEffect(() => {
+    if (isMobileFilterOpen) setMobileFilterView("root");
+  }, [isMobileFilterOpen]);
+
   // Dynamically measure header height so sticky top is always accurate
   useEffect(() => {
     const measureHeader = () => {
@@ -330,6 +339,34 @@ export default function ShopPage() {
     setActiveProductType("all");
   };
 
+  // Category rows shown on the mobile filter drawer's root screen — each
+  // drills down into its own checkbox list, and is hidden entirely when
+  // there are no options to show (e.g. no concern tags on this collection).
+  const mobileFilterCategories = useMemo(() => (
+    [
+      { key: "productType" as const, label: "Product type", count: selectedProductTypes.length, available: filterOptions.productTypes.length > 0 },
+      { key: "concern" as const, label: "Shop by Concern", count: selectedConcerns.length, available: filterOptions.concerns.length > 0 },
+      { key: "size" as const, label: "Size", count: selectedSizes.length, available: filterOptions.sizes.length > 0 },
+      { key: "others" as const, label: "Others", count: selectedOthers.length, available: filterOptions.others.length > 0 },
+      { key: "sort" as const, label: "Sort by", count: sortBy !== "relevant" ? 1 : 0, available: true },
+    ].filter((c) => c.available)
+  ), [filterOptions, selectedProductTypes, selectedConcerns, selectedSizes, selectedOthers, sortBy]);
+
+  const SORT_OPTIONS = [
+    { value: "relevant", label: "Most Relevant" },
+    { value: "price-asc", label: "Price: Low to High" },
+    { value: "price-desc", label: "Price: High to Low" },
+    { value: "alpha", label: "Alphabetical" },
+  ];
+
+  // Shared slide transition for drill-down screens in the mobile drawer
+  const drillDownMotionProps = {
+    initial: { opacity: 0, x: 16 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 16 },
+    transition: { duration: 0.18, ease: "easeOut" as const },
+  };
+
   // Find thumbnail for collections
   const getCollectionThumbnail = (col: CollectionItem) => {
     if (col.image?.url) return col.image.url;
@@ -352,8 +389,8 @@ export default function ShopPage() {
         onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
         className="flex flex-col items-center gap-2.5 group relative cursor-pointer outline-none"
       >
-        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
-          <div className={`w-full h-full rounded-full flex items-center justify-center font-poppins font-bold text-[7px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
+          <div className={`w-full h-full rounded-full flex items-center justify-center font-poppins font-bold text-[8px] sm:text-[9px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
               ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
               : "bg-[#f5f1e6] text-[#6c3518]"
             }`}>
@@ -386,7 +423,7 @@ export default function ShopPage() {
             onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
             className="flex flex-col items-center gap-2.5 group relative cursor-pointer outline-none"
           >
-            <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
+            <div className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
                 ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
                 : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
               }`}>
@@ -396,7 +433,7 @@ export default function ShopPage() {
                   alt={col.title}
                   fill
                   className="object-cover"
-                  sizes="64px"
+                  sizes="96px"
                 />
               </div>
               {isActive && (
@@ -463,11 +500,11 @@ export default function ShopPage() {
         style={{ position: "sticky", top: headerHeight }}
       >
         <div className="relative flex items-center max-w-[1500px] mx-auto">
-          {/* Left scroll arrow — desktop only, hidden when already at the start */}
+          {/* Left scroll arrow — shown on all screen sizes, hidden when already at the start */}
           <button
             onClick={() => scrollTabsBy(-260)}
             aria-label="Scroll collections left"
-            className={`hidden md:flex shrink-0 w-8 h-8 mr-2 items-center justify-center rounded-full border border-[#6c3518]/20 text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 mr-1.5 sm:mr-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-white text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronLeft size={16} />
@@ -481,11 +518,11 @@ export default function ShopPage() {
             <CollectionTabBar />
           </div>
 
-          {/* Right scroll arrow — desktop only, hidden when already at the end */}
+          {/* Right scroll arrow — shown on all screen sizes, hidden when already at the end */}
           <button
             onClick={() => scrollTabsBy(260)}
             aria-label="Scroll collections right"
-            className={`hidden md:flex shrink-0 w-8 h-8 ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-white text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronRight size={16} />
@@ -764,139 +801,156 @@ export default function ShopPage() {
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-2xl z-[1010] flex flex-col lg:hidden border-t border-[#6c3518] overflow-hidden shadow-2xl"
             >
-              {/* Modal header */}
-              <div className="flex items-center justify-between p-5 border-b border-gray-150">
-                <div className="flex items-center gap-2">
-                  <SlidersHorizontal size={16} className="text-[#6c3518]" />
-                  <h3 className="text-sm font-poppins font-bold uppercase tracking-wider text-black">Filter By</h3>
+              {/* Modal header — back arrow on drill-down screens, title + live product count, close */}
+              <div className="relative flex items-center justify-center px-5 py-4 border-b border-gray-150 shrink-0">
+                {mobileFilterView !== "root" && (
+                  <button
+                    onClick={() => setMobileFilterView("root")}
+                    aria-label="Back to filters"
+                    className="absolute left-4 p-1.5 hover:bg-gray-100 rounded-full"
+                  >
+                    <ChevronLeft size={20} className="text-black" />
+                  </button>
+                )}
+                <div className="text-center">
+                  <h3 className="text-sm font-poppins font-bold uppercase tracking-wider text-black">
+                    {mobileFilterView === "root"
+                      ? "Filter"
+                      : mobileFilterCategories.find((c) => c.key === mobileFilterView)?.label}
+                  </h3>
+                  <p className="text-[11px] text-gray-400 font-poppins mt-0.5">
+                    {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
+                  </p>
                 </div>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-1 hover:bg-gray-100 rounded-full"
+                  aria-label="Close filters"
+                  className="absolute right-4 p-1.5 hover:bg-gray-100 rounded-full"
                 >
                   <X size={20} className="text-black" />
                 </button>
               </div>
 
-              {/* Scrollable list options */}
-              <div className="flex-1 overflow-y-auto p-5 space-y-6">
+              {/* Scrollable content — root category list, or one category's checkbox list */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden">
+                <AnimatePresence mode="wait">
+                  {mobileFilterView === "root" && (
+                    <motion.div key="root" {...drillDownMotionProps} className="divide-y divide-gray-100">
+                      {mobileFilterCategories.map((cat) => (
+                        <button
+                          key={cat.key}
+                          onClick={() => setMobileFilterView(cat.key)}
+                          className="w-full flex items-center justify-between px-5 py-4 text-left active:bg-gray-50"
+                        >
+                          <span className="text-sm font-poppins text-gray-800">
+                            {cat.label}
+                            {cat.count > 0 && (
+                              <span className="ml-2 text-[11px] text-[#6c3518] font-bold">({cat.count})</span>
+                            )}
+                          </span>
+                          <ChevronRight size={16} className="text-gray-400 shrink-0" />
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
 
-                {/* Product Type checkboxes */}
-                {filterOptions.productTypes.length > 0 && (
-                  <div>
-                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Product type</h4>
-                    <div className="grid grid-cols-2 gap-3">
+                  {mobileFilterView === "productType" && (
+                    <motion.div key="productType" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.productTypes.map(([type, count]) => (
-                        <div key={type} className="flex items-center gap-2">
+                        <label key={type} htmlFor={`mob-type-${type}`} className="flex items-center justify-between py-3.5 cursor-pointer">
+                          <span className="text-sm font-poppins text-gray-700">
+                            {type} <span className="text-gray-400">({count})</span>
+                          </span>
                           <input
                             type="checkbox"
                             id={`mob-type-${type}`}
                             checked={selectedProductTypes.includes(type)}
                             onChange={() => handleTypeToggle(type)}
-                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                            className="w-5 h-5 border border-[#6c3518]/30 rounded accent-[#6c3518] shrink-0"
                           />
-                          <label htmlFor={`mob-type-${type}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {type} <span className="text-gray-400">({count})</span>
-                          </label>
-                        </div>
+                        </label>
                       ))}
-                    </div>
-                  </div>
-                )}
+                    </motion.div>
+                  )}
 
-                {/* Shop by Concern checkboxes */}
-                {filterOptions.concerns.length > 0 && (
-                  <div>
-                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Shop by Concern</h4>
-                    <div className="grid grid-cols-2 gap-3">
+                  {mobileFilterView === "concern" && (
+                    <motion.div key="concern" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.concerns.map(([concern, count]) => (
-                        <div key={concern} className="flex items-center gap-2">
+                        <label key={concern} htmlFor={`mob-concern-${concern}`} className="flex items-center justify-between py-3.5 cursor-pointer">
+                          <span className="text-sm font-poppins text-gray-700">
+                            {concern} <span className="text-gray-400">({count})</span>
+                          </span>
                           <input
                             type="checkbox"
                             id={`mob-concern-${concern}`}
                             checked={selectedConcerns.includes(concern)}
                             onChange={() => handleConcernToggle(concern)}
-                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                            className="w-5 h-5 border border-[#6c3518]/30 rounded accent-[#6c3518] shrink-0"
                           />
-                          <label htmlFor={`mob-concern-${concern}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {concern} <span className="text-gray-400">({count})</span>
-                          </label>
-                        </div>
+                        </label>
                       ))}
-                    </div>
-                  </div>
-                )}
+                    </motion.div>
+                  )}
 
-                {/* Size checkboxes */}
-                {filterOptions.sizes.length > 0 && (
-                  <div>
-                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Size</h4>
-                    <div className="grid grid-cols-2 gap-3">
+                  {mobileFilterView === "size" && (
+                    <motion.div key="size" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.sizes.map(([size, count]) => (
-                        <div key={size} className="flex items-center gap-2">
+                        <label key={size} htmlFor={`mob-size-${size}`} className="flex items-center justify-between py-3.5 cursor-pointer">
+                          <span className="text-sm font-poppins text-gray-700">
+                            {size} <span className="text-gray-400">({count})</span>
+                          </span>
                           <input
                             type="checkbox"
                             id={`mob-size-${size}`}
                             checked={selectedSizes.includes(size)}
                             onChange={() => handleSizeToggle(size)}
-                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                            className="w-5 h-5 border border-[#6c3518]/30 rounded accent-[#6c3518] shrink-0"
                           />
-                          <label htmlFor={`mob-size-${size}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {size} <span className="text-gray-400">({count})</span>
-                          </label>
-                        </div>
+                        </label>
                       ))}
-                    </div>
-                  </div>
-                )}
+                    </motion.div>
+                  )}
 
-                {/* Others checkboxes */}
-                {filterOptions.others.length > 0 && (
-                  <div>
-                    <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Others</h4>
-                    <div className="grid grid-cols-2 gap-3">
+                  {mobileFilterView === "others" && (
+                    <motion.div key="others" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.others.map(([other, count]) => (
-                        <div key={other} className="flex items-center gap-2">
+                        <label key={other} htmlFor={`mob-other-${other}`} className="flex items-center justify-between py-3.5 cursor-pointer">
+                          <span className="text-sm font-poppins text-gray-700">
+                            {other} <span className="text-gray-400">({count})</span>
+                          </span>
                           <input
                             type="checkbox"
                             id={`mob-other-${other}`}
                             checked={selectedOthers.includes(other)}
                             onChange={() => handleOtherToggle(other)}
-                            className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518]"
+                            className="w-5 h-5 border border-[#6c3518]/30 rounded accent-[#6c3518] shrink-0"
                           />
-                          <label htmlFor={`mob-other-${other}`} className="text-xs font-poppins text-gray-700 uppercase font-medium">
-                            {other} <span className="text-gray-400">({count})</span>
-                          </label>
-                        </div>
+                        </label>
                       ))}
-                    </div>
-                  </div>
-                )}
+                    </motion.div>
+                  )}
 
-                {/* Sort selector */}
-                <div>
-                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-[#6c3518] mb-3">Sort by</h4>
-                  <div className="relative">
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="w-full bg-white border border-[#6c3518] text-[#6c3518] rounded-[4px] px-3 py-2.5 text-xs font-poppins uppercase font-bold outline-none"
-                    >
-                      <option value="relevant">Most Relevant</option>
-                      <option value="price-asc">Price: Low to High</option>
-                      <option value="price-desc">Price: High to Low</option>
-                      <option value="alpha">Alphabetical</option>
-                    </select>
-                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#6c3518]" />
-                  </div>
-                </div>
-
+                  {mobileFilterView === "sort" && (
+                    <motion.div key="sort" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
+                      {SORT_OPTIONS.map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => { setSortBy(opt.value); setMobileFilterView("root"); }}
+                          className="w-full flex items-center justify-between py-3.5 text-left"
+                        >
+                          <span className="text-sm font-poppins text-gray-700">{opt.label}</span>
+                          {sortBy === opt.value && <span className="w-2.5 h-2.5 rounded-full bg-[#6c3518] shrink-0" />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Bottom Apply Bar */}
-              <div className="p-4 bg-gray-50 border-t border-gray-150 flex gap-4">
+              <div className="p-4 bg-gray-50 border-t border-gray-150 flex gap-4 shrink-0">
                 <button
-                  onClick={clearAllFilters}
+                  onClick={() => { clearAllFilters(); setMobileFilterView("root"); }}
                   className="flex-1 py-3 border border-[#6c3518] text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] bg-white text-[#6c3518] active:bg-[#f5f1e6]"
                 >
                   Clear All
