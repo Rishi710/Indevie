@@ -76,7 +76,7 @@ export default function ProductPlaybookSection() {
   };
 
   return (
-    <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden">
+    <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden pl-10">
       <div className="max-w-[1500px] mx-auto">
         <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-poppins font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
           Our <span className="italic font-serif font-semibold text-[#e3c895]">Product Playbook</span>

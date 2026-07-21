@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Volume2, VolumeX, ArrowUpRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 // ================= TYPES =================
+// Unchanged — every field below is still part of the data model and still used.
 type UgcItem = {
   id: number;
   name: string;
@@ -18,7 +18,7 @@ type UgcItem = {
   videoSrc: string;
 };
 
-// ================= DATA =================
+// ================= DATA ================= (unchanged)
 const ugcData: UgcItem[] = [
   {
     id: 1,
@@ -100,7 +100,6 @@ const UgcVideoCard = ({
     if (!video) return;
 
     if (isActive) {
-      video.muted = true;
       video.play().catch(() => {});
     } else {
       video.pause();
@@ -112,15 +111,12 @@ const UgcVideoCard = ({
   const productCompareAtPrice = product?.variants?.nodes?.[0]?.compareAtPrice?.amount;
 
   return (
-    <div
-      className={`relative w-[280px] md:w-[320px] aspect-[9/16] shrink-0 transition-all duration-500 rounded-[2rem] overflow-hidden bg-[#e8decb] shadow-lg ${
-        isActive ? "scale-100 opacity-100" : "scale-90 opacity-60"
-      }`}
-    >
+    <div className="relative w-[220px] sm:w-[260px] md:w-[290px] lg:w-[320px] aspect-[9/16] shrink-0 rounded-2xl overflow-hidden bg-[#e8decb]">
       {/* Video */}
       <video
         ref={videoRef}
         src={data.videoSrc}
+        autoPlay
         loop
         playsInline
         muted={isMuted}
@@ -128,18 +124,7 @@ const UgcVideoCard = ({
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Quote Overlay */}
-      <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
-      <div className="absolute top-6 left-5 right-16">
-        <p className="text-white font-poppins font-semibold text-[15px] drop-shadow-md leading-snug">
-          "{data.quote}"
-        </p>
-        <p className="text-white/90 text-xs mt-2 drop-shadow-md font-medium">
-          — {data.name}
-        </p>
-      </div>
-
-      {/* Mute Button */}
+      {/* Mute button — white circle, top-right */}
       <button
         onClick={() => {
           const video = videoRef.current;
@@ -147,43 +132,64 @@ const UgcVideoCard = ({
           video.muted = !isMuted;
           setIsMuted(!isMuted);
         }}
-        className="absolute top-4 right-4 bg-black/20 backdrop-blur-md text-white rounded-full p-2.5 z-10 hover:bg-black/40 transition-colors"
+        aria-label={isMuted ? "Unmute video" : "Mute video"}
+        className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 bg-white text-black rounded-full p-1.5 sm:p-2 z-10 shadow-sm hover:scale-105 transition-transform"
       >
-        {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+        {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
       </button>
 
-      {/* Bottom Gradient for Product Overlay */}
+      {/* Quote overlay — back at the top so it never competes with the
+          product box below. line-clamp keeps its height fixed regardless
+          of quote length, so longer testimonials never crowd the video. */}
+      <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
+      <div className="absolute top-4 sm:top-6 left-3 sm:left-5 right-11 sm:right-14">
+        <p className="text-white font-poppins font-semibold text-[12px] sm:text-[15px] drop-shadow-md leading-snug line-clamp-3">
+          "{data.quote}"
+        </p>
+        <p className="text-white/90 text-[10px] sm:text-xs mt-1 sm:mt-2 drop-shadow-md font-medium truncate">
+          — {data.name}, {data.age} · {data.location}
+        </p>
+      </div>
+
+      {/* Bottom gradient for the product overlay */}
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
-      {/* Product Overlay */}
-      <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 flex items-center justify-between shadow-xl">
-        <div className="flex items-center gap-3 overflow-hidden">
+      {/* Product overlay — restored from the old design, sized responsively */}
+      <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2 sm:p-2.5 flex items-center justify-between gap-2 shadow-xl">
+        <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0">
           {productImageUrl ? (
-            <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-[#f5f1e6] shrink-0">
-              <Image src={productImageUrl} alt={product?.title || "Product"} fill className="object-cover" />
+            <div className="relative w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden bg-[#f5f1e6] shrink-0">
+              <Image src={productImageUrl} alt={product?.title || "Product"} fill className="object-cover" sizes="48px" />
             </div>
           ) : (
-             <div className="w-12 h-12 rounded-xl bg-[#e8decb] shrink-0 animate-pulse" />
+            <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#e8decb] shrink-0 animate-pulse" />
           )}
-          <div className="flex flex-col min-w-0 pr-2">
-            <span className="text-[11px] font-poppins font-bold text-amber-500 tracking-wide">★★★★★</span>
-            <span className="text-sm font-poppins font-semibold text-[#1a1a1a] truncate leading-tight">{product?.title || "Indevie Product"}</span>
-            <div className="flex items-center gap-1.5 flex-wrap">
+          <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
+            <span className="text-[9px] sm:text-[11px] font-poppins font-bold text-amber-500 tracking-wide">★★★★★</span>
+            <span className="text-xs sm:text-sm font-poppins font-semibold text-[#1a1a1a] truncate leading-tight">
+              {product?.title || "Indevie Product"}
+            </span>
+            <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
               {productPrice && (
-                <span className="text-[11px] text-[#1a1a1a] font-bold font-poppins">₹{Math.round(productPrice)}</span>
+                <span className="text-[10px] sm:text-[11px] text-[#1a1a1a] font-bold font-poppins">
+                  ₹{Math.round(productPrice)}
+                </span>
               )}
               {productCompareAtPrice && parseFloat(productCompareAtPrice) > parseFloat(productPrice || "0") && (
-                <span className="text-[10px] text-gray-400 font-medium font-poppins line-through">₹{Math.round(parseFloat(productCompareAtPrice))}</span>
+                <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium font-poppins line-through">
+                  ₹{Math.round(parseFloat(productCompareAtPrice))}
+                </span>
               )}
             </div>
           </div>
         </div>
-        
-        <Link 
+
+        <Link
           href={`/products/${data.productHandle}`}
-          className="w-10 h-10 bg-[#1a1a1a] rounded-full flex items-center justify-center shrink-0 hover:scale-105 hover:bg-black transition-all"
+          aria-label="Shop this product"
+          className="w-8 h-8 sm:w-10 sm:h-10 bg-[#1a1a1a] rounded-full flex items-center justify-center shrink-0 hover:scale-105 hover:bg-black transition-all"
         >
-          <ArrowUpRight size={18} className="text-white" />
+          <ArrowUpRight className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-white" />
         </Link>
       </div>
     </div>
@@ -200,46 +206,43 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [productsMap, setProductsMap] = useState<Record<string, any>>(() => {
     const map: Record<string, any> = {};
-    initialProducts.forEach(p => map[p.handle] = p);
+    initialProducts.forEach((p) => (map[p.handle] = p));
     return map;
   });
 
   useEffect(() => {
     if (initialProducts.length > 0) return;
     import("../../lib/shopify").then(({ fetchProducts }) => {
-      fetchProducts(20).then((products) => {
-        const map: Record<string, any> = {};
-        products.forEach(p => map[p.handle] = p);
-        setProductsMap(map);
-      }).catch(console.error);
+      fetchProducts(20)
+        .then((products) => {
+          const map: Record<string, any> = {};
+          products.forEach((p) => (map[p.handle] = p));
+          setProductsMap(map);
+        })
+        .catch(console.error);
     });
   }, [initialProducts]);
 
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;
-    
+
     const container = scrollContainerRef.current;
     let closestIndex = 0;
     let minDistance = Infinity;
     const containerRect = container.getBoundingClientRect();
     const containerCenter = containerRect.left + containerRect.width / 2;
-    
+
     Array.from(container.children).forEach((child, index) => {
-      // Skip spacer divs
-      if (index === 0 || index === container.children.length - 1) return;
-      
-      const childElement = child as HTMLElement;
-      const rect = childElement.getBoundingClientRect();
+      const rect = (child as HTMLElement).getBoundingClientRect();
       const childCenter = rect.left + rect.width / 2;
       const distance = Math.abs(containerCenter - childCenter);
-      
       if (distance < minDistance) {
         minDistance = distance;
-        closestIndex = index - 1; // Adjust for the first spacer div
+        closestIndex = index;
       }
     });
 
-    if (activeIndex !== closestIndex && closestIndex >= 0 && closestIndex < ugcData.length) {
+    if (activeIndex !== closestIndex) {
       setActiveIndex(closestIndex);
     }
   };
@@ -248,60 +251,32 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
     <section className="py-16 md:py-24 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
       <div className="flex flex-col items-center text-center mb-10 gap-4 px-6">
-         <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-red-800">
+        <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-red-800">
           Hear it from our
-         </span>
-         <h2 className="text-4xl md:text-5xl text-[#6c3518] font-serif font-bold">
+        </span>
+        <h2 className="text-4xl md:text-5xl text-[#6c3518] font-serif font-bold">
           Power Devi's
         </h2>
-         <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
+        <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
           Real people, real routines, and moments of care that truly make a difference.
         </p>
       </div>
 
-      {/* Carousel */}
-      <div 
+      {/* Carousel — flush against the left edge, no centering spacers, no dot indicators */}
+      <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex items-center overflow-x-auto snap-x snap-mandatory gap-4 md:gap-6 pb-6 pt-4 px-4 [&::-webkit-scrollbar]:hidden"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
+        className="flex items-start overflow-x-auto snap-x snap-mandatory gap-2 sm:gap-2 md:gap-2 lg:gap-2  mx-2 [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        <div className="shrink-0 w-[calc(50vw-140px-1rem)] md:w-[calc(50vw-160px-1rem)]" />
-        
         {ugcData.map((item, idx) => (
-          <div key={item.id} className="snap-center shrink-0">
+          <div key={item.id} className="snap-start shrink-0">
             <UgcVideoCard
               data={item}
               isActive={idx === activeIndex}
               product={productsMap[item.productHandle]}
             />
           </div>
-        ))}
-        
-        <div className="shrink-0 w-[calc(50vw-140px-1rem)] md:w-[calc(50vw-160px-1rem)]" />
-      </div>
-
-      {/* Dot Indicators */}
-      <div className="flex justify-center gap-2 mt-2">
-        {ugcData.map((_, idx) => (
-          <button
-             key={idx}
-             onClick={() => {
-               if (scrollContainerRef.current) {
-                 const container = scrollContainerRef.current;
-                 // Index + 1 because we have a spacer div at the beginning
-                 const child = container.children[idx + 1] as HTMLElement;
-                 child.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-               }
-             }}
-             aria-label={`Go to slide ${idx + 1}`}
-             className={`h-2 rounded-full transition-all duration-300 ${
-               idx === activeIndex ? "bg-[#6c3518] w-8" : "bg-[#6c3518]/30 w-2 hover:bg-[#6c3518]/60"
-             }`}
-          />
         ))}
       </div>
     </section>
