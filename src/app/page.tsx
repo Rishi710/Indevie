@@ -10,6 +10,7 @@ import { fetchProducts } from "@/lib/shopify";
 
 // Dynamic imports for components below the fold
 const ShopBanner = dynamic(() => import("./components/ShopBanner"));
+const ProductPlaybookSection = dynamic(() => import("./components/ProductPlaybookSection"));
 const IntroductionSection = dynamic(() => import("./components/IntroductionSection"));
 const UgcSection = dynamic(() => import("./components/UgcSection"));
 const HomeTestimonials = dynamic(() => import("./components/HomeTestimonials"));
@@ -26,6 +27,7 @@ export default async function Home() {
       <InfiniteTicker />
       {/* <BrandMantra /> */}
       <ProductGridSection initialProducts={products} />
+      <ProductPlaybookSection />
       <IntroductionSection />
       <UgcSection initialProducts={products} />
       <HomeTestimonials />
