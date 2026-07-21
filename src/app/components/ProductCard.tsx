@@ -143,7 +143,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[8px] font-sans font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
+        <div className="bg-black text-white text-[10px] font-sans font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
           {bannerText}
         </div>
       )}
@@ -154,13 +154,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Title & Subtitle */}
         <div className="space-y-1">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-xs sm:text-sm font-sans font-bold text-[#6c3518] group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-[14px] sm:text-[16px] font-sans font-bold text-[#6c3518] group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
               {product.title}
             </h3>
           </Link>
 
           {subtitle && (
-            <p className="text-[10px] sm:text-[11px] font-sans text-gray-500 line-clamp-1 font-light">
+            <p className="text-[10px] sm:text-[12px] font-sans text-gray-500 line-clamp-1 font-light">
               {subtitle}
             </p>
           )}
@@ -169,8 +169,8 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Rating & Pricing Row */}
         <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0.5 shrink-0">
           {/* Left: Star Rating */}
-          <div className="flex items-center gap-0.5 sm:gap-1 text-[18px] sm:text-[18px] font-sans text-gray-800 font-medium shrink-0">
-            <span className="text-black text-[18px] sm:text-[18px] leading-none">★</span>
+          <div className="flex items-center gap-0.5 sm:gap-1 text-[12px] sm:text-[14px] font-sans text-gray-800 font-medium shrink-0">
+            <span className="text-black text-[12px] sm:text-[14px] leading-none">★</span>
             <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
             <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
           </div>
@@ -178,11 +178,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           {/* Right: Pricing */}
           <div className="flex items-baseline gap-1 sm:gap-1.5 shrink-0">
             {formattedComparePrice && (
-              <span className="text-[18px] sm:text-[18px] text-gray-400 line-through font-light">
+              <span className="text-[12px] sm:text-[14px] text-gray-400 line-through font-light">
                 {formattedComparePrice}
               </span>
             )}
-            <span className="text-[18px] sm:text-[18px] font-poppins font-bold text-[#6c3518]">
+            <span className="text-[16px] sm:text-[18px] font-poppins font-bold text-[#6c3518]">
               {formattedPrice}
             </span>
           </div>
