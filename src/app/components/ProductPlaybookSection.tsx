@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, FlaskConical, Leaf, Lightbulb, Sun, LucideIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Droplet, FlaskConical, HeartHandshake, Leaf, Lightbulb, Recycle, ShieldCheck, Sun, LucideIcon } from "lucide-react";
 
 interface PlaybookItem {
   icon: LucideIcon;
@@ -30,6 +30,26 @@ const PLAYBOOK_ITEMS: PlaybookItem[] = [
     icon: Leaf,
     title: "Squeaky Clean",
     description: "Vegan and cruelty-free, with none of the ingredients on our clean-beauty blacklist.",
+  },
+  {
+    icon: Droplet,
+    title: "Deeply Hydrating Rituals",
+    description: "Every formula is crafted to lock in moisture and restore your skin's natural barrier.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Dermatologically Mindful",
+    description: "Patch-tested and gentle enough for sensitive, reactive skin.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Community Approved",
+    description: "Real rituals, real results — loved and reviewed by the Indévie community.",
+  },
+  {
+    icon: Recycle,
+    title: "Consciously Packaged",
+    description: "Thoughtful packaging designed with sustainability in mind, for a lighter footprint.",
   },
 ];
 
