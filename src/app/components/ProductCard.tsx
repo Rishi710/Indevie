@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Plus, Minus } from "lucide-react";
-import { ShopifyProduct } from "@/lib/shopify";
+import { ShopifyProduct, getStockInfo } from "@/lib/shopify";
 import { useCart } from "../context/CartContext";
 
 interface ProductCardProps {
@@ -17,11 +17,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
 
-  const variantId = product?.variants?.nodes[0]?.id;
-  const price = product?.variants?.nodes[0]?.price;
-  const compareAtPrice = product?.variants?.nodes[0]?.compareAtPrice;
+  const variant = product?.variants?.nodes[0];
+  const variantId = variant?.id;
+  const price = variant?.price;
+  const compareAtPrice = variant?.compareAtPrice;
   const images = product?.images?.nodes || [];
   const mainImage = images[0];
+  const { isOutOfStock, maxQuantity } = getStockInfo(variant);
 
   // Extract external ID for reviews
   const externalId = product.id.split("/").pop();
@@ -65,8 +67,8 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   } else {
     // Smart defaults based on title / handle
     const titleLower = product.title.toLowerCase();
-    if (titleLower.includes("geeli mitti")) bannerText = "CLAY FACE RITUAL";
-    else if (titleLower.includes("gulkand")) bannerText = "ROSE PETAL MIST";
+    if (titleLower.includes("geeli mitti")) bannerText = "FACE MISTL";
+    else if (titleLower.includes("gulkand")) bannerText = "ROSE MIST";
     else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) bannerText = "AYURVEDIC SPF 50";
     else if (titleLower.includes("calm balm")) bannerText = "SOOTHING SKIN RITUAL";
     else if (titleLower.includes("lotion")) bannerText = "DAILY BODY NOURISHMENT";
@@ -95,14 +97,14 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isUpdating || !variantId) return;
+    if (isUpdating || !variantId || isOutOfStock) return;
     await addItem(variantId, 1);
   };
 
   const handleIncrease = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isUpdating || !lineId) return;
+    if (isUpdating || !lineId || quantityInCart >= maxQuantity) return;
     await updateQuantity(lineId, quantityInCart + 1);
   };
 
@@ -166,16 +168,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
         {/* Rating & Pricing Row */}
         <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0.5 shrink-0">
-          {/* Left: Star Rating — kept as an empty flex item (rather than omitted)
-              so the price on the right stays aligned via justify-between */}
+          {/* Left: Star Rating */}
           <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[11px] font-poppins text-gray-800 font-medium shrink-0">
-            {totalReviews > 0 && (
-              <>
-                <span className="text-black text-[10px] sm:text-xs leading-none">★</span>
-                <span>{averageRating.toFixed(1)}</span>
-                <span className="text-gray-400 font-normal">({totalReviews})</span>
-              </>
-            )}
+            <span className="text-black text-[10px] sm:text-xs leading-none">★</span>
+            <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
+            <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
           </div>
 
           {/* Right: Pricing */}
@@ -195,7 +192,14 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         <div className="space-y-2 mt-auto">
           {/* Quantity Controls / Add to Cart button */}
           <div className="w-full">
-            {quantityInCart > 0 ? (
+            {isOutOfStock ? (
+              <button
+                disabled
+                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center bg-gray-100 border border-gray-200 text-gray-400 font-sans font-bold text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase cursor-not-allowed"
+              >
+                Out of Stock
+              </button>
+            ) : quantityInCart > 0 ? (
               <div className="flex items-center justify-between border border-[#6c3518] overflow-hidden bg-white h-[34px] sm:h-[44px]">
                 <button
                   onClick={handleDecrease}
@@ -210,8 +214,8 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                 </span>
                 <button
                   onClick={handleIncrease}
-                  disabled={isUpdating}
-                  className="w-10 sm:w-12 h-full flex items-center justify-center hover:bg-[#f5f1e6]/45 active:bg-[#f5f1e6] transition-colors disabled:opacity-50"
+                  disabled={isUpdating || quantityInCart >= maxQuantity}
+                  className="w-10 sm:w-12 h-full flex items-center justify-center hover:bg-[#f5f1e6]/45 active:bg-[#f5f1e6] transition-colors disabled:opacity-30"
                   aria-label="Increase quantity"
                 >
                   <Plus size={12} className="text-[#6c3518]" />

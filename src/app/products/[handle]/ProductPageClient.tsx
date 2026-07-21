@@ -1,6 +1,6 @@
 "use client";
 
-import { ShopifyProduct, getSafeCheckoutUrl } from "@/lib/shopify";
+import { ShopifyProduct, getSafeCheckoutUrl, getStockInfo } from "@/lib/shopify";
 import Image from "next/image";
 import { useState, useEffect, useMemo } from "react";
 import DOMPurify from "isomorphic-dompurify";
@@ -64,8 +64,16 @@ export default function ProductPageClient({
     ? `MRP. ${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
     : null;
 
+  const { isOutOfStock, maxQuantity } = getStockInfo(selectedVariant);
+
+  // Keep the quantity selector from ever sitting above the real cap (e.g. if
+  // the merchant lowers stock while this page is already open)
+  useEffect(() => {
+    setQuantity((q) => Math.min(q, maxQuantity));
+  }, [maxQuantity]);
+
   const handleBuyNow = async () => {
-    if (variantId) {
+    if (variantId && !isOutOfStock) {
       const updatedCart = await addItem(variantId, quantity);
       if (updatedCart?.checkoutUrl) {
         window.location.href = getSafeCheckoutUrl(updatedCart.checkoutUrl);
@@ -161,8 +169,9 @@ export default function ProductPageClient({
                   {quantity}
                 </div>
                 <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors"
+                  onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
+                  disabled={isOutOfStock || quantity >= maxQuantity}
+                  className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                 >
                   +
                 </button>
@@ -178,18 +187,29 @@ export default function ProductPageClient({
 
           {/* Actions */}
           <div className="flex flex-col gap-3 mb-12 w-full">
-            <button
-              onClick={() => variantId && addItem(variantId, quantity)}
-              className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
-            >
-              ADD TO BAG
-            </button>
-            <button
-              onClick={handleBuyNow}
-              className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
-            >
-              BUY NOW
-            </button>
+            {isOutOfStock ? (
+              <button
+                disabled
+                className="w-full bg-gray-100 border border-gray-200 text-gray-400 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase font-poppins cursor-not-allowed"
+              >
+                OUT OF STOCK
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => variantId && addItem(variantId, quantity)}
+                  className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
+                >
+                  ADD TO BAG
+                </button>
+                <button
+                  onClick={handleBuyNow}
+                  className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
+                >
+                  BUY NOW
+                </button>
+              </>
+            )}
           </div>
 
           {/* Accordion / Tabs */}
@@ -314,8 +334,9 @@ export default function ProductPageClient({
                 {quantity}
               </div>
               <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-12 h-12 flex items-center justify-center text-[#2a2a2a]"
+                onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
+                disabled={isOutOfStock || quantity >= maxQuantity}
+                className="w-12 h-12 flex items-center justify-center text-[#2a2a2a] disabled:opacity-30"
               >
                 +
               </button>
@@ -330,18 +351,29 @@ export default function ProductPageClient({
         </div>
 
         <div className="flex flex-col gap-3 mb-6 w-full">
-          <button
-            onClick={() => variantId && addItem(variantId, quantity)}
-            className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
-          >
-            ADD TO BAG
-          </button>
-          <button
-            onClick={handleBuyNow}
-            className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
-          >
-            BUY NOW
-          </button>
+          {isOutOfStock ? (
+            <button
+              disabled
+              className="w-full bg-gray-100 border border-gray-200 text-gray-400 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase font-poppins cursor-not-allowed"
+            >
+              OUT OF STOCK
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => variantId && addItem(variantId, quantity)}
+                className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
+              >
+                ADD TO BAG
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
+              >
+                BUY NOW
+              </button>
+            </>
+          )}
         </div>
 
         {/* Accordion / Tabs Mobile */}

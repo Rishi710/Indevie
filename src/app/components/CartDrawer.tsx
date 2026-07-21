@@ -4,7 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { getSafeCheckoutUrl } from "@/lib/shopify";
+import { getSafeCheckoutUrl, getStockInfo } from "@/lib/shopify";
 import { pixelInitiateCheckout, toShopifyContentId } from "@/lib/pixel";
 import { useScrollLock } from "@/lib/useScrollLock";
 import Cookies from "js-cookie";
@@ -101,7 +101,9 @@ export default function CartDrawer() {
             {/* Line Items */}
             <div className={`flex-1 overflow-y-auto p-6 space-y-6 transition-opacity duration-300 ${isUpdating ? "opacity-60 pointer-events-none" : "opacity-100"}`}>
               {cart?.lines?.nodes.length > 0 ? (
-                cart.lines.nodes.map((line: any) => (
+                cart.lines.nodes.map((line: any) => {
+                  const { maxQuantity } = getStockInfo(line.merchandise);
+                  return (
                   <div key={line.id} className="flex gap-4 group">
                     <div className="relative w-24 h-32 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-[#6c3518]/5">
                       {line.merchandise.image ? (
@@ -158,7 +160,7 @@ export default function CartDrawer() {
                           </span>
                           <button
                             onClick={() => updateQuantity(line.id, line.quantity + 1)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || line.quantity >= maxQuantity}
                             className="px-2 py-1 hover:bg-[#6c3518]/5 transition-colors disabled:opacity-30"
                             aria-label="Increase quantity"
                           >
@@ -171,7 +173,8 @@ export default function CartDrawer() {
                       </div>
                     </div>
                   </div>
-                ))
+                  );
+                })
               ) : (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4 pt-12">
                   <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-[#6c3518]/20 border border-[#6c3518]/5 shadow-sm">

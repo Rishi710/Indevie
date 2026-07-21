@@ -146,6 +146,13 @@ export interface ShopifyProduct {
       id: string;
       title?: string;
       availableForSale?: boolean;
+      /**
+       * Raw tracked inventory count. Can be zero or negative even when
+       * availableForSale is true if the merchant allows overselling/backorder
+       * for this variant — only treat it as a hard cap when it's a positive
+       * number; availableForSale is the authoritative purchasability signal.
+       */
+      quantityAvailable?: number | null;
       price: {
         amount: string;
         currencyCode: string;
@@ -166,6 +173,31 @@ export interface ShopifyProduct {
   };
 }
 
+export interface StockInfo {
+  isOutOfStock: boolean;
+  /** Max quantity that can be added; Infinity when unlimited or oversell is allowed */
+  maxQuantity: number;
+}
+
+/**
+ * Single source of truth for purchasability across ProductCard, the product
+ * page, and the cart drawer. availableForSale is authoritative (it already
+ * accounts for each variant's own oversell/backorder setting in Shopify
+ * admin) — quantityAvailable only caps quantity when it's a genuine positive
+ * count; zero/negative values with availableForSale still true mean the
+ * merchant has oversell enabled, so there's no real cap to enforce.
+ */
+export function getStockInfo(
+  variant?: { availableForSale?: boolean; quantityAvailable?: number | null } | null
+): StockInfo {
+  if (!variant || variant.availableForSale === false) {
+    return { isOutOfStock: true, maxQuantity: 0 };
+  }
+  const qty = variant.quantityAvailable;
+  const maxQuantity = typeof qty === "number" && qty > 0 ? qty : Infinity;
+  return { isOutOfStock: false, maxQuantity };
+}
+
 export const GET_PRODUCTS_QUERY = `
   query getProducts($first: Int!) {
     products(first: $first) {
@@ -179,6 +211,8 @@ export const GET_PRODUCTS_QUERY = `
         variants(first: 1) {
           nodes {
             id
+            availableForSale
+            quantityAvailable
             price {
               amount
               currencyCode
@@ -253,6 +287,8 @@ export const GET_COLLECTION_PRODUCTS_QUERY = `
           variants(first: 1) {
             nodes {
               id
+              availableForSale
+              quantityAvailable
               price {
                 amount
                 currencyCode
@@ -309,6 +345,7 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
           id
           title
           availableForSale
+          quantityAvailable
           price {
             amount
             currencyCode
@@ -354,6 +391,8 @@ export const GET_RECOMMENDED_PRODUCTS_QUERY = `
       variants(first: 1) {
         nodes {
           id
+          availableForSale
+          quantityAvailable
           price {
             amount
             currencyCode
@@ -715,6 +754,8 @@ export const CART_FRAGMENT = `
         ... on ProductVariant {
           id
           title
+          availableForSale
+          quantityAvailable
           product {
             id
             title
