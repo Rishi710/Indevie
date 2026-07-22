@@ -23,7 +23,7 @@ const instagramPosts = [
   "https://www.instagram.com/reel/DWbZMvli28u/",
   "https://www.instagram.com/p/DWyhEPPjCxI/",
   "https://www.instagram.com/p/DWY2s1wjOo6/"
- 
+
 ];
 
 export default function InstagramSection() {
@@ -71,7 +71,7 @@ export default function InstagramSection() {
       className="py-12 bg-white overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4">
-        
+
         {/* Header */}
         <div className="text-center mb-10">
           <Link
@@ -79,14 +79,14 @@ export default function InstagramSection() {
             target="_blank"
             className="inline-flex items-center gap-3 text-[#6c3518]"
           >
-             <div className="flex flex-col items-center text-center gap-5">
-           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
-             See Our Crazy Side On
-           </span>
-             <h2 className="text-2xl md:text-3xl font-medium italic">
-              @indeviebeauty
-            </h2> 
-        </div>
+            <div className="flex flex-col items-center text-center gap-3">
+              {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
+                See Our Crazy Side On
+              </span> */}
+              <h2 className="text-3xl md:text-5xl uppercase font-medium italic">
+                On the #gram
+              </h2>
+            </div>
           </Link>
         </div>
 

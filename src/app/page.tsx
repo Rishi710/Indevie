@@ -7,6 +7,7 @@ import BrandMantra from "./components/BrandMantra";
 import ProductGridSection from "./components/ProductGridSection";
 
 import { fetchProducts } from "@/lib/shopify";
+import HomeFounderSection from "./components/HomeFounderSection";
 
 // Dynamic imports for components below the fold
 const ShopBanner = dynamic(() => import("./components/ShopBanner"));
@@ -28,10 +29,11 @@ export default async function Home() {
       {/* <BrandMantra /> */}
       <ProductGridSection initialProducts={products} />
       <ProductPlaybookSection />
-      <IntroductionSection />
+      {/* <IntroductionSection /> */}
       <UgcSection initialProducts={products} />
+      <HomeFounderSection />
       <HomeTestimonials />
-      <FounderSection />
+      {/* <FounderSection /> */}
       <BlogsCarousel />
       <InstagramSection />
     </main>
