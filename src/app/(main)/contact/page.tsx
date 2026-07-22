@@ -137,7 +137,7 @@ export default function ContactPage() {
                 <Phone size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-serif-bold text-[#6c3518]/50s">Phone</h4>
-                  <a href="tel:+919826604580" className="text-lg font-serif text-[#6c3518] hover:opacity-60 transition-opacity">+919981300183</a>
+                  <a href="tel:+919981300183" className="text-lg font-serif text-[#6c3518] hover:opacity-60 transition-opacity">+919981300183</a>
                 </div>
               </div>
 

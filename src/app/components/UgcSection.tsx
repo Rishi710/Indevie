@@ -86,43 +86,62 @@ const ugcData: UgcItem[] = [
 const UgcVideoCard = ({
   data,
   isActive,
+  isDesktopView,
   product,
 }: {
   data: UgcItem;
   isActive: boolean;
+  isDesktopView: boolean;
   product: any;
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Laptop/tablet: play only while hovered. Mobile: play the card centered
+  // by scroll position (isActive), since hover doesn't exist on touch.
+  const shouldPlay = isDesktopView ? isHovered : isActive;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isActive) {
+    if (shouldPlay) {
       video.play().catch(() => {});
     } else {
       video.pause();
     }
-  }, [isActive]);
+  }, [shouldPlay]);
 
   const productImageUrl = product?.images?.nodes?.[0]?.url;
   const productPrice = product?.variants?.nodes?.[0]?.price?.amount;
   const productCompareAtPrice = product?.variants?.nodes?.[0]?.compareAtPrice?.amount;
 
   return (
-    <div className="relative w-[220px] sm:w-[260px] md:w-[290px] lg:w-[320px] aspect-[9/16] shrink-0 rounded-2xl overflow-hidden bg-[#e8decb]">
+    <div
+      className="group relative w-[350px] sm:w-[320px] md:w-[320px] lg:w-[320px] aspect-[9/16] shrink-0 rounded-2xl overflow-hidden bg-[#e8decb] transition-shadow duration-300 md:hover:shadow-2xl"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Video */}
       <video
         ref={videoRef}
         src={data.videoSrc}
-        autoPlay
         loop
         playsInline
         muted={isMuted}
         preload="metadata"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-105"
       />
+
+      {/* Play hint — desktop/tablet only, fades out on hover once the video starts */}
+      {isDesktopView && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/10 opacity-100 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+          <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+            <div className="w-0 h-0 border-y-[8px] border-y-transparent border-l-[13px] border-l-[#1a1a1a] ml-1" />
+          </div>
+        </div>
+      )}
 
       {/* Mute button — white circle, top-right */}
       <button
@@ -204,9 +223,9 @@ interface UgcSectionProps {
 export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  // Tablet/laptop (md+) plays every video at once; mobile keeps the single
-  // active-card-only behavior since that's the one the user confirmed works well.
-  const [isMultiPlay, setIsMultiPlay] = useState(false);
+  // Tablet/laptop (md+) plays a video only while hovered; mobile keeps the
+  // scroll-driven single-active-card behavior since hover doesn't exist there.
+  const [isDesktopView, setIsDesktopView] = useState(false);
   const [productsMap, setProductsMap] = useState<Record<string, any>>(() => {
     const map: Record<string, any> = {};
     initialProducts.forEach((p) => (map[p.handle] = p));
@@ -215,8 +234,8 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
 
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 768px)");
-    setIsMultiPlay(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMultiPlay(e.matches);
+    setIsDesktopView(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktopView(e.matches);
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
   }, []);
@@ -284,7 +303,8 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
           <div key={item.id} className="snap-start shrink-0">
             <UgcVideoCard
               data={item}
-              isActive={isMultiPlay || idx === activeIndex}
+              isActive={idx === activeIndex}
+              isDesktopView={isDesktopView}
               product={productsMap[item.productHandle]}
             />
           </div>
