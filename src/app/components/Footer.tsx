@@ -147,7 +147,7 @@ const Footer = () => {
         </svg> */}
         </motion.div>
 
-        {/* 🌫️ Ambient Organic Blobs (GPU Accelerated) */}
+        {/* Ambient Organic Blobs (GPU Accelerated) */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden">
           <motion.div
             animate={{
@@ -276,16 +276,16 @@ const Footer = () => {
                 <div className="space-y-4">
 
                   <div className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
-                    <MapPin size={16} strokeWidth={1.5} />
-                    <span className="text-[14px] font-light tracking-wide">Indore, Madhya Pradesh, India</span>
+                    <MapPin size={26} strokeWidth={2.5} />
+                    <span className="text-[14px] font-light tracking-wide"> Plot 96, Indralok Colony, Sudama Nagar, Indore, Madhya Pradesh, India</span>
                   </div>
                   <a href="mailto:care@indevie.com" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
                     <Mail size={16} strokeWidth={1.5} />
                     <span className="text-[14px] font-light tracking-wide">care@indevie.com</span>
                   </a>
-                  <a href="tel:+919826604580" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                  <a href="tel:+919981300183" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
                     <Phone size={16} strokeWidth={1.5} />
-                    <span className="text-[14px] font-light tracking-wide">+91 9826604580</span>
+                    <span className="text-[14px] font-light tracking-wide">+91 9981300183</span>
                   </a>
                 </div>
 
