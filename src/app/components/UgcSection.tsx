@@ -204,11 +204,22 @@ interface UgcSectionProps {
 export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  // Tablet/laptop (md+) plays every video at once; mobile keeps the single
+  // active-card-only behavior since that's the one the user confirmed works well.
+  const [isMultiPlay, setIsMultiPlay] = useState(false);
   const [productsMap, setProductsMap] = useState<Record<string, any>>(() => {
     const map: Record<string, any> = {};
     initialProducts.forEach((p) => (map[p.handle] = p));
     return map;
   });
+
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    setIsMultiPlay(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMultiPlay(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     if (initialProducts.length > 0) return;
@@ -273,7 +284,7 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
           <div key={item.id} className="snap-start shrink-0">
             <UgcVideoCard
               data={item}
-              isActive={idx === activeIndex}
+              isActive={isMultiPlay || idx === activeIndex}
               product={productsMap[item.productHandle]}
             />
           </div>

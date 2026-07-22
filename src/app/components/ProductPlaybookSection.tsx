@@ -24,7 +24,7 @@ const PLAYBOOK_ITEMS: PlaybookItem[] = [
   {
     icon: Lightbulb,
     title: "Genurveda, Always Evolving",
-    description: "Never the same old formula — every Indévie product blends ancient ritual with modern science.",
+    description: "Never the same old formula every Indévie product blends ancient ritual with modern science.",
   },
   {
     icon: Leaf,
@@ -79,7 +79,7 @@ export default function ProductPlaybookSection() {
     <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden pl-10">
       <div className="max-w-[1500px] mx-auto">
         <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-poppins font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
-          Our <span className="italic font-serif font-semibold text-[#e3c895]">Product Playbook</span>
+          Our <span className=" font-serif font text-[#e3c895]">Product Playbook</span>
         </h2>
 
         <div className="relative flex items-center">
@@ -109,7 +109,7 @@ export default function ProductPlaybookSection() {
                   <h3 className="text-sm sm:text-base font-poppins font-bold uppercase tracking-wide text-[#f5f1e6] mb-3">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-poppins text-[#f5f1e6]/70 leading-relaxed">
+                  <p className="text-xs sm:text-sm font-sans text-[#f5f1e6]/70 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
