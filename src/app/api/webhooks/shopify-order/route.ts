@@ -13,13 +13,13 @@ export const dynamic = "force-dynamic";
  * returns to this app after a purchase — there is no "thank you" page on
  * our domain to fire a client-side Purchase pixel from.
  *
- * DISABLED: the store's Shopify "Facebook & Instagram" sales channel already
- * fires Purchase to the same Meta Pixel directly from Shopify's checkout, with
- * its own event_id we don't control — so leaving this on double-counts every
- * real order's revenue in Meta (neither side can dedupe the other's event).
- * The endpoint stays live (verifies + acks 200) so Shopify's webhook isn't
- * auto-disabled, but it no longer relays to Meta. Flip PURCHASE_CAPI_ENABLED
- * back on only if the Facebook & Instagram channel is ever removed.
+ * ENABLED: this is the source of truth for Purchase → Meta. The store's
+ * Shopify "Facebook & Instagram" sales channel was expected to cover this
+ * from Shopify's checkout directly, but a real test order confirmed it sends
+ * nothing to Meta at all — so this webhook is what actually reports Purchase.
+ * If that native channel is ever confirmed working independently, revisit
+ * PURCHASE_CAPI_ENABLED to avoid double-counting (it can't dedupe against an
+ * event_id we don't control).
  *
  * Setup required in Shopify Admin → Settings → Notifications → Webhooks:
  *   - Event: "Order creation" (topic orders/create) — fires as soon as the
@@ -32,7 +32,7 @@ export const dynamic = "force-dynamic";
  * Shopify shows a signing secret when you create the webhook — put it in
  * your env as SHOPIFY_WEBHOOK_SECRET.
  */
-const PURCHASE_CAPI_ENABLED = false;
+const PURCHASE_CAPI_ENABLED = true;
 
 function verifyShopifyWebhook(rawBody: string, hmacHeader: string | null, secret: string): boolean {
   if (!hmacHeader) return false;
