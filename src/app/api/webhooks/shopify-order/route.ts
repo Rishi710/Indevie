@@ -130,6 +130,13 @@ async function handleShopifyOrderWebhook(request: NextRequest): Promise<NextResp
 
     if (!result.success) {
       console.error(`[Shopify Webhook] CAPI Purchase relay failed for order ${orderId}:`, result.error);
+    } else {
+      // Logged so a Purchase sent to Meta can be matched back to the exact
+      // Shopify order (name/number as shown in Admin) and its real total —
+      // Ads Manager only shows aggregate counts, not which order is which.
+      console.log(
+        `[Shopify Webhook] Purchase sent to Meta — order ${order.name || orderId} (#${order.order_number ?? "?"}), value ${currency} ${value}, event_id order-${orderId}`
+      );
     }
   } catch (error) {
     // Never fail this response over a downstream Meta issue — Shopify would
