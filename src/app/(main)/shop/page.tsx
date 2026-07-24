@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchCollections, fetchCollectionProducts, fetchProducts, ShopifyProduct } from "@/lib/shopify";
+import { fetchCollections, fetchCollectionProducts, fetchProducts, getProductConcerns, getProductSize, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
 import { ChevronDown, ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
@@ -194,37 +194,12 @@ export default function ShopPage() {
       const type = getProductType(p);
       if (type) bump(types, type);
 
-      // 2. Sizes
-      const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
-      const sizeTag30ml = p.tags?.some(t => t.toLowerCase().includes("30ml")) || p.title.toLowerCase().includes("30ml");
-      const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
+      // 2. Sizes — sourced only from the real custom.size metafield.
+      const size = getProductSize(p);
+      if (size) bump(sizes, size);
 
-      if (hasMini) {
-        bump(sizes, "Mini Size");
-      } else if (sizeTag30ml || sizeTag50gm || p.title.toLowerCase().includes("lotion") || p.title.toLowerCase().includes("oil")) {
-        bump(sizes, "Full Size");
-      } else {
-        bump(sizes, "Standard Size");
-      }
-
-      // 3. Concerns
-      const productTags = p.tags || [];
-      let foundExplicitConcern = false;
-
-      productTags.forEach((tag) => {
-        if (tag.toLowerCase().startsWith("concern:")) {
-          bump(concerns, tag.split(":")[1].trim());
-          foundExplicitConcern = true;
-        }
-      });
-
-      if (!foundExplicitConcern) {
-        const titleLower = p.title.toLowerCase();
-        if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) bump(concerns, "Sun Protection");
-        if (titleLower.includes("mist") || titleLower.includes("lotion")) bump(concerns, "Deep Hydration");
-        if (titleLower.includes("oil") || titleLower.includes("gulkand")) bump(concerns, "Skin Glow");
-        if (titleLower.includes("calm balm") || titleLower.includes("mitti")) bump(concerns, "Calming & Soothing");
-      }
+      // 3. Concerns — sourced only from the real custom.concern metafield.
+      getProductConcerns(p).forEach((concern) => bump(concerns, concern));
 
       // 4. Others
       const isCombo = p.tags?.some(t => t.toLowerCase().includes("combo") || t.toLowerCase().includes("set") || t.toLowerCase().includes("ritual")) || p.title.toLowerCase().includes("set");
@@ -259,39 +234,17 @@ export default function ShopPage() {
       });
     }
 
-    // Filter by Size
+    // Filter by Size — sourced only from the real custom.size metafield.
     if (selectedSizes.length > 0) {
       result = result.filter((p) => {
-        const hasMini = p.tags?.some(t => t.toLowerCase().includes("mini")) || p.title.toLowerCase().includes("mini");
-        const sizeTag30ml = p.tags?.some(t => t.toLowerCase().includes("30ml")) || p.title.toLowerCase().includes("30ml");
-        const sizeTag50gm = p.tags?.some(t => t.toLowerCase().includes("50gm")) || p.title.toLowerCase().includes("50gm");
-        const size = hasMini ? "Mini Size" : (sizeTag30ml || sizeTag50gm || p.title.toLowerCase().includes("lotion") || p.title.toLowerCase().includes("oil") ? "Full Size" : "Standard Size");
-        return selectedSizes.includes(size);
+        const size = getProductSize(p);
+        return !!size && selectedSizes.includes(size);
       });
     }
 
-    // Filter by Concern
+    // Filter by Concern — sourced only from the real custom.concern metafield.
     if (selectedConcerns.length > 0) {
-      result = result.filter((p) => {
-        const productTags = p.tags || [];
-        const concernsList: string[] = [];
-
-        productTags.forEach((tag) => {
-          if (tag.toLowerCase().startsWith("concern:")) {
-            concernsList.push(tag.split(":")[1].trim());
-          }
-        });
-
-        if (concernsList.length === 0) {
-          const titleLower = p.title.toLowerCase();
-          if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) concernsList.push("Sun Protection");
-          if (titleLower.includes("mist") || titleLower.includes("lotion")) concernsList.push("Deep Hydration");
-          if (titleLower.includes("oil") || titleLower.includes("gulkand")) concernsList.push("Skin Glow");
-          if (titleLower.includes("calm balm") || titleLower.includes("mitti")) concernsList.push("Calming & Soothing");
-        }
-
-        return concernsList.some(concern => selectedConcerns.includes(concern));
-      });
+      result = result.filter((p) => getProductConcerns(p).some((concern) => selectedConcerns.includes(concern)));
     }
 
     // Filter by Others
@@ -390,15 +343,33 @@ export default function ShopPage() {
   }, [activeCollection, collections]);
 
   // The pill tab bar JSX
+  // On md+ every tab label breaks onto its own two lines regardless of word
+  // length (so "Face Care" lines up with "Gifting Box" instead of sitting on
+  // a single line) — on mobile the <br> stays hidden and text flows normally.
+  const renderTabLabel = (label: string) => {
+    const words = label.split(" ");
+    return words.map((word, i) => (
+      <React.Fragment key={i}>
+        {i > 0 && (
+          <>
+            {" "}
+            <br className="hidden md:inline" />
+          </>
+        )}
+        {word}
+      </React.Fragment>
+    ));
+  };
+
   const CollectionTabBar = useCallback(() => (
-    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-center gap-6 md:gap-10 min-w-max px-1 py-1">
+    <div className="max-w-[1500px] mx-auto flex items-center justify-start md:justify-end gap-6 md:gap-8 min-w-max px-1 py-1">
 
       {/* Shop All Tab */}
       <button
         onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
-        className="flex flex-col items-center gap-2.5 group relative cursor-pointer outline-none"
+        className="flex flex-col md:flex-row items-center gap-2.5 md:gap-3 group relative cursor-pointer outline-none"
       >
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
           <div className={`w-full h-full rounded-full flex items-center justify-center font-poppins font-bold text-[8px] sm:text-[9px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
               ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
               : "bg-[#f5f1e6] text-[#6c3518]"
@@ -406,16 +377,16 @@ export default function ShopPage() {
             SHOP ALL
           </div>
         </div>
-        <span className="relative inline-flex">
+        <span className="relative inline-flex md:w-[110px] md:justify-center">
           {activeCollection === "all" && (
             <span
               className="absolute inset-0 bg-[#6c3518]"
               style={{ clipPath: "polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%)" }}
             />
           )}
-          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider text-center md:leading-tight transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
             }`}>
-            Shop All
+            {renderTabLabel("Shop All")}
           </span>
         </span>
       </button>
@@ -430,9 +401,9 @@ export default function ShopPage() {
           <button
             key={col.id}
             onClick={() => { setActiveCollection(col.handle); clearAllFilters(); }}
-            className="flex flex-col items-center gap-2.5 group relative cursor-pointer outline-none"
+            className="flex flex-col md:flex-row items-center gap-2.5 md:gap-3 group relative cursor-pointer outline-none"
           >
-            <div className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
+            <div className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
                 ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
                 : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
               }`}>
@@ -449,7 +420,7 @@ export default function ShopPage() {
                 <div className="absolute inset-0 bg-[#6c3518]/10 rounded-full pointer-events-none" />
               )}
             </div>
-            <span className="relative inline-flex max-w-[100px]">
+            <span className="relative inline-flex max-w-[100px] md:max-w-none md:w-[110px] md:justify-center">
               {isActive && (
                 <span
                   className="absolute inset-0 bg-[#6c3518]"
@@ -458,7 +429,7 @@ export default function ShopPage() {
               )}
               <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider text-center leading-tight transition-colors ${isActive ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
                 }`}>
-                {label}
+                {renderTabLabel(label)}
               </span>
             </span>
           </button>
@@ -730,7 +701,7 @@ export default function ShopPage() {
 
               {loading ? (
                 /* Loading Skeleton */
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
                   {[...Array(8)].map((_, i) => (
                     <div key={i} className="animate-pulse space-y-3 border border-gray-100 rounded-xl overflow-hidden bg-gray-50">
                       <div className="aspect-square bg-gray-100" />
@@ -742,7 +713,7 @@ export default function ShopPage() {
                 </div>
               ) : filteredAndSortedProducts.length > 0 ? (
                 /* Real Grid Card mapping */
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
                   {filteredAndSortedProducts.map((product, idx) => (
                     <motion.div
                       key={product.id}

@@ -5,12 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useScrollLock } from "@/lib/useScrollLock";
+import { getProductConcerns } from "@/lib/shopify";
 
 interface SearchProduct {
   id: string;
   title: string;
   handle: string;
   tags: string[];
+  concernMetafield?: { value: string } | null;
   variants: {
     nodes: {
       id: string;
@@ -83,6 +85,9 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     title
                     handle
                     tags
+                    concernMetafield: metafield(namespace: "custom", key: "concern") {
+                      value
+                    }
                     variants(first: 1) {
                       nodes {
                         id
@@ -117,53 +122,16 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
           const products: SearchProduct[] = res.data?.products?.nodes || [];
           setAllProducts(products);
 
-          // Compile unique concern tags
+          // Compile unique concern values from the real custom.concern metafield only.
           const uniqueConcerns = new Set<string>();
           products.forEach((p) => {
-            const tags = p.tags || [];
-            tags.forEach((tag) => {
-              if (tag.toLowerCase().startsWith("concern:")) {
-                const concernLabel = tag.split(":")[1].trim();
-                uniqueConcerns.add(concernLabel);
-              }
-            });
+            getProductConcerns(p).forEach((concern) => uniqueConcerns.add(concern));
           });
 
-          const concernsList = Array.from(uniqueConcerns).sort((a, b) => a.localeCompare(b));
-          if (concernsList.length > 0) {
-            setDynamicConcerns(concernsList);
-          } else {
-            // Default static concerns if Shopify tag inventory has no concern tags yet
-            setDynamicConcerns([
-              "Sun Protection",
-              "Dry Skin",
-              "Skin Hydration",
-              "Sleep Inducing",
-              "Muscle Relaxation",
-              "Scalp Repair",
-              "Sensitive Skin",
-              "SPF Powered",
-              "Brightening",
-              "Dark Circles",
-              "Hair strengthening",
-            ]);
-          }
+          setDynamicConcerns(Array.from(uniqueConcerns).sort((a, b) => a.localeCompare(b)));
         } catch (err) {
           console.error("Error loading products/concerns from Shopify:", err);
-          // Fallback static concerns on network fail
-          setDynamicConcerns([
-            "Sun Protection",
-            "Dry Skin",
-            "Skin Hydration",
-            "Sleep Inducing",
-            "Muscle Relaxation",
-            "Scalp Repair",
-            "Sensitive Skin",
-            "SPF Powered",
-            "Brightening",
-            "Dark Circles",
-            "Hair strengthening",
-          ]);
+          setDynamicConcerns([]);
         }
       };
 
@@ -253,16 +221,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
   // Dynamically filter products to display by the selected concern
   const displayedProductsByConcern = useMemo(() => {
     if (activeConcern) {
-      const normalizedConcern = activeConcern.toLowerCase().trim();
-      return allProducts.filter((p) =>
-        p.tags?.some((t) => {
-          const lowerTag = t.toLowerCase().trim();
-          return (
-            lowerTag === `concern:${normalizedConcern}` ||
-            lowerTag === normalizedConcern
-          );
-        })
-      );
+      return allProducts.filter((p) => getProductConcerns(p).includes(activeConcern));
     }
     return displayFeatured;
   }, [activeConcern, allProducts, displayFeatured]);

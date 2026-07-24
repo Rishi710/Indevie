@@ -136,6 +136,10 @@ export interface ShopifyProduct {
   productType?: string;
   vendor?: string;
   tags?: string[];
+  /** custom.concern metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  concernMetafield?: { value: string } | null;
+  /** custom.size metafield — a single_line_text_field, so `value` is a plain string (or null if unset). */
+  sizeMetafield?: { value: string } | null;
   options?: {
     id: string;
     name: string;
@@ -173,6 +177,50 @@ export interface ShopifyProduct {
   };
 }
 
+/**
+ * Reads the real "Shop by Concern" values from the custom.concern Shopify
+ * metafield (a list.single_line_text_field), which the Storefront API returns
+ * as a JSON-stringified array. No tag or title-keyword fallback — a product
+ * simply has no concerns to filter by until it's tagged in Shopify Admin.
+ *
+ * Strips zero-width/invisible Unicode characters (e.g. U+2060 WORD JOINER)
+ * that sneak in from copy-pasting text into Shopify Admin — otherwise
+ * "Sleep Inducing" and "⁠Sleep Inducing" render as two separate filter
+ * options that look identical to a shopper.
+ */
+function normalizeMetafieldText(value: string): string {
+  // Strips zero-width/invisible Unicode code points (U+200B-200D, U+2060, U+FEFF)
+  return value.replace(/[\u200B-\u200D\u2060\uFEFF]/g, "").trim();
+}
+
+export function getProductConcerns(product: Pick<ShopifyProduct, "concernMetafield">): string[] {
+  const raw = product.concernMetafield?.value;
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((v): v is string => typeof v === "string")
+      .map(normalizeMetafieldText)
+      .filter((v) => v.length > 0);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Reads the real product size from the custom.size Shopify metafield (a
+ * single_line_text_field, one value per product). No tag or title-keyword
+ * fallback -- a product simply has no size to filter by until it's set in
+ * Shopify Admin.
+ */
+export function getProductSize(product: Pick<ShopifyProduct, "sizeMetafield">): string | null {
+  const raw = product.sizeMetafield?.value;
+  if (!raw) return null;
+  const normalized = normalizeMetafieldText(raw);
+  return normalized.length > 0 ? normalized : null;
+}
+
 export interface StockInfo {
   isOutOfStock: boolean;
   /** Max quantity that can be added; Infinity when unlimited or oversell is allowed */
@@ -208,6 +256,12 @@ export const GET_PRODUCTS_QUERY = `
         description
         productType
         tags
+        concernMetafield: metafield(namespace: "custom", key: "concern") {
+          value
+        }
+        sizeMetafield: metafield(namespace: "custom", key: "size") {
+          value
+        }
         variants(first: 1) {
           nodes {
             id
@@ -284,6 +338,12 @@ export const GET_COLLECTION_PRODUCTS_QUERY = `
           description
           productType
           tags
+          concernMetafield: metafield(namespace: "custom", key: "concern") {
+            value
+          }
+          sizeMetafield: metafield(namespace: "custom", key: "size") {
+            value
+          }
           variants(first: 1) {
             nodes {
               id
