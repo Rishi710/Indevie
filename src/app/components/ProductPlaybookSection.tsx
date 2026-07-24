@@ -16,14 +16,14 @@ const PLAYBOOK_ITEMS: PlaybookItem[] = [
     title: "Perfected For Indian Skin",
     description: "Our formulas are intentionally created for Indian skin types, climate, and daily rituals.",
   },
-  {
-    icon: FlaskConical,
-    title: "Formulated By Experts",
-    description: "Every product is developed with inputs from dermatologists and Ayurvedic practitioners.",
-  },
+  // {
+  //   icon: FlaskConical,
+  //   title: "Formulated By Experts",
+  //   description: "Every product is developed with inputs from dermatologists and Ayurvedic practitioners.",
+  // },
   {
     icon: Lightbulb,
-    title: "Genurveda, Always Evolving",
+    title: "Genurveda™, Always Evolving",
     description: "Never the same old formula every Indévie product blends ancient ritual with modern science.",
   },
   {

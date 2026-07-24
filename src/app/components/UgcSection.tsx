@@ -281,11 +281,11 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
     <section className="py-16 md:py-24 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
       <div className="flex flex-col items-center text-center mb-10 gap-4 px-6">
-        <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold text-red-800">
+        <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
           Hear it from our
         </span>
         <h2 className="text-4xl md:text-5xl text-[#6c3518] font-serif font-bold">
-          Power Devi's
+          Power Devis
         </h2>
         <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
           Real people, real routines, and moments of care that truly make a difference.

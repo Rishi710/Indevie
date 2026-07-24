@@ -45,7 +45,7 @@ export default function HomeFounderSection() {
       </svg>
 
 
-      <div className="relative z-10 max-w-7xl mx-auto px-13 sm:px-10 lg:px-16 flex flex-col lg:flex-row lg:h-full lg:min-h-[640px] xl:min-h-[700px]">
+      <div className="relative z-10 max-w-7xl mx-auto px-13 sm:px-10 lg:px-14 flex flex-col lg:flex-row lg:h-full lg:min-h-[640px] xl:min-h-[700px]">
         {/* Text column */}
         <div className="relative z-10 flex flex-col justify-center gap-5 sm:gap-6 py-14 sm:py-16 lg:py-24 lg:w-[56%] lg:pr-10">
           <h2 className="font-poppins text-[#6c3518] uppercase text-[12vw] sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
@@ -56,15 +56,19 @@ export default function HomeFounderSection() {
           </h2>
 
           <div className="space-y-4 text-[#241206]/75 font-sans text-xl sm:text-md leading-relaxed max-w-3xl">
-            <p>
-              Selfcare starts the moment you borrow that first comb from your parents to comb your own hair. Growing up, I realised there&apos;s no such thing as &apos;bad skin&apos; just formulas that were never made for Indian skin, weather, or habits.
+            <p className="italic">
+          “Selfcare starts the moment you borrow that first comb from your parents to comb your own hair”
+              
             </p>
-            <p>
+<p>
+My mom has been suffering from psoriasis since more than 28 years now and never have I ever been able to help her soothe. Indevie is my way of giving back to her and thousands of people suffering with irritated skin. Our products is an attempt to soothe any and every skin by blending ancient ayurveda and modern sciences. <strong className="text-[#241206] font-semibold"><br/> We call it Genurveda™, ayurveda for Gen Next.  </strong>
+</p>
+            {/* <p>
               So I set out to build Indévie, with a team devoted to clean, high-performing formulas that don&apos;t compromise on science, results, or integrity {" "}
               <strong className="text-[#241206] font-semibold">
                 rooted in ancient Genurveda™ wisdom.
               </strong>
-            </p>
+            </p> */}
           </div>
 
           <Link
@@ -77,10 +81,10 @@ export default function HomeFounderSection() {
           </Link>
 
           <div className="pt-2">
-            <p className="text-sm font-poppins font-semibold text-[#241206]">
+            <p className="text-lg font-poppins font-semibold text-[#241206]">
               Ar. Ishita Pathak
             </p>
-            <p className="text-[10px] font-poppins font-bold tracking-[0.2em] uppercase text-[#241206]/40">
+            <p className="text-[14px] font-poppins font-bold tracking-[0.2em] uppercase text-[#241206]/40">
               Founder, Indevie Beauty
             </p>
           </div>
@@ -105,7 +109,7 @@ export default function HomeFounderSection() {
           fixed height + locked aspect ratio (not a viewport-width percentage) so
           it keeps its original proportions and never grows past the section's
           own bounds on ultra-wide screens. */}
-      <div className="hidden lg:block absolute bottom-0 right-[1%] h-[660px] xl:h-[720px] aspect-[6/5] pointer-events-none">
+      <div className="hidden lg:block absolute bottom-0 right-[-4%] h-[660px] xl:h-[720px] aspect-[6/5] pointer-events-none">
         <Image
           src="/images/ig-8.png"
           alt="Ar. Ishita Pathak, Founder of Indevie Beauty"

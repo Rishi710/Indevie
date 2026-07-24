@@ -235,13 +235,13 @@ const Footer = () => {
               </p>
               <div className="flex items-center gap-3 opacity-20 pt-4">
                 <MapPin size={10} strokeWidth={2.5} />
-                <span className="text-[9px] uppercase tracking-[0.4em] font-bold">Indore, India</span>
+                <span className="text-[14px] uppercase tracking-[0.4em] font-bold">Indore, India</span>
               </div>
             </div>
 
             {/* COLUMN 2: EXPLORE */}
             <div className="space-y-10 lg:pl-12">
-              <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Explore</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Explore</h4>
               <ul className="space-y-5">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
@@ -256,7 +256,7 @@ const Footer = () => {
 
             {/* COLUMN 3: SERVICES */}
             <div className="space-y-10">
-              <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Services</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Services</h4>
               <ul className="space-y-5">
                 {supportLinks.map((link) => (
                   <li key={link.name}>
@@ -271,7 +271,7 @@ const Footer = () => {
 
             {/* COLUMN 4: CONNECT */}
             <div className="col-span-2 sm:col-span-1 space-y-10">
-              <h4 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Connect</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Connect</h4>
               <div className="space-y-8">
                 <div className="space-y-4">
 
@@ -313,14 +313,14 @@ const Footer = () => {
 
           {/* BOTTOM BAR: The Signature Line */}
           <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
-            <p className="text-[9px] uppercase tracking-[0.4em] font-light opacity-30 text-center md:text-left">
+            <p className="text-[14px] uppercase tracking-[0.4em] font-light opacity-30 text-center md:text-left">
               © {new Date().getFullYear()} All rights are reserved for INDEVIE Beauty.
             </p>
 
             <Magnetic>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="group flex items-center gap-4 text-[9px] uppercase tracking-[0.5em] font-bold"
+                className="group flex items-center gap-4 text-[14px] uppercase tracking-[0.5em] font-bold"
               >
                 <span className="opacity-30 group-hover:opacity-100 transition-opacity">Back to top</span>
                 <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#f5f1e6] group-hover:text-black transition-all duration-500 shadow-xl">

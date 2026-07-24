@@ -78,10 +78,10 @@ export default function HomeTestimonials() {
   return (
     <section className="w-full bg-[#ffffff] py-5 lg:py-10 overflow-hidden flex flex-col items-center">
         <div className="flex flex-col items-center text-center mb-6 md:mb-10 gap-3 px-4">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
+          <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
             Real Experiences
           </span>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#6c3518] font-serif font-bold">
+          <h2 className="text-2xl md:text-3xl lg:text-5xl text-[#6c3518] font-poppins italic font-bold">
             Hear it from the Enthusiasts
           </h2>
         </div>
