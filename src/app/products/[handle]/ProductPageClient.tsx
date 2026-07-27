@@ -1,17 +1,239 @@
 "use client";
 
-import { ShopifyProduct, getSafeCheckoutUrl, getStockInfo } from "@/lib/shopify";
+import {
+  ShopifyProduct,
+  getSafeCheckoutUrl,
+  getStockInfo,
+  getProductBenefits,
+  getProductIngredients,
+  getProductHowToUse,
+  getProductAdditionalInfo,
+  getProductConcerns,
+  getProductSize,
+} from "@/lib/shopify";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 import DOMPurify from "isomorphic-dompurify";
-import { Bookmark, ShoppingBag } from "lucide-react";
+import { Bookmark, ShoppingBag, ChevronDown, Check } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
 import { useCart } from "@/app/context/CartContext";
 import ReviewSection from "@/app/components/ReviewSection";
 import ProductRatingBadge from "@/app/components/ProductRatingBadge";
 import TestimonialSection from "@/app/components/TestimonialSection";
-import ProductFaqSection from "@/app/components/ProductFaqSection";
+import { getProductFaqs } from "@/app/components/ProductFaqSection";
 import { pixelViewContent } from "@/lib/pixel";
+
+// One collapsible section, its own bordered card. Renders nothing if there's
+// no real data for it — no placeholder/dummy content when a product hasn't
+// been tagged yet.
+function AccordionRow({ title, items }: { title: string; items: string[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  if (items.length === 0) return null;
+
+  return (
+    <div className="border border-black bg-transparent overflow-hidden">
+      <button
+        onClick={() => setIsOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-6 py-5 text-left"
+      >
+        <span className="text-[17px] font-bold text-[#2a2a2a]">{title}</span>
+        <ChevronDown
+          size={20}
+          className={`text-[#2a2a2a] shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+      {isOpen && (
+        <ul className="px-6 pb-6 space-y-4 animate-in fade-in duration-200">
+          {items.map((item, i) => (
+            <li key={i} className="text-[15px] text-[#2a2a2a] leading-snug flex gap-3">
+              <span className="text-[#6c3518] mt-0.5 shrink-0">•</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+// FAQs card — same header/card chrome as AccordionRow, but the body is a
+// scrollable list of Q&A pairs (all shown at once) instead of a bullet list.
+// Sourced from the per-handle FAQ data authored in ProductFaqSection.tsx.
+function FaqAccordionRow({ faqs }: { faqs: { question: string; answer: string }[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  if (faqs.length === 0) return null;
+
+  return (
+    <div className="border border-black bg-transparent overflow-hidden">
+      <button
+        onClick={() => setIsOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-6 py-5 text-left"
+      >
+        <span className="text-[17px] font-bold text-[#2a2a2a]">FAQs</span>
+        <ChevronDown
+          size={20}
+          className={`text-[#2a2a2a] shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+      {isOpen && (
+        <div className="px-6 pb-6 max-h-[320px] overflow-y-auto animate-in fade-in duration-200">
+          <div className="space-y-5">
+            {faqs.map((faq, i) => (
+              <div key={i}>
+                <p className="text-[15px] font-semibold text-[#2a2a2a] leading-snug flex gap-2.5">
+                  <span className="w-2 h-2 mt-1.5 rounded-sm bg-[#6c3518]/40 shrink-0" />
+                  {faq.question}
+                </p>
+                <p className="text-[14px] text-gray-600 leading-relaxed mt-1.5 pl-[18px]">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Benefits / Ingredients / How To Use / FAQs / Additional Information — all
+// sourced from real Shopify metafields (or the authored FAQ data file), never
+// dummy copy. Each section is its own card, and the whole group disappears
+// if a product has none of these set yet.
+function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
+  const benefits = getProductBenefits(product);
+  const ingredients = getProductIngredients(product);
+  const howToUse = getProductHowToUse(product);
+  const additionalInfo = getProductAdditionalInfo(product);
+  const faqs = getProductFaqs(product.handle);
+
+  if (
+    benefits.length === 0 &&
+    ingredients.length === 0 &&
+    howToUse.length === 0 &&
+    additionalInfo.length === 0 &&
+    faqs.length === 0
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col gap-4 mb-8">
+      <AccordionRow title="Benefits" items={benefits} />
+      <AccordionRow title="Ingredients" items={ingredients} />
+      <AccordionRow title="How To Use" items={howToUse} />
+      <FaqAccordionRow faqs={faqs} />
+      <AccordionRow title="Additional Information" items={additionalInfo} />
+    </div>
+  );
+}
+
+// "For: Frizzy✓ Dry✓ ..." and "Size: Travel Size" rows — both sourced from
+// real Shopify metafields (custom.concern, custom.size). Each row disappears
+// on its own if the product has no data for it.
+function ProductForAndSize({ product }: { product: ShopifyProduct }) {
+  const concerns = getProductConcerns(product);
+  const size = getProductSize(product);
+
+  if (concerns.length === 0 && !size) return null;
+
+  return (
+    <div className="flex flex-col gap-3 mb-6">
+      {concerns.length > 0 && (
+        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px]">
+          <span className="font-semibold text-[#2a2a2a]">For:</span>
+          {concerns.map((concern, i) => (
+            <span key={concern} className="flex items-center gap-0.5 text-gray-600">
+              {concern}
+              <Check size={13} className="text-[#6c3518]" strokeWidth={3} />
+              {i < concerns.length - 1 && <span className="text-gray-300">,</span>}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {size && (
+        <div className="flex items-center gap-2.5 text-[13px]">
+          <span className="font-semibold text-[#2a2a2a]">Size:</span>
+          <span className="px-4 py-1.5 rounded-full border border-[#6c3518] bg-[#6c3518]/5 text-[#6c3518] font-medium text-[12px]">
+            {size}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Compact cross-sell carousel shown inline in the info column, reusing the
+// same relatedProducts data as the "Complete Your Ritual" section further
+// down the page — just a smaller, quick-add presentation next to the purchase
+// actions, matching the reference's "Upgrade your routine" placement.
+function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }) {
+  const { addItem, isUpdating } = useCart();
+  if (products.length === 0) return null;
+
+  return (
+    <div className="mb-8 min-w-0">
+      <h3 className="text-[15px] font-bold text-[#2a2a2a] mb-4">Upgrade your routine</h3>
+      <div
+        className="flex gap-4 overflow-x-auto pb-1 min-w-0 [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {products.slice(0, 6).map((p) => {
+          const variant = p.variants?.nodes[0];
+          const price = variant?.price;
+          const compareAtPrice = variant?.compareAtPrice;
+          const { isOutOfStock } = getStockInfo(variant);
+          const image = p.images?.nodes[0];
+
+          return (
+            <div
+              key={p.id}
+              className="w-[320px] shrink-0 flex items-center gap-3 border border-black p-3"
+            >
+              <Link
+                href={`/products/${p.handle}`}
+                className="block w-24 h-24 shrink-0 relative overflow-hidden bg-[#e5e5e5]"
+              >
+                {image && (
+                  <Image src={image.url} alt={image.altText || p.title} fill sizes="96px" className="object-cover" />
+                )}
+              </Link>
+              <div className="flex flex-col gap-1.5 min-w-0">
+                <Link
+                  href={`/products/${p.handle}`}
+                  className="text-[13px] font-medium text-[#2a2a2a] leading-snug line-clamp-2 underline underline-offset-2"
+                >
+                  {p.title}
+                </Link>
+                <div className="flex items-center gap-1.5">
+                  {price && (
+                    <span className="text-[14px] font-bold text-[#2a2a2a]">
+                      ₹{Math.round(parseFloat(price.amount)).toLocaleString("en-IN")}
+                    </span>
+                  )}
+                  {compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price?.amount || "0") && (
+                    <span className="text-[12px] text-gray-400 line-through">
+                      ₹{Math.round(parseFloat(compareAtPrice.amount)).toLocaleString("en-IN")}
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => variant?.id && !isOutOfStock && addItem(variant.id, 1)}
+                  disabled={isOutOfStock || isUpdating}
+                  className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider border border-[#6c3518] text-[#6c3518] hover:bg-[#6c3518] hover:text-white transition-colors disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-[#6c3518] w-fit"
+                >
+                  {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function ProductPageClient({
   product,
@@ -20,9 +242,9 @@ export default function ProductPageClient({
   product: ShopifyProduct;
   relatedProducts?: ShopifyProduct[];
 }) {
-  const [activeTab, setActiveTab] = useState<"details" | "shipping" | "return">("details");
   const [quantity, setQuantity] = useState(1);
   const [mobileImageIndex, setMobileImageIndex] = useState(0);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { cart, addItem } = useCart();
 
   // Fire ViewContent pixel event when product page loads
@@ -50,9 +272,7 @@ export default function ProductPageClient({
     [product.descriptionHtml]
   );
 
-  // Split images evenly across two columns
-  const col1Images = images.filter((_, i) => i % 2 === 0);
-  const col2Images = images.filter((_, i) => i % 2 === 1);
+  const selectedImage = images[selectedImageIndex] || images[0];
 
   const selectedVariant = product.variants?.nodes[0];
   const variantId = selectedVariant?.id;
@@ -97,44 +317,54 @@ export default function ProductPageClient({
 
   return (
     <div className="w-full bg-[#f5f1e6] min-h-screen">
-      <div className="max-w-[1500px] mx-auto w-full relative hidden md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 pt-32 pb-20">
+      <div className="max-w-[1500px] mx-auto w-full relative hidden md:grid md:grid-cols-[1.4fr_1.2fr] gap-0 pt-42 pb-20">
 
-        {/* Columns 1 & 2: Scrollable two-sub-column image gallery */}
-        <div className="pl-10 lg:pl-5 pr-2 flex gap-1">
-          {/* Sub-column 1: even-indexed images */}
-          <div className="flex-1 flex flex-col gap-1">
-            {col1Images.map((img, idx) => (
-              <div key={idx} className="w-full aspect-[4/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
-                <Image
-                  src={img.url}
-                  alt={img.altText || `${product.title} ${idx * 2 + 1}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                  className="object-cover"
-                  priority={idx === 0}
-                />
-              </div>
-            ))}
-          </div>
-          {/* Sub-column 2: odd-indexed images */}
-          <div className="flex-1 flex flex-col gap-1">
-            {col2Images.map((img, idx) => (
-              <div key={idx} className="w-full aspect-[4/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
-                <Image
-                  src={img.url}
-                  alt={img.altText || `${product.title} ${idx * 2 + 2}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
+        {/* Thumbnail rail + single large image — sticky so it stays pinned
+            while the (usually taller) info column scrolls past it normally,
+            releasing once the info column's content is exhausted. */}
+        <div className="pl-10 lg:pl-25 pr-2 flex gap-3 self-start sticky top-32">
+          {images.length > 1 && (
+            <div
+              className="flex flex-col gap-2 w-25 shrink-0 self-start max-h-[578px] overflow-y-auto [&::-webkit-scrollbar]:hidden"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImageIndex(idx)}
+                  className={`w-full aspect-square shrink-0 relative rounded-md overflow-hidden bg-[#e5e5e5] transition-colors ${
+                    idx === selectedImageIndex ? "border-2 border-black" : "border border-black/20 hover:border-black/50"
+                  }`}
+                >
+                  <Image
+                    src={img.url}
+                    alt={img.altText || `${product.title} thumbnail ${idx + 1}`}
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="flex-1 self-start max-w-[520px] aspect-[4.5/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
+            {selectedImage && (
+              <Image
+                src={selectedImage.url}
+                alt={selectedImage.altText || product.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 520px"
+                className="object-cover"
+                priority
+              />
+            )}
           </div>
         </div>
 
-        {/* Column 3: Sticky Product Info */}
-        <div className="  sticky top-32 py-8 px-4 pr-10 lg:pr-5 flex flex-col self-start">
-          <div className="flex justify-between items-start mb-2 mt-4">
+        {/* Column 3: Product Info — normal flow, scrolls with the page while
+            the image column beside it stays sticky/pinned. */}
+        <div className="  py-8 px-4 pr-10 lg:pr-20 flex flex-col min-w-0">
+          <div className="flex justify-between items-start mb-2 mt-2">
             <h1 className="text-[20px] lg:text-[22px] leading-tight font-medium text-[#6c3518] max-w-[85%]">
               {product.title}
             </h1>
@@ -143,16 +373,31 @@ export default function ProductPageClient({
              </button> */}
           </div>
 
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3">
             <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
             {formattedComparePrice && (
               <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
             )}
           </div>
+          <p className="text-[11px] text-gray-400 mb-1">(MRP inclusive of all taxes)</p>
 
-          <div className="mb-8">
+          <div className="mb-3">
             <ProductRatingBadge productId={product.id} />
           </div>
+
+          {(safeDescriptionHtml || product.description) && (
+            <div className="text-[13px] text-gray-600 leading-relaxed prose prose-sm max-w-none">
+              {safeDescriptionHtml ? (
+                <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
+              ) : (
+                <p>{product.description}</p>
+              )}
+            </div>
+          )}
+
+          <ProductForAndSize product={product} />
+
+          <UpgradeYourRoutineCarousel products={relatedProducts} />
 
           {/* Quantity Selector */}
           <div className="flex flex-col gap-3 mb-8">
@@ -212,56 +457,12 @@ export default function ProductPageClient({
             )}
           </div>
 
-          {/* Accordion / Tabs */}
-          <div className="border border-[#e5e5e5] rounded-[14px] bg-white p-5 mb-8 shadow-sm">
-            <div className="flex border-b border-[#e5e5e5] mb-5">
-              <button
-                onClick={() => setActiveTab("details")}
-                className={`flex-1 pb-3 text-[12px] font-semibold text-center transition-colors ${activeTab === "details" ? "border-b-2 border-[#6c3518] text-[#6c3518]" : "text-gray-400 hover:text-[#6c3518] border-b-2 border-transparent"}`}
-              >
-                Details & Description
-              </button>
-              <button
-                onClick={() => setActiveTab("shipping")}
-                className={`flex-1 pb-3 text-[12px] font-semibold text-center transition-colors ${activeTab === "shipping" ? "border-b-2 border-[#6c3518] text-[#6c3518]" : "text-gray-400 hover:text-[#6c3518] border-b-2 border-transparent"}`}
-              >
-                Shipping & Delivery
-              </button>
-              <button
-                onClick={() => setActiveTab("return")}
-                className={`flex-1 pb-3 text-[12px] font-semibold text-center transition-colors ${activeTab === "return" ? "border-b-2 border-[#6c3518] text-[#6c3518]" : "text-gray-400 hover:text-[#6c3518] border-b-2 border-transparent"}`}
-              >
-                Return & Refund
-              </button>
-            </div>
-
-            <div className="text-[13px] text-gray-600 prose prose-sm max-w-none leading-relaxed min-h-[120px]">
-              {activeTab === "details" && (
-                <div className="animate-in fade-in duration-300">
-                  {safeDescriptionHtml ? (
-                    <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
-                  ) : (
-                    <p>{product.description || "No description available."}</p>
-                  )}
-                </div>
-              )}
-              {activeTab === "shipping" && (
-                <div className="animate-in fade-in duration-300">
-                  <p>We prepare every Indéviē order with care, and ship within 1-2 business days using eco-friendly, secure packaging. Once dispatched, you’ll receive full tracking details to follow your ritual as it journeys home to you. Delivery arrives in 3–5 days across India, with a seamless, gentle experience, just like our rituals.</p>
-                </div>
-              )}
-              {activeTab === "return" && (
-                <div className="animate-in fade-in duration-300">
-                  <p>Not loving your glow? Return your unopened bottle within 7 days for a full refund. No questions asked, just smooth sailing.</p>
-                </div>
-              )}
-            </div>
-          </div>
+          <ProductAccordionGroup product={product} />
         </div>
       </div>
 
       {/* Mobile view fallback: Stacked gallery moved to slider */}
-      <div className="md:hidden flex flex-col p-4 gap-6 pt-30 pb-10">
+      <div className="md:hidden flex flex-col p-4 gap-2 pt-30 pb-10">
         {/* Mobile Gallery Slider */}
         <div className="relative -mx-4 group">
           <div
@@ -316,11 +517,26 @@ export default function ProductPageClient({
               <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
             )}
           </div>
+          <p className="text-[11px] text-gray-400 mb-2">(MRP inclusive of all taxes)</p>
           <ProductRatingBadge productId={product.id} />
         </div>
 
+        {(safeDescriptionHtml || product.description) && (
+          <div className="text-[13px] text-gray-600 leading-relaxed prose prose-sm max-w-none">
+            {safeDescriptionHtml ? (
+              <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
+            ) : (
+              <p>{product.description}</p>
+            )}
+          </div>
+        )}
+
+        <ProductForAndSize product={product} />
+
+        <UpgradeYourRoutineCarousel products={relatedProducts} />
+
         {/* Quantity Selector Mobile */}
-        <div className="flex flex-col gap-3 mb-6">
+        <div className="flex flex-col gap-1 mb-2">
           <span className="text-[11px] font-bold tracking-[0.15em] text-black uppercase">Quantity</span>
           <div className="flex items-center gap-4">
             <div className="flex items-center w-32 border border-[#e5e5e5] rounded-[8px] bg-white">
@@ -376,51 +592,7 @@ export default function ProductPageClient({
           )}
         </div>
 
-        {/* Accordion / Tabs Mobile */}
-        <div className="border border-[#e5e5e5] rounded-[14px] bg-white p-5 mb-8 shadow-sm">
-          <div className="flex border-b border-[#e5e5e5] mb-5 overflow-x-auto hide-scrollbar">
-            <button
-              onClick={() => setActiveTab("details")}
-              className={`flex-1 min-w-[120px] pb-3 text-[12px] font-semibold text-center transition-colors ${activeTab === "details" ? "border-b-2 border-[#6c3518] text-[#6c3518]" : "text-gray-400 hover:text-[#6c3518] border-b-2 border-transparent"}`}
-            >
-              Details & Description
-            </button>
-            <button
-              onClick={() => setActiveTab("shipping")}
-              className={`flex-1 min-w-[120px] pb-3 text-[12px] font-semibold text-center transition-colors ${activeTab === "shipping" ? "border-b-2 border-[#6c3518] text-[#6c3518]" : "text-gray-400 hover:text-[#6c3518] border-b-2 border-transparent"}`}
-            >
-              Shipping & Delivery
-            </button>
-            <button
-              onClick={() => setActiveTab("return")}
-              className={`flex-1 min-w-[120px] pb-3 text-[12px] font-semibold text-center transition-colors ${activeTab === "return" ? "border-b-2 border-[#6c3518] text-[#6c3518]" : "text-gray-400 hover:text-[#6c3518] border-b-2 border-transparent"}`}
-            >
-              Return & Refund
-            </button>
-          </div>
-
-          <div className="text-[13px] text-gray-600 prose prose-sm max-w-none leading-relaxed min-h-[120px]">
-            {activeTab === "details" && (
-              <div className="animate-in fade-in duration-300">
-                {safeDescriptionHtml ? (
-                  <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
-                ) : (
-                  <p>{product.description || "No description available."}</p>
-                )}
-              </div>
-            )}
-            {activeTab === "shipping" && (
-              <div className="animate-in fade-in duration-300">
-                <p>We prepare every Indéviē order with care, and ship within 1-2 business days using eco-friendly, secure packaging. Once dispatched, you’ll receive full tracking details to follow your ritual as it journeys home to you. Delivery arrives in 3–5 days across India, with a seamless, gentle experience, just like our rituals.</p>
-              </div>
-            )}
-            {activeTab === "return" && (
-              <div className="animate-in fade-in duration-300">
-                <p>Not loving your glow? Return your unopened bottle within 7 days for a full refund. No questions asked, just smooth sailing.</p>
-              </div>
-            )}
-          </div>
-        </div>
+        <ProductAccordionGroup product={product} />
       </div>
 
 
@@ -435,14 +607,11 @@ export default function ProductPageClient({
       {/* Hardcoded Featured Testimonials */}
       <TestimonialSection />
 
-      {/* Dynamic Product FAQs */}
-      <ProductFaqSection productHandle={product.handle} />
-
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
         <section className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16 py-20 border-t border-[#e5e5e5]/30">
-          <div className="flex flex-col items-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif text-[#6c3518] italic mb-4">Complete Your Ritual</h2>
+          <div className="flex flex-col items-center mb-2">
+            <h2 className="text-3xl md:text-4xl font-serif text-[#6c3518] italic mb-12">Complete Your Ritual</h2>
             <div className="w-24 h-[1px] bg-[#6c3518]/20"></div>
           </div>
 

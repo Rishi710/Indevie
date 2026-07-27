@@ -140,6 +140,14 @@ export interface ShopifyProduct {
   concernMetafield?: { value: string } | null;
   /** custom.size metafield — a single_line_text_field, so `value` is a plain string (or null if unset). */
   sizeMetafield?: { value: string } | null;
+  /** custom.benefits metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  benefitsMetafield?: { value: string } | null;
+  /** custom.ingredient metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  ingredientsMetafield?: { value: string } | null;
+  /** custom.how_to_use metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  howToUseMetafield?: { value: string } | null;
+  /** custom.additional_information metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  additionalInfoMetafield?: { value: string } | null;
   options?: {
     id: string;
     name: string;
@@ -193,8 +201,10 @@ function normalizeMetafieldText(value: string): string {
   return value.replace(/[\u200B-\u200D\u2060\uFEFF]/g, "").trim();
 }
 
-export function getProductConcerns(product: Pick<ShopifyProduct, "concernMetafield">): string[] {
-  const raw = product.concernMetafield?.value;
+// Shared parser for every list.single_line_text_field metafield (concern,
+// benefits, ingredient, how_to_use, additional_information all use this shape).
+function getMetafieldStringList(metafield?: { value: string } | null): string[] {
+  const raw = metafield?.value;
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw);
@@ -206,6 +216,30 @@ export function getProductConcerns(product: Pick<ShopifyProduct, "concernMetafie
   } catch {
     return [];
   }
+}
+
+export function getProductConcerns(product: Pick<ShopifyProduct, "concernMetafield">): string[] {
+  return getMetafieldStringList(product.concernMetafield);
+}
+
+/** Reads the real bullet points from the custom.benefits metafield. No dummy fallback. */
+export function getProductBenefits(product: Pick<ShopifyProduct, "benefitsMetafield">): string[] {
+  return getMetafieldStringList(product.benefitsMetafield);
+}
+
+/** Reads the real bullet points from the custom.ingredient metafield. No dummy fallback. */
+export function getProductIngredients(product: Pick<ShopifyProduct, "ingredientsMetafield">): string[] {
+  return getMetafieldStringList(product.ingredientsMetafield);
+}
+
+/** Reads the real bullet points from the custom.how_to_use metafield. No dummy fallback. */
+export function getProductHowToUse(product: Pick<ShopifyProduct, "howToUseMetafield">): string[] {
+  return getMetafieldStringList(product.howToUseMetafield);
+}
+
+/** Reads the real bullet points from the custom.additional_information metafield. No dummy fallback. */
+export function getProductAdditionalInfo(product: Pick<ShopifyProduct, "additionalInfoMetafield">): string[] {
+  return getMetafieldStringList(product.additionalInfoMetafield);
 }
 
 /**
@@ -395,6 +429,24 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
       handle
       descriptionHtml
       description
+      concernMetafield: metafield(namespace: "custom", key: "concern") {
+        value
+      }
+      sizeMetafield: metafield(namespace: "custom", key: "size") {
+        value
+      }
+      benefitsMetafield: metafield(namespace: "custom", key: "benefits") {
+        value
+      }
+      ingredientsMetafield: metafield(namespace: "custom", key: "ingredient") {
+        value
+      }
+      howToUseMetafield: metafield(namespace: "custom", key: "how_to_use") {
+        value
+      }
+      additionalInfoMetafield: metafield(namespace: "custom", key: "additional_information") {
+        value
+      }
       options {
         id
         name

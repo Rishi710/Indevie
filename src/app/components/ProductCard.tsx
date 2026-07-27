@@ -143,7 +143,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[10px] font-sans font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
+        <div className="bg-black text-white text-[10px] font-poppins font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
           {bannerText}
         </div>
       )}
