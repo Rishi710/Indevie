@@ -227,9 +227,61 @@ export function getProductBenefits(product: Pick<ShopifyProduct, "benefitsMetafi
   return getMetafieldStringList(product.benefitsMetafield);
 }
 
-/** Reads the real bullet points from the custom.ingredient metafield. No dummy fallback. */
-export function getProductIngredients(product: Pick<ShopifyProduct, "ingredientsMetafield">): string[] {
-  return getMetafieldStringList(product.ingredientsMetafield);
+interface RichTextNode {
+  type: string;
+  value?: string;
+  level?: number;
+  listType?: string;
+  bold?: boolean;
+  italic?: boolean;
+  children?: RichTextNode[];
+}
+
+// Converts one node of Shopify's rich_text_field JSON tree into an HTML
+// string. The caller is responsible for sanitizing the result (DOMPurify)
+// before rendering -- this only builds markup, it doesn't trust content.
+function richTextNodeToHtml(node: RichTextNode): string {
+  const inner = (node.children || []).map(richTextNodeToHtml).join("");
+
+  switch (node.type) {
+    case "root":
+      return inner;
+    case "heading": {
+      const level = Math.min(Math.max(node.level || 4, 1), 6);
+      return `<h${level}>${inner}</h${level}>`;
+    }
+    case "paragraph":
+      return `<p>${inner}</p>`;
+    case "list":
+      return node.listType === "ordered" ? `<ol>${inner}</ol>` : `<ul>${inner}</ul>`;
+    case "list-item":
+      return `<li>${inner}</li>`;
+    case "text": {
+      let text = (node.value || "").replace(/\n/g, "<br/>");
+      if (node.bold) text = `<strong>${text}</strong>`;
+      if (node.italic) text = `<em>${text}</em>`;
+      return text;
+    }
+    default:
+      return inner;
+  }
+}
+
+/**
+ * Reads the real custom.ingredients metafield (a rich_text_field) and
+ * converts Shopify's rich text tree into HTML for the caller to sanitize
+ * and render. No dummy fallback -- returns null when unset so the section
+ * can hide itself entirely.
+ */
+export function getProductIngredientsHtml(product: Pick<ShopifyProduct, "ingredientsMetafield">): string | null {
+  const raw = product.ingredientsMetafield?.value;
+  if (!raw) return null;
+  try {
+    const html = richTextNodeToHtml(JSON.parse(raw));
+    return html.trim().length > 0 ? html : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Reads the real bullet points from the custom.how_to_use metafield. No dummy fallback. */
@@ -438,7 +490,7 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
       benefitsMetafield: metafield(namespace: "custom", key: "benefits") {
         value
       }
-      ingredientsMetafield: metafield(namespace: "custom", key: "ingredient") {
+      ingredientsMetafield: metafield(namespace: "custom", key: "ingredients") {
         value
       }
       howToUseMetafield: metafield(namespace: "custom", key: "how_to_use") {

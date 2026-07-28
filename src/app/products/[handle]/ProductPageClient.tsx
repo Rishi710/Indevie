@@ -5,7 +5,7 @@ import {
   getSafeCheckoutUrl,
   getStockInfo,
   getProductBenefits,
-  getProductIngredients,
+  getProductIngredientsHtml,
   getProductHowToUse,
   getProductAdditionalInfo,
   getProductConcerns,
@@ -97,20 +97,50 @@ function FaqAccordionRow({ faqs }: { faqs: { question: string; answer: string }[
   );
 }
 
+// Ingredients card — same header/card chrome as AccordionRow, but the body
+// renders sanitized rich-text HTML (headings, bold, lists) from the real
+// custom.ingredients rich_text_field metafield, instead of a flat bullet list.
+function RichTextAccordionRow({ title, html }: { title: string; html: string | null }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const safeHtml = useMemo(() => (html ? DOMPurify.sanitize(html) : ""), [html]);
+  if (!safeHtml) return null;
+
+  return (
+    <div className="border border-black bg-transparent overflow-hidden">
+      <button
+        onClick={() => setIsOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-6 py-5 text-left"
+      >
+        <span className="text-[17px] font-bold text-[#2a2a2a]">{title}</span>
+        <ChevronDown
+          size={20}
+          className={`text-[#2a2a2a] shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+      {isOpen && (
+        <div
+          className="px-6 pb-6 text-[15px] text-[#2a2a2a] leading-snug prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-[#6c3518] prose-li:marker:text-[#6c3518] animate-in fade-in duration-200"
+          dangerouslySetInnerHTML={{ __html: safeHtml }}
+        />
+      )}
+    </div>
+  );
+}
+
 // Benefits / Ingredients / How To Use / FAQs / Additional Information — all
 // sourced from real Shopify metafields (or the authored FAQ data file), never
 // dummy copy. Each section is its own card, and the whole group disappears
 // if a product has none of these set yet.
 function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
   const benefits = getProductBenefits(product);
-  const ingredients = getProductIngredients(product);
+  const ingredientsHtml = getProductIngredientsHtml(product);
   const howToUse = getProductHowToUse(product);
   const additionalInfo = getProductAdditionalInfo(product);
   const faqs = getProductFaqs(product.handle);
 
   if (
     benefits.length === 0 &&
-    ingredients.length === 0 &&
+    !ingredientsHtml &&
     howToUse.length === 0 &&
     additionalInfo.length === 0 &&
     faqs.length === 0
@@ -121,7 +151,7 @@ function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
   return (
     <div className="flex flex-col gap-4 mb-8">
       <AccordionRow title="Benefits" items={benefits} />
-      <AccordionRow title="Ingredients" items={ingredients} />
+      <RichTextAccordionRow title="Ingredients" html={ingredientsHtml} />
       <AccordionRow title="How To Use" items={howToUse} />
       <FaqAccordionRow faqs={faqs} />
       <AccordionRow title="Additional Information" items={additionalInfo} />
