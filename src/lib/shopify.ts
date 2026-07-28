@@ -140,13 +140,15 @@ export interface ShopifyProduct {
   concernMetafield?: { value: string } | null;
   /** custom.size metafield — a single_line_text_field, so `value` is a plain string (or null if unset). */
   sizeMetafield?: { value: string } | null;
-  /** custom.benefits metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  /** custom.benefits metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
   benefitsMetafield?: { value: string } | null;
-  /** custom.ingredient metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  /** custom.ingredients metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
   ingredientsMetafield?: { value: string } | null;
-  /** custom.how_to_use metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  /** custom.how_to_use metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
   howToUseMetafield?: { value: string } | null;
-  /** custom.additional_information metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
+  /** custom.inside_the_box metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
+  insideTheBoxMetafield?: { value: string } | null;
+  /** custom.additional_information metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
   additionalInfoMetafield?: { value: string } | null;
   options?: {
     id: string;
@@ -220,11 +222,6 @@ function getMetafieldStringList(metafield?: { value: string } | null): string[] 
 
 export function getProductConcerns(product: Pick<ShopifyProduct, "concernMetafield">): string[] {
   return getMetafieldStringList(product.concernMetafield);
-}
-
-/** Reads the real bullet points from the custom.benefits metafield. No dummy fallback. */
-export function getProductBenefits(product: Pick<ShopifyProduct, "benefitsMetafield">): string[] {
-  return getMetafieldStringList(product.benefitsMetafield);
 }
 
 interface RichTextNode {
@@ -307,14 +304,70 @@ export function getProductIngredientsHtml(product: Pick<ShopifyProduct, "ingredi
   }
 }
 
-/** Reads the real bullet points from the custom.how_to_use metafield. No dummy fallback. */
-export function getProductHowToUse(product: Pick<ShopifyProduct, "howToUseMetafield">): string[] {
-  return getMetafieldStringList(product.howToUseMetafield);
+/**
+ * Reads the real custom.benefits metafield (a rich_text_field) and converts
+ * Shopify's rich text tree into HTML for the caller to sanitize and render.
+ * No dummy fallback -- returns null when unset so the section can hide itself.
+ */
+export function getProductBenefitsHtml(product: Pick<ShopifyProduct, "benefitsMetafield">): string | null {
+  const raw = product.benefitsMetafield?.value;
+  if (!raw) return null;
+  try {
+    const html = richTextNodeToHtml(JSON.parse(raw));
+    return html.trim().length > 0 ? html : null;
+  } catch {
+    return null;
+  }
 }
 
-/** Reads the real bullet points from the custom.additional_information metafield. No dummy fallback. */
-export function getProductAdditionalInfo(product: Pick<ShopifyProduct, "additionalInfoMetafield">): string[] {
-  return getMetafieldStringList(product.additionalInfoMetafield);
+/**
+ * Reads the real custom.how_to_use metafield (a rich_text_field) and converts
+ * Shopify's rich text tree into HTML for the caller to sanitize and render.
+ * No dummy fallback -- returns null when unset so the section can hide itself.
+ */
+export function getProductHowToUseHtml(product: Pick<ShopifyProduct, "howToUseMetafield">): string | null {
+  const raw = product.howToUseMetafield?.value;
+  if (!raw) return null;
+  try {
+    const html = richTextNodeToHtml(JSON.parse(raw));
+    return html.trim().length > 0 ? html : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Reads the real custom.inside_the_box metafield (a rich_text_field) and
+ * converts Shopify's rich text tree into HTML for the caller to sanitize and
+ * render. No dummy fallback -- returns null when unset so the section can
+ * hide itself entirely.
+ */
+export function getProductInsideTheBoxHtml(product: Pick<ShopifyProduct, "insideTheBoxMetafield">): string | null {
+  const raw = product.insideTheBoxMetafield?.value;
+  if (!raw) return null;
+  try {
+    const html = richTextNodeToHtml(JSON.parse(raw));
+    return html.trim().length > 0 ? html : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Reads the real custom.additional_information metafield (a rich_text_field)
+ * and converts Shopify's rich text tree into HTML for the caller to sanitize
+ * and render. No dummy fallback -- returns null when unset so the section
+ * can hide itself entirely.
+ */
+export function getProductAdditionalInfoHtml(product: Pick<ShopifyProduct, "additionalInfoMetafield">): string | null {
+  const raw = product.additionalInfoMetafield?.value;
+  if (!raw) return null;
+  try {
+    const html = richTextNodeToHtml(JSON.parse(raw));
+    return html.trim().length > 0 ? html : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -517,6 +570,9 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
         value
       }
       howToUseMetafield: metafield(namespace: "custom", key: "how_to_use") {
+        value
+      }
+      insideTheBoxMetafield: metafield(namespace: "custom", key: "inside_the_box") {
         value
       }
       additionalInfoMetafield: metafield(namespace: "custom", key: "additional_information") {

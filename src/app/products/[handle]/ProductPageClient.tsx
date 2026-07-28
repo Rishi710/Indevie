@@ -4,10 +4,11 @@ import {
   ShopifyProduct,
   getSafeCheckoutUrl,
   getStockInfo,
-  getProductBenefits,
+  getProductBenefitsHtml,
   getProductIngredientsHtml,
-  getProductHowToUse,
-  getProductAdditionalInfo,
+  getProductHowToUseHtml,
+  getProductInsideTheBoxHtml,
+  getProductAdditionalInfoHtml,
   getProductConcerns,
   getProductSize,
 } from "@/lib/shopify";
@@ -24,40 +25,7 @@ import TestimonialSection from "@/app/components/TestimonialSection";
 import { getProductFaqs } from "@/app/components/ProductFaqSection";
 import { pixelViewContent } from "@/lib/pixel";
 
-// One collapsible section, its own bordered card. Renders nothing if there's
-// no real data for it — no placeholder/dummy content when a product hasn't
-// been tagged yet.
-function AccordionRow({ title, items }: { title: string; items: string[] }) {
-  const [isOpen, setIsOpen] = useState(false);
-  if (items.length === 0) return null;
-
-  return (
-    <div className="border border-black bg-transparent overflow-hidden">
-      <button
-        onClick={() => setIsOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left"
-      >
-        <span className="text-[17px] font-bold text-[#2a2a2a]">{title}</span>
-        <ChevronDown
-          size={20}
-          className={`text-[#2a2a2a] shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-        />
-      </button>
-      {isOpen && (
-        <ul className="px-6 pb-6 space-y-4 animate-in fade-in duration-200">
-          {items.map((item, i) => (
-            <li key={i} className="text-[15px] text-[#2a2a2a] leading-snug flex gap-3">
-              <span className="text-[#6c3518] mt-0.5 shrink-0">•</span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-// FAQs card — same header/card chrome as AccordionRow, but the body is a
+// FAQs card — same header/card chrome as RichTextAccordionRow, but the body is a
 // scrollable list of Q&A pairs (all shown at once) instead of a bullet list.
 // Sourced from the per-handle FAQ data authored in ProductFaqSection.tsx.
 function FaqAccordionRow({ faqs }: { faqs: { question: string; answer: string }[] }) {
@@ -127,22 +95,24 @@ function RichTextAccordionRow({ title, html }: { title: string; html: string | n
   );
 }
 
-// Benefits / Ingredients / How To Use / FAQs / Additional Information — all
-// sourced from real Shopify metafields (or the authored FAQ data file), never
-// dummy copy. Each section is its own card, and the whole group disappears
-// if a product has none of these set yet.
+// Benefits / Ingredients / How To Use / Inside The Box / FAQs / Additional
+// Information — all sourced from real Shopify metafields (or the authored
+// FAQ data file), never dummy copy. Each section is its own card, and the
+// whole group disappears if a product has none of these set yet.
 function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
-  const benefits = getProductBenefits(product);
+  const benefitsHtml = getProductBenefitsHtml(product);
   const ingredientsHtml = getProductIngredientsHtml(product);
-  const howToUse = getProductHowToUse(product);
-  const additionalInfo = getProductAdditionalInfo(product);
+  const howToUseHtml = getProductHowToUseHtml(product);
+  const insideTheBoxHtml = getProductInsideTheBoxHtml(product);
+  const additionalInfoHtml = getProductAdditionalInfoHtml(product);
   const faqs = getProductFaqs(product.handle);
 
   if (
-    benefits.length === 0 &&
+    !benefitsHtml &&
     !ingredientsHtml &&
-    howToUse.length === 0 &&
-    additionalInfo.length === 0 &&
+    !howToUseHtml &&
+    !insideTheBoxHtml &&
+    !additionalInfoHtml &&
     faqs.length === 0
   ) {
     return null;
@@ -150,11 +120,12 @@ function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
 
   return (
     <div className="flex flex-col gap-4 mb-8">
-      <AccordionRow title="Benefits" items={benefits} />
+      <RichTextAccordionRow title="Benefits" html={benefitsHtml} />
       <RichTextAccordionRow title="Ingredients" html={ingredientsHtml} />
-      <AccordionRow title="How To Use" items={howToUse} />
+      <RichTextAccordionRow title="How To Use" html={howToUseHtml} />
+      <RichTextAccordionRow title="Inside The Box" html={insideTheBoxHtml} />
       <FaqAccordionRow faqs={faqs} />
-      <AccordionRow title="Additional Information" items={additionalInfo} />
+      <RichTextAccordionRow title="Additional Information" html={additionalInfoHtml} />
     </div>
   );
 }
