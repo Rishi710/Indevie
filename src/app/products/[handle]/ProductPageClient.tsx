@@ -119,7 +119,7 @@ function RichTextAccordionRow({ title, html }: { title: string; html: string | n
       </button>
       {isOpen && (
         <div
-          className="px-6 pb-6 text-[15px] text-[#2a2a2a] leading-snug prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-[#6c3518] prose-li:marker:text-[#6c3518] animate-in fade-in duration-200"
+          className="px-6 pb-6 text-[15px] text-[#2a2a2a] marker:text-[#6c3518] animate-in fade-in duration-200"
           dangerouslySetInnerHTML={{ __html: safeHtml }}
         />
       )}

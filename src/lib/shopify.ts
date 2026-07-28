@@ -237,9 +237,24 @@ interface RichTextNode {
   children?: RichTextNode[];
 }
 
+// Font size per heading level -- embedded directly as Tailwind classes rather
+// than relying on the @tailwindcss/typography "prose" plugin to cascade its
+// own h1-h6 sizing, which wasn't reliably taking effect in this app.
+const RICH_TEXT_HEADING_CLASSES: Record<number, string> = {
+  1: "text-2xl font-bold text-[#6c3518] mt-5 mb-2",
+  2: "text-xl font-bold text-[#6c3518] mt-5 mb-2",
+  3: "text-lg font-bold text-[#6c3518] mt-4 mb-2",
+  4: "text-base font-bold text-[#6c3518] mt-4 mb-1.5",
+  5: "text-sm font-bold text-[#6c3518] mt-3 mb-1",
+  6: "text-sm font-bold text-[#6c3518] mt-3 mb-1",
+};
+
 // Converts one node of Shopify's rich_text_field JSON tree into an HTML
-// string. The caller is responsible for sanitizing the result (DOMPurify)
-// before rendering -- this only builds markup, it doesn't trust content.
+// string. Spacing/sizing classes are embedded directly on each element so
+// blank spacer paragraphs and heading levels the merchant picks in Shopify
+// Admin actually show up distinctly, rather than depending on typography
+// plugin defaults to cascade correctly. The caller is responsible for
+// sanitizing the result (DOMPurify) before rendering.
 function richTextNodeToHtml(node: RichTextNode): string {
   const inner = (node.children || []).map(richTextNodeToHtml).join("");
 
@@ -248,14 +263,22 @@ function richTextNodeToHtml(node: RichTextNode): string {
       return inner;
     case "heading": {
       const level = Math.min(Math.max(node.level || 4, 1), 6);
-      return `<h${level}>${inner}</h${level}>`;
+      const classes = RICH_TEXT_HEADING_CLASSES[level];
+      return `<h${level} class="${classes}">${inner}</h${level}>`;
     }
     case "paragraph":
-      return `<p>${inner}</p>`;
+      // A paragraph with no real content is a merchant-added blank line for
+      // spacing -- give it a min-height so that intent still shows up
+      // instead of collapsing to nothing.
+      return inner.trim().length > 0
+        ? `<p class="mb-3 leading-relaxed">${inner}</p>`
+        : `<p class="mb-3 min-h-[1em]"></p>`;
     case "list":
-      return node.listType === "ordered" ? `<ol>${inner}</ol>` : `<ul>${inner}</ul>`;
+      return node.listType === "ordered"
+        ? `<ol class="list-decimal pl-5 mb-3 space-y-1.5">${inner}</ol>`
+        : `<ul class="list-disc pl-5 mb-3 space-y-1.5">${inner}</ul>`;
     case "list-item":
-      return `<li>${inner}</li>`;
+      return `<li class="leading-relaxed">${inner}</li>`;
     case "text": {
       let text = (node.value || "").replace(/\n/g, "<br/>");
       if (node.bold) text = `<strong>${text}</strong>`;
