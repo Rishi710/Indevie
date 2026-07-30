@@ -15,11 +15,11 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
     return (
       <div className="bg-white/50 border border-dashed border-[#6c3518]/20 p-20 text-center rounded-[12px] flex flex-col items-center justify-center space-y-4">
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-[#6c3518]/20 shadow-inner">
-            <Package size={24} />
+          <Package size={24} />
         </div>
-        <p className="text-[#6c3518]/40 font-poppins italic text-sm">No orders yet. Start your ritual today.</p>
+        <p className="text-[#6c3518]/40 font-inter italic text-sm">No orders yet. Start your ritual today.</p>
         <button className="text-[10px] font-bold tracking-widest text-[#6c3518] uppercase underline underline-offset-4 hover:text-black transition-colors">
-            Explore Indevie
+          Explore Indevie
         </button>
       </div>
     );
@@ -49,20 +49,20 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-poppins font-medium text-[#6c3518]/60 uppercase tracking-widest">Recent Purchases</h3>
+        <h3 className="text-sm font-inter font-medium text-[#6c3518]/60 uppercase tracking-widest">Recent Purchases</h3>
         <span className="text-[10px] font-bold text-[#6c3518]/40 uppercase tracking-widest">{orders.length} TOTAL</span>
       </div>
 
       {orders.map((order, idx) => {
         const isExpanded = expandedOrderId === order.id;
-        
+
         return (
-          <div 
-            key={order.id} 
+          <div
+            key={order.id}
             className="bg-white rounded-[16px] border border-[#6c3518]/5 overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-[#6c3518]/5"
           >
             {/* Order Header / Summary */}
-            <div 
+            <div
               onClick={() => toggleOrder(order.id)}
               className="p-6 lg:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 cursor-pointer group"
             >
@@ -74,7 +74,7 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
                   <p className="text-[10px] font-bold tracking-[0.2em] text-[#6c3518]/40 uppercase">
                     Order #{order.orderNumber}
                   </p>
-                  <p className="text-base text-[#6c3518] font-medium font-poppins">
+                  <p className="text-base text-[#6c3518] font-medium font-inter">
                     {new Date(order.processedAt).toLocaleDateString('en-IN', {
                       day: 'numeric',
                       month: 'long',
@@ -91,13 +91,13 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
                   </div>
                 </div>
               </div>
-              
+
               <div className="w-full md:w-auto flex justify-between md:flex-row items-center gap-6 border-t md:border-none pt-4 md:pt-0">
                 <div className="text-left md:text-right">
-                  <p className="text-lg font-poppins font-semibold text-[#6c3518]">
+                  <p className="text-lg font-inter font-semibold text-[#6c3518]">
                     {order.totalPriceV2.currencyCode} {parseFloat(order.totalPriceV2.amount).toLocaleString('en-IN')}
                   </p>
-                  <p className="text-[9px] text-[#6c3518]/40 font-poppins italic tracking-wide mt-0.5">
+                  <p className="text-[9px] text-[#6c3518]/40 font-inter italic tracking-wide mt-0.5">
                     {order.lineItems.nodes.length} {order.lineItems.nodes.length === 1 ? 'Item' : 'Items'}
                   </p>
                 </div>
@@ -118,7 +118,7 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
                 >
                   <div className="px-6 lg:px-8 pb-8 pt-2 border-t border-[#6c3518]/5 bg-[#f5f1e6]/30">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                      
+
                       {/* Left Side: Items and Breakdown */}
                       <div className="space-y-6">
                         <div className="space-y-4">
@@ -134,12 +134,12 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
                                   )}
                                 </div>
                                 <div className="flex-1">
-                                  <p className="text-sm font-medium text-[#6c3518] font-poppins">{item.title}</p>
-                                  <p className="text-[10px] text-gray-500 font-poppins italic">
-                                    {item.variant?.title !== 'Default Title' ? item.variant?.title : 'Standard' } • Qty: {item.quantity}
+                                  <p className="text-sm font-medium text-[#6c3518] font-inter">{item.title}</p>
+                                  <p className="text-[10px] text-gray-500 font-inter italic">
+                                    {item.variant?.title !== 'Default Title' ? item.variant?.title : 'Standard'} • Qty: {item.quantity}
                                   </p>
                                 </div>
-                                <p className="text-sm font-poppins text-[#6c3518]/60">
+                                <p className="text-sm font-inter text-[#6c3518]/60">
                                   {item.variant?.price?.amount ? `${item.variant.price.currencyCode} ${parseFloat(item.variant.price.amount).toLocaleString('en-IN')}` : ''}
                                 </p>
                               </div>
@@ -149,20 +149,20 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
 
                         {/* Cost Breakdown */}
                         <div className="bg-white/50 p-6 rounded-xl border border-[#6c3518]/5 space-y-3">
-                          <div className="flex justify-between text-xs font-poppins text-gray-500">
+                          <div className="flex justify-between text-xs font-inter text-gray-500">
                             <span>Subtotal</span>
                             <span>{order.subtotalPriceV2?.currencyCode} {parseFloat(order.subtotalPriceV2?.amount || '0').toLocaleString('en-IN')}</span>
                           </div>
-                          <div className="flex justify-between text-xs font-poppins text-gray-500">
+                          <div className="flex justify-between text-xs font-inter text-gray-500">
                             <span>Shipping</span>
                             <span>{order.totalShippingPriceV2?.currencyCode} {parseFloat(order.totalShippingPriceV2?.amount || '0').toLocaleString('en-IN')}</span>
                           </div>
-                          <div className="flex justify-between text-xs font-poppins text-gray-500">
+                          <div className="flex justify-between text-xs font-inter text-gray-500">
                             <span>Tax</span>
                             <span>{order.totalTaxV2?.currencyCode} {parseFloat(order.totalTaxV2?.amount || '0').toLocaleString('en-IN')}</span>
                           </div>
                           <div className="h-[1px] bg-[#6c3518]/5 my-2"></div>
-                          <div className="flex justify-between text-base font-poppins font-bold text-[#6c3518]">
+                          <div className="flex justify-between text-base font-inter font-bold text-[#6c3518]">
                             <span>Total</span>
                             <span>{order.totalPriceV2.currencyCode} {parseFloat(order.totalPriceV2.amount).toLocaleString('en-IN')}</span>
                           </div>
@@ -177,7 +177,7 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
                             <MapPin size={12} />
                             <span>Shipping Address</span>
                           </div>
-                          <div className="bg-white/50 p-6 rounded-xl border border-[#6c3518]/5 font-poppins text-sm text-[#6c3518]/80 leading-relaxed shadow-sm">
+                          <div className="bg-white/50 p-6 rounded-xl border border-[#6c3518]/5 font-inter text-sm text-[#6c3518]/80 leading-relaxed shadow-sm">
                             {order.shippingAddress ? (
                               <>
                                 <p>{order.shippingAddress.address1}</p>
@@ -209,7 +209,7 @@ export default function OrderHistory({ orders }: OrderHistoryProps) {
                                 <ExternalLink size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                               </a>
                             )}
-                            <p className="text-[10px] text-gray-400 font-poppins text-center italic">
+                            <p className="text-[10px] text-gray-400 font-sans text-center italic">
                               This is an authentic Shopify-generated bill and live tracking portal.
                             </p>
                           </div>

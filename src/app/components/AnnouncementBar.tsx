@@ -20,7 +20,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
     const checkMobile = () => {
       setDuration(window.innerWidth < 500 ? 40 : 35);
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -45,9 +45,9 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
           {[...Array(10)].map((_, i) => (
             <div key={i} className="flex space-x-12 px-6 items-center">
               {announcementItems.map((item, index) => (
-                <span 
-                  key={index} 
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-[0.2em] flex-shrink-0"
+                <span
+                  key={index}
+                  className="text-[10px] md:text-xs font-inter font-medium uppercase tracking-[0.2em] flex-shrink-0"
                 >
                   {item}
                 </span>

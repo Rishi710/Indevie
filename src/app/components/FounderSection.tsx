@@ -82,7 +82,7 @@ export default function FounderSection() {
 
               {/* Glass Card Annotation (Creative Touch) */}
               {/* <div className="absolute bottom-6 left-6 right-6 p-4 backdrop-blur-md bg-white/20 rounded-2xl border border-white/30 hidden md:block opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
-                <p className="text-white text-[10px] uppercase tracking-[0.3em] font-medium font-poppins">A Journey of Intention — Ar. Ishita Pathak</p>
+                <p className="text-white text-[10px] uppercase tracking-[0.3em] font-medium font-inter">A Journey of Intention — Ar. Ishita Pathak</p>
               </div>  */}
             </motion.div>
 
@@ -101,10 +101,10 @@ export default function FounderSection() {
               className="space-y-8"
             >
               <div className="space-y-4">
-                <span className="text-[11px] font-poppins font-bold tracking-[0.5em] uppercase text-[#ffffff] block italic">
+                <span className="text-[11px] font-inter font-bold tracking-[0.5em] uppercase text-[#ffffff] block italic">
                   From Our Founder
                 </span>
-                <h2 className="text-4xl md:text-4xl lg:text-6xl font-serif leading-[1.1] text-[#ffffff] tracking-tight">
+                <h2 className="text-4xl md:text-4xl lg:text-6xl font-inter leading-[1.1] text-[#ffffff] tracking-tight">
                   We're Indevie <br />
                   -Your Inner Devi <span className="relative">
 
@@ -115,14 +115,14 @@ export default function FounderSection() {
                 </h2>
               </div>
 
-              <div className="space-y-6 text-base md:text-lg text-[#ffffff]/70 leading-relaxed font-poppins font-light max-w-xl">
+              <div className="space-y-6 text-base md:text-lg text-[#ffffff]/70 leading-relaxed font-inter font-light max-w-xl">
                 <p>
                   At Indevie, we set out to create skincare that doesn&apos;t compromise on science, on results, or on integrity.
                 </p>
                 <p>
                   What started as a personal quest for pure, effective rituals is now a collective mission: to raise the bar for modern botanical beauty, rooted in ancient <strong className="text-[#ffffff]/90 font-medium">Genurveda™</strong> wisdom.
                 </p>
-                <p className="italic font-poppins text-[#ffffff] text-xl md:text-3xl pt-2">
+                <p className="italic font-inter text-[#ffffff] text-xl md:text-3xl pt-2">
                   &quot;Selfcare starts the moment you borrow that first comb from your parents to comb your own hair.&quot;
                 </p>
               </div>
@@ -130,10 +130,10 @@ export default function FounderSection() {
               <div className="pt-8 flex items-center gap-6">
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <p className="text-lg md:text-xl font-poppins font-semibold text-[#ffffff]">
+                    <p className="text-lg md:text-xl font-inter font-semibold text-[#ffffff]">
                       Ar. Ishita Pathak
                     </p>
-                    <p className="text-[10px] md:text-xs font-poppins font-bold tracking-[0.2em] uppercase text-[#ffffff]/40">
+                    <p className="text-[10px] md:text-xs font-inter font-bold tracking-[0.2em] uppercase text-[#ffffff]/40">
                       Founder, Indevie Beauty
                     </p>
                   </div>
@@ -160,7 +160,7 @@ export default function FounderSection() {
 
               <div className="pt-4">
                 <Link href="/about">
-                  <button className="text-[11px] font-poppins font-bold tracking-[0.3em] uppercase text-[#ffffff] border-b border-[#ffffff]/30 pb-2 hover:border-[#ffffff] transition-colors">
+                  <button className="text-[11px] font-inter font-bold tracking-[0.3em] uppercase text-[#ffffff] border-b border-[#ffffff]/30 pb-2 hover:border-[#ffffff] transition-colors">
                     Discover More
                   </button>
                 </Link>

@@ -370,9 +370,9 @@ export default function ShopPage() {
         className="flex flex-col md:flex-row items-center gap-2.5 md:gap-3 group relative cursor-pointer outline-none"
       >
         <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
-          <div className={`w-full h-full rounded-full flex items-center justify-center font-poppins font-bold text-[8px] sm:text-[9px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
-              ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
-              : "bg-[#f5f1e6] text-[#6c3518]"
+          <div className={`w-full h-full rounded-full flex items-center justify-center font-inter font-bold text-[8px] sm:text-[9px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
+            ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
+            : "bg-[#f5f1e6] text-[#6c3518]"
             }`}>
             SHOP ALL
           </div>
@@ -384,7 +384,7 @@ export default function ShopPage() {
               style={{ clipPath: "polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%)" }}
             />
           )}
-          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider text-center md:leading-tight transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-inter font-bold uppercase tracking-wider text-center md:leading-tight transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
             }`}>
             {renderTabLabel("Shop All")}
           </span>
@@ -404,8 +404,8 @@ export default function ShopPage() {
             className="flex flex-col md:flex-row items-center gap-2.5 md:gap-3 group relative cursor-pointer outline-none"
           >
             <div className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
-                ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
-                : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
+              ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
+              : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
               }`}>
               <div className="w-full h-full rounded-full overflow-hidden relative bg-white">
                 <Image
@@ -427,7 +427,7 @@ export default function ShopPage() {
                   style={{ clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)" }}
                 />
               )}
-              <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-poppins font-bold uppercase tracking-wider text-center leading-tight transition-colors ${isActive ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+              <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-inter font-bold uppercase tracking-wider text-center leading-tight transition-colors ${isActive ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
                 }`}>
                 {renderTabLabel(label)}
               </span>
@@ -463,10 +463,10 @@ export default function ShopPage() {
               transition={{ duration: 1.0, ease: "easeOut" }}
               className="flex flex-col items-center"
             >
-              <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-2xl font-light">
+              <h1 className="text-4xl md:text-7xl font-inter italic text-white mb-4 drop-shadow-2xl font-bold">
                 The Ritual Library
               </h1>
-              <p className="text-white/95 text-[9px] md:text-[10px] uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
+              <p className="text-white/95 text-[9px] md:text-[14px] uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
                 Curated botanical treasures for your daily sanctuary.
               </p>
             </motion.div>
@@ -517,9 +517,9 @@ export default function ShopPage() {
             {/* All pill */}
             <button
               onClick={() => setActiveProductType("all")}
-              className={`px-5 py-2 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === "all"
-                  ? "bg-[#6c3518] text-white border-[#6c3518]"
-                  : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
+              className={`px-5 py-2 rounded-full text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === "all"
+                ? "bg-[#6c3518] text-white border-[#6c3518]"
+                : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
                 }`}
             >
               All
@@ -529,9 +529,9 @@ export default function ShopPage() {
               <button
                 key={type}
                 onClick={() => setActiveProductType(activeProductType === type ? "all" : type)}
-                className={`px-5 py-2 rounded-full text-[11px] font-poppins font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === type
-                    ? "bg-[#6c3518] text-white border-[#6c3518]"
-                    : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
+                className={`px-5 py-2 rounded-full text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === type
+                  ? "bg-[#6c3518] text-white border-[#6c3518]"
+                  : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
                   }`}
               >
                 {type}
@@ -548,17 +548,17 @@ export default function ShopPage() {
           <div className="flex flex-col lg:flex-row gap-10">
 
             {/* 1. FILTER SIDEBAR — Desktop only */}
-            <aside className="hidden lg:block w-[220px] shrink-0 space-y-6 sticky self-start" style={{ top: headerHeight + 16 }}>
+            <aside className="hidden lg:block font-inter w-[220px] shrink-0 space-y-6 sticky self-start" style={{ top: headerHeight + 16 }}>
 
               {/* Section label */}
               <div className="pb-3 border-b border-[#6c3518]/15">
-                <h3 className="text-sm font-poppins font-bold uppercase tracking-wider text-black">Filter:</h3>
+                <h3 className="text-sm font-inter font-bold uppercase tracking-wider text-black">Filter:</h3>
               </div>
 
               {/* Product Type Filter */}
               {filterOptions.productTypes.length > 0 && (
                 <div className="pb-5">
-                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Product type</h4>
+                  <h4 className="text-xs font-inter font-bold uppercase tracking-wider text-black mb-4">Product type</h4>
                   <ul className="space-y-3">
                     {filterOptions.productTypes.map(([type, count]) => (
                       <li key={type} className="flex items-center gap-2.5">
@@ -569,7 +569,7 @@ export default function ShopPage() {
                           onChange={() => handleTypeToggle(type)}
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
-                        <label htmlFor={`type-${type}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                        <label htmlFor={`type-${type}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {type} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
@@ -581,7 +581,7 @@ export default function ShopPage() {
               {/* Shop by Concern Filter */}
               {filterOptions.concerns.length > 0 && (
                 <div className="pb-5">
-                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Shop by Concern</h4>
+                  <h4 className="text-xs font-inter font-bold uppercase tracking-wider text-black mb-4">Shop by Concern</h4>
                   <ul className="space-y-3">
                     {filterOptions.concerns.map(([concern, count]) => (
                       <li key={concern} className="flex items-center gap-2.5">
@@ -592,7 +592,7 @@ export default function ShopPage() {
                           onChange={() => handleConcernToggle(concern)}
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
-                        <label htmlFor={`concern-${concern}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                        <label htmlFor={`concern-${concern}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {concern} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
@@ -604,7 +604,7 @@ export default function ShopPage() {
               {/* Size Filter */}
               {filterOptions.sizes.length > 0 && (
                 <div className="pb-5">
-                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Size</h4>
+                  <h4 className="text-xs font-inter font-bold uppercase tracking-wider text-black mb-4">Size</h4>
                   <ul className="space-y-3">
                     {filterOptions.sizes.map(([size, count]) => (
                       <li key={size} className="flex items-center gap-2.5">
@@ -615,7 +615,7 @@ export default function ShopPage() {
                           onChange={() => handleSizeToggle(size)}
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
-                        <label htmlFor={`size-${size}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                        <label htmlFor={`size-${size}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {size} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
@@ -627,7 +627,7 @@ export default function ShopPage() {
               {/* Others Filter */}
               {filterOptions.others.length > 0 && (
                 <div className="pb-5">
-                  <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-4">Others</h4>
+                  <h4 className="text-xs font-inter font-bold uppercase tracking-wider text-black mb-4">Others</h4>
                   <ul className="space-y-3">
                     {filterOptions.others.map(([other, count]) => (
                       <li key={other} className="flex items-center gap-2.5">
@@ -638,7 +638,7 @@ export default function ShopPage() {
                           onChange={() => handleOtherToggle(other)}
                           className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
                         />
-                        <label htmlFor={`other-${other}`} className="text-xs font-poppins text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
+                        <label htmlFor={`other-${other}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {other} <span className="text-gray-400">({count})</span>
                         </label>
                       </li>
@@ -649,12 +649,12 @@ export default function ShopPage() {
 
               {/* Sort By Filter */}
               <div>
-                <h4 className="text-xs font-poppins font-bold uppercase tracking-wider text-black mb-3">Sort by</h4>
+                <h4 className="text-xs font-inter font-bold uppercase tracking-wider text-black mb-3">Sort by</h4>
                 <div className="relative">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full bg-white border border-[#6c3518] text-[#6c3518] rounded-[4px] px-3 py-2.5 text-xs font-poppins uppercase font-bold outline-none cursor-pointer appearance-none"
+                    className="w-full bg-white border border-[#6c3518] text-[#6c3518] rounded-[4px] px-3 py-2.5 text-xs font-inter uppercase font-bold outline-none cursor-pointer appearance-none"
                   >
                     <option value="relevant">Most Relevant</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -669,7 +669,7 @@ export default function ShopPage() {
               {(selectedProductTypes.length > 0 || selectedSizes.length > 0 || selectedConcerns.length > 0 || selectedOthers.length > 0) && (
                 <button
                   onClick={clearAllFilters}
-                  className="w-full py-2 bg-white hover:bg-[#6c3518] hover:text-white border border-[#6c3518] rounded-[4px] text-[10px] font-poppins font-bold uppercase tracking-wider transition-colors duration-200 text-[#6c3518]"
+                  className="w-full py-2 bg-white hover:bg-[#6c3518] hover:text-white border border-[#6c3518] rounded-[4px] text-[10px] font-inter font-bold uppercase tracking-wider transition-colors duration-200 text-[#6c3518]"
                 >
                   Clear Filters
                 </button>
@@ -690,7 +690,7 @@ export default function ShopPage() {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col items-start text-left pb-6 md:pb-8"
                 >
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif italic text-[#6c3518] font-light tracking-wide leading-tight">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-inter italic text-[#6c3518] font-light tracking-wide leading-tight">
                     {activeProductType !== "all"
                       ? activeProductType
                       : activeCollectionName}
@@ -729,10 +729,10 @@ export default function ShopPage() {
               ) : (
                 /* Empty state */
                 <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-[#6c3518]/20">
-                  <p className="text-sm font-poppins text-gray-500 italic">No products match your filter selection.</p>
+                  <p className="text-sm font-inter text-gray-500 italic">No products match your filter selection.</p>
                   <button
                     onClick={clearAllFilters}
-                    className="mt-4 px-6 py-2.5 bg-[#6c3518] text-white text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] hover:bg-black transition-colors"
+                    className="mt-4 px-6 py-2.5 bg-[#6c3518] text-white text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] hover:bg-black transition-colors"
                   >
                     Clear Filter Checkboxes
                   </button>
@@ -793,12 +793,12 @@ export default function ShopPage() {
                   </button>
                 )}
                 <div className="text-center">
-                  <h3 className="text-sm font-poppins font-bold uppercase tracking-wider text-black">
+                  <h3 className="text-sm font-inter font-bold uppercase tracking-wider text-black">
                     {mobileFilterView === "root"
                       ? "Filter"
                       : mobileFilterCategories.find((c) => c.key === mobileFilterView)?.label}
                   </h3>
-                  <p className="text-[11px] text-gray-400 font-poppins mt-0.5">
+                  <p className="text-[11px] text-gray-400 font-inter mt-0.5">
                     {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -822,7 +822,7 @@ export default function ShopPage() {
                           onClick={() => setMobileFilterView(cat.key)}
                           className="w-full flex items-center justify-between px-5 py-4 text-left active:bg-gray-50"
                         >
-                          <span className="text-sm font-poppins text-gray-800">
+                          <span className="text-sm font-inter text-gray-800">
                             {cat.label}
                             {cat.count > 0 && (
                               <span className="ml-2 text-[11px] text-[#6c3518] font-bold">({cat.count})</span>
@@ -838,7 +838,7 @@ export default function ShopPage() {
                     <motion.div key="productType" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.productTypes.map(([type, count]) => (
                         <label key={type} htmlFor={`mob-type-${type}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-poppins text-gray-700">
+                          <span className="text-sm font-inter text-gray-700">
                             {type} <span className="text-gray-400">({count})</span>
                           </span>
                           <input
@@ -857,7 +857,7 @@ export default function ShopPage() {
                     <motion.div key="concern" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.concerns.map(([concern, count]) => (
                         <label key={concern} htmlFor={`mob-concern-${concern}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-poppins text-gray-700">
+                          <span className="text-sm font-inter text-gray-700">
                             {concern} <span className="text-gray-400">({count})</span>
                           </span>
                           <input
@@ -876,7 +876,7 @@ export default function ShopPage() {
                     <motion.div key="size" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.sizes.map(([size, count]) => (
                         <label key={size} htmlFor={`mob-size-${size}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-poppins text-gray-700">
+                          <span className="text-sm font-inter text-gray-700">
                             {size} <span className="text-gray-400">({count})</span>
                           </span>
                           <input
@@ -895,7 +895,7 @@ export default function ShopPage() {
                     <motion.div key="others" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.others.map(([other, count]) => (
                         <label key={other} htmlFor={`mob-other-${other}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-poppins text-gray-700">
+                          <span className="text-sm font-inter text-gray-700">
                             {other} <span className="text-gray-400">({count})</span>
                           </span>
                           <input
@@ -918,7 +918,7 @@ export default function ShopPage() {
                           onClick={() => { setSortBy(opt.value); setMobileFilterView("root"); }}
                           className="w-full flex items-center justify-between py-3.5 text-left"
                         >
-                          <span className="text-sm font-poppins text-gray-700">{opt.label}</span>
+                          <span className="text-sm font-inter text-gray-700">{opt.label}</span>
                           {sortBy === opt.value && <span className="w-2.5 h-2.5 rounded-full bg-[#6c3518] shrink-0" />}
                         </button>
                       ))}
@@ -931,13 +931,13 @@ export default function ShopPage() {
               <div className="p-4 bg-gray-50 border-t border-gray-150 flex gap-4 shrink-0">
                 <button
                   onClick={() => { clearAllFilters(); setMobileFilterView("root"); }}
-                  className="flex-1 py-3 border border-[#6c3518] text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] bg-white text-[#6c3518] active:bg-[#f5f1e6]"
+                  className="flex-1 py-3 border border-[#6c3518] text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] bg-white text-[#6c3518] active:bg-[#f5f1e6]"
                 >
                   Clear All
                 </button>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="flex-1 py-3 bg-[#6c3518] text-white text-xs font-poppins font-bold uppercase tracking-wider rounded-[4px] active:bg-black transition-colors"
+                  className="flex-1 py-3 bg-[#6c3518] text-white text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] active:bg-black transition-colors"
                 >
                   Apply Filters
                 </button>

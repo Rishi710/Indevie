@@ -78,7 +78,7 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
         {/* Hero Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           <div className="animate-fade-in-up">
-            <h1 className="text-4xl md:text-7xl font-serif italic text-white mb-4 drop-shadow-xl">
+            <h1 className="text-4xl md:text-7xl font-inter italic text-white mb-4 drop-shadow-xl">
               Meet the ingredients <br className="hidden md:block" /> behind the Devi Energy
             </h1>
           </div>
@@ -97,7 +97,7 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
             </div>
             <input
               type="text"
-              className="block w-full pl-10 pr-3 py-3 border border-[#6c3518]/20 rounded-full bg-white text-[#6c3518] placeholder-[#6c3518]/50 focus:outline-none focus:ring-2 focus:ring-[#6c3518]/30 font-sans transition-all"
+              className="block w-full pl-10 pr-3 py-3 border border-[#6c3518]/20 rounded-full bg-white text-[#6c3518] placeholder-[#6c3518]/50 focus:outline-none focus:ring-2 focus:ring-[#6c3518]/30 font-inter transition-all"
               placeholder="Search ingredients, benefits..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -119,7 +119,7 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
                         onClick={() => isAvailable && handleLetterClick(letter)}
                         disabled={!isAvailable}
                         className={`
-                        py-4 px-3 md:px-5 text-sm md:text-base font-sans font-medium transition-all
+                        py-4 px-3 md:px-5 text-sm md:text-base font-inter font-medium transition-all
                         ${isActive
                             ? 'text-[#6c3518] border-b-2 border-[#6c3518]'
                             : isAvailable
@@ -139,7 +139,7 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
           {/* Section Title (Letter or Search Results) */}
           <div className="mb-8 flex items-center max-w-4xl mx-auto">
             <div className="h-px bg-[#6c3518]/20 flex-grow"></div>
-            <h2 className="px-6 text-3xl md:text-4xl font-serif font-bold text-[#6c3518]">
+            <h2 className="px-6 text-3xl md:text-4xl font-inter font-bold text-[#6c3518]">
               {searchQuery ? "Search Results" : activeLetter}
             </h2>
             <div className="h-px bg-[#6c3518]/20 flex-grow"></div>
@@ -221,8 +221,8 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
 
         {/* Left Side - Image & Title */}
         <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col relative bg-white">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#6c3518] mb-3">{ing.word}</h2>
-          <p className="text-[#6c3518]/60 font-poppins text-sm md:text-sm mb-10">
+          <h2 className="text-4xl md:text-5xl font-inter font-bold text-[#6c3518] mb-3">{ing.word}</h2>
+          <p className="text-[#6c3518]/60 font-inter text-sm md:text-sm mb-10">
             {ing.tags?.join(' • ')}
           </p>
           <div className="w-full aspect-[4/3] md:aspect-[4/3] lg:aspect-square relative rounded-[24px] overflow-hidden shadow-sm mt-auto">
@@ -230,7 +230,7 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
               <Image src={imageUrl} alt={ing.word} fill className="object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-[#f5f1e6] text-[#6c3518]/20">
-                <span className="font-seasons text-2xl">No Image</span>
+                <span className="font-inter text-2xl">No Image</span>
               </div>
             )}
           </div>
@@ -241,8 +241,8 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
           {/* About */}
           {ing.about && (
             <div>
-              <h4 className="text-[11px] md:text-xs font-poppins tracking-[0.2em] text-[#6c3518] uppercase mb-4">About the ingredient</h4>
-              <p className="text-[#6c3518]/60 font-poppins leading-tight text-sm md:text-sm">
+              <h4 className="text-[11px] md:text-xs font-inter tracking-[0.2em] text-[#6c3518] uppercase mb-4">About the ingredient</h4>
+              <p className="text-[#6c3518]/60 font-inter leading-tight text-sm md:text-sm">
                 {ing.about}
               </p>
             </div>
@@ -251,8 +251,8 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
           {/* How it works */}
           {ing.work && (
             <div>
-              <h4 className="text-[11px] md:text-xs font-poppins tracking-[0.2em] text-[#6c3518] uppercase mb-4">How it works</h4>
-              <p className="text-[#6c3518]/60 font-poppins leading-tight text-sm md:text-sm">
+              <h4 className="text-[11px] md:text-xs font-inter tracking-[0.2em] text-[#6c3518] uppercase mb-4">How it works</h4>
+              <p className="text-[#6c3518]/60 font-inter leading-tight text-sm md:text-sm">
                 {ing.work}
               </p>
             </div>
@@ -261,10 +261,10 @@ const IngredientModal = ({ ing, onClose }: { ing: Ingredient | undefined, onClos
           {/* Found in */}
           {ing.foundIn && ing.foundIn.length > 0 && (
             <div>
-              <h4 className="text-[11px] md:text-xs font-poppins tracking-[0.2em] text-[#6c3518] uppercase mb-4">Found In</h4>
+              <h4 className="text-[11px] md:text-xs font-inter tracking-[0.2em] text-[#6c3518] uppercase mb-4">Found In</h4>
               <div className="flex flex-col gap-2">
                 {ing.foundIn.map((item, idx) => (
-                  <span key={idx} className="text-[#6c3518]/60 font-poppins text-sm md:text-sm">{item}</span>
+                  <span key={idx} className="text-[#6c3518]/60 font-inter text-sm md:text-sm">{item}</span>
                 ))}
               </div>
             </div>

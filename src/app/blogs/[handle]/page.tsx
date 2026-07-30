@@ -45,11 +45,11 @@ export default async function BlogDetailPage({ params }: PageProps) {
   return (
     <main className="min-h-screen pt-32 pb-24 bg-white">
       <article className="max-w-4xl mx-auto px-4 sm:px-6">
-        
+
         {/* Back Button */}
         <div className="mb-12">
-          <Link 
-            href="/blogs" 
+          <Link
+            href="/blogs"
             className="group flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 hover:text-red-900 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3 transition-transform group-hover:-translate-x-1">
@@ -61,22 +61,22 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
         {/* Header Section */}
         <div className="space-y-8 mb-16 text-center">
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center font-inter justify-center gap-4">
             <span className="text-xs uppercase tracking-[0.3em] font-bold text-red-800">Journal</span>
             <span className="w-6 h-[1px] bg-red-800/20"></span>
-            <span className="text-xs uppercase tracking-[0.3em] font-medium text-gray-400">{formattedDate}</span>
+            <span className="text-xs uppercase font-inter tracking-[0.3em] font-medium text-gray-400">{formattedDate}</span>
           </div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-5xl font-poppins text-gray-900 leading-[1.1] italic">
+
+          <h1 className="text-4xl md:text-5xl lg:text-5xl font-inter text-gray-900 leading-[1.1] italic">
             {post.title}
           </h1>
-          
+
           {post.authorV2 && (
             <div className="flex items-center justify-center gap-3 pt-4">
-              <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-[10px] font-bold text-red-800 uppercase">
+              <div className="w-8 h-8 rounded-full font-inter bg-red-50 flex items-center justify-center text-[10px] font-bold text-red-800 uppercase">
                 I
               </div>
-              <span className="text-xs font-medium text-gray-600">Indevie Editor Desk</span>
+              <span className="text-xs font-inter font-medium text-gray-600">Indevie Editor Desk</span>
             </div>
           )}
         </div>
@@ -96,23 +96,23 @@ export default async function BlogDetailPage({ params }: PageProps) {
         )}
 
         {/* Content Section */}
-        <div 
+        <div
           className="prose prose-lg prose-gray max-w-none 
-            prose-headings:font-serif prose-headings:italic prose-headings:font-normal
+            prose-headings:font-inter prose-headings:italic prose-headings:font-normal
             prose-p:text-gray-600 prose-p:leading-relaxed prose-p:font-light
             prose-strong:font-semibold prose-strong:text-gray-900
             prose-img:rounded-sm prose-img:shadow-lg
             prose-a:text-red-800 prose-a:no-underline hover:prose-a:underline
-            prose-blockquote:border-red-800 prose-blockquote:bg-red-50/30 prose-blockquote:px-8 prose-blockquote:py-2 prose-blockquote:rounded-r-sm prose-blockquote:italic"
+            prose-blockquote:border-red-800 prose-blockquote:bg-red-50/30 font-inter prose-blockquote:px-8 prose-blockquote:py-2 prose-blockquote:rounded-r-sm prose-blockquote:italic"
           dangerouslySetInnerHTML={{ __html: post.contentHtml }}
         />
 
         {/* Footer / Share Section */}
-        <div className="mt-24 pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="mt-24 pt-12 border-t border-gray-100 font-inter flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex gap-4">
-             <ShareArticleButton title={post.title} url={`/blogs/${post.handle}`} />
+            <ShareArticleButton title={post.title} url={`/blogs/${post.handle}`} />
           </div>
-          <Link href="/blogs" className="text-sm font-serif italic text-gray-600 hover:text-red-900 transition-colors">
+          <Link href="/blogs" className="text-sm font-inter italic text-gray-600 hover:text-red-900 transition-colors">
             Continue Reading →
           </Link>
         </div>

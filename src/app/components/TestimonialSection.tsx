@@ -65,70 +65,70 @@ export default function TestimonialSection() {
 
       <div className="max-w-[1500px] mx-auto relative z-10">
         <div className="flex flex-col items-center text-center mb-10 md:mb-16 px-4">
-          <h2 className="text-3xl md:text-5xl font-poppins text-[#f5f1e6] italic mb-4">
+          <h2 className="text-3xl md:text-5xl font-inter text-[#f5f1e6] italic mb-4">
             Hear It From Our Community
           </h2>
           <div className="w-16 md:w-20 h-[1px] bg-[#d4af37]/40"></div>
         </div>
-        
+
         {/* Horizontal scroll on Mobile, 4 Columns on Desktop */}
-        <div 
-           className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-4 md:gap-6 pb-8 md:pb-0 px-4 sm:px-10 lg:px-16 [&::-webkit-scrollbar]:hidden"
-           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        <div
+          className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-4 md:gap-6 pb-8 md:pb-0 px-4 sm:px-10 lg:px-16 [&::-webkit-scrollbar]:hidden"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {testimonials.map((item) => (
-             <div 
-                key={item.id} 
-                className="w-[75vw] min-w-[75vw] sm:w-[50vw] sm:min-w-[50vw] md:w-auto md:min-w-0 snap-center shrink-0 flex flex-col bg-white/[0.03] backdrop-blur-xl rounded-[16px] md:rounded-[20px] overflow-hidden shadow-2xl border border-white/[0.08] transition-transform duration-500 hover:-translate-y-2"
-             >
-                {/* Media Container with Gradient overlay */}
-                <div className="w-full aspect-square md:aspect-[4/4.5] relative bg-black/40">
-                  <Image 
-                    src={item.image} 
-                    alt={`Review by ${item.name}`} 
-                    fill 
-                    className="object-cover opacity-90 transition-opacity duration-500 hover:opacity-100"
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                  />
-                  {/* Subtle fade to blend into the glass card */}
-                  <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#161413] to-transparent opacity-90" />
-                  
-                  {/* Floating Gold Stars with Half-Star Support */}
-                  <div className="absolute bottom-4 left-5 z-10 drop-shadow-md">
-                    {renderStars(item.rating)}
-                  </div>
+            <div
+              key={item.id}
+              className="w-[75vw] min-w-[75vw] sm:w-[50vw] sm:min-w-[50vw] md:w-auto md:min-w-0 snap-center shrink-0 flex flex-col bg-white/[0.03] backdrop-blur-xl rounded-[16px] md:rounded-[20px] overflow-hidden shadow-2xl border border-white/[0.08] transition-transform duration-500 hover:-translate-y-2"
+            >
+              {/* Media Container with Gradient overlay */}
+              <div className="w-full aspect-square md:aspect-[4/4.5] relative bg-black/40">
+                <Image
+                  src={item.image}
+                  alt={`Review by ${item.name}`}
+                  fill
+                  className="object-cover opacity-90 transition-opacity duration-500 hover:opacity-100"
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                />
+                {/* Subtle fade to blend into the glass card */}
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#161413] to-transparent opacity-90" />
+
+                {/* Floating Gold Stars with Half-Star Support */}
+                <div className="absolute bottom-4 left-5 z-10 drop-shadow-md">
+                  {renderStars(item.rating)}
                 </div>
-                
-                {/* Content Container */}
-                <div className="p-4 md:p-7 flex flex-col flex-grow relative bg-[#161413]">
-                  
-                  {/* Elegant Quote Paragraph */}
-                  <div className="relative mb-6 md:mb-8 mt-2 flex-grow">
-                    <span className="absolute -top-6 -left-2 text-5xl md:-top-7 md:-left-3 md:text-6xl text-[#d4af37]/20 font-serif leading-none select-none">"</span>
-                    <p className="text-gray-300 text-[13px] md:text-[15px] leading-relaxed italic z-10 relative font-light pl-1 md:pl-0">
-                      {item.text}
-                    </p>
-                  </div>
-                  
-                  {/* Meta Details Row (Name + Icons) */}
-                  <div className="mt-auto border-t border-white/[0.08] pt-4 md:pt-5">
-                    <h3 className="text-[15px] md:text-[17px] font-poppins font-medium text-[#f5f1e6] mb-2 md:mb-3">
-                      {item.name}
-                    </h3>
-                    <div className="flex flex-wrap items-center text-gray-400 gap-x-4 gap-y-1.5 md:gap-x-5 md:gap-y-2">
-                      <div className="flex items-center gap-1.5 focus:outline-none">
-                        <User size={13} strokeWidth={1.5} className="text-[#d4af37] md:w-[15px]" />
-                        <span className="font-medium text-[10px] md:text-[11px] uppercase tracking-widest text-gray-300">Age {item.age}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <MapPin size={13} strokeWidth={1.5} className="text-[#d4af37] md:w-[15px]" />
-                        <span className="font-medium text-[10px] md:text-[11px] uppercase tracking-widest text-gray-300">{item.location}</span>
-                      </div>
+              </div>
+
+              {/* Content Container */}
+              <div className="p-4 md:p-7 flex flex-col flex-grow relative bg-[#161413]">
+
+                {/* Elegant Quote Paragraph */}
+                <div className="relative mb-6 md:mb-8 mt-2 flex-grow">
+                  <span className="absolute -top-6 -left-2 text-5xl md:-top-7 md:-left-3 md:text-6xl text-[#d4af37]/20 font-inter leading-none select-none">"</span>
+                  <p className="text-gray-300 text-[13px] md:text-[15px] leading-relaxed italic z-10 relative font-light pl-1 md:pl-0">
+                    {item.text}
+                  </p>
+                </div>
+
+                {/* Meta Details Row (Name + Icons) */}
+                <div className="mt-auto border-t border-white/[0.08] pt-4 md:pt-5">
+                  <h3 className="text-[15px] md:text-[17px] font-inter font-medium text-[#f5f1e6] mb-2 md:mb-3">
+                    {item.name}
+                  </h3>
+                  <div className="flex flex-wrap items-center text-gray-400 gap-x-4 gap-y-1.5 md:gap-x-5 md:gap-y-2">
+                    <div className="flex items-center gap-1.5 focus:outline-none">
+                      <User size={13} strokeWidth={1.5} className="text-[#d4af37] md:w-[15px]" />
+                      <span className="font-medium text-[10px] md:text-[11px] uppercase tracking-widest text-gray-300">Age {item.age}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <MapPin size={13} strokeWidth={1.5} className="text-[#d4af37] md:w-[15px]" />
+                      <span className="font-medium text-[10px] md:text-[11px] uppercase tracking-widest text-gray-300">{item.location}</span>
                     </div>
                   </div>
-                  
                 </div>
-             </div>
+
+              </div>
+            </div>
           ))}
         </div>
       </div>

@@ -24,8 +24,8 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
             Indevie Journals
           </span>
-          <h2 className="text-3xl md:text-4xl uppercase lg:text-5xl text-[#6c3518] font-poppins font-bold">
-            Selfcare to Soulcare
+          <h2 className="text-3xl md:text-4xl uppercase lg:text-5xl text-[#6c3518] font-inter">
+            Selfcare to <span className="font-bold">Soulcare</span>
           </h2>
         </div>
 

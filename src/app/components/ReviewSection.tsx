@@ -116,12 +116,12 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
     <div className="w-full mt-12 py-10 border-t border-[#e5e5e5]/50 px-4 md:px-0">
       <div className="flex flex-col md:flex-row justify-between items-center md:items-center mb-10 gap-6">
         <div>
-          <h2 className="text-2xl font-poppins italic text-[#2a2a2a] mb-3">
+          <h2 className="text-2xl font-inter italic text-[#2a2a2a] mb-3">
             Customer Reviews
           </h2>
           <div className="flex items-center gap-3">
             {renderStars(Math.round(averageRating))}
-            <p className="text-sm text-gray-500 font-medium">
+            <p className="text-sm font-inter text-gray-500 font-medium">
               {averageRating > 0 ? averageRating.toFixed(1) : "0.0"} based on {totalReviews} Reviews
             </p>
           </div>
@@ -135,10 +135,10 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
       </div>
 
       {isWriting && (
-        <div className="bg-white p-6 md:p-8 rounded-[14px] border border-[#e5e5e5] mb-12 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="bg-white p-6 md:p-8 font-inter rounded-[14px] border border-[#e5e5e5] mb-12 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
           {submitSuccess ? (
             <div className="text-center py-10 text-[#6c3518]">
-              <h3 className="text-xl font-serif italic mb-2">Thank you!</h3>
+              <h3 className="text-xl font-inter italic mb-2">Thank you!</h3>
               <p>Your review has been securely submitted and is pending approval.</p>
             </div>
           ) : (
@@ -244,7 +244,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {reviews.map((review) => {
             // Parse out the embedded location & age string
-            const metaRegex = /\n\n---\n🌍 Location: (.*?)\n👤 Age: (.*)$/;
+            const metaRegex = /\n\n---\n Location: (.*?)\n👤 Age: (.*)$/;
             const match = review.body.match(metaRegex);
 
             let cleanBody = review.body;

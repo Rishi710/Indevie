@@ -34,7 +34,7 @@ export default function RegisterForm() {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="firstName" className="block text-[10px] font-poppins font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
+          <label htmlFor="firstName" className="block text-[10px] font-inter font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
             First Name
           </label>
           <input
@@ -47,7 +47,7 @@ export default function RegisterForm() {
           />
         </div>
         <div>
-          <label htmlFor="lastName" className="block text-[10px] font-poppins font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
+          <label htmlFor="lastName" className="block text-[10px] font-sans font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
             Last Name
           </label>
           <input
@@ -56,13 +56,13 @@ export default function RegisterForm() {
             name="lastName"
             required
             placeholder="Last"
-            className="w-full px-5 py-3.5 border border-[#6c3518]/10 rounded-xl bg-[#f5f1e6]/20 focus:outline-none focus:border-[#6c3518]/40 focus:bg-white transition-all text-sm font-poppins text-[#6c3518] placeholder:text-gray-300"
+            className="w-full px-5 py-3.5 border border-[#6c3518]/10 rounded-xl bg-[#f5f1e6]/20 focus:outline-none focus:border-[#6c3518]/40 focus:bg-white transition-all text-sm font-sans text-[#6c3518] placeholder:text-gray-300"
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-[10px] font-poppins font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
+        <label htmlFor="email" className="block text-[10px] font-sans font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
           Email Address
         </label>
         <input
@@ -71,12 +71,12 @@ export default function RegisterForm() {
           name="email"
           required
           placeholder="email@example.com"
-          className="w-full px-5 py-3.5 border border-[#6c3518]/10 rounded-xl bg-[#f5f1e6]/20 focus:outline-none focus:border-[#6c3518]/40 focus:bg-white transition-all text-sm font-poppins text-[#6c3518] placeholder:text-gray-300"
+          className="w-full px-5 py-3.5 border border-[#6c3518]/10 rounded-xl bg-[#f5f1e6]/20 focus:outline-none focus:border-[#6c3518]/40 focus:bg-white transition-all text-sm font-sans text-[#6c3518] placeholder:text-gray-300"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-[10px] font-poppins font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
+        <label htmlFor="password" className="block text-[10px] font-sans font-bold tracking-[0.2em] text-[#6c3518] uppercase mb-2">
           Create Password
         </label>
         <div className="relative">
@@ -86,12 +86,12 @@ export default function RegisterForm() {
             name="password"
             required
             placeholder="Min. 8 characters"
-            className="w-full px-5 py-3.5 border border-[#6c3518]/10 rounded-xl bg-[#f5f1e6]/20 focus:outline-none focus:border-[#6c3518]/40 focus:bg-white transition-all text-sm font-poppins text-[#6c3518] placeholder:text-gray-300"
+            className="w-full px-5 py-3.5 border border-[#6c3518]/10 rounded-xl bg-[#f5f1e6]/20 focus:outline-none focus:border-[#6c3518]/40 focus:bg-white transition-all text-sm font-inter text-[#6c3518] placeholder:text-gray-300"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6c3518]/40 hover:text-[#6c3518] transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 font-inter text-[#6c3518]/40 hover:text-[#6c3518] transition-colors"
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
@@ -102,16 +102,16 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-[#6c3518] text-white py-4 rounded-xl text-[10px] font-poppins font-bold tracking-[0.25em] uppercase hover:bg-black transition-all duration-500 disabled:opacity-50 shadow-lg shadow-[#6c3518]/10"
+          className="w-full bg-[#6c3518] text-white py-4 rounded-xl text-[10px] font-inter font-bold tracking-[0.25em] uppercase hover:bg-black transition-all duration-500 disabled:opacity-50 shadow-lg shadow-[#6c3518]/10"
         >
           {isPending ? "Creating Account..." : "Join the Indevie"}
         </button>
       </div>
 
       <div className="text-center pt-2">
-        <p className="text-sm font-poppins text-gray-400 font-light">
+        <p className="text-sm font-inter text-gray-400 font-light">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#6c3518] font-poppins font-medium hover:text-black transition-all ml-1 underline underline-offset-4 decoration-[#6c3518]/20">
+          <Link href="/login" className="text-[#6c3518] font-inter font-medium hover:text-black transition-all ml-1 underline underline-offset-4 decoration-[#6c3518]/20">
             Log in here
           </Link>
         </p>

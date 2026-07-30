@@ -59,7 +59,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchProduct[]>([]);
-  
+
   // Dynamic Shopify catalog and filters
   const [allProducts, setAllProducts] = useState<SearchProduct[]>([]);
   const [dynamicConcerns, setDynamicConcerns] = useState<string[]>([]);
@@ -296,7 +296,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     value={query}
                     onChange={handleInputChange}
                     placeholder="Search by product, ingredient, concern, benefit…"
-                    className="flex-1 py-2.5 text-base sm:text-lg text-gray-800 placeholder-gray-350 bg-transparent outline-none font-poppins"
+                    className="flex-1 py-2.5 text-base sm:text-lg text-gray-800 placeholder-gray-350 bg-transparent outline-none font-inter"
                     autoComplete="off"
                     spellCheck={false}
                   />
@@ -350,7 +350,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                       <div>
                         <div className="flex items-center gap-2 mb-3">
                           <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
-                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-poppins font-bold">
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-inter font-bold">
                             Bestsellers
                           </p>
                         </div>
@@ -359,7 +359,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                             <button
                               key={item.query}
                               onClick={() => triggerQuick(item.query, item.label)}
-                              className="text-xs font-poppins font-semibold px-3.5 py-1.5 bg-[#f5f1e6] text-[#6c3518] border border-[#6c3518]/20 rounded-full hover:bg-[#6c3518] hover:text-white hover:border-[#6c3518] transition-all duration-200"
+                              className="text-xs font-inter font-semibold px-3.5 py-1.5 bg-[#f5f1e6] text-[#6c3518] border border-[#6c3518]/20 rounded-full hover:bg-[#6c3518] hover:text-white hover:border-[#6c3518] transition-all duration-200"
                             >
                               {item.label}
                             </button>
@@ -371,7 +371,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                       <div>
                         <div className="flex items-center gap-2 mb-4">
                           <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
-                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-poppins font-bold">
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-inter font-bold">
                             Shop by Concern
                           </p>
                         </div>
@@ -382,11 +382,10 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                               <button
                                 key={concern}
                                 onClick={() => handleConcernClick(concern)}
-                                className={`px-4 py-3 rounded-xl text-[11px] font-poppins font-bold uppercase tracking-wider transition-all duration-200 text-left border ${
-                                  isActive
+                                className={`px-4 py-3 rounded-xl text-[11px] font-inter font-bold uppercase tracking-wider transition-all duration-200 text-left border ${isActive
                                     ? "bg-[#6c3518] border-[#6c3518] text-white shadow-md scale-[1.01]"
                                     : "bg-[#faf8f4] border-[#6c3518]/10 hover:border-[#6c3518]/30 hover:bg-[#faf8f3] text-gray-700"
-                                }`}
+                                  }`}
                               >
                                 {concern}
                               </button>
@@ -400,7 +399,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     <div>
                       <div className="flex items-center gap-2 mb-3">
                         <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
-                        <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-poppins font-bold">
+                        <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-inter font-bold">
                           {activeConcern ? `Products for ${activeConcern}` : "Popular Products"}
                         </p>
                       </div>
@@ -429,11 +428,11 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                                   )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-poppins font-medium text-gray-700 group-hover:text-[#6c3518] transition-colors truncate">
+                                  <p className="text-sm font-inter font-medium text-gray-700 group-hover:text-[#6c3518] transition-colors truncate">
                                     {product.title}
                                   </p>
                                   {price && (
-                                    <p className="text-xs font-poppins text-[#6c3518]/70 mt-0.5 font-bold">
+                                    <p className="text-xs font-inter text-[#6c3518]/70 mt-0.5 font-bold">
                                       {formatPrice(price.amount, price.currencyCode)}
                                     </p>
                                   )}
@@ -445,7 +444,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                             );
                           })
                         ) : (
-                          <div className="py-8 text-center text-gray-400 text-xs font-poppins italic">
+                          <div className="py-8 text-center text-gray-400 text-xs font-inter italic">
                             No products currently loaded for this concern.
                           </div>
                         )}
@@ -467,7 +466,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     >
                       {results.length > 0 ? (
                         <>
-                          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-poppins font-semibold mb-3">
+                          <p className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-inter font-semibold mb-3">
                             {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
                           </p>
 
@@ -504,11 +503,11 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
 
                                     {/* Info */}
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-poppins font-medium text-gray-800 group-hover:text-[#6c3518] transition-colors truncate leading-snug">
+                                      <p className="text-sm font-inter font-medium text-gray-800 group-hover:text-[#6c3518] transition-colors truncate leading-snug">
                                         {product.title}
                                       </p>
                                       {product.tags?.length > 0 && (
-                                        <p className="text-[10px] text-gray-400 font-poppins truncate mt-0.5 leading-tight">
+                                        <p className="text-[10px] text-gray-400 font-inter truncate mt-0.5 leading-tight">
                                           {product.tags.slice(0, 3).join(" · ")}
                                         </p>
                                       )}
@@ -517,11 +516,11 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                                     {/* Price */}
                                     {price && (
                                       <div className="text-right shrink-0">
-                                        <span className="text-sm font-semibold text-[#6c3518] font-poppins">
+                                        <span className="text-sm font-semibold text-[#6c3518] font-inter">
                                           {formatPrice(price.amount, price.currencyCode)}
                                         </span>
                                         {compareAt && parseFloat(compareAt.amount) > parseFloat(price.amount) && (
-                                          <p className="text-[10px] text-gray-400 line-through font-poppins">
+                                          <p className="text-[10px] text-gray-400 line-through font-inter">
                                             {formatPrice(compareAt.amount, compareAt.currencyCode)}
                                           </p>
                                         )}
@@ -541,7 +540,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                           <Link
                             href={`/shop?q=${encodeURIComponent(query)}`}
                             onClick={handleResultClick}
-                            className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 border border-[#6c3518]/20 rounded-xl text-sm font-poppins font-medium text-[#6c3518] hover:bg-[#6c3518] hover:text-white transition-all duration-200"
+                            className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 border border-[#6c3518]/20 rounded-xl text-sm font-inter font-medium text-[#6c3518] hover:bg-[#6c3518] hover:text-white transition-all duration-200"
                           >
                             View all results
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
@@ -556,10 +555,10 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                           </div>
-                          <p className="text-gray-500 font-poppins text-sm font-medium">
+                          <p className="text-gray-500 font-inter text-sm font-medium">
                             No results for &ldquo;<span className="text-[#6c3518]">{query}</span>&rdquo;
                           </p>
-                          <p className="text-gray-400 font-poppins text-xs mt-1">
+                          <p className="text-gray-400 font-inter text-xs mt-1">
                             Try a different ingredient, concern, or product name.
                           </p>
                         </div>

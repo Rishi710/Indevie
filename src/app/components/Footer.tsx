@@ -131,7 +131,7 @@ const Footer = () => {
           </g>
         </svg>
       </div>
-      <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-poppins pt-20 pb-12 overflow-hidden">
+      <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-inter pt-20 pb-12 overflow-hidden">
         {/*  Floating Botanical Detail (GPU Accelerated) */}
         <motion.div
           animate={{
@@ -181,7 +181,7 @@ const Footer = () => {
         >
           <div className="max-w-md">
             <h3 className="text-[11px] uppercase tracking-[0.6em] font-bold text-white/30 mb-6 italic">Join Indevie</h3>
-            <h2 className="text-3xl lg:text-4xl font-serif text-[#f5f1e6] leading-[1.1] mb-6">
+            <h2 className="text-3xl lg:text-4xl font-inter text-[#f5f1e6] leading-[1.1] mb-6">
               Receive curated insights from us.
             </h2>
           </div>
@@ -219,7 +219,7 @@ const Footer = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 lg:gap-8 mb-24">
 
             {/* COLUMN 1: IDENTITY */}
-            <div className="col-span-2 sm:col-span-1 space-y-10">
+            <div className="col-span-2 font-inter sm:col-span-1 space-y-10">
               <Link href="/" className="inline-block relative w-44 h-20 group overflow-hidden">
                 <Image
                   src="/images/logo.png"
@@ -339,7 +339,7 @@ const Footer = () => {
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute -bottom-[1vw] left-0 w-full select-none pointer-events-none text-center"
         >
-          <h2 className="text-[30vw] font-serif italic tracking-tighter leading-none whitespace-nowrap overflow-hidden">
+          <h2 className="text-[30vw] font-inter italic tracking-tighter leading-none whitespace-nowrap overflow-hidden">
             Indevie
           </h2>
         </motion.div>

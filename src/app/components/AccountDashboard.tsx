@@ -52,8 +52,8 @@ export default function AccountDashboard({ customer }: { customer: any }) {
 
           <div className="relative z-10">
             <div className="mb-8 px-2">
-              <p className="text-[10px] font-bold text-[#6c3518]/40 uppercase tracking-[0.2em] mb-1">Account Menu</p>
-              <h3 className="text-xl font-poppins text-[#6c3518] italic">Indevie Dashboard</h3>
+              <p className="text-[10px] font-inter font-bold text-[#6c3518]/40 uppercase tracking-[0.2em] mb-1">Account Menu</p>
+              <h3 className="text-xl font-inter text-[#6c3518] italic">Indevie Dashboard</h3>
             </div>
 
             <nav className="space-y-2">
@@ -71,8 +71,8 @@ export default function AccountDashboard({ customer }: { customer: any }) {
                     {tab.icon}
                   </div>
                   <div className="ml-4 text-left">
-                    <p className="text-[14px] font-bold font-poppins uppercase tracking-wider">{tab.label}</p>
-                    <p className={`text-[10px] italic font-poppins tracking-wide ${activeTab === tab.id ? "text-white/60" : "text-gray-400"
+                    <p className="text-[14px] font-bold font-inter uppercase tracking-wider">{tab.label}</p>
+                    <p className={`text-[10px] italic font-inter tracking-wide ${activeTab === tab.id ? "text-white/60" : "text-gray-400"
                       }`}>
                       {tab.description}
                     </p>
@@ -98,8 +98,8 @@ export default function AccountDashboard({ customer }: { customer: any }) {
                       <LogOut size={20} />
                     </div>
                     <div className="ml-4 text-left">
-                      <p className="text-[14px] font-bold font-poppins uppercase tracking-wider">Sign Out</p>
-                      <p className="text-[10px] italic font-poppins tracking-wide text-red-300">End your session</p>
+                      <p className="text-[14px] font-bold font-inter uppercase tracking-wider">Sign Out</p>
+                      <p className="text-[10px] italic font-inter tracking-wide text-red-300">End your session</p>
                     </div>
                   </button>
                 </form>
@@ -119,7 +119,7 @@ export default function AccountDashboard({ customer }: { customer: any }) {
                 <div className="relative z-10">
                   <div className="mb-10 inline-block">
                     <span className="text-[10px] font-bold text-[#6c3518]/40 uppercase tracking-[0.3em] mb-2 block">Personal Portal</span>
-                    <h2 className="text-4xl lg:text-5xl font-poppins text-[#6c3518] italic lowercase">profile <span className="text-gray-300 not-italic font-light">details</span></h2>
+                    <h2 className="text-4xl lg:text-5xl font-sans text-[#6c3518] italic lowercase">profile <span className="text-gray-300 not-italic font-light">details</span></h2>
                     <div className="h-0.5 w-12 bg-[#6c3518]/20 mt-4"></div>
                   </div>
                   <AccountDetailsForm customer={customer} />
@@ -133,11 +133,11 @@ export default function AccountDashboard({ customer }: { customer: any }) {
                 <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
                   <div>
                     <span className="text-[10px] font-bold text-[#6c3518]/40 uppercase tracking-[0.3em] mb-2 block">Shopping Archive</span>
-                    <h2 className="text-4xl lg:text-5xl font-poppins text-[#6c3518] italic lowercase">order <span className="text-gray-300 not-italic font-light">history</span></h2>
+                    <h2 className="text-4xl lg:text-5xl font-sans text-[#6c3518] italic lowercase">order <span className="text-gray-300 not-italic font-light">history</span></h2>
                     <div className="h-0.5 w-12 bg-[#6c3518]/20 mt-4"></div>
                   </div>
                   <div className="bg-[#f5f1e6] px-6 py-3 rounded-2xl flex flex-col items-center justify-center min-w-[120px]">
-                    <p className="text-[18px] font-serif italic text-[#6c3518] leading-none mb-1">
+                    <p className="text-[18px] font-inter italic text-[#6c3518] leading-none mb-1">
                       {customer.orders?.nodes.length || 0}
                     </p>
                     <p className="text-[8px] font-bold text-[#6c3518]/50 tracking-[0.2em] uppercase">

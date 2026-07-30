@@ -67,12 +67,12 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   } else {
     // Smart defaults based on title / handle
     const titleLower = product.title.toLowerCase();
-    if (titleLower.includes("geeli mitti")) bannerText = "FACE MISTL";
-    else if (titleLower.includes("gulkand")) bannerText = "ROSE MIST";
+    if (titleLower.includes("geeli mitti")) bannerText = "Face Hydration";
+    else if (titleLower.includes("gulkand")) bannerText = " Face Hydration";
     else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) bannerText = "AYURVEDIC SPF 50";
-    else if (titleLower.includes("calm balm")) bannerText = "SOOTHING SKIN RITUAL";
-    else if (titleLower.includes("lotion")) bannerText = "DAILY BODY NOURISHMENT";
-    else if (titleLower.includes("maalish")) bannerText = "GLOWING BODY OIL";
+    else if (titleLower.includes("calm balm")) bannerText = "Sleep Inducing";
+    else if (titleLower.includes("lotion")) bannerText = "Skin Hydration Lotion";
+    else if (titleLower.includes("maalish")) bannerText = " Skin Hydration Oil";
     else if (titleLower.includes("set") || titleLower.includes("ritual")) bannerText = "ULTIMATE SKIN RITUAL";
     else bannerText = "GENURVEDA™ APPROVED";
   }
@@ -143,7 +143,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[10px] font-poppins font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
+        <div className="bg-black text-white text-[10px] font-inter font-semibold tracking-[0.2em] text-center py-2 uppercase shrink-0">
           {bannerText}
         </div>
       )}
@@ -154,13 +154,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Title & Subtitle */}
         <div className="space-y-1">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-[14px] sm:text-[16px] font-sans font-bold text-[#6c3518] group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-[12px] sm:text-[14px] font-inter font-semibold text-black  group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
               {product.title}
             </h3>
           </Link>
 
           {subtitle && (
-            <p className="text-[10px] sm:text-[12px] font-sans text-gray-500 line-clamp-1 font-light">
+            <p className="text-[10px] sm:text-[12px] font-inter-bold text-black line-clamp-1">
               {subtitle}
             </p>
           )}
@@ -169,7 +169,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Rating & Pricing Row */}
         <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0.5 shrink-0">
           {/* Left: Star Rating */}
-          <div className="flex items-center gap-0.5 sm:gap-1 text-[12px] sm:text-[14px] font-sans text-gray-800 font-medium shrink-0">
+          <div className="flex items-center gap-0.5 sm:gap-1 text-[12px] sm:text-[14px] font-inter text-gray-800 font-medium shrink-0">
             <span className="text-black text-[12px] sm:text-[14px] leading-none">★</span>
             <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
             <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
@@ -178,11 +178,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           {/* Right: Pricing */}
           <div className="flex items-baseline gap-1 sm:gap-1.5 shrink-0">
             {formattedComparePrice && (
-              <span className="text-[12px] sm:text-[14px] text-gray-400 line-through font-light">
+              <span className="text-[12px] sm:text-[14px] text-gray-500 line-through font-light">
                 {formattedComparePrice}
               </span>
             )}
-            <span className="text-[16px] sm:text-[18px] font-poppins font-bold text-[#6c3518]">
+            <span className="text-[16px] sm:text-[14px] font-inter text-black">
               {formattedPrice}
             </span>
           </div>
@@ -195,7 +195,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             {isOutOfStock ? (
               <button
                 disabled
-                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center bg-gray-100 border border-gray-200 text-gray-400 font-sans font-bold text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase cursor-not-allowed"
+                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center bg-gray-100 border border-gray-200 text-gray-400 font-inter font-bold text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase cursor-not-allowed"
               >
                 Out of Stock
               </button>
@@ -209,7 +209,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                 >
                   <Minus size={12} className="text-[#6c3518]" />
                 </button>
-                <span className="font-sans font-bold text-[11px] sm:text-xs text-[#6c3518] w-6 sm:w-8 text-center select-none">
+                <span className="font-inter font-bold text-[11px] sm:text-xs text-[#6c3518] w-6 sm:w-8 text-center select-none">
                   {quantityInCart}
                 </span>
                 <button
@@ -225,7 +225,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
               <button
                 onClick={handleAddToCart}
                 disabled={isUpdating}
-                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center gap-1 sm:gap-1.5 bg-transparent border border-[#B40417] hover:bg-[ffffff] active:bg-[#B40417] text-[#B40417] font-sans font-bold text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors disabled:opacity-70"
+                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center gap-1 sm:gap-1.5 bg-transparent border border-[#B40417] hover:bg-[ffffff] active:bg-[#B40417] text-[#B40417] font-inter font-bold text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors disabled:opacity-70"
               >
                 {/* <ShoppingBag size={12} className="text-white shrink-0" /> */}
                 Add To Cart

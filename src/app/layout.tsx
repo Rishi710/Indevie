@@ -3,16 +3,12 @@ import LayoutWrapper from "./components/LayoutWrapper";
 import { cookies } from "next/headers";
 import { fetchCustomer } from "@/lib/shopify";
 import { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import MetaPixel from "./components/MetaPixel";
 
+const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins"
-});
 
 export const metadata: Metadata = {
   title: "Indévie Beauty | Modern Botanical Skincare rooted in Genurveda™",
@@ -40,7 +36,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${poppins.variable} antialiased font-sans bg-[#f5f1e6]`} suppressHydrationWarning>
+      <body className={`${openSans.variable} ${inter.variable} antialiased font-sans bg-[#f5f1e6]`} suppressHydrationWarning>
         <LayoutWrapper isLoggedIn={isLoggedIn} userName={userName}>
           {children}
         </LayoutWrapper>

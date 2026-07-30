@@ -19,14 +19,14 @@ const testimonials: Testimonial[] = [
     quote: "My favourite is the Glow Maalish Oil. It’s so smooth, it feels like having your own spa at home. The texture is exceptional, something you hardly find anywhere else. I love the natural jasmine fragrance. Overall, 10/10.",
     name: "Aayushi Gupta",
     subtext: "Architect",
-    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1_86824398-6c97-4a70-9e2a-5157d1f893b4.jpg?v=1771928504", 
+    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/1_86824398-6c97-4a70-9e2a-5157d1f893b4.jpg?v=1771928504",
   },
   {
     id: 2,
     quote: "My freelancing career has only kept me running from one place to another. I never cared for my skin the way I should have. But honestly, the Kalakand Skin Barrier Body Lotion and Calm Balm have given my skin a new life. They’re truly worth it.",
     name: "Shiny W.",
     subtext: "Freelance Content Writer",
-    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/2_9d58d24e-84bd-4ba4-8e81-ec497af09208.jpg?v=1771928505", 
+    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/2_9d58d24e-84bd-4ba4-8e81-ec497af09208.jpg?v=1771928505",
   },
   {
     id: 3,
@@ -77,14 +77,14 @@ export default function HomeTestimonials() {
 
   return (
     <section className="w-full bg-[#ffffff] py-5 lg:py-10 overflow-hidden flex flex-col items-center">
-        <div className="flex flex-col items-center text-center mb-6 md:mb-10 gap-3 px-4">
-          <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
-            Real Experiences
-          </span>
-          <h2 className="text-2xl md:text-3xl lg:text-5xl text-[#6c3518] font-poppins italic font-bold">
-            Hear it from the Enthusiasts
-          </h2>
-        </div>
+      <div className="flex flex-col items-center text-center mb-6 md:mb-10 gap-3 px-4">
+        <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
+          Real Experiences
+        </span>
+        <h2 className="text-2xl md:text-3xl lg:text-5xl text-[#6c3518] font-inter italic font-bold">
+          Hear it from the Enthusiasts
+        </h2>
+      </div>
       <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[300px] md:h-[300px] flex items-center justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -114,7 +114,7 @@ export default function HomeTestimonials() {
             </div>
 
             {/* Quote */}
-            <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-poppins leading-[1.7] md:leading-[1.4] text-[#6c3518] italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
+            <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-inter leading-[1.7] md:leading-[1.4] text-[#6c3518] italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
               {"\"" + testimonials[currentIndex].quote + "\""}
             </h2>
 
@@ -130,10 +130,10 @@ export default function HomeTestimonials() {
                 />
               </div>
               <div className="text-left">
-                <p className="text-[12px] md:text-sm font-poppins font-bold tracking-[0.1em] text-[#6c3518]/80 uppercase">
+                <p className="text-[12px] md:text-sm font-inter font-bold tracking-[0.1em] text-[#6c3518]/80 uppercase">
                   {testimonials[currentIndex].name}
                 </p>
-                <p className="text-[10px] md:text-[11px] font-poppins text-[#6c3518]/60 italic tracking-wide">
+                <p className="text-[10px] md:text-[11px] font-inter text-[#6c3518]/60 italic tracking-wide">
                   {testimonials[currentIndex].subtext}
                 </p>
               </div>
@@ -148,11 +148,10 @@ export default function HomeTestimonials() {
           <button
             key={idx}
             onClick={() => handleDotClick(idx)}
-            className={`transition-all duration-500 rounded-full h-[3px] ${
-              idx === currentIndex 
-                ? "bg-[#6c3518] w-8 md:w-10" 
-                : "bg-[#6c3518]/20 w-3 hover:bg-[#6c3518]/40"
-            }`}
+            className={`transition-all duration-500 rounded-full h-[3px] ${idx === currentIndex
+              ? "bg-[#6c3518] w-8 md:w-10"
+              : "bg-[#6c3518]/20 w-3 hover:bg-[#6c3518]/40"
+              }`}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}

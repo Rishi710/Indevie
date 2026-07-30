@@ -12,7 +12,7 @@ export default async function BlogsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center pt-24">
         <div className="text-center space-y-4">
-          <h2 className="text-3xl font-serif text-gray-900">No Stories Found</h2>
+          <h2 className="text-3xl font-inter text-gray-900">No Stories Found</h2>
           <p className="text-gray-500 max-w-md mx-auto">
             We haven't shared any journals yet. Please check back later for more updates.
           </p>
@@ -33,7 +33,7 @@ export default async function BlogsPage() {
         </div>
 
         <div className="relative z-10 animate-fade-in-up">
-          <h1 className="text-3xl md:text-7xl font-serif text-white mb-4 drop-shadow-md">
+          <h1 className="text-3xl md:text-7xl font-inter text-white mb-4 drop-shadow-md">
             Indevie Journals
           </h1>
           <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
@@ -50,7 +50,7 @@ export default async function BlogsPage() {
         {remainingArticles.length > 0 && (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center mb-16 space-y-4 flex flex-col items-center">
-              <h2 className="text-3xl md:text-5xl font-poppins text-gray-900">Latest Journals</h2>
+              <h2 className="text-3xl md:text-5xl font-inter text-gray-900">Latest Journals</h2>
               <p className="text-gray-500 max-w-lg mx-auto">
                 Explore our collection of stories, rituals, and mindful insights.
               </p>
@@ -69,7 +69,7 @@ export default async function BlogsPage() {
 
         {/* Newsletter / CTA Section */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-24 text-center">
-          <div className="bg-red-50 py-20 px-8 space-y-8 rounded-sm">
+          <div className="bg-red-50 py-20 px-8 space-y-8 rounded-sm font-inter">
             <span className="text-xs uppercase tracking-[0.4em] font-bold text-red-800">No spam, just good skin advice.</span>
             <h3 className="text-3xl md:text-4xl font-poppin text-gray-900 italic">Straight to your inbox</h3>
             <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
@@ -79,9 +79,9 @@ export default async function BlogsPage() {
               <input
                 type="email"
                 placeholder="Your Email"
-                className="flex-1 px-6 py-4 border border-gray-200 focus:outline-none focus:border-red-800 text-sm rounded-none"
+                className="flex-1 px-6 py-4 font-inter border border-gray-200 focus:outline-none focus:border-red-800 text-sm rounded-none"
               />
-              <button className="px-10 py-4 bg-black text-white text-xs uppercase tracking-widest font-semibold hover:bg-neutral-900 transition-colors">
+              <button className="px-10 py-4 bg-black font-inter text-white text-xs uppercase tracking-widest font-semibold hover:bg-neutral-900 transition-colors">
                 Subscribe
               </button>
             </form>

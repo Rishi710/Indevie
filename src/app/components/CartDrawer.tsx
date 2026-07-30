@@ -84,7 +84,7 @@ export default function CartDrawer() {
             <div className="flex items-center justify-between p-6 border-b border-[#6c3518]/10">
               <div className="flex items-center gap-3">
                 <ShoppingBag size={20} className="text-[#6c3518]" />
-                <h2 className="text-xl font-poppins font-medium text-[#6c3518] italic">Your Cart</h2>
+                <h2 className="text-xl font-sans font-medium text-[#6c3518] italic">Your Cart</h2>
                 <span className="bg-[#6c3518] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                   {totalQuantity}
                 </span>
@@ -127,7 +127,7 @@ export default function CartDrawer() {
                           <Link
                             href={`/products/${line.merchandise.product.handle}`}
                             onClick={() => setIsCartOpen(false)}
-                            className="text-sm font-poppins font-medium text-[#6c3518] hover:opacity-70 transition-opacity"
+                            className="text-sm font-sans font-medium text-[#6c3518] hover:opacity-70 transition-opacity"
                           >
                             {line.merchandise.product.title}
                           </Link>
@@ -155,7 +155,7 @@ export default function CartDrawer() {
                           >
                             <Minus size={12} className="text-[#6c3518]" />
                           </button>
-                          <span className="w-8 text-center text-xs font-poppins text-[#6c3518] font-medium">
+                          <span className="w-8 text-center text-xs font-sans text-[#6c3518] font-medium">
                             {line.quantity}
                           </span>
                           <button
@@ -167,7 +167,7 @@ export default function CartDrawer() {
                             <Plus size={12} className="text-[#6c3518]" />
                           </button>
                         </div>
-                        <p className="text-sm font-poppins font-bold text-[#6c3518]">
+                        <p className="text-sm font-sans font-bold text-[#6c3518]">
                           {line.estimatedCost.totalAmount.currencyCode} {parseFloat(line.estimatedCost.totalAmount.amount).toLocaleString()}
                         </p>
                       </div>
@@ -181,8 +181,8 @@ export default function CartDrawer() {
                     <ShoppingBag size={32} />
                   </div>
                   <div className="space-y-2">
-                    <p className="text-lg font-poppins font-medium text-[#6c3518] italic">Your bag is empty.</p>
-                    <p className="text-xs text-gray-500 font-poppins italic tracking-wide">Begin your skincare with Indevie today.</p>
+                    <p className="text-lg font-sans font-medium text-[#6c3518] italic">Your bag is empty.</p>
+                    <p className="text-xs text-gray-500 font-sans italic tracking-wide">Begin your skincare with Indevie today.</p>
                   </div>
                   <button
                     onClick={() => setIsCartOpen(false)}
@@ -200,10 +200,10 @@ export default function CartDrawer() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] font-bold tracking-[0.2em] text-[#6c3518]/50 uppercase">Subtotal</p>
-                    <p className="text-xs text-gray-400 font-poppins italic">Shipping & taxes calculated at checkout</p>
+                    <p className="text-xs text-gray-400 font-sans italic">Shipping & taxes calculated at checkout</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-poppins font-bold text-[#6c3518]">
+                    <p className="text-2xl font-sans font-bold text-[#6c3518]">
                       {subtotal?.currencyCode} {parseFloat(subtotal?.amount).toLocaleString()}
                     </p>
                   </div>
@@ -214,7 +214,7 @@ export default function CartDrawer() {
                   disabled={isUpdating}
                   className="group w-full flex items-center justify-between bg-[#6c3518] text-white p-6 rounded-xl hover:bg-black transition-all duration-500 shadow-xl shadow-[#6c3518]/10 disabled:opacity-50"
                 >
-                  <span className="text-sm font-poppins font-bold tracking-[0.2em] uppercase underline-offset-4 group-hover:underline">
+                  <span className="text-sm font-sans font-bold tracking-[0.2em] uppercase underline-offset-4 group-hover:underline">
                     {isUpdating ? "Preparing Checkout..." : "Proceed to Checkout"}
                   </span>
                   <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />

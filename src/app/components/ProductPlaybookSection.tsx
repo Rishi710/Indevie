@@ -78,8 +78,8 @@ export default function ProductPlaybookSection() {
   return (
     <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden pl-10">
       <div className="max-w-[1500px] mx-auto">
-        <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-poppins font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
-          Our <span className=" font-serif font text-[#e3c895]">Product Playbook</span>
+        <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
+          Our <span className="font-inter font-bold italic text-[#e3c895]">Product Playbook</span>
         </h2>
 
         <div className="relative flex items-center">
@@ -106,10 +106,10 @@ export default function ProductPlaybookSection() {
                   className="snap-center shrink-0 w-[78%] sm:w-[46%] lg:w-[23%] border border-[#f5f1e6]/25 rounded-xl px-6 py-8 flex flex-col items-center text-center"
                 >
                   <Icon size={40} strokeWidth={1.25} className="text-[#e3c895] mb-5" />
-                  <h3 className="text-sm sm:text-base font-poppins font-bold uppercase tracking-wide text-[#f5f1e6] mb-3">
+                  <h3 className="text-sm sm:text-base font-inter font-bold uppercase tracking-wide text-[#f5f1e6] mb-3">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-sans text-[#f5f1e6]/70 leading-relaxed">
+                  <p className="text-xs sm:text-sm font-inter text-[#f5f1e6]/70 leading-relaxed">
                     {item.description}
                   </p>
                 </div>

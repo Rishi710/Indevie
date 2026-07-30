@@ -7,8 +7,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-poppins)"],
-        seasons: ["var(--font-seasons)"],
+        sans: ["var(--font-open-sans)"],
+        inter: ["var(--font-inter)"],
       },
       keyframes: {
         'fade-in-up': {

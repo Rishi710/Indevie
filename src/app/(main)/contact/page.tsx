@@ -75,7 +75,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-7xl font-serif text-white mb-4 drop-shadow-xl00">
+            <h1 className="text-4xl md:text-7xl font-inter text-white mb-4 drop-shadow-xl00">
               Connect With Us
             </h1>
             <p className="text-white/100 text-[10px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
@@ -98,11 +98,11 @@ export default function ContactPage() {
             className="space-y-6"
           >
             <div className="space-y-4">
-              <h3 className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#6c3518]/40 italic">Enquiries</h3>
-              <h2 className="text-4xl font-serif text-[#6c3518] leading-tight">
+              <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-bold text-[#6c3518]/40 italic">Enquiries</h3>
+              <h2 className="text-4xl font-inter text-[#6c3518] leading-tight">
                 Get in touch with <br /> Indevie beauty experts.
               </h2>
-              <p className="text-sm md:text-base font-serif text-[#6c3518] leading-relaxed max-w-md">
+              <p className="text-sm md:text-base font-inter text-[#6c3518] leading-relaxed max-w-md">
                 Whether you have a question about our products, need guidance on your skincare journey, or want to share your experience,we&apos;re here to listen.
               </p>
             </div>
@@ -112,40 +112,41 @@ export default function ContactPage() {
               <div className="flex items-center gap-6 group">
                 <FileText size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
-                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-serif-bold text-[#6c3518]/50s">Legal Name</h4>
-                  <a href="mailto:care@indevie.com" className="text-lg font-serif text-[#6c3518] hover:opacity-60 transition-opacity">InGoddess Private Limited</a>
+                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Legal Name</h4>
+                  <p className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">InGoddess Private Limited</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-6 group">
                 <Landmark size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
-                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-serif-bold text-[#6c3518]/50s">Trade Name</h4>
-                  <a href="mailto:care@indevie.com" className="text-lg font-serif text-[#6c3518] hover:opacity-60 transition-opacity">Indevie Beauty</a>
+                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Trade Name</h4>
+                  <p className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">Indevie Beauty</p>
+
                 </div>
               </div>
 
               <div className="flex items-center gap-6 group">
                 <Mail size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
-                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-serif-bold text-[#6c3518]/50s">Email</h4>
-                  <a href="mailto:care@indevie.com" className="text-lg font-serif text-[#6c3518] hover:opacity-60 transition-opacity">care@indevie.com</a>
+                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Email</h4>
+                  <a href="mailto:care@indevie.com" className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">care@indevie.com</a>
                 </div>
               </div>
 
               <div className="flex items-center gap-6 group">
                 <Phone size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
-                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-serif-bold text-[#6c3518]/50s">Phone</h4>
-                  <a href="tel:+919981300183" className="text-lg font-serif text-[#6c3518] hover:opacity-60 transition-opacity">+919981300183</a>
+                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Phone</h4>
+                  <a href="tel:+919981300183" className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">+919981300183</a>
                 </div>
               </div>
 
               <div className="flex items-center gap-6 group">
                 <MapPin size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
-                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-serif-bold text-[#6c3518]/50s">Head Office Location</h4>
-                  <p className="text-lg font-serif text-[#6c3518]">Plot 96, Indralok Colony, Sudama Nagar,<br /> Indore, Madhya Pradesh, India</p>
+                  <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Head Office Location</h4>
+                  <p className="text-lg font-inter text-[#6c3518]">Plot 96, Indralok Colony, Sudama Nagar,<br /> Indore, Madhya Pradesh, India</p>
                 </div>
               </div>
             </div>
@@ -176,7 +177,7 @@ export default function ContactPage() {
                       required
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-serif tracking-widest font-serif-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
+                      className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-inter-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
                     />
                     <input
                       type="email"
@@ -184,7 +185,7 @@ export default function ContactPage() {
                       required
                       value={formState.email}
                       onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                      className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-serif tracking-widest font-serif-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
+                      className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-inter-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
                     />
                   </div>
 
@@ -194,7 +195,7 @@ export default function ContactPage() {
                     required
                     value={formState.subject}
                     onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
-                    className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-serif tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
+                    className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
                   />
 
                   <textarea
@@ -203,17 +204,17 @@ export default function ContactPage() {
                     required
                     value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                    className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-serif tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70 resize-none"
+                    className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70 resize-none"
                   />
 
                   <div className="pt-4">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="group relative w-full h-[60px] bg-[#6c3518] font-serif text-[#f5f1e6] rounded-xl overflow-hidden transition-all hover:bg-[#5a2c14] disabled:bg-[#6c3518]/50"
+                      className="group relative w-full h-[60px] bg-[#6c3518] font-inter text-[#f5f1e6] rounded-xl overflow-hidden transition-all hover:bg-[#5a2c14] disabled:bg-[#6c3518]/50"
                     >
-                      <div className="flex items-center justify-center gap-3">
-                        <span className="text-[10px] uppercase tracking-[0.5em] font-popins-bold">
+                      <div className="flex items-center justify-center gap-3 font-inter font-bold">
+                        <span className="text-[10px] uppercase tracking-[0.5em] ">
                           {isSubmitting ? "Sending..." : "Send Message"}
                         </span>
                         {!isSubmitting && <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
@@ -231,13 +232,13 @@ export default function ContactPage() {
                   <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-2">
                     <CheckCircle2 size={48} className="text-[#22c55e]" strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-popins text-[#22c55e]">Form submitted successfully!</h3>
-                  <p className="text-sm md:text-base font-poppins text-[#6c3518] leading-relaxed max-w-sm">
+                  <h3 className="text-2xl md:text-3xl font-inter text-[#22c55e]">Form submitted successfully!</h3>
+                  <p className="text-sm md:text-base font-inter text-[#6c3518] leading-relaxed max-w-sm">
                     Thank you {submittedName}! The form has been submitted successfully.<br />We will reply to you soon!
                   </p>
                   <button
                     onClick={() => setIsSubmitted(false)}
-                    className="mt-8 text-sm font-popins-medium text-[#8b5cf6] hover:text-[#7c3aed] transition-colors"
+                    className="mt-8 text-sm font-inter-medium text-[#8b5cf6] hover:text-[#7c3aed] transition-colors"
                   >
                     Go back
                   </button>

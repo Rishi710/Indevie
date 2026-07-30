@@ -33,19 +33,19 @@ function FaqAccordionRow({ faqs }: { faqs: { question: string; answer: string }[
   if (faqs.length === 0) return null;
 
   return (
-    <div className="border border-black bg-transparent overflow-hidden">
+    <div className="border-2 border-black bg-transparent overflow-hidden">
       <button
         onClick={() => setIsOpen((v) => !v)}
         className="w-full flex items-center justify-between px-6 py-5 text-left"
       >
-        <span className="text-[17px] font-bold text-[#2a2a2a]">FAQs</span>
+        <span className="text-[17px] font-inter font-semibold text-[#2a2a2a]">FAQs</span>
         <ChevronDown
           size={20}
           className={`text-[#2a2a2a] shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
       {isOpen && (
-        <div className="px-6 pb-6 max-h-[320px] overflow-y-auto animate-in fade-in duration-200">
+        <div className="px-6 pb-6 max-h-[320px] font-inter overflow-y-auto animate-in fade-in duration-200">
           <div className="space-y-5">
             {faqs.map((faq, i) => (
               <div key={i}>
@@ -53,7 +53,7 @@ function FaqAccordionRow({ faqs }: { faqs: { question: string; answer: string }[
                   <span className="w-2 h-2 mt-1.5 rounded-sm bg-[#6c3518]/40 shrink-0" />
                   {faq.question}
                 </p>
-                <p className="text-[14px] text-gray-600 leading-relaxed mt-1.5 pl-[18px]">
+                <p className="text-[14px] font-inter text-gray-500 leading-relaxed mt-1.5 pl-[18px]">
                   {faq.answer}
                 </p>
               </div>
@@ -74,12 +74,12 @@ function RichTextAccordionRow({ title, html }: { title: string; html: string | n
   if (!safeHtml) return null;
 
   return (
-    <div className="border border-black bg-transparent overflow-hidden">
+    <div className="border-2 border-black bg-transparent overflow-hidden">
       <button
         onClick={() => setIsOpen((v) => !v)}
         className="w-full flex items-center justify-between px-6 py-5 text-left"
       >
-        <span className="text-[17px] font-bold text-[#2a2a2a]">{title}</span>
+        <span className="text-[20px] font-inter font-semibold text-[#2a2a2a]">{title}</span>
         <ChevronDown
           size={20}
           className={`text-[#2a2a2a] shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -87,7 +87,7 @@ function RichTextAccordionRow({ title, html }: { title: string; html: string | n
       </button>
       {isOpen && (
         <div
-          className="px-6 pb-6 text-[15px] text-[#2a2a2a] marker:text-[#6c3518] animate-in fade-in duration-200"
+          className="px-6 pb-6 text-[15px] font-inter font-semibold text-[#2a2a2a] marker:text-[#6c3518] animate-in fade-in duration-200"
           dangerouslySetInnerHTML={{ __html: safeHtml }}
         />
       )}
@@ -142,12 +142,12 @@ function ProductForAndSize({ product }: { product: ShopifyProduct }) {
   return (
     <div className="flex flex-col gap-3 mb-6">
       {concerns.length > 0 && (
-        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px]">
-          <span className="font-semibold text-[#2a2a2a]">For:</span>
+        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+          <span className="font-semibold font-inter text-[20px] text-[#2a2a2a]">For:</span>
           {concerns.map((concern, i) => (
-            <span key={concern} className="flex items-center gap-0.5 text-gray-600">
+            <span key={concern} className="flex font-inter-semibold text-[16px] items-center gap-0.4 text-gray-600">
               {concern}
-              <Check size={13} className="text-[#6c3518]" strokeWidth={3} />
+              <Check size={13} className="text-[#B40417] text-[20px]" strokeWidth={3} />
               {i < concerns.length - 1 && <span className="text-gray-300">,</span>}
             </span>
           ))}
@@ -155,9 +155,9 @@ function ProductForAndSize({ product }: { product: ShopifyProduct }) {
       )}
 
       {size && (
-        <div className="flex items-center gap-2.5 text-[13px]">
-          <span className="font-semibold text-[#2a2a2a]">Size:</span>
-          <span className="px-4 py-1.5 rounded-full border border-[#6c3518] bg-[#6c3518]/5 text-[#6c3518] font-medium text-[12px]">
+        <div className="flex items-center gap-2.5">
+          <span className="font-semibold text-[20px] text-[#2a2a2a]">Size:</span>
+          <span className="px-4 py-1.5 rounded-full border border-[#B40417]  bg-[#B40417]/5 text-[#B40417] font-medium text-[14px]">
             {size}
           </span>
         </div>
@@ -176,7 +176,7 @@ function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }
 
   return (
     <div className="mb-8 min-w-0">
-      <h3 className="text-[15px] font-bold text-[#2a2a2a] mb-4">Upgrade your routine</h3>
+      <h3 className="text-[20px] font-inter font-bold text-[#2a2a2a] mb-4">Upgrade your routine</h3>
       <div
         className="flex gap-4 overflow-x-auto pb-1 min-w-0 [&::-webkit-scrollbar]:hidden"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -204,13 +204,13 @@ function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }
               <div className="flex flex-col gap-1.5 min-w-0">
                 <Link
                   href={`/products/${p.handle}`}
-                  className="text-[13px] font-medium text-[#2a2a2a] leading-snug line-clamp-2 underline underline-offset-2"
+                  className="text-[14px] font-medium text-[#2a2a2a] leading-snug line-clamp-2 underline underline-offset-2"
                 >
                   {p.title}
                 </Link>
                 <div className="flex items-center gap-1.5">
                   {price && (
-                    <span className="text-[14px] font-bold text-[#2a2a2a]">
+                    <span className="text-[14px] font-semibold text-[#2a2a2a]">
                       ₹{Math.round(parseFloat(price.amount)).toLocaleString("en-IN")}
                     </span>
                   )}
@@ -223,7 +223,7 @@ function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }
                 <button
                   onClick={() => variant?.id && !isOutOfStock && addItem(variant.id, 1)}
                   disabled={isOutOfStock || isUpdating}
-                  className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider border border-[#6c3518] text-[#6c3518] hover:bg-[#6c3518] hover:text-white transition-colors disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-[#6c3518] w-fit"
+                  className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider border border-[#B40417] text-[#B40417] hover:bg-[#B40417] hover:text-white transition-colors disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-[#B40417] w-fit"
                 >
                   {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 </button>
@@ -317,13 +317,13 @@ export default function ProductPageClient({
   const sizeOption = (product.options || []).find(o => o.name.toLowerCase() === 'size');
 
   return (
-    <div className="w-full bg-[#f5f1e6] min-h-screen">
-      <div className="max-w-[1500px] mx-auto w-full relative hidden md:grid md:grid-cols-[1.4fr_1.2fr] gap-0 pt-42 pb-20">
+    <div className="w-full bg-[#ffffff] min-h-screen">
+      <div className="max-w-[1500px] mx-auto w-full relative hidden md:grid md:grid-cols-[1.3fr_1.2fr] gap-0 pt-42 pb-20">
 
         {/* Thumbnail rail + single large image — sticky so it stays pinned
             while the (usually taller) info column scrolls past it normally,
             releasing once the info column's content is exhausted. */}
-        <div className="pl-10 lg:pl-25 pr-2 flex gap-3 self-start sticky top-32">
+        <div className="pl-10 lg:pl-40 pr-2 flex gap-3 self-start sticky top-32">
           {images.length > 1 && (
             <div
               className="flex flex-col gap-2 w-25 shrink-0 self-start max-h-[578px] overflow-y-auto [&::-webkit-scrollbar]:hidden"
@@ -333,9 +333,8 @@ export default function ProductPageClient({
                 <button
                   key={idx}
                   onClick={() => setSelectedImageIndex(idx)}
-                  className={`w-full aspect-square shrink-0 relative rounded-md overflow-hidden bg-[#e5e5e5] transition-colors ${
-                    idx === selectedImageIndex ? "border-2 border-black" : "border border-black/20 hover:border-black/50"
-                  }`}
+                  className={`w-full aspect-square shrink-0 relative rounded-md overflow-hidden bg-[#e5e5e5] transition-colors ${idx === selectedImageIndex ? "border-2 border-black" : "border border-black/20 hover:border-black/50"
+                    }`}
                 >
                   <Image
                     src={img.url}
@@ -364,9 +363,9 @@ export default function ProductPageClient({
 
         {/* Column 3: Product Info — normal flow, scrolls with the page while
             the image column beside it stays sticky/pinned. */}
-        <div className="  py-8 px-4 pr-10 lg:pr-20 flex flex-col min-w-0">
+        <div className="  py-8 px-4 pr-10 lg:pr-40 flex flex-col min-w-0">
           <div className="flex justify-between items-start mb-2 mt-2">
-            <h1 className="text-[20px] lg:text-[22px] leading-tight font-medium text-[#6c3518] max-w-[85%]">
+            <h1 className="text-[20px] lg:text-[28px] leading-tight font-inter font-semibold text-black max-w-[85%]">
               {product.title}
             </h1>
             {/* <button aria-label="Save product" className="text-gray-400 hover:text-black transition-colors mt-2">
@@ -374,7 +373,7 @@ export default function ProductPageClient({
              </button> */}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center font-inter gap-3">
             <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
             {formattedComparePrice && (
               <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
@@ -387,7 +386,7 @@ export default function ProductPageClient({
           </div>
 
           {(safeDescriptionHtml || product.description) && (
-            <div className="text-[13px] text-gray-600 leading-relaxed prose prose-sm max-w-none">
+            <div className="text-[15px] font-inter text-black leading-relaxed prose prose-sm max-w-none">
               {safeDescriptionHtml ? (
                 <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
               ) : (
@@ -402,29 +401,29 @@ export default function ProductPageClient({
 
           {/* Quantity Selector */}
           <div className="flex flex-col gap-3 mb-8">
-            <span className="text-[11px] font-bold tracking-[0.15em] text-[#6c3518] uppercase">Quantity</span>
+            <span className="text-[11px] font-inter font-bold tracking-[0.15em] text-black uppercase">Quantity</span>
             <div className="flex items-center gap-4">
-              <div className="flex items-center w-32 border border-[#6c3518]/20 rounded-[4px] bg-white/50 backdrop-blur-sm">
+              <div className="flex items-center w-32 border border-black bg-white/50 backdrop-blur-sm">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors"
+                  className="w-10 h-10 flex items-center justify-center text-[#B40417]  hover:bg-[#B40417]/5 transition-colors"
                 >
                   −
                 </button>
-                <div className="flex-1 text-center text-sm font-medium text-[#6c3518]">
+                <div className="flex-1 text-center text-sm font-medium text-[#B40417]">
                   {quantity}
                 </div>
                 <button
                   onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
                   disabled={isOutOfStock || quantity >= maxQuantity}
-                  className="w-10 h-10 flex items-center justify-center text-[#6c3518] hover:bg-[#6c3518]/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                  className="w-10 h-10 flex items-center justify-center text-[#B40417]  hover:bg-[#B40417]/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                 >
                   +
                 </button>
               </div>
               <button
                 onClick={handleShare}
-                className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-[#6c3518]/20 hover:bg-[#6c3518]/5 transition-colors h-10 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-[4px] text-[#6c3518]"
+                className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-black hover:bg-[#B40417]/5 transition-colors h-10 flex items-center justify-center bg-white/50 backdrop-blur-sm text-[#B40417]"
               >
                 Share
               </button>
@@ -436,7 +435,7 @@ export default function ProductPageClient({
             {isOutOfStock ? (
               <button
                 disabled
-                className="w-full bg-gray-100 border border-gray-200 text-gray-400 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase font-poppins cursor-not-allowed"
+                className="w-full bg-gray-100 border border-gray-200 text-gray-400 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase font-inter cursor-not-allowed"
               >
                 OUT OF STOCK
               </button>
@@ -444,13 +443,13 @@ export default function ProductPageClient({
               <>
                 <button
                   onClick={() => variantId && addItem(variantId, quantity)}
-                  className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
+                  className="w-full bg-[#B40417] border border-[#B40417] text-white py-4 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417]/80 hover:text-white transition-all duration-300 font-inter shadow-sm"
                 >
-                  ADD TO BAG
+                  ADD TO CART
                 </button>
                 <button
                   onClick={handleBuyNow}
-                  className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
+                  className="w-full bg-white border border-[#B40417] text-[#B40417]  py-4 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-all duration-500 font-inter shadow-xl shadow-[#B40417]/10"
                 >
                   BUY NOW
                 </button>
@@ -507,13 +506,13 @@ export default function ProductPageClient({
 
         <div className="flex flex-col mb-2">
           <div className="flex justify-between items-start">
-            <h1 className="text-[26px] leading-tight font-medium text-[#2a2a2a] max-w-[85%]">{product.title}</h1>
+            <h1 className="text-[26px] leading-tight font-inter font-medium text-black max-w-[85%]">{product.title}</h1>
             {/* <button aria-label="Save product" className="text-gray-400 hover:text-black transition-colors mt-2">
                <Bookmark size={24} />
              </button> */}
           </div>
           <div className="flex items-center gap-3 mt-2 mb-1">
-            <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
+            <p className="text-[22px] text-black">{formattedPrice}</p>
             {formattedComparePrice && (
               <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
             )}
@@ -523,7 +522,7 @@ export default function ProductPageClient({
         </div>
 
         {(safeDescriptionHtml || product.description) && (
-          <div className="text-[13px] text-gray-600 leading-relaxed prose prose-sm max-w-none">
+          <div className="text-[13px] text-black leading-relaxed prose prose-sm max-w-none">
             {safeDescriptionHtml ? (
               <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
             ) : (
@@ -540,27 +539,27 @@ export default function ProductPageClient({
         <div className="flex flex-col gap-1 mb-2">
           <span className="text-[11px] font-bold tracking-[0.15em] text-black uppercase">Quantity</span>
           <div className="flex items-center gap-4">
-            <div className="flex items-center w-32 border border-[#e5e5e5] rounded-[8px] bg-white">
+            <div className="flex items-center w-32 border border-black bg-white">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-12 h-12 flex items-center justify-center text-[#2a2a2a]"
+                className="w-12 h-12 flex items-center justify-center text-black"
               >
                 −
               </button>
-              <div className="flex-1 text-center font-medium text-[#2a2a2a]">
+              <div className="flex-1 text-center font-medium text-[#B40417]">
                 {quantity}
               </div>
               <button
                 onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
                 disabled={isOutOfStock || quantity >= maxQuantity}
-                className="w-12 h-12 flex items-center justify-center text-[#2a2a2a] disabled:opacity-30"
+                className="w-12 h-12 flex items-center justify-center text-black disabled:opacity-30"
               >
                 +
               </button>
             </div>
             <button
               onClick={handleShare}
-              className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-[#e5e5e5] hover:bg-gray-50 transition-colors h-12 flex items-center justify-center bg-white rounded-[8px] text-[#2a2a2a]"
+              className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-black hover:bg-black/20 hover:text-white transition-colors h-12 flex items-center justify-center text-black"
             >
               Share
             </button>
@@ -571,7 +570,7 @@ export default function ProductPageClient({
           {isOutOfStock ? (
             <button
               disabled
-              className="w-full bg-gray-100 border border-gray-200 text-gray-400 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase font-poppins cursor-not-allowed"
+              className="w-full bg-gray-100 border border-gray-200 text-gray-400 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase font-inter cursor-not-allowed"
             >
               OUT OF STOCK
             </button>
@@ -579,13 +578,13 @@ export default function ProductPageClient({
             <>
               <button
                 onClick={() => variantId && addItem(variantId, quantity)}
-                className="w-full bg-white border border-[#6c3518]/20 rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black hover:text-white transition-all duration-300 font-poppins shadow-sm"
+                className="w-full bg-[#B40417] border border-[#B40417]/20 text-white py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-white hover:text-[#B40417] transition-all duration-300 font-inter shadow-sm"
               >
-                ADD TO BAG
+                ADD TO CART
               </button>
               <button
                 onClick={handleBuyNow}
-                className="w-full bg-[#6c3518] text-white rounded-[8px] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-all duration-500 font-poppins shadow-xl shadow-[#6c3518]/10"
+                className="w-full bg-white border border-[#B40417]/20 text-[#B40417] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-all duration-500 font-inter shadow-xl shadow-[#B40417]/10"
               >
                 BUY NOW
               </button>
@@ -612,7 +611,7 @@ export default function ProductPageClient({
       {relatedProducts.length > 0 && (
         <section className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16 py-20 border-t border-[#e5e5e5]/30">
           <div className="flex flex-col items-center mb-2">
-            <h2 className="text-3xl md:text-4xl font-serif text-[#6c3518] italic mb-12">Complete Your Ritual</h2>
+            <h2 className="text-3xl md:text-4xl font-inter text-[#6c3518] italic mb-12">Complete Your Ritual</h2>
             <div className="w-24 h-[1px] bg-[#6c3518]/20"></div>
           </div>
 

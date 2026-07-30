@@ -24,7 +24,7 @@ export default function FaqAccordion({ categories }: { categories: FaqCategory[]
     <div className="w-full max-w-4xl mx-auto space-y-20 relative z-10">
       {categories.map((category, catIdx) => (
         <div key={catIdx} className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-serif text-gray-900 tracking-wide pb-2">
+          <h2 className="text-2xl md:text-3xl font-inter text-gray-900 tracking-wide pb-2">
             {category.title}
           </h2>
           <div className="border-t border-gray-200">

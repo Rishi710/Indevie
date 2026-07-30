@@ -147,7 +147,7 @@ export default function Header({
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
-                  <span className={`text-[11px] font-poppins font-bold tracking-[0.2em] uppercase transition-colors ${shouldBeSolid ? "text-[#6c3518]" : "text-white"
+                  <span className={`text-[11px] font-inter font-bold tracking-[0.2em] uppercase transition-colors ${shouldBeSolid ? "text-[#6c3518]" : "text-white"
                     }`}>
                     {isLoggedIn ? `${userName || "User"}` : "Login"}
                   </span>
@@ -265,7 +265,7 @@ export default function Header({
                 >
                   <span className="relative inline-block">
                     <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-serif text-gray-900">Favourites</span>
+                    <span className="relative text-3xl font-inter text-gray-900">Favourites</span>
                   </span>
                   <motion.svg
                     animate={{ rotate: isFavouritesOpen ? 180 : 0 }}
@@ -290,7 +290,7 @@ export default function Header({
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]"
+                          className="text-lg font-inter text-gray-600 hover:text-[#6c3518]"
                         >
                           {link.name}
                         </Link>
@@ -308,7 +308,7 @@ export default function Header({
                 >
                   <span className="relative inline-block">
                     <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-serif text-gray-900">Collections</span>
+                    <span className="relative text-3xl font-inter text-gray-900">Collections</span>
                   </span>
                   <motion.svg
                     animate={{ rotate: isCollectionsOpen ? 180 : 0 }}
@@ -333,7 +333,7 @@ export default function Header({
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="text-lg font-poppins text-gray-600 hover:text-[#6c3518]"
+                          className="text-lg font-inter text-gray-600 hover:text-[#6c3518]"
                         >
                           {link.name}
                         </Link>
@@ -353,7 +353,7 @@ export default function Header({
                 >
                   <Link
                     href={link.href}
-                    className="text-3xl font-serif text-gray-900 hover:text-[#6c3518] transition-colors"
+                    className="text-3xl font-inter text-gray-900 hover:text-[#6c3518] transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -380,17 +380,17 @@ export default function Header({
                       </svg>
                     </div>
                     <div>
-                      <p className="text-[10px] font-poppins font-bold tracking-widest text-gray-400 uppercase">
+                      <p className="text-[10px] font-inter font-bold tracking-widest text-gray-400 uppercase">
                         Welcome to Indevie
                       </p>
-                      <p className="text-xl font-poppins font-medium text-[#6c3518]">
+                      <p className="text-xl font-inter font-medium text-[#6c3518]">
                         Login / Register
                       </p>
                     </div>
                   </Link>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4 text-gray-900 font-poppins">
+                    <div className="flex items-center gap-4 text-gray-900 font-inter">
                       <div className="w-12 h-12 bg-[#f5f1e6] rounded-full flex items-center justify-center text-[#6c3518]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />

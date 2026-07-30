@@ -59,12 +59,12 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
     <section className="py-10 md:py-10 px-4 sm:px-10 md:px-20 lg:px-20 bg-[#f5f1e6] overflow-hidden">
       <div className="max-w-[1500px] mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5 mt-4 md:mt-12">
-          {/* <h2 className="text-3xl md:text-4xl text-red-800 pt-14 font-serif">
+          {/* <h2 className="text-3xl md:text-4xl text-red-800 pt-14 font-inter">
             <span className="font-semibold italic">
               Channel your Inner Devi
             </span>
           </h2> */}
-          <h2 className="text-4xl md:text-6xl text-black font-poppins uppercase">
+          <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
             The <span className="font-semibold italic">
               Crowd Favourites</span>
           </h2>
@@ -80,12 +80,12 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
           ))}
         </div>
 
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center font-inter mt-10">
           <a
             href="/shop"
-            className="inline-block text-[14px] font-bold tracking-[0.3em] uppercase text-[#6c3518] border border-[#6c3518]/30 px-8 py-3 rounded-full hover:bg-[#6c3518] hover:text-white transition-all duration-300"
+            className="inline-block text-[14px] font-bold tracking-[0.1em] uppercase text-[#6c3518] border border-[#6c3518]/30 px-8 py-3 hover:bg-[#6c3518] hover:text-white transition-all duration-300"
           >
-            View All Products
+            Explore All
           </a>
         </div>
       </div>

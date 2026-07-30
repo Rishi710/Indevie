@@ -107,7 +107,7 @@ const UgcVideoCard = ({
     if (!video) return;
 
     if (shouldPlay) {
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     } else {
       video.pause();
     }
@@ -162,10 +162,10 @@ const UgcVideoCard = ({
           of quote length, so longer testimonials never crowd the video. */}
       <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
       <div className="absolute top-4 sm:top-6 left-3 sm:left-5 right-11 sm:right-14">
-        <p className="text-white font-poppins font-semibold text-[12px] sm:text-[15px] drop-shadow-md leading-snug line-clamp-3">
+        <p className="text-white font-inter font-semibold text-[12px] sm:text-[15px] drop-shadow-md leading-snug line-clamp-3">
           "{data.quote}"
         </p>
-        <p className="text-white/90 text-[10px] sm:text-xs mt-1 sm:mt-2 drop-shadow-md font-medium truncate">
+        <p className="text-white/90 font-inter text-[10px] sm:text-xs mt-1 sm:mt-2 drop-shadow-md font-medium truncate">
           — {data.name}, {data.age} · {data.location}
         </p>
       </div>
@@ -184,18 +184,18 @@ const UgcVideoCard = ({
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#e8decb] shrink-0 animate-pulse" />
           )}
           <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
-            <span className="text-[9px] sm:text-[11px] font-poppins font-bold text-amber-500 tracking-wide">★★★★★</span>
-            <span className="text-xs sm:text-sm font-poppins font-semibold text-[#1a1a1a] truncate leading-tight">
+            <span className="text-[9px] sm:text-[11px] font-iner font-bold text-amber-500 tracking-wide">★★★★★</span>
+            <span className="text-xs sm:text-sm font-inter font-semibold text-[#1a1a1a] truncate leading-tight">
               {product?.title || "Indevie Product"}
             </span>
             <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
               {productPrice && (
-                <span className="text-[10px] sm:text-[11px] text-[#1a1a1a] font-bold font-poppins">
+                <span className="text-[10px] sm:text-[11px] text-[#1a1a1a] font-bold font-inter">
                   ₹{Math.round(productPrice)}
                 </span>
               )}
               {productCompareAtPrice && parseFloat(productCompareAtPrice) > parseFloat(productPrice || "0") && (
-                <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium font-poppins line-through">
+                <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium font-inter line-through">
                   ₹{Math.round(parseFloat(productCompareAtPrice))}
                 </span>
               )}
@@ -284,7 +284,7 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
         <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
           Hear it from our
         </span>
-        <h2 className="text-4xl md:text-5xl text-[#6c3518] font-serif font-bold">
+        <h2 className="text-4xl md:text-5xl text-[#6c3518] font-inter font-bold">
           Power Devis
         </h2>
         <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">

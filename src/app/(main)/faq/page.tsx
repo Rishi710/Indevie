@@ -62,7 +62,7 @@ export default function FaqPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#f5f1e6] relative overflow-hidden font-poppins">
+    <main className="min-h-screen bg-[#f5f1e6] relative overflow-hidden font-sans">
       {/* --- Aesthetic Background Elements --- */}
       <div 
         className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" 
@@ -77,7 +77,7 @@ export default function FaqPage() {
            <Image src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2821_2_1.webp?v=1777466276" alt="FAQ Background" fill className="object-cover object-top" priority />
         </div>
         <div className="relative z-10 text-center px-6 max-w-4xl">
-          <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-inter text-white mb-6 leading-tight drop-shadow-lg">
             Frequently Asked<br/>
             <span className="italic text-[#d0ba96]">Questions</span>
           </h1>
@@ -95,7 +95,7 @@ export default function FaqPage() {
         
         {/* --- Support CTA --- */}
         <div className="mt-24 text-center max-w-xl mx-auto border-t border-gray-200 pt-16">
-          <h3 className="text-2xl font-serif text-gray-900 mb-4 tracking-wide">Still have questions?</h3>
+          <h3 className="text-2xl font-inter text-gray-900 mb-4 tracking-wide">Still have questions?</h3>
           <p className="text-gray-600 font-light mb-8">
             Our team is here to help you find the perfect ritual for your skin.
           </p>

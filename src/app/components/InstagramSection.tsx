@@ -83,7 +83,7 @@ export default function InstagramSection() {
               {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
                 See Our Crazy Side On
               </span> */}
-              <h2 className="text-3xl md:text-5xl uppercase font-medium italic">
+              <h2 className="text-3xl md:text-5xl font-inter uppercase font-medium italic">
                 On the #gram
               </h2>
             </div>

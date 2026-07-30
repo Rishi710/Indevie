@@ -46,7 +46,7 @@ export default function HomeBlogCard({ post, index }: HomeBlogCardProps) {
         </div>
         
         <div className="flex flex-col mt-5 space-y-3 px-1">
-          <h3 className="text-xl md:text-2xl font-serif text-gray-900 leading-tight group-hover:text-red-900 transition-colors line-clamp-2">
+          <h3 className="text-xl md:text-2xl font-inter text-gray-900 leading-tight group-hover:text-red-900 transition-colors line-clamp-2">
             {post.title}
           </h3>
           

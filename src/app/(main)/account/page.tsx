@@ -32,12 +32,12 @@ export default async function AccountPage() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <span className="w-12 h-[1px] bg-[#fcfaf6]"></span>
-                <span className="text-[10px] font-bold text-[#fcfaf6] uppercase tracking-[0.4em]">Welcome to your Dashboard</span>
+                <span className="text-[10px] font-inter font-bold text-[#fcfaf6] uppercase tracking-[0.4em]">Welcome to your Dashboard</span>
               </div>
-              <h1 className="text-4xl lg:text-7xl font-poppins text-[#fcfaf6] italic ">
+              <h1 className="text-4xl lg:text-7xl font-inter text-[#fcfaf6] italic ">
                 Hello, {customer.firstName || "Indevie User"}
               </h1>
-              {/* <p className="text-gray-500 font-light font-poppins tracking-wide text-sm mt-4 max-w-md leading-relaxed">
+              {/* <p className="text-gray-500 font-light font-inter tracking-wide text-sm mt-4 max-w-md leading-relaxed">
                 This is your little corner of Indevie, where everything is just for you. Check in on your orders, update your details, or simply pick up right where you left off in your skincare journey.
               </p> */}
             </div>

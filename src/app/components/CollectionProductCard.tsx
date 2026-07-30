@@ -56,7 +56,7 @@ export default function CollectionProductCard({ product, priority = false }: Col
 
   // Extract badges & banners from tags, or use smart fallbacks
   const tags = product.tags || [];
-  
+
   // 1. Badge matching
   let badgeText = "";
   const customBadgeTag = tags.find(t => t.toLowerCase().startsWith("badge:"));
@@ -140,10 +140,10 @@ export default function CollectionProductCard({ product, priority = false }: Col
 
   return (
     <div className="flex flex-col h-full bg-white border border-black rounded-[4px] overflow-hidden group shadow-sm hover:shadow-md transition-shadow">
-      
+
       {/* Image & Badge Wrapper */}
       <Link href={`/products/${product.handle}`} className="relative block aspect-square bg-[#fafafa] overflow-hidden shrink-0">
-        
+
 
 
         {/* Product image */}
@@ -165,24 +165,24 @@ export default function CollectionProductCard({ product, priority = false }: Col
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[8px] font-poppins font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
+        <div className="bg-black text-white text-[8px] font-inter font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
           {bannerText}
         </div>
       )}
 
       {/* Info Container */}
       <div className="flex flex-col flex-1 p-3.5 justify-between gap-3">
-        
+
         {/* Title & Subtitle */}
         <div className="space-y-1.5">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-sm font-poppins font-bold text-gray-900 group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-sm font-inter font-bold text-gray-900 group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
               {product.title}
             </h3>
           </Link>
-          
+
           {subtitle && (
-            <p className="text-[11px] font-poppins text-gray-500 line-clamp-1 italic font-light">
+            <p className="text-[11px] font-inter text-gray-500 line-clamp-1 italic font-light">
               {subtitle}
             </p>
           )}
@@ -191,7 +191,7 @@ export default function CollectionProductCard({ product, priority = false }: Col
         {/* Rating & Pricing Row */}
         <div className="flex items-center justify-between gap-2 mt-1 shrink-0">
           {/* Left: Star Rating */}
-          <div className="flex items-center gap-1 text-[11px] font-poppins text-gray-800 font-medium shrink-0">
+          <div className="flex items-center gap-1 text-[11px] font-inter text-gray-800 font-medium shrink-0">
             <span className="text-black text-xs leading-none">★</span>
             <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
             <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
@@ -204,7 +204,7 @@ export default function CollectionProductCard({ product, priority = false }: Col
                 {formattedComparePrice}
               </span>
             )}
-            <span className="text-xs sm:text-sm font-poppins font-bold text-[#6c3518]">
+            <span className="text-xs sm:text-sm font-inter font-bold text-[#6c3518]">
               {formattedPrice}
             </span>
           </div>
@@ -225,7 +225,7 @@ export default function CollectionProductCard({ product, priority = false }: Col
                 >
                   <Minus size={13} className="text-[#6c3518]" />
                 </button>
-                <span className="font-poppins font-bold text-xs text-[#6c3518] w-8 text-center select-none">
+                <span className="font-inter font-bold text-xs text-[#6c3518] w-8 text-center select-none">
                   {quantityInCart}
                 </span>
                 <button
@@ -241,7 +241,7 @@ export default function CollectionProductCard({ product, priority = false }: Col
               <button
                 onClick={handleAddToCart}
                 disabled={isUpdating}
-                className="w-full h-[38px] flex items-center justify-center gap-1.5 bg-[#6c3518] hover:bg-black active:bg-black text-white font-poppins font-bold text-[10px] tracking-[0.15em] uppercase border border-[#6c3518] rounded-[4px] transition-colors disabled:opacity-50"
+                className="w-full h-[38px] flex items-center justify-center gap-1.5 bg-[#6c3518] hover:bg-black active:bg-black text-white font-inter font-bold text-[10px] tracking-[0.15em] uppercase border border-[#6c3518] rounded-[4px] transition-colors disabled:opacity-50"
               >
                 <ShoppingBag size={13} className="text-white shrink-0" />
                 Add To Cart
