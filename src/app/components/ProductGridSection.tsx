@@ -1,5 +1,5 @@
 import { fetchProducts } from "@/lib/shopify";
-import ProductCard from "./ProductCard";
+import ProductSlider from "./ProductSlider";
 
 function getCategoryRank(title: string, handle: string): number {
   const t = title.toLowerCase();
@@ -72,13 +72,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
             You can&apos;t get enough of</span> */}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 px-0">
-          {products.slice(0, 5).map((product, idx) => (
-            <div key={product.id} className={idx >= 4 ? "hidden lg:block h-full" : "h-full"}>
-              <ProductCard product={product} priority={idx === 0} />
-            </div>
-          ))}
-        </div>
+        <ProductSlider products={products.slice(0, 5)} />
 
         <div className="flex justify-center font-inter mt-10">
           <a

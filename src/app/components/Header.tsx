@@ -121,7 +121,7 @@ export default function Header({
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-[13px] font-medium transition-all uppercase tracking-widest relative group ${shouldBeSolid ? "text-gray-800 hover:text-black" : "text-white/90 hover:text-white"
+                  className={`text-[14px] font-inter font-medium transition-all uppercase tracking-widest relative group ${shouldBeSolid ? "text-gray-800 hover:text-black" : "text-white/90 hover:text-white"
                     }`}
                 >
                   {link.name}

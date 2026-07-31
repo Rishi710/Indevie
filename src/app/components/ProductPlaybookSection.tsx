@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Droplet, FlaskConical, HeartHandshake, Leaf, Lightbulb, Recycle, ShieldCheck, Sun, LucideIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Droplet, HeartHandshake, Leaf, Lightbulb, Recycle, ShieldCheck, Sun, LucideIcon } from "lucide-react";
 
 interface PlaybookItem {
   icon: LucideIcon;
@@ -44,7 +44,7 @@ const PLAYBOOK_ITEMS: PlaybookItem[] = [
   {
     icon: HeartHandshake,
     title: "Community Approved",
-    description: "Real rituals, real results — loved and reviewed by the Indévie community.",
+    description: "Real rituals, real results loved and reviewed by the Indévie community.",
   },
   {
     icon: Recycle,
@@ -56,7 +56,7 @@ const PLAYBOOK_ITEMS: PlaybookItem[] = [
 export default function ProductPlaybookSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
@@ -67,49 +67,60 @@ export default function ProductPlaybookSection() {
 
   useEffect(() => {
     updateScrollState();
+    const el = scrollRef.current;
+    el?.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("resize", updateScrollState);
-    return () => window.removeEventListener("resize", updateScrollState);
+    return () => {
+      el?.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
   }, [updateScrollState]);
 
-  const scrollBy = (delta: number) => {
-    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
+  const doScroll = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // scroll by one card width
+    const cardWidth = el.firstElementChild?.clientWidth || 300;
+    el.scrollBy({ left: direction === "left" ? -(cardWidth + 12) : cardWidth + 12, behavior: "smooth" });
   };
 
   return (
-    <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-16 overflow-hidden pl-10">
+    <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-56 overflow-hidden">
       <div className="max-w-[1500px] mx-auto">
         <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
           Our <span className="font-inter font-bold italic text-[#e3c895]">Product Playbook</span>
         </h2>
 
-        <div className="relative flex items-center">
-          {/* Left arrow — visible on all screen sizes, hidden when already at the start */}
+        {/* Outer wrapper — relative so absolute arrows can position against it */}
+        <div className="relative">
+          {/* Left arrow — tablet & desktop only */}
           <button
-            onClick={() => scrollBy(-320)}
+            onClick={() => doScroll("left")}
             aria-label="Scroll playbook left"
-            className={`flex shrink-0 w-9 h-9 sm:w-10 sm:h-10 mr-2 sm:mr-4 items-center justify-center rounded-full border border-[#f5f1e6]/25 text-[#f5f1e6] transition-opacity hover:bg-[#f5f1e6]/10 ${canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
+            className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full border border-[#f5f1e6]/25 text-[#f5f1e6] hover:bg-[#f5f1e6]/10 transition-all"
+            style={{ opacity: canScrollLeft ? 1 : 0.2, pointerEvents: canScrollLeft ? "auto" : "none" }}
           >
             <ChevronLeft size={18} />
           </button>
 
+          {/* Scroll track — flex on ALL sizes (slider everywhere, no grid) */}
           <div
             ref={scrollRef}
-            onScroll={updateScrollState}
-            className="flex-1 min-w-0 flex gap-4 md:gap-6 overflow-x-auto overscroll-x-contain snap-x snap-mandatory [&::-webkit-scrollbar]:hidden px-1 py-1"
+            className="flex gap-3 md:gap-5 overflow-x-auto overscroll-x-contain snap-x snap-mandatory"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {PLAYBOOK_ITEMS.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className="snap-center shrink-0 w-[78%] sm:w-[46%] lg:w-[23%] border border-[#f5f1e6]/25 rounded-xl px-6 py-8 flex flex-col items-center text-center"
+                  className="snap-start shrink-0 border border-[#f5f1e6]/25 rounded-sm px-4 py-7 flex flex-col items-center text-center w-[65%] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)]"
                 >
-                  <Icon size={40} strokeWidth={1.25} className="text-[#e3c895] mb-5" />
-                  <h3 className="text-sm sm:text-base font-inter font-bold uppercase tracking-wide text-[#f5f1e6] mb-3">
+                  <Icon size={36} strokeWidth={1.25} className="text-[#e3c895] mb-5" />
+                  <h3 className="text-xs sm:text-sm font-inter font-bold uppercase tracking-wide text-[#f5f1e6] mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-inter text-[#f5f1e6]/70 leading-relaxed">
+                  <p className="text-[11px] sm:text-xs font-inter text-[#f5f1e6]/70 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -117,12 +128,12 @@ export default function ProductPlaybookSection() {
             })}
           </div>
 
-          {/* Right arrow — visible on all screen sizes, hidden when already at the end */}
+          {/* Right arrow — tablet & desktop only */}
           <button
-            onClick={() => scrollBy(320)}
+            onClick={() => doScroll("right")}
             aria-label="Scroll playbook right"
-            className={`flex shrink-0 w-9 h-9 sm:w-10 sm:h-10 ml-2 sm:ml-4 items-center justify-center rounded-full border border-[#f5f1e6]/25 text-[#f5f1e6] transition-opacity hover:bg-[#f5f1e6]/10 ${canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
+            className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full border border-[#f5f1e6]/25 text-[#f5f1e6] hover:bg-[#f5f1e6]/10 transition-all"
+            style={{ opacity: canScrollRight ? 1 : 0.2, pointerEvents: canScrollRight ? "auto" : "none" }}
           >
             <ChevronRight size={18} />
           </button>

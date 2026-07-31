@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   motion,
   AnimatePresence,
@@ -18,7 +18,7 @@ const slides = [
     title: "Rub Away The Stress",
     subtitle: "Heavy Head? Find instant relief",
     cta: "SHOP CALM BALM",
-    link: "products/indevie-calm-balm",
+    link: "/products/indevie-calm-balm",
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const slides = [
     title: "Feed Your Skin",
     subtitle: "Glow Maalish Oil is skin food",
     cta: "SHOP GLOW OIL",
-    link: "products/indevie-glow-maalish-oil",
+    link: "/products/indevie-glow-maalish-oil",
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const slides = [
     title: "Indulgence in Every Drop",
     subtitle: "A body lotion inspired by Dessert",
     cta: "SHOP LOTION",
-    link: "products/indevie-kalakand-body-lotion",
+    link: "/products/indevie-kalakand-body-lotion",
   },
 ];
 
@@ -66,9 +66,9 @@ export default function HeroSlider() {
   // We only have 3 slides, so we wrap the index
   const index = ((page % slides.length) + slides.length) % slides.length;
 
-  const paginate = (newDirection: number) => {
-    setPage([page + newDirection, newDirection]);
-  };
+  const paginate = useCallback((newDirection: number) => {
+    setPage(([prevPage]) => [prevPage + newDirection, newDirection]);
+  }, []);
 
   // ✅ PRELOAD IMAGES (fix flicker)
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function HeroSlider() {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [page]); // Restart timer on page change
+  }, [page, paginate]); // Restart timer on page change
 
   // ✅ SCROLL PARALLAX
   const { scrollY } = useScroll();
@@ -94,6 +94,9 @@ export default function HeroSlider() {
   // ✅ MOUSE PARALLAX
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+
+  const contentX = useTransform(mouseX, (v) => -v * 0.3);
+  const contentY = useTransform(mouseY, (v) => -v * 0.3);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const { innerWidth, innerHeight } = window;
@@ -160,8 +163,8 @@ export default function HeroSlider() {
           {/* 🔥 CONTENT */}
           <motion.div
             style={{
-              x: useTransform(mouseX, (v) => -v * 0.3),
-              y: useTransform(mouseY, (v) => -v * 0.3),
+              x: contentX,
+              y: contentY,
             }}
             className="relative h-full flex flex-col justify-center items-center text-center px-6"
           >
@@ -196,8 +199,10 @@ export default function HeroSlider() {
       {/* DOT NAVIGATION */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
         {slides.map((_, i) => (
-          <div
+          <button
             key={i}
+            type="button"
+            aria-label={`Go to slide ${i + 1}`}
             onClick={() => {
               const diff = i - index;
               if (diff !== 0) {
