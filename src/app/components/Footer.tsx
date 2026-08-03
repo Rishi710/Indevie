@@ -219,7 +219,7 @@ const Footer = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-8 lg:gap-8 mb-24">
 
             {/* COLUMN 1: IDENTITY */}
-            <div className="col-span-2 font-inter sm:col-span-1 space-y-10">
+            <div className="col-span-2 font-inter sm:col-span-1 space-y-10 text-center">
               <Link href="/" className="inline-block relative w-44 h-20 group overflow-hidden">
                 <Image
                   src="/images/logo.png"
@@ -230,10 +230,16 @@ const Footer = () => {
                   priority
                 />
               </Link>
-              <p className="text-[14px] font-light leading-relaxed text-[#ffffff] max-w-[280px] tracking-wide">
+              {/* <p className="text-[14px] font-light leading-relaxed text-[#ffffff] max-w-[280px] tracking-wide">
                 Botanical treasures handcrafted with ancient wisdom to nurture your modern radiance, naturally.
-              </p>
-              <div className="flex items-center gap-3 opacity-70 pt-4">
+              </p> */}
+
+              <h2 className="text-2xl md:text-3xl text-[#ffffff] font-inter uppercase text-center">
+                <span className="font-semibold italic">
+                  Genurveda™ <br /> <span className="absolute bottom-1 h-3 -z-20" />
+                  Ayurveda for Gen Next</span>
+              </h2>
+              <div className="flex items-center justify-center gap-3 opacity-70 pt-4">
                 <MapPin size={10} strokeWidth={2.5} />
                 <span className="text-[14px] uppercase tracking-[0.4em] font-bold">Indore, India</span>
               </div>
@@ -241,11 +247,11 @@ const Footer = () => {
 
             {/* COLUMN 2: EXPLORE */}
             <div className="space-y-10 lg:pl-12">
-              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white italic">Explore</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-semibold text-white italic">Explore</h4>
               <ul className="space-y-5">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#ffffff]/90 hover:text-white transition-colors">
+                    <Link href={link.href} className="group flex item-center justify-start gap-4 text-[14px] font-light tracking-wide text-[#ffffff]/90 hover:text-white transition-colors">
                       <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
                       <span>{link.name}</span>
                     </Link>
@@ -256,11 +262,11 @@ const Footer = () => {
 
             {/* COLUMN 3: SERVICES */}
             <div className="space-y-10">
-              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white italic">Services</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-semibold text-white italic">Services</h4>
               <ul className="space-y-5">
                 {supportLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#ffffff]/90 hover:text-white transition-colors">
+                    <Link href={link.href} className="group flex items-center justify-start gap-4 text-[14px] font-light tracking-wide text-[#ffffff]/90 hover:text-white transition-colors">
                       <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
                       <span>{link.name}</span>
                     </Link>
@@ -271,7 +277,7 @@ const Footer = () => {
 
             {/* COLUMN 4: CONNECT */}
             <div className="col-span-2 sm:col-span-1 space-y-10">
-              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white italic">Connect</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-semibold text-white italic text-center">Connect</h4>
               <div className="space-y-8">
                 <div className="space-y-4">
 
@@ -290,7 +296,7 @@ const Footer = () => {
                 </div>
 
                 {/* Sophisticated Socials with Magnetic Pull */}
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-4 pt-4 items-center justify-center">
                   {socialIcons.map(({ SVG, href, label }) => (
                     <Magnetic key={label}>
                       <Link
@@ -334,7 +340,7 @@ const Footer = () => {
         {/* 🎭 GIANT PARALLAX SIGNATURE (Reveal on Scroll) */}
         <motion.div
           initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 0.03, y: 20 }}
+          whileInView={{ opacity: 0.40, y: 20 }}
           viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute -bottom-[1vw] left-0 w-full select-none pointer-events-none text-center"

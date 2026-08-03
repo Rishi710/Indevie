@@ -21,11 +21,13 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
 
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 gap-3">
-          {/* <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
-            Indevie Journals
-          </span> */}
-          <h2 className="text-3xl md:text-4xl uppercase lg:text-5xl text-black font-inter">
+          {/* <h2 className="text-3xl md:text-4xl uppercase lg:text-5xl text-black font-inter">
             Indevie <span className="font-semibold italic"> Journals</span>
+          </h2> */}
+          <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+            Indevie <span className="font-semibold italic">
+              <span className="absolute bottom-1 h-3 bg-[#e9c46a]/50" />
+              Journals</span>
           </h2>
         </div>
 

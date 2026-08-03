@@ -85,11 +85,19 @@ export default function ProductPlaybookSection() {
   };
 
   return (
-    <section className="relative bg-[#B40417] py-16 md:py-16 px-4 sm:px-8 lg:px-56 overflow-hidden">
+    <section className="relative bg-[#B40417] py-8 md:py-8 px-4 sm:px-8 lg:px-56 overflow-hidden">
       <div className="max-w-[1500px] mx-auto">
-        <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-16">
+        <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5 mt-4 md:mt-12">
+          <h2 className="text-4xl md:text-5xl text-white font-inter uppercase">
+            Our <span className="font-semibold italic">
+              <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
+              Product Playbook</span>
+          </h2>
+
+        </div>
+        {/* <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-16">
           Our <span className="font-inter font-bold italic text-[#ffffff]">Product Playbook</span>
-        </h2>
+        </h2> */}
 
         {/* Outer wrapper — relative so absolute arrows can position against it */}
         <div className="relative">
@@ -106,7 +114,7 @@ export default function ProductPlaybookSection() {
           {/* Scroll track — flex on ALL sizes (slider everywhere, no grid) */}
           <div
             ref={scrollRef}
-            className="flex gap-3 md:gap-5 mb-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory"
+            className="flex gap-3 md:gap-5 mb-14 overflow-x-auto overscroll-x-contain snap-x snap-mandatory"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {PLAYBOOK_ITEMS.map((item) => {

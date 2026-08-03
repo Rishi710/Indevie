@@ -22,7 +22,7 @@ type UgcItem = {
 const ugcData: UgcItem[] = [
   {
     id: 1,
-    name: "Tanu chokarika",
+    name: "Tanu Chokarika",
     age: "25",
     quote: "A non-sticky glow? Smells so good too.",
     location: "Bangalore",
@@ -52,7 +52,7 @@ const ugcData: UgcItem[] = [
   },
   {
     id: 4,
-    name: "Ishita phatak",
+    name: "Ishita Phatak",
     age: "30",
     quote: "Indevie is supposed to make you remember who you are truly. Channel your inner devi and never stop taking care of yourself.",
     location: "Indore",
@@ -72,7 +72,7 @@ const ugcData: UgcItem[] = [
   },
   {
     id: 6,
-    name: "Sazleen kaur",
+    name: "Sazleen Kaur",
     age: "28",
     quote: "Being a new mother, baby duties has made my life chaotic. The calm balm is my escape to every problem now.",
     location: "Delhi",
@@ -162,10 +162,10 @@ const UgcVideoCard = ({
           of quote length, so longer testimonials never crowd the video. */}
       <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
       <div className="absolute top-4 sm:top-6 left-3 sm:left-5 right-11 sm:right-14">
-        <p className="text-white font-inter font-semibold text-[12px] sm:text-[15px] drop-shadow-md leading-snug line-clamp-3">
+        <p className="text-white font-inter font-semibold italic text-[16px] sm:text-[16px] drop-shadow-md leading-snug line-clamp-3">
           "{data.quote}"
         </p>
-        <p className="text-white/90 font-inter text-[10px] sm:text-xs mt-1 sm:mt-2 drop-shadow-md font-medium truncate">
+        <p className="text-white/90 font-inter font-semibold italic text-[14px] sm:text-[14px] mt-1 sm:mt-2 drop-shadow-md truncate">
           — {data.name}, {data.age} · {data.location}
         </p>
       </div>
@@ -280,17 +280,19 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
   return (
     <section className="py-16 md:py-18 bg-[#ffffff] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
-      <div className="flex flex-col items-center text-center mb-16 gap-4 px-6">
-        {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
-          Hear it from our
-        </span> */}
+      {/* <div className="flex flex-col items-center text-center mb-16 gap-4 px-6">
         <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
           Hear it From
           <span className="text-black font-bold italic"> Our Power Devis  </span>
         </h2>
-        {/* <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
-          Real people, real routines, and moments of care that truly make a difference.
-        </p> */}
+      </div> */}
+      <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3">
+        <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+          Hear it from <span className="font-semibold italic">
+            <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
+            Our Power Devis</span>
+        </h2>
+
       </div>
 
       {/* Carousel — flush against the left edge, no centering spacers, no dot indicators */}

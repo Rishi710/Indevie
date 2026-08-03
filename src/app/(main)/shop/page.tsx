@@ -463,10 +463,10 @@ export default function ShopPage() {
               transition={{ duration: 1.0, ease: "easeOut" }}
               className="flex flex-col items-center"
             >
-              <h1 className="text-4xl md:text-7xl font-inter italic text-white mb-4 drop-shadow-2xl font-bold">
+              <h1 className="text-5xl md:text-7xl font-inter italic font-semibold text-white mb-4 drop-shadow-2xl font-bold">
                 The Ritual Library
               </h1>
-              <p className="text-white/95 text-[9px] md:text-[14px] uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
+              <p className="text-white text-[9px] md:text-[14px] uppercase tracking-[0.3em] font-light max-w-lg mx-auto leading-loose drop-shadow-md">
                 Curated botanical treasures for your daily sanctuary.
               </p>
             </motion.div>
@@ -484,7 +484,7 @@ export default function ShopPage() {
           <button
             onClick={() => scrollTabsBy(-260)}
             aria-label="Scroll collections left"
-            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 mr-1.5 sm:mr-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-transparent text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-9 sm:h-9 mr-1.5 sm:mr-2 items-center justify-center rounded-full border border-[#B40417]/20 bg-transparent text-[#B40417] transition-opacity hover:bg-[#B40417]/5 ${canScrollTabsLeft ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronLeft size={16} />
@@ -502,7 +502,7 @@ export default function ShopPage() {
           <button
             onClick={() => scrollTabsBy(260)}
             aria-label="Scroll collections right"
-            className={`flex shrink-0 w-8 h-8 sm:w-5 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#6c3518]/20 bg-transparent text-[#6c3518] transition-opacity hover:bg-[#6c3518]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`flex shrink-0 w-8 h-8 sm:w-5 sm:h-9 ml-1.5 sm:ml-2 items-center justify-center rounded-full border border-[#B40417]/20 bg-transparent text-[#B40417] transition-opacity hover:bg-[#B40417]/5 ${canScrollTabsRight ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
           >
             <ChevronRight size={16} />
@@ -518,8 +518,8 @@ export default function ShopPage() {
             <button
               onClick={() => setActiveProductType("all")}
               className={`px-5 py-2 rounded-full text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === "all"
-                ? "bg-[#6c3518] text-white border-[#6c3518]"
-                : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
+                ? "bg-[#B40417] text-white border-[#B40417]"
+                : "bg-transparent text-[#B40417] border-[#B40417]/40 hover:border-[#B40417] hover:bg-[#B40417]/5"
                 }`}
             >
               All
@@ -530,8 +530,8 @@ export default function ShopPage() {
                 key={type}
                 onClick={() => setActiveProductType(activeProductType === type ? "all" : type)}
                 className={`px-5 py-2 rounded-full text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === type
-                  ? "bg-[#6c3518] text-white border-[#6c3518]"
-                  : "bg-transparent text-[#6c3518] border-[#6c3518]/40 hover:border-[#6c3518] hover:bg-[#6c3518]/5"
+                  ? "bg-[#B40417] text-white border-[#B40417]"
+                  : "bg-transparent text-[#B40417] border-[#B40417]/40 hover:border-[#B40417] hover:bg-[#B40417]/5"
                   }`}
               >
                 {type}
@@ -551,7 +551,7 @@ export default function ShopPage() {
             <aside className="hidden lg:block font-inter w-[220px] shrink-0 space-y-6 sticky self-start" style={{ top: headerHeight + 16 }}>
 
               {/* Section label */}
-              <div className="pb-3 border-b border-[#6c3518]/15">
+              <div className="pb-3 border-b border-[#B40417]/15">
                 <h3 className="text-sm font-inter font-bold uppercase tracking-wider text-black">Filter:</h3>
               </div>
 
@@ -567,7 +567,7 @@ export default function ShopPage() {
                           id={`type-${type}`}
                           checked={selectedProductTypes.includes(type)}
                           onChange={() => handleTypeToggle(type)}
-                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                          className="w-4 h-4 border border-[#B40417]/30 rounded-[2px] accent-[#B40417] focus:ring-[#B40417] cursor-pointer"
                         />
                         <label htmlFor={`type-${type}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {type} <span className="text-gray-400">({count})</span>
@@ -590,7 +590,7 @@ export default function ShopPage() {
                           id={`concern-${concern}`}
                           checked={selectedConcerns.includes(concern)}
                           onChange={() => handleConcernToggle(concern)}
-                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                          className="w-4 h-4 border border-[#B40417]/30 rounded-[2px] accent-[#B40417] focus:ring-[#B40417] cursor-pointer"
                         />
                         <label htmlFor={`concern-${concern}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {concern} <span className="text-gray-400">({count})</span>
@@ -613,7 +613,7 @@ export default function ShopPage() {
                           id={`size-${size}`}
                           checked={selectedSizes.includes(size)}
                           onChange={() => handleSizeToggle(size)}
-                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                          className="w-4 h-4 border border-[#B40417]/30 rounded-[2px] accent-[#B40417] focus:ring-[#B40417] cursor-pointer"
                         />
                         <label htmlFor={`size-${size}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {size} <span className="text-gray-400">({count})</span>
@@ -636,7 +636,7 @@ export default function ShopPage() {
                           id={`other-${other}`}
                           checked={selectedOthers.includes(other)}
                           onChange={() => handleOtherToggle(other)}
-                          className="w-4 h-4 border border-[#6c3518]/30 rounded-[2px] accent-[#6c3518] focus:ring-[#6c3518] cursor-pointer"
+                          className="w-4 h-4 border border-[#B40417]/30 rounded-[2px] accent-[#B40417] focus:ring-[#B40417] cursor-pointer"
                         />
                         <label htmlFor={`other-${other}`} className="text-xs font-inter text-gray-700 hover:text-black cursor-pointer uppercase font-medium">
                           {other} <span className="text-gray-400">({count})</span>
@@ -654,7 +654,7 @@ export default function ShopPage() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full bg-white border border-[#6c3518] text-[#6c3518] rounded-[4px] px-3 py-2.5 text-xs font-inter uppercase font-bold outline-none cursor-pointer appearance-none"
+                    className="w-full bg-white border border-[#B40417] text-[#B40417] rounded-[4px] px-3 py-2.5 text-xs font-inter uppercase font-bold outline-none cursor-pointer appearance-none"
                   >
                     <option value="relevant">Most Relevant</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -669,7 +669,7 @@ export default function ShopPage() {
               {(selectedProductTypes.length > 0 || selectedSizes.length > 0 || selectedConcerns.length > 0 || selectedOthers.length > 0) && (
                 <button
                   onClick={clearAllFilters}
-                  className="w-full py-2 bg-white hover:bg-[#6c3518] hover:text-white border border-[#6c3518] rounded-[4px] text-[10px] font-inter font-bold uppercase tracking-wider transition-colors duration-200 text-[#6c3518]"
+                  className="w-full py-2 bg-white hover:bg-[#B40417] hover:text-white border border-[#B40417] rounded-[4px] text-[10px] font-inter font-bold uppercase tracking-wider transition-colors duration-200 text-[#B40417]"
                 >
                   Clear Filters
                 </button>
@@ -690,12 +690,12 @@ export default function ShopPage() {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col items-start text-left pb-6 md:pb-8"
                 >
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-inter italic text-[#6c3518] font-light tracking-wide leading-tight">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-inter font-medium italic text-black tracking-wide leading-tight">
                     {activeProductType !== "all"
                       ? activeProductType
                       : activeCollectionName}
                   </h2>
-                  <div className="w-14 h-[1.5px] bg-[#6c3518]/25 mt-3" />
+                  <div className="w-14 h-[1.5px] bg-[#B40417]/25 mt-3" />
                 </motion.div>
               </AnimatePresence>
 
@@ -728,11 +728,11 @@ export default function ShopPage() {
                 </div>
               ) : (
                 /* Empty state */
-                <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-[#6c3518]/20">
+                <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-[#B40417]/20">
                   <p className="text-sm font-inter text-gray-500 italic">No products match your filter selection.</p>
                   <button
                     onClick={clearAllFilters}
-                    className="mt-4 px-6 py-2.5 bg-[#6c3518] text-white text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] hover:bg-black transition-colors"
+                    className="mt-4 px-6 py-2.5 bg-[#B40417] text-white text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] hover:bg-black transition-colors"
                   >
                     Clear Filter Checkboxes
                   </button>
@@ -750,11 +750,11 @@ export default function ShopPage() {
       <button
         onClick={() => setIsMobileFilterOpen(true)}
         aria-label="Open filters"
-        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center justify-center w-14 h-14 bg-[#6c3518] text-white shadow-lg rounded-full active:scale-95 transition-transform"
+        className="lg:hidden fixed bottom-6 right-5 z-30 flex items-center justify-center w-14 h-14 bg-[#B40417] text-white shadow-lg rounded-full active:scale-95 transition-transform"
       >
         <SlidersHorizontal size={20} />
         {(selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length) > 0 && (
-          <span className="absolute -top-1 -right-1 bg-white text-[#6c3518] rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-sm">
+          <span className="absolute -top-1 -right-1 bg-white text-[#B40417] rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-sm">
             {selectedProductTypes.length + selectedSizes.length + selectedConcerns.length + selectedOthers.length}
           </span>
         )}

@@ -81,8 +81,13 @@ export default function HomeTestimonials() {
         {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
           Real Experiences
         </span> */}
-        <h2 className="text-2xl md:text-3xl lg:text-5xl text-black font-inter uppercase">
+        {/* <h2 className="text-2xl md:text-3xl lg:text-5xl text-black font-inter uppercase">
           Hear it from <span className="italic font-semibold">  the Enthusiasts </span>
+        </h2> */}
+        <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+          Hear it from <span className="font-semibold italic">
+            <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
+            the Enthusiasts</span>
         </h2>
       </div>
       <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[300px] md:h-[300px] flex items-center justify-center">

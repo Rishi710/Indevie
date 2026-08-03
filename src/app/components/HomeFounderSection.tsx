@@ -48,11 +48,16 @@ export default function HomeFounderSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-13 sm:px-10 lg:px-14 flex flex-col lg:flex-row lg:h-full lg:min-h-[640px] xl:min-h-[700px]">
         {/* Text column */}
         <div className="relative z-10 flex flex-col justify-center gap-5 sm:gap-6 py-14 sm:py-16 lg:py-24 lg:w-[56%] lg:pr-10">
-          <h2 className="font-inter text-black uppercase text-[12vw] sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
+          {/* <h2 className="font-inter text-black uppercase text-[12vw] sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
             The{" "}
             <span className=" font-inter uppercase italic font-semibold text-black">
               Founder Devi
             </span>
+          </h2> */}
+          <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+            The <span className="font-semibold italic">
+              <span className="absolute bottom-1 h-3 bg-[#e9c46a]/50" />
+              Founder Devi</span>
           </h2>
 
           <div className="space-y-4 text-black font-inter text-lg sm:text-lg leading-relaxed max-w-3xl">
