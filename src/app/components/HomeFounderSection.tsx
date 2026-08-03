@@ -55,9 +55,11 @@ export default function HomeFounderSection() {
             </span>
           </h2> */}
           <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
-            The <span className="font-semibold italic">
-              <span className="absolute bottom-1 h-3 bg-[#e9c46a]/50" />
-              Founder Devi</span>
+            The {" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+              Founder Devi
+            </span>
           </h2>
 
           <div className="space-y-4 text-black font-inter text-lg sm:text-lg leading-relaxed max-w-3xl">

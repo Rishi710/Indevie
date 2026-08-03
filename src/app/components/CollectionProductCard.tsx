@@ -165,18 +165,18 @@ export default function CollectionProductCard({ product, priority = false }: Col
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[8px] font-inter font-bold tracking-[0.2em] text-center py-2 uppercase shrink-0">
-          {bannerText}
+        <div className="bg-black text-white text-[8px] font-inter font-bold tracking-[0.2em] flex items-center justify-center text-center py-1.5 px-2 uppercase shrink-0 leading-none min-h-[26px]">
+          {bannerText.trim()}
         </div>
       )}
 
       {/* Info Container */}
-      <div className="flex flex-col flex-1 p-3.5 justify-between gap-3">
+      <div className="flex flex-col flex-1 p-3.5 justify-between gap-2">
 
         {/* Title & Subtitle */}
-        <div className="space-y-1.5">
+        <div className="space-y-0.5">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-sm font-inter font-bold text-gray-900 group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-sm font-inter font-bold text-gray-900 group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-2">
               {product.title}
             </h3>
           </Link>
@@ -189,9 +189,9 @@ export default function CollectionProductCard({ product, priority = false }: Col
         </div>
 
         {/* Rating & Pricing Row */}
-        <div className="flex items-center justify-between gap-2 mt-1 shrink-0">
+        <div className="flex items-center justify-between gap-1 shrink-0">
           {/* Left: Star Rating */}
-          <div className="flex items-center gap-1 text-[11px] font-inter text-gray-800 font-medium shrink-0">
+          <div className="flex items-center gap-1 text-[10px] font-inter text-gray-800 font-medium shrink-0">
             <span className="text-black text-xs leading-none">★</span>
             <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
             <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>

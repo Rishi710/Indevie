@@ -25,9 +25,11 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
             Indevie <span className="font-semibold italic"> Journals</span>
           </h2> */}
           <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
-            Indevie <span className="font-semibold italic">
-              <span className="absolute bottom-1 h-3 bg-[#e9c46a]/50" />
-              Journals</span>
+            Indevie{" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+              Journals
+            </span>
           </h2>
         </div>
 

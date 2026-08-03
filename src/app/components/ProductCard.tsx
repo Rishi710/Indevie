@@ -68,11 +68,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     // Smart defaults based on title / handle
     const titleLower = product.title.toLowerCase();
     if (titleLower.includes("geeli mitti")) bannerText = "Face Hydration";
-    else if (titleLower.includes("gulkand")) bannerText = " Face Hydration";
+    else if (titleLower.includes("gulkand")) bannerText = "Face Hydration";
     else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) bannerText = "AYURVEDIC SPF 50";
     else if (titleLower.includes("calm balm")) bannerText = "Sleep Inducing";
     else if (titleLower.includes("lotion")) bannerText = "Skin Hydration Lotion";
-    else if (titleLower.includes("maalish")) bannerText = " Skin Hydration Oil";
+    else if (titleLower.includes("maalish")) bannerText = "Skin Hydration Oil";
     else if (titleLower.includes("set") || titleLower.includes("ritual")) bannerText = "ULTIMATE SKIN RITUAL";
     else bannerText = "GENURVEDA™ APPROVED";
   }
@@ -143,19 +143,19 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[10px] font-inter font-semibold tracking-[0.1em] py-1 text-center uppercase">
-          {bannerText}
+        <div className="bg-black text-white text-[10px] font-inter font-semibold tracking-[0.1em] py-1.5 px-2 flex items-center justify-center text-center uppercase leading-none min-h-[26px]">
+          {bannerText.trim()}
         </div>
 
       )}
 
       {/* Info Container */}
-      <div className="flex flex-col flex-1 p-2 sm:p-2 justify-between gap-2.5 sm:gap-3 bg-transparent">
+      <div className="flex flex-col flex-1 p-2 sm:p-2 justify-between gap-1.5 sm:gap-2 bg-transparent">
 
         {/* Title & Subtitle */}
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-[12px] sm:text-[14px] font-inter font-semibold text-black  group-hover:text-[#B40417] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-[12px] sm:text-[14px] font-inter font-semibold text-black group-hover:text-[#B40417] transition-colors leading-snug line-clamp-2">
               {product.title}
             </h3>
           </Link>
@@ -168,7 +168,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         </div>
 
         {/* Rating & Pricing Row */}
-        <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0.5 shrink-0">
+        <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0 shrink-0">
           {/* Left: Star Rating */}
           <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[12px] font-inter text-gray-800 font-medium shrink-0">
             <span className="text-black text-[12px] sm:text-[14px] leading-none">★</span>
