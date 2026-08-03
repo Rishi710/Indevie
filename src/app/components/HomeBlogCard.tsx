@@ -40,17 +40,17 @@ export default function HomeBlogCard({ post, index }: HomeBlogCardProps) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
-               No Image
+              No Image
             </div>
           )}
         </div>
-        
+
         <div className="flex flex-col mt-5 space-y-3 px-1">
-          <h3 className="text-xl md:text-2xl font-inter text-gray-900 leading-tight group-hover:text-red-900 transition-colors line-clamp-2">
+          <h3 className="text-lg font-inter text-gray-900 leading-tight group-hover:text-red-900 transition-colors line-clamp-2">
             {post.title}
           </h3>
-          
-          <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-gray-500">
+
+          <span className="text-[11px] uppercase tracking-[0.2em] font-medium text-gray-500">
             {formattedDate}
           </span>
         </div>

@@ -112,7 +112,7 @@ const Footer = () => {
 
   return (
     <>
-      <div className="w-full bg-[#ffffff] text-[#6c3518] leading-[0] overflow-hidden -mb-[1px]">
+      <div className="w-full bg-[#ffffff] text-[#B40417] leading-[0] overflow-hidden -mb-[1px]">
         <svg className="relative block w-full h-[50px] md:h-[50px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
           <defs>
             <path id="wave-3" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path>
@@ -131,7 +131,7 @@ const Footer = () => {
           </g>
         </svg>
       </div>
-      <footer className="relative bg-[#6c3518] text-[#f5f1e6] font-inter pt-20 pb-12 overflow-hidden">
+      <footer className="relative bg-[#B40417] text-[#f5f1e6] font-inter pt-20 pb-12 overflow-hidden">
         {/*  Floating Botanical Detail (GPU Accelerated) */}
         <motion.div
           animate={{
@@ -230,7 +230,7 @@ const Footer = () => {
                   priority
                 />
               </Link>
-              <p className="text-[14px] font-light leading-relaxed text-[#f5f1e6]/60 max-w-[280px] tracking-wide">
+              <p className="text-[14px] font-light leading-relaxed text-[#ffffff] max-w-[280px] tracking-wide">
                 Botanical treasures handcrafted with ancient wisdom to nurture your modern radiance, naturally.
               </p>
               <div className="flex items-center gap-3 opacity-20 pt-4">
@@ -241,11 +241,11 @@ const Footer = () => {
 
             {/* COLUMN 2: EXPLORE */}
             <div className="space-y-10 lg:pl-12">
-              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Explore</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white italic">Explore</h4>
               <ul className="space-y-5">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#f5f1e6]/70 hover:text-white transition-colors">
+                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#ffffff]/90 hover:text-white transition-colors">
                       <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
                       <span>{link.name}</span>
                     </Link>
@@ -256,11 +256,11 @@ const Footer = () => {
 
             {/* COLUMN 3: SERVICES */}
             <div className="space-y-10">
-              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Services</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white italic">Services</h4>
               <ul className="space-y-5">
                 {supportLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#f5f1e6]/70 hover:text-white transition-colors">
+                    <Link href={link.href} className="group flex items-center gap-4 text-[14px] font-light tracking-wide text-[#ffffff]/90 hover:text-white transition-colors">
                       <span className="w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-4" />
                       <span>{link.name}</span>
                     </Link>
@@ -271,19 +271,19 @@ const Footer = () => {
 
             {/* COLUMN 4: CONNECT */}
             <div className="col-span-2 sm:col-span-1 space-y-10">
-              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white/25 italic">Connect</h4>
+              <h4 className="text-[12px] uppercase tracking-[0.5em] font-bold text-white italic">Connect</h4>
               <div className="space-y-8">
                 <div className="space-y-4">
 
-                  <div className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-4 group opacity-90 hover:opacity-100 transition-opacity">
                     <MapPin size={26} strokeWidth={2.5} />
                     <span className="text-[14px] font-light tracking-wide"> Plot 96, Indralok Colony, Sudama Nagar, Indore, Madhya Pradesh, India</span>
                   </div>
-                  <a href="mailto:care@indevie.com" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                  <a href="mailto:care@indevie.com" className="flex items-center gap-4 group opacity-90 hover:opacity-100 transition-opacity">
                     <Mail size={16} strokeWidth={1.5} />
                     <span className="text-[14px] font-light tracking-wide">care@indevie.com</span>
                   </a>
-                  <a href="tel:+919981300183" className="flex items-center gap-4 group opacity-60 hover:opacity-100 transition-opacity">
+                  <a href="tel:+919981300183" className="flex items-center gap-4 group opacity-90 hover:opacity-100 transition-opacity">
                     <Phone size={16} strokeWidth={1.5} />
                     <span className="text-[14px] font-light tracking-wide">+91 9981300183</span>
                   </a>

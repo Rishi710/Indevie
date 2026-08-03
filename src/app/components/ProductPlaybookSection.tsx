@@ -85,10 +85,10 @@ export default function ProductPlaybookSection() {
   };
 
   return (
-    <section className="relative bg-[#241206] py-16 md:py-20 px-4 sm:px-8 lg:px-56 overflow-hidden">
+    <section className="relative bg-[#B40417] py-16 md:py-16 px-4 sm:px-8 lg:px-56 overflow-hidden">
       <div className="max-w-[1500px] mx-auto">
         <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
-          Our <span className="font-inter font-bold italic text-[#e3c895]">Product Playbook</span>
+          Our <span className="font-inter font-bold italic text-[#ffffff]">Product Playbook</span>
         </h2>
 
         {/* Outer wrapper — relative so absolute arrows can position against it */}
@@ -97,7 +97,7 @@ export default function ProductPlaybookSection() {
           <button
             onClick={() => doScroll("left")}
             aria-label="Scroll playbook left"
-            className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full border border-[#f5f1e6]/25 text-[#f5f1e6] hover:bg-[#f5f1e6]/10 transition-all"
+            className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full border border-[#ffffff] text-[#ffffff] hover:bg-[#f5f1e6]/10 transition-all"
             style={{ opacity: canScrollLeft ? 1 : 0.2, pointerEvents: canScrollLeft ? "auto" : "none" }}
           >
             <ChevronLeft size={18} />
@@ -114,13 +114,13 @@ export default function ProductPlaybookSection() {
               return (
                 <div
                   key={item.title}
-                  className="snap-start shrink-0 border border-[#f5f1e6]/25 rounded-sm px-4 py-7 flex flex-col items-center text-center w-[65%] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)]"
+                  className="snap-start shrink-0 border-2 border-[#ffffff] px-4 py-7 flex flex-col items-center text-center w-[65%] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)]"
                 >
                   <Icon size={36} strokeWidth={1.25} className="text-[#e3c895] mb-5" />
-                  <h3 className="text-xs sm:text-sm font-inter font-bold uppercase tracking-wide text-[#f5f1e6] mb-2">
+                  <h3 className="text-lg sm:text-lg/5 font-inter font-semibold uppercase leading-tight text-[#f5f1e6] mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-[11px] sm:text-xs font-inter text-[#f5f1e6]/70 leading-relaxed">
+                  <p className="text-[14px] sm:text-sm font-inter font-semibold text-[#ffffff] leading-relaxed">
                     {item.description}
                   </p>
                 </div>

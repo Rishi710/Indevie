@@ -76,13 +76,13 @@ export default function HomeTestimonials() {
   };
 
   return (
-    <section className="w-full bg-[#ffffff] py-5 lg:py-10 overflow-hidden flex flex-col items-center">
-      <div className="flex flex-col items-center text-center mb-6 md:mb-10 gap-3 px-4">
-        <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
+    <section className="w-full bg-[#ffffff] py-5 lg:py-22 overflow-hidden flex flex-col items-center">
+      <div className="flex flex-col items-center text-center mb-6 md:mb-6 gap-3 px-4">
+        {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
           Real Experiences
-        </span>
-        <h2 className="text-2xl md:text-3xl lg:text-5xl text-[#6c3518] font-inter italic font-bold">
-          Hear it from the Enthusiasts
+        </span> */}
+        <h2 className="text-2xl md:text-3xl lg:text-5xl text-black font-inter uppercase">
+          Hear it from <span className="italic font-semibold">  the Enthusiasts </span>
         </h2>
       </div>
       <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[300px] md:h-[300px] flex items-center justify-center">
@@ -114,13 +114,13 @@ export default function HomeTestimonials() {
             </div>
 
             {/* Quote */}
-            <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-inter leading-[1.7] md:leading-[1.4] text-[#6c3518] italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
+            <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-inter leading-[1.7] md:leading-[1.4] text-black italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
               {"\"" + testimonials[currentIndex].quote + "\""}
             </h2>
 
             {/* Profile */}
             <div className="flex items-center gap-3 md:gap-4 mt-2 md:mt-2 select-none">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border border-[#6c3518]/10">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden border border-black/10">
                 <Image
                   src={testimonials[currentIndex].image}
                   alt={testimonials[currentIndex].name}
@@ -130,10 +130,10 @@ export default function HomeTestimonials() {
                 />
               </div>
               <div className="text-left">
-                <p className="text-[12px] md:text-sm font-inter font-bold tracking-[0.1em] text-[#6c3518]/80 uppercase">
+                <p className="text-[12px] md:text-sm font-inter font-bold tracking-[0.1em] text-black/80 uppercase">
                   {testimonials[currentIndex].name}
                 </p>
-                <p className="text-[10px] md:text-[11px] font-inter text-[#6c3518]/60 italic tracking-wide">
+                <p className="text-[10px] md:text-[11px] font-inter text-black/60 italic tracking-wide">
                   {testimonials[currentIndex].subtext}
                 </p>
               </div>
@@ -143,14 +143,14 @@ export default function HomeTestimonials() {
       </div>
 
       {/* Pagination Dots */}
-      <div className="flex items-center gap-3.5 mb-10 z-20">
+      <div className="flex items-center gap-3.5 mb-6 z-20">
         {testimonials.map((_, idx) => (
           <button
             key={idx}
             onClick={() => handleDotClick(idx)}
             className={`transition-all duration-500 rounded-full h-[3px] ${idx === currentIndex
-              ? "bg-[#6c3518] w-8 md:w-10"
-              : "bg-[#6c3518]/20 w-3 hover:bg-[#6c3518]/40"
+              ? "bg-[#B40417] w-8 md:w-10"
+              : "bg-[#B40417]/20 w-3 hover:bg-[#B40417]/40"
               }`}
             aria-label={`Go to slide ${idx + 1}`}
           />

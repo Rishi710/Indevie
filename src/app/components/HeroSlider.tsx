@@ -172,7 +172,7 @@ export default function HeroSlider() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-white text-5xl md:text-7xl font-serif mb-6"
+              className="text-white text-5xl md:text-7xl font-inter italic mb-6 "
             >
               {slides[index].title}
             </motion.h1>
@@ -181,21 +181,20 @@ export default function HeroSlider() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-white/80 text-lg md:text-xl mb-8 max-w-2xl"
+              className="text-white text-lg md:text-xl font-semibold font-inter mb-8 max-w-2xl"
             >
               {slides[index].subtitle}
             </motion.p>
 
             <Link
               href={slides[index].link}
-              className="border border-white px-8 py-3 text-white uppercase tracking-widest hover:bg-white hover:text-black transition"
+              className="border-2 border-white px-8 py-3 font-inter font-semibold text-white uppercase tracking-widest hover:bg-white hover:text-black transition"
             >
               {slides[index].cta}
             </Link>
           </motion.div>
         </motion.div>
       </AnimatePresence>
-
       {/* DOT NAVIGATION */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
         {slides.map((_, i) => (
@@ -209,9 +208,8 @@ export default function HeroSlider() {
                 setPage([page + diff, diff > 0 ? 1 : -1]);
               }
             }}
-            className={`h-2 rounded-full cursor-pointer transition-all ${
-              i === index ? "w-8 bg-white" : "w-2 bg-white/50"
-            }`}
+            className={`h-2 rounded-full cursor-pointer transition-all ${i === index ? "w-8 bg-white" : "w-2 bg-white/50"
+              }`}
           />
         ))}
       </div>

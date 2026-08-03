@@ -120,7 +120,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   };
 
   return (
-    <div className="flex flex-col h-full bg-transparent border border-black overflow-hidden group shadow-sm hover:shadow-md transition-shadow">
+    <div className="flex flex-col h-full bg-transparent border-2 border-black overflow-hidden group shadow-sm hover:shadow-md transition-shadow">
 
       {/* Image Wrapper */}
       <Link href={`/products/${product.handle}`} className="relative block aspect-square bg-[#fafafa] overflow-hidden shrink-0">
@@ -143,9 +143,10 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
       {/* Made for / Banner Banner */}
       {bannerText && (
-        <div className="bg-black text-white text-[10px] font-inter font-semibold tracking-[0.2em] text-center py-2 uppercase shrink-0">
+        <div className="bg-black text-white text-[10px] font-inter font-semibold tracking-[0.1em] py-1 text-center uppercase">
           {bannerText}
         </div>
+
       )}
 
       {/* Info Container */}
@@ -154,7 +155,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Title & Subtitle */}
         <div className="space-y-1">
           <Link href={`/products/${product.handle}`} className="block">
-            <h3 className="text-[12px] sm:text-[14px] font-inter font-semibold text-black  group-hover:text-[#6c3518] transition-colors leading-snug line-clamp-1">
+            <h3 className="text-[12px] sm:text-[14px] font-inter font-semibold text-black  group-hover:text-[#B40417] transition-colors leading-snug line-clamp-1">
               {product.title}
             </h3>
           </Link>
@@ -169,7 +170,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         {/* Rating & Pricing Row */}
         <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0.5 shrink-0">
           {/* Left: Star Rating */}
-          <div className="flex items-center gap-0.5 sm:gap-1 text-[12px] sm:text-[14px] font-inter text-gray-800 font-medium shrink-0">
+          <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[12px] font-inter text-gray-800 font-medium shrink-0">
             <span className="text-black text-[12px] sm:text-[14px] leading-none">★</span>
             <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
             <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
@@ -178,11 +179,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           {/* Right: Pricing */}
           <div className="flex items-baseline gap-1 sm:gap-1.5 shrink-0">
             {formattedComparePrice && (
-              <span className="text-[12px] sm:text-[14px] text-gray-500 line-through font-light">
+              <span className="text-[10px] sm:text-[12px] text-gray-500 font-semibold line-through font-light">
                 {formattedComparePrice}
               </span>
             )}
-            <span className="text-[16px] sm:text-[14px] font-inter text-black">
+            <span className="text-[16px] sm:text-[14px] font-semibold font-inter text-black">
               {formattedPrice}
             </span>
           </div>
@@ -200,16 +201,16 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                 Out of Stock
               </button>
             ) : quantityInCart > 0 ? (
-              <div className="flex items-center justify-between border border-[#6c3518] overflow-hidden bg-white h-[34px] sm:h-[44px]">
+              <div className="flex items-center justify-between border border-[#6c3518] overflow-hidden bg-[#B40417] h-[34px] sm:h-[44px]">
                 <button
                   onClick={handleDecrease}
                   disabled={isUpdating}
                   className="w-10 sm:w-12 h-full flex items-center justify-center hover:bg-[#f5f1e6]/45 active:bg-[#f5f1e6] transition-colors disabled:opacity-50"
                   aria-label="Decrease quantity"
                 >
-                  <Minus size={12} className="text-[#6c3518]" />
+                  <Minus size={12} className="text-white" />
                 </button>
-                <span className="font-inter font-bold text-[11px] sm:text-xs text-[#6c3518] w-6 sm:w-8 text-center select-none">
+                <span className="font-inter font-semibold text-[12px] sm:text-[14px] text-white w-6 sm:w-8 text-center select-none">
                   {quantityInCart}
                 </span>
                 <button
@@ -218,14 +219,14 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                   className="w-10 sm:w-12 h-full flex items-center justify-center hover:bg-[#f5f1e6]/45 active:bg-[#f5f1e6] transition-colors disabled:opacity-30"
                   aria-label="Increase quantity"
                 >
-                  <Plus size={12} className="text-[#6c3518]" />
+                  <Plus size={12} className="text-white" />
                 </button>
               </div>
             ) : (
               <button
                 onClick={handleAddToCart}
                 disabled={isUpdating}
-                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center gap-1 sm:gap-1.5 bg-transparent border border-[#B40417] hover:bg-[ffffff] active:bg-[#B40417] text-[#B40417] font-inter font-bold text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors disabled:opacity-70"
+                className="w-full h-[34px] sm:h-[44px] flex items-center justify-center gap-1 sm:gap-1.5 bg-[#B40417] border border-[#B40417] hover:bg-[#ffffff] hover:text-[#B40417] font-semibold active:bg-[#B40417] text-[#ffffff] font-inter text-[10px] sm:text-[14px] tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors disabled:opacity-70"
               >
                 {/* <ShoppingBag size={12} className="text-white shrink-0" /> */}
                 Add To Cart

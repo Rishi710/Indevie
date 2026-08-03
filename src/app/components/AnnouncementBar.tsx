@@ -27,7 +27,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
   }, []);
 
   return (
-    <div className="relative bg-[#B40417] text-[#EFE8D9] overflow-hidden py-2 border-b border-[#B40417]/10 flex items-center">
+    <div className="relative bg-[#B40417] text-white overflow-hidden py-2 border-b border-[#B40417]/10 flex items-center">
       <div className="flex-1 overflow-hidden">
         <motion.div
           key={duration}
@@ -47,7 +47,7 @@ export default function AnnouncementBar({ onClose }: AnnouncementBarProps) {
               {announcementItems.map((item, index) => (
                 <span
                   key={index}
-                  className="text-[10px] md:text-xs font-inter font-medium uppercase tracking-[0.2em] flex-shrink-0"
+                  className="text-[13px] md:text-22px font-inter font-medium uppercase tracking-[0.2em] flex-shrink-0"
                 >
                   {item}
                 </span>

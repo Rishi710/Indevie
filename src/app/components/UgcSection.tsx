@@ -119,7 +119,7 @@ const UgcVideoCard = ({
 
   return (
     <div
-      className="group relative w-[350px] sm:w-[320px] md:w-[320px] lg:w-[320px] aspect-[9/16] shrink-0 rounded-2xl overflow-hidden bg-[#e8decb] transition-shadow duration-300 md:hover:shadow-2xl"
+      className="group relative w-[350px] sm:w-[320px] md:w-[320px] lg:w-[320px] aspect-[9/16] shrink-0 overflow-hidden bg-[#e8decb] rounded-sm transition-shadow duration-300 md:hover:shadow-2xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -174,10 +174,10 @@ const UgcVideoCard = ({
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
       {/* Product overlay — restored from the old design, sized responsively */}
-      <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2 sm:p-2.5 flex items-center justify-between gap-2 shadow-xl">
+      <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 bg-white rounded-sm backdrop-blur-md p-2 sm:p-2.5 flex items-center justify-between gap-2 shadow-xl">
         <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0">
           {productImageUrl ? (
-            <div className="relative w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden bg-[#f5f1e6] shrink-0">
+            <div className="relative w-9 h-9 sm:w-12 sm:h-12 rounded-sm sm:rounded-sm overflow-hidden bg-[#f5f1e6] shrink-0">
               <Image src={productImageUrl} alt={product?.title || "Product"} fill className="object-cover" sizes="48px" />
             </div>
           ) : (
@@ -278,18 +278,19 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#f5f1e6] flex flex-col justify-center overflow-hidden">
+    <section className="py-16 md:py-18 bg-[#ffffff] flex flex-col justify-center overflow-hidden">
       {/* Heading */}
-      <div className="flex flex-col items-center text-center mb-10 gap-4 px-6">
-        <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
+      <div className="flex flex-col items-center text-center mb-16 gap-4 px-6">
+        {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
           Hear it from our
-        </span>
-        <h2 className="text-4xl md:text-5xl text-[#6c3518] font-inter font-bold">
-          Power Devis
+        </span> */}
+        <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+          Hear it From
+          <span className="text-black font-bold italic"> Our Power Devis  </span>
         </h2>
-        <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
+        {/* <p className="italic text-[#6c3518] tracking-tight text-lg md:text-xl max-w-xl">
           Real people, real routines, and moments of care that truly make a difference.
-        </p>
+        </p> */}
       </div>
 
       {/* Carousel — flush against the left edge, no centering spacers, no dot indicators */}

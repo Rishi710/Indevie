@@ -21,11 +21,11 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
 
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-10 gap-3">
-          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
+          {/* <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-red-800">
             Indevie Journals
-          </span>
-          <h2 className="text-3xl md:text-4xl uppercase lg:text-5xl text-[#6c3518] font-inter">
-            Selfcare to <span className="font-bold">Soulcare</span>
+          </span> */}
+          <h2 className="text-3xl md:text-4xl uppercase lg:text-5xl text-black font-inter">
+            Indevie <span className="font-semibold italic"> Journals</span>
           </h2>
         </div>
 
@@ -51,7 +51,7 @@ export default function BlogsCarouselClient({ articles }: BlogsCarouselClientPro
         <div className="flex justify-center">
           <Link
             href="/blogs"
-            className="inline-flex items-center justify-center px-10 py-4 bg-black text-white text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-neutral-900 transition-colors duration-300"
+            className="inline-flex items-center justify-center px-10 py-4 bg-[#b40417] text-white text-[12px] uppercase tracking-[0.2em] font-semibold hover:bg-transparent hover:text-black border-2 hover:border-black transition-colors duration-300"
           >
             Dig In
           </Link>

@@ -77,14 +77,15 @@ export default function InstagramSection() {
           <Link
             href="https://www.instagram.com/indeviebeauty"
             target="_blank"
-            className="inline-flex items-center gap-3 text-[#6c3518]"
+            className="inline-flex items-center gap-3 text-black"
           >
             <div className="flex flex-col items-center text-center gap-3">
               {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold text-red-800">
                 See Our Crazy Side On
               </span> */}
-              <h2 className="text-3xl md:text-5xl font-inter uppercase font-medium italic">
-                On the #gram
+              <h2 className="text-3xl md:text-5xl font-inter uppercase">
+                On the
+                <span className="italic font-semibold"> #gram </span>
               </h2>
             </div>
           </Link>

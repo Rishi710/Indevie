@@ -11,7 +11,7 @@ const tickerItems = [
 
 export default function InfiniteTicker() {
   return (
-    <div className="w-full bg-white border-y border-black/5 py-4 md:py-6 overflow-hidden flex items-center">
+    <div className="w-full bg-[#B40417] border-y border-black/5 py-2 md:py-2 overflow-hidden flex items-center">
       <motion.div
         animate={{
           x: ["0%", "-50%"],
@@ -28,11 +28,11 @@ export default function InfiniteTicker() {
           <div key={i} className="flex items-center">
             {tickerItems.map((item, index) => (
               <React.Fragment key={index}>
-                <span className="text-sm md:text-lg lg:text-lg font-inter font-medium text-[#6c3518] uppercase tracking-[0.15em] px-8">
+                <span className="text-sm md:text-sm lg:text-sm font-inter font-medium text-white uppercase tracking-[0.15em] px-8">
                   {item}
                 </span>
                 {/* Rounded Black Dot Divider */}
-                <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-black rounded-full flex-shrink-0" />
+                <span className="w-1 h-1 md:w-1 md:h-1 bg-white rounded-full flex-shrink-0" />
               </React.Fragment>
             ))}
           </div>

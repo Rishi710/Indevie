@@ -48,20 +48,20 @@ export default function HomeFounderSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-13 sm:px-10 lg:px-14 flex flex-col lg:flex-row lg:h-full lg:min-h-[640px] xl:min-h-[700px]">
         {/* Text column */}
         <div className="relative z-10 flex flex-col justify-center gap-5 sm:gap-6 py-14 sm:py-16 lg:py-24 lg:w-[56%] lg:pr-10">
-          <h2 className="font-inter text-[#6c3518] uppercase text-[12vw] sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
+          <h2 className="font-inter text-black uppercase text-[12vw] sm:text-5xl lg:text-6xl leading-[0.95] tracking-tight">
             The{" "}
-            <span className=" font-inter uppercase italic font-semibold text-[#6c3518]">
+            <span className=" font-inter uppercase italic font-semibold text-black">
               Founder Devi
             </span>
           </h2>
 
-          <div className="space-y-4 text-[#241206]/75 font-inter text-xl sm:text-md leading-relaxed max-w-3xl">
-            <p className="italic">
-              “Selfcare starts the moment you borrow that first comb from your parents to comb your own hair”
+          <div className="space-y-4 text-black font-inter text-md sm:text-lg leading-relaxed max-w-3xl">
+            <p className="italic font-semibold">
+              “Selfcare starts the moment you borrow that first comb from your parents to comb your own hair.”
 
             </p>
-            <p>
-              My mom has been suffering from psoriasis since more than 28 years now and never have I ever been able to help her soothe. Indevie is my way of giving back to her and thousands of people suffering with irritated skin. Our products is an attempt to soothe any and every skin by blending ancient ayurveda and modern sciences. <strong className="text-[#241206] font-semibold"><br /> We call it Genurveda™, ayurveda for Gen Next.  </strong>
+            <p className="text-[18px] font-semibold italic ">
+              My mom has been suffering from psoriasis since more than 28 years now and never have I ever been able to help her soothe. Indevie is my way of giving back to her and thousands of people suffering with irritated skin. Our products is an attempt to soothe any and every skin by blending ancient ayurveda and modern sciences.<br /> <strong className="text-black font-semibold"><br /> We call it Genurveda™, Ayurveda for Gen Next.  </strong>
             </p>
             {/* <p>
               So I set out to build Indévie, with a team devoted to clean, high-performing formulas that don&apos;t compromise on science, results, or integrity {" "}
@@ -73,9 +73,9 @@ export default function HomeFounderSection() {
 
           <Link
             href="/about"
-            className="inline-flex w-fit items-center bg-[#6c3518] hover:bg-[#241206] transition-colors px-7 py-4 mt-2"
+            className="inline-flex w-fit items-center bg-[#B40417] hover:bg-[#B40417]/80 transition-colors px-7 py-4 mt-2"
           >
-            <span className="text-white font-inter font-bold uppercase tracking-[0.2em] text-xs sm:text-sm">
+            <span className="text-white font-inter font-semibold uppercase tracking-[0.1em] text-xs sm:text-sm">
               Know Our Story
             </span>
           </Link>

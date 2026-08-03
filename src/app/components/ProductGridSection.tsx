@@ -56,7 +56,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
   }
 
   return (
-    <section className="py-10 md:py-10 px-4 sm:px-10 md:px-20 lg:px-20 bg-[#f5f1e6] overflow-hidden">
+    <section className="py-10 md:py-10 px-4 sm:px-10 md:px-20 lg:px-20 bg-white overflow-hidden">
       <div className="max-w-[1500px] mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5 mt-4 md:mt-12">
           {/* <h2 className="text-3xl md:text-4xl text-red-800 pt-14 font-inter">
@@ -77,7 +77,7 @@ export default async function ProductGridSection({ initialProducts }: ProductGri
         <div className="flex justify-center font-inter mt-10">
           <a
             href="/shop"
-            className="inline-block text-[14px] font-bold tracking-[0.1em] uppercase text-[#6c3518] border border-[#6c3518]/30 px-8 py-3 hover:bg-[#6c3518] hover:text-white transition-all duration-300"
+            className="inline-block text-[14px] hover:text-[#6c3518] bg-[#B40417] font-semibold tracking-[0.1em] uppercase text-[#ffffff] border border-[#6c3518]/30 px-8 py-3 hover:bg-[#ffffff] hover:text-[#B40417] transition-all duration-300"
           >
             Explore All
           </a>
