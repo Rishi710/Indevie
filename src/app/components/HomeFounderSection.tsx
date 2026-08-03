@@ -55,7 +55,7 @@ export default function HomeFounderSection() {
             </span>
           </h2>
 
-          <div className="space-y-4 text-black font-inter text-md sm:text-lg leading-relaxed max-w-3xl">
+          <div className="space-y-4 text-black font-inter text-lg sm:text-lg leading-relaxed max-w-3xl">
             <p className="italic font-semibold">
               “Selfcare starts the moment you borrow that first comb from your parents to comb your own hair.”
 

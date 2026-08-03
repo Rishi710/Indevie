@@ -76,7 +76,7 @@ export default function HomeTestimonials() {
   };
 
   return (
-    <section className="w-full bg-[#ffffff] py-5 lg:py-22 overflow-hidden flex flex-col items-center">
+    <section className="w-full bg-[#ffffff] py-5 lg:py-22 py-14 overflow-hidden flex flex-col items-center">
       <div className="flex flex-col items-center text-center mb-6 md:mb-6 gap-3 px-4">
         {/* <span className="text-[14px] uppercase tracking-[0.4em] font-bold mt-5 md:mt-5 text-[#6c3518]/60">
           Real Experiences

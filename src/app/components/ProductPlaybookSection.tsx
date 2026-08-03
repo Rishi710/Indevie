@@ -87,7 +87,7 @@ export default function ProductPlaybookSection() {
   return (
     <section className="relative bg-[#B40417] py-16 md:py-16 px-4 sm:px-8 lg:px-56 overflow-hidden">
       <div className="max-w-[1500px] mx-auto">
-        <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-10 md:mb-14">
+        <h2 className="text-center text-2xl sm:text-3xl md:text-5xl font-inter font-light uppercase tracking-wide text-[#f5f1e6] mb-16">
           Our <span className="font-inter font-bold italic text-[#ffffff]">Product Playbook</span>
         </h2>
 
@@ -106,7 +106,7 @@ export default function ProductPlaybookSection() {
           {/* Scroll track — flex on ALL sizes (slider everywhere, no grid) */}
           <div
             ref={scrollRef}
-            className="flex gap-3 md:gap-5 overflow-x-auto overscroll-x-contain snap-x snap-mandatory"
+            className="flex gap-3 md:gap-5 mb-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {PLAYBOOK_ITEMS.map((item) => {

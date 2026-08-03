@@ -29,7 +29,7 @@ export default function HomeBlogCard({ post, index }: HomeBlogCardProps) {
       className="group cursor-pointer flex flex-col gap-4"
     >
       <Link href={`/blogs/${post.handle}`} className="outline-none block w-full">
-        <div className="relative aspect-[3/2] w-full overflow-hidden bg-gray-100 rounded-[32px]">
+        <div className="relative aspect-[3/2] w-full overflow-hidden bg-gray-100 rounded-[12px]">
           {post.image ? (
             <Image
               src={post.image.url}
