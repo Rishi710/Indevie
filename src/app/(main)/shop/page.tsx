@@ -369,10 +369,10 @@ export default function ShopPage() {
         onClick={() => { setActiveCollection("all"); clearAllFilters(); }}
         className="flex flex-col md:flex-row items-center gap-2.5 md:gap-3 group relative cursor-pointer outline-none"
       >
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-[#6c3518]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#6c3518]">
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-[#B40417]/30 p-0.5 transition-all duration-200 group-hover:scale-105 group-hover:border-[#B40417]">
           <div className={`w-full h-full rounded-full flex items-center justify-center font-inter font-bold text-[8px] sm:text-[9px] tracking-wider text-center px-1 transition-colors ${activeCollection === "all"
-            ? "bg-[#6c3518] text-white border-2 border-[#6c3518]"
-            : "bg-[#f5f1e6] text-[#6c3518]"
+            ? "bg-[#B40417] text-white border-2 border-[#B40417]"
+            : "bg-[#B40417] text-[#f5f1e6]"
             }`}>
             SHOP ALL
           </div>
@@ -380,11 +380,11 @@ export default function ShopPage() {
         <span className="relative inline-flex md:w-[110px] md:justify-center">
           {activeCollection === "all" && (
             <span
-              className="absolute inset-0 bg-[#6c3518]"
+              className="absolute inset-0 bg-[#B40417]"
               style={{ clipPath: "polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%)" }}
             />
           )}
-          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-inter font-bold uppercase tracking-wider text-center md:leading-tight transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+          <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-inter font-bold uppercase tracking-wider text-center md:leading-tight transition-colors ${activeCollection === "all" ? "text-white" : "text-gray-500 group-hover:text-[#B40417]"
             }`}>
             {renderTabLabel("Shop All")}
           </span>
@@ -404,8 +404,8 @@ export default function ShopPage() {
             className="flex flex-col md:flex-row items-center gap-2.5 md:gap-3 group relative cursor-pointer outline-none"
           >
             <div className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-16 md:h-16 rounded-full overflow-hidden p-0.5 transition-all duration-200 group-hover:scale-105 ${isActive
-              ? "border-2 border-[#6c3518] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
-              : "border-2 border-[#6c3518]/20 group-hover:border-[#6c3518]/50"
+              ? "border-2 border-[#B40417] shadow-[0_0_0_2px_rgba(108,53,24,0.15)]"
+              : "border-2 border-[#B40417]/20 group-hover:border-[#B40417]/50"
               }`}>
               <div className="w-full h-full rounded-full overflow-hidden relative bg-white">
                 <Image
@@ -417,17 +417,17 @@ export default function ShopPage() {
                 />
               </div>
               {isActive && (
-                <div className="absolute inset-0 bg-[#6c3518]/10 rounded-full pointer-events-none" />
+                <div className="absolute inset-0 bg-[#B40417]/10 rounded-full pointer-events-none" />
               )}
             </div>
             <span className="relative inline-flex max-w-[100px] md:max-w-none md:w-[110px] md:justify-center">
               {isActive && (
                 <span
-                  className="absolute inset-0 bg-[#6c3518]"
+                  className="absolute inset-0 bg-[#B40417]"
                   style={{ clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)" }}
                 />
               )}
-              <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-inter font-bold uppercase tracking-wider text-center leading-tight transition-colors ${isActive ? "text-white" : "text-gray-500 group-hover:text-[#6c3518]"
+              <span className={`relative z-10 px-3 py-1 text-xs sm:text-sm font-inter font-bold uppercase tracking-wider text-center leading-tight transition-colors ${isActive ? "text-white" : "text-gray-500 group-hover:text-[#B40417]"
                 }`}>
                 {renderTabLabel(label)}
               </span>
@@ -517,7 +517,7 @@ export default function ShopPage() {
             {/* All pill */}
             <button
               onClick={() => setActiveProductType("all")}
-              className={`px-5 py-2 rounded-full text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === "all"
+              className={`px-5 py-2 text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === "all"
                 ? "bg-[#B40417] text-white border-[#B40417]"
                 : "bg-transparent text-[#B40417] border-[#B40417]/40 hover:border-[#B40417] hover:bg-[#B40417]/5"
                 }`}
@@ -529,7 +529,7 @@ export default function ShopPage() {
               <button
                 key={type}
                 onClick={() => setActiveProductType(activeProductType === type ? "all" : type)}
-                className={`px-5 py-2 rounded-full text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === type
+                className={`px-5 py-2  text-[11px] font-inter font-bold uppercase tracking-wider border transition-all duration-200 whitespace-nowrap cursor-pointer ${activeProductType === type
                   ? "bg-[#B40417] text-white border-[#B40417]"
                   : "bg-transparent text-[#B40417] border-[#B40417]/40 hover:border-[#B40417] hover:bg-[#B40417]/5"
                   }`}
@@ -649,7 +649,7 @@ export default function ShopPage() {
 
               {/* Sort By Filter */}
               <div>
-                <h4 className="text-xs font-inter font-bold uppercase tracking-wider text-black mb-3">Sort by</h4>
+                <h4 className="text-xs font-inter font-semibold uppercase tracking-wider text-black mb-3">Sort by</h4>
                 <div className="relative">
                   <select
                     value={sortBy}
@@ -690,7 +690,7 @@ export default function ShopPage() {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col items-start text-left pb-6 md:pb-8"
                 >
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-inter font-medium italic text-black tracking-wide leading-tight">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-inter font-medium uppercase italic text-black tracking-wide leading-tight">
                     {activeProductType !== "all"
                       ? activeProductType
                       : activeCollectionName}
@@ -837,9 +837,9 @@ export default function ShopPage() {
                   {mobileFilterView === "productType" && (
                     <motion.div key="productType" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.productTypes.map(([type, count]) => (
-                        <label key={type} htmlFor={`mob-type-${type}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-inter text-gray-700">
-                            {type} <span className="text-gray-400">({count})</span>
+                        <label key={type} htmlFor={`mob-type-${type}`} className="flex items-center font-semibold justify-between py-3.5 cursor-pointer">
+                          <span className="text-sm font-inter font-semibold text-gray-700">
+                            {type} <span className="text-gray-400 font-semibold">({count})</span>
                           </span>
                           <input
                             type="checkbox"
@@ -857,8 +857,8 @@ export default function ShopPage() {
                     <motion.div key="concern" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.concerns.map(([concern, count]) => (
                         <label key={concern} htmlFor={`mob-concern-${concern}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-inter text-gray-700">
-                            {concern} <span className="text-gray-400">({count})</span>
+                          <span className="text-sm font-inter font-semibold text-gray-700">
+                            {concern} <span className="text-gray-400 font-semibold">({count})</span>
                           </span>
                           <input
                             type="checkbox"
@@ -876,8 +876,8 @@ export default function ShopPage() {
                     <motion.div key="size" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.sizes.map(([size, count]) => (
                         <label key={size} htmlFor={`mob-size-${size}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-inter text-gray-700">
-                            {size} <span className="text-gray-400">({count})</span>
+                          <span className="text-sm font-inter font-semibold text-gray-700">
+                            {size} <span className="text-gray-400 font-semibold">({count})</span>
                           </span>
                           <input
                             type="checkbox"
@@ -895,15 +895,15 @@ export default function ShopPage() {
                     <motion.div key="others" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
                       {filterOptions.others.map(([other, count]) => (
                         <label key={other} htmlFor={`mob-other-${other}`} className="flex items-center justify-between py-3.5 cursor-pointer">
-                          <span className="text-sm font-inter text-gray-700">
-                            {other} <span className="text-gray-400">({count})</span>
+                          <span className="text-sm font-inter font-semibold text-gray-700">
+                            {other} <span className="text-gray-400 font-semibold">({count})</span>
                           </span>
                           <input
                             type="checkbox"
                             id={`mob-other-${other}`}
                             checked={selectedOthers.includes(other)}
                             onChange={() => handleOtherToggle(other)}
-                            className="w-5 h-5 border border-[#6c3518]/30 rounded accent-[#6c3518] shrink-0"
+                            className="w-5 h-5 border border-[#B40417]/30 rounded accent-[#B40417] shrink-0"
                           />
                         </label>
                       ))}
@@ -911,15 +911,15 @@ export default function ShopPage() {
                   )}
 
                   {mobileFilterView === "sort" && (
-                    <motion.div key="sort" {...drillDownMotionProps} className="px-5 py-2 divide-y divide-gray-100">
+                    <motion.div key="sort" {...drillDownMotionProps} className="px-5 py-2 font-semibold divide-y divide-gray-100">
                       {SORT_OPTIONS.map((opt) => (
                         <button
                           key={opt.value}
                           onClick={() => { setSortBy(opt.value); setMobileFilterView("root"); }}
-                          className="w-full flex items-center justify-between py-3.5 text-left"
+                          className="w-full flex items-center  justify-between py-3.5 text-left"
                         >
-                          <span className="text-sm font-inter text-gray-700">{opt.label}</span>
-                          {sortBy === opt.value && <span className="w-2.5 h-2.5 rounded-full bg-[#6c3518] shrink-0" />}
+                          <span className="text-sm font-inter font-semibold text-gray-700">{opt.label}</span>
+                          {sortBy === opt.value && <span className="w-2.5 h-2.5 font-semibold rounded-full bg-[#B40417] shrink-0" />}
                         </button>
                       ))}
                     </motion.div>
@@ -931,13 +931,13 @@ export default function ShopPage() {
               <div className="p-4 bg-gray-50 border-t border-gray-150 flex gap-4 shrink-0">
                 <button
                   onClick={() => { clearAllFilters(); setMobileFilterView("root"); }}
-                  className="flex-1 py-3 border border-[#6c3518] text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] bg-white text-[#6c3518] active:bg-[#f5f1e6]"
+                  className="flex-1 py-3 border border-[#B40417] text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] bg-white text-[#B40417] active:bg-[#B40417]"
                 >
                   Clear All
                 </button>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="flex-1 py-3 bg-[#6c3518] text-white text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] active:bg-black transition-colors"
+                  className="flex-1 py-3 bg-[#B40417] text-white text-xs font-inter font-bold uppercase tracking-wider rounded-[4px] active:bg-black transition-colors"
                 >
                   Apply Filters
                 </button>

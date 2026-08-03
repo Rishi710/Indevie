@@ -85,9 +85,11 @@ export default function HomeTestimonials() {
           Hear it from <span className="italic font-semibold">  the Enthusiasts </span>
         </h2> */}
         <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
-          Hear it from <span className="font-semibold italic">
-            <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
-            the Enthusiasts</span>
+          Hear it from the{" "}
+          <span className="relative z-0 inline-block font-semibold italic px-1">
+            <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+            Enthusiasts
+          </span>
         </h2>
       </div>
       <div className="max-w-5xl w-full px-5 relative h-[260px] sm:h-[300px] md:h-[300px] flex items-center justify-center">

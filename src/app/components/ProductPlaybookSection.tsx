@@ -89,9 +89,11 @@ export default function ProductPlaybookSection() {
       <div className="max-w-[1500px] mx-auto">
         <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5 mt-4 md:mt-12">
           <h2 className="text-4xl md:text-5xl text-white font-inter uppercase">
-            Our <span className="font-semibold italic">
-              <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
-              Product Playbook</span>
+            Our Product{" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#CD646A] -z-10" />
+              Playbook
+            </span>
           </h2>
 
         </div>

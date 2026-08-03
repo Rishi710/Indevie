@@ -288,9 +288,11 @@ export default function UgcSection({ initialProducts = [] }: UgcSectionProps) {
       </div> */}
       <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3">
         <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
-          Hear it from <span className="font-semibold italic">
-            <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
-            Our Power Devis</span>
+          Hear it from Our{" "}
+          <span className="relative z-0 inline-block font-semibold italic px-1">
+            <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+            Power Devis
+          </span>
         </h2>
 
       </div>

@@ -88,9 +88,11 @@ export default function InstagramSection() {
                 <span className="italic font-semibold"> #gram </span>
               </h2> */}
               <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
-                On The <span className="font-semibold italic">
-                  <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-20" />
-                  #Gram</span>
+                On The{" "}
+                <span className="relative z-0 inline-block font-semibold italic px-1">
+                  <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+                  #Gram
+                </span>
               </h2>
             </div>
           </Link>

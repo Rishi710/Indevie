@@ -235,9 +235,12 @@ const Footer = () => {
               </p> */}
 
               <h2 className="text-2xl md:text-3xl text-[#ffffff] font-inter uppercase text-center">
-                <span className="font-semibold italic">
-                  Genurveda™ <br /> <span className="absolute bottom-1 h-3 -z-20" />
-                  Ayurveda for Gen Next</span>
+                <span className="relative z-0 inline-block font-semibold italic px-1">
+                  <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#CD656A] -z-10" />
+                  Genurveda™
+                </span>{" "}
+                <br />
+                <span className="font-semibold italic">Ayurveda for Gen Next</span>
               </h2>
               <div className="flex items-center justify-center gap-3 opacity-70 pt-4">
                 <MapPin size={10} strokeWidth={2.5} />
@@ -345,7 +348,7 @@ const Footer = () => {
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute -bottom-[1vw] left-0 w-full select-none pointer-events-none text-center"
         >
-          <h2 className="text-[30vw] font-inter italic tracking-tighter leading-none whitespace-nowrap overflow-hidden">
+          <h2 className="text-[25vw] font-inter italic tracking-tighter leading-none whitespace-nowrap overflow-hidden">
             Indevie
           </h2>
         </motion.div>
