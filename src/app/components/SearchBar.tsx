@@ -278,12 +278,12 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                 <div className="flex items-center gap-3">
                   {/* Search Icon / Spinner */}
                   {isLoading ? (
-                    <svg className="animate-spin w-5 h-5 text-[#6c3518] shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin w-5 h-5 text-black shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#6c3518]/60 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-black/60 shrink-0">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                   )}
@@ -292,11 +292,11 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                   <input
                     ref={inputRef}
                     id="search-input"
-                    type="search"
+                    type="text"
                     value={query}
                     onChange={handleInputChange}
                     placeholder="Search by product, ingredient, concern, benefit…"
-                    className="flex-1 py-2.5 text-base sm:text-lg text-gray-800 placeholder-gray-350 bg-transparent outline-none font-inter"
+                    className="flex-1 py-2.5 text-base sm:text-lg text-gray-800 placeholder-gray-350 bg-transparent outline-none font-inter [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
                     autoComplete="off"
                     spellCheck={false}
                   />
@@ -333,7 +333,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                 </div>
 
                 {/* Bottom accent line */}
-                <div className="mt-3 h-[1.5px] w-full bg-gradient-to-r from-[#6c3518]/40 via-[#6c3518]/10 to-transparent rounded-full" />
+                <div className="mt-3 h-[1.5px] w-full bg-gradient-to-r from-[#B40417]/40 via-[#B40417]/10 to-transparent rounded-full" />
               </div>
 
               {/* ── Body ── */}
@@ -349,8 +349,8 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                       {/* BESTSELLERS chips */}
                       <div>
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
-                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-inter font-bold">
+                          <span className="w-[3px] h-[14px] bg-[#B40417] inline-block rounded-sm" />
+                          <p className="text-[12px] uppercase tracking-[0.22em] text-black font-inter font-semibold">
                             Bestsellers
                           </p>
                         </div>
@@ -359,7 +359,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                             <button
                               key={item.query}
                               onClick={() => triggerQuick(item.query, item.label)}
-                              className="text-xs font-inter font-semibold px-3.5 py-1.5 bg-[#f5f1e6] text-[#6c3518] border border-[#6c3518]/20 rounded-full hover:bg-[#6c3518] hover:text-white hover:border-[#6c3518] transition-all duration-200"
+                              className="text-xs font-inter font-semibold px-3.5 py-1.5 bg-[#B40417]/10 text-black border border-[#B40417]/20 hover:bg-[#B40417] hover:text-white hover:border-[#B40417] transition-all duration-200"
                             >
                               {item.label}
                             </button>
@@ -370,8 +370,8 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                       {/* BROWSE BY CONCERN — Clean grid pills, icons removed */}
                       <div>
                         <div className="flex items-center gap-2 mb-4">
-                          <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
-                          <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-inter font-bold">
+                          <span className="w-[3px] h-[14px] bg-[#B40417] inline-block" />
+                          <p className="text-[12px] uppercase tracking-[0.22em] text-black font-inter font-semibold">
                             Shop by Concern
                           </p>
                         </div>
@@ -382,9 +382,9 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                               <button
                                 key={concern}
                                 onClick={() => handleConcernClick(concern)}
-                                className={`px-4 py-3 rounded-xl text-[11px] font-inter font-bold uppercase tracking-wider transition-all duration-200 text-left border ${isActive
-                                    ? "bg-[#6c3518] border-[#6c3518] text-white shadow-md scale-[1.01]"
-                                    : "bg-[#faf8f4] border-[#6c3518]/10 hover:border-[#6c3518]/30 hover:bg-[#faf8f3] text-gray-700"
+                                className={`px-4 py-3  text-[11px] font-inter font-bold uppercase tracking-wider transition-all duration-200 text-left border ${isActive
+                                  ? "bg-[#B40417] border-[#B40417] text-white shadow-md scale-[1.01]"
+                                  : "bg-white border-[#B40417]/10 hover:border-[#B40417]/30 hover:bg-[#B40417] text-black hover:text-white"
                                   }`}
                               >
                                 {concern}
@@ -398,8 +398,8 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                     {/* RIGHT: Featured Products list, filtered dynamically by active concern */}
                     <div>
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="w-[3px] h-[14px] bg-[#6c3518] inline-block rounded-sm" />
-                        <p className="text-[10px] uppercase tracking-[0.22em] text-[#6c3518] font-inter font-bold">
+                        <span className="w-[3px] h-[14px] bg-[#B40417] inline-block rounded-sm" />
+                        <p className="text-[12px] uppercase tracking-[0.22em] text-black font-inter font-semibold">
                           {activeConcern ? `Products for ${activeConcern}` : "Popular Products"}
                         </p>
                       </div>
@@ -414,30 +414,30 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                                 key={product.id}
                                 href={`/products/${product.handle}`}
                                 onClick={handleResultClick}
-                                className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#faf8f3] group transition-colors duration-150 border border-transparent hover:border-[#6c3518]/10 bg-[#faf8f4]/60"
+                                className="flex items-center gap-3 p-2.5  hover:bg-[#B40417]/20 group transition-colors duration-150 border border-transparent hover:border-[#B40417]/10 hover:text-black"
                               >
-                                <div className="w-12 h-12 rounded-lg bg-[#f5f1e6] overflow-hidden shrink-0 relative border border-gray-100">
+                                <div className="w-12 h-12  bg-[#B40417] overflow-hidden shrink-0 relative ">
                                   {image ? (
                                     <Image src={image.url} alt={image.altText || product.title} fill className="object-cover" sizes="48px" />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center">
-                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5 text-[#6c3518]/20">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-5 h-5 text-[#B40417]/20">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
                                       </svg>
                                     </div>
                                   )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-inter font-medium text-gray-700 group-hover:text-[#6c3518] transition-colors truncate">
+                                  <p className="text-sm font-inter font-semibold text-black group-hover:text-[#B40417] transition-colors truncate">
                                     {product.title}
                                   </p>
                                   {price && (
-                                    <p className="text-xs font-inter text-[#6c3518]/70 mt-0.5 font-bold">
+                                    <p className="text-xs font-inter text-[#B40417] mt-0.5 font-semibold">
                                       {formatPrice(price.amount, price.currencyCode)}
                                     </p>
                                   )}
                                 </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#6c3518] group-hover:translate-x-0.5 transition-all shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-gray-300 group-hover:text[#B40417] group-hover:translate-x-0.5 transition-all shrink-0">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                                 </svg>
                               </Link>
@@ -480,10 +480,10 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                                   <Link
                                     href={`/products/${product.handle}`}
                                     onClick={handleResultClick}
-                                    className="flex items-center gap-3 px-2.5 py-2 rounded-xl hover:bg-[#faf8f3] group transition-colors duration-150"
+                                    className="flex items-center gap-3 px-2.5 py-2 hover:bg-[#B40417]/10 group transition-colors duration-150"
                                   >
                                     {/* Compact thumbnail */}
-                                    <div className="w-11 h-11 rounded-lg bg-[#f5f1e6] overflow-hidden shrink-0 relative">
+                                    <div className="w-11 h-11 rounded-lg bg-[#B40417] overflow-hidden shrink-0 relative">
                                       {image ? (
                                         <Image
                                           src={image.url}
@@ -494,7 +494,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                                         />
                                       ) : (
                                         <div className="w-full h-full flex items-center justify-center">
-                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4 text-[#6c3518]/20">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4 text-[#B40417]/20">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
                                           </svg>
                                         </div>
@@ -503,11 +503,11 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
 
                                     {/* Info */}
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-inter font-medium text-gray-800 group-hover:text-[#6c3518] transition-colors truncate leading-snug">
+                                      <p className="text-sm font-inter font-medium text-black group-hover:text-black transition-colors truncate leading-snug">
                                         {product.title}
                                       </p>
                                       {product.tags?.length > 0 && (
-                                        <p className="text-[10px] text-gray-400 font-inter truncate mt-0.5 leading-tight">
+                                        <p className="text-[10px] text-black font-inter truncate mt-0.5 leading-tight">
                                           {product.tags.slice(0, 3).join(" · ")}
                                         </p>
                                       )}
@@ -516,18 +516,18 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                                     {/* Price */}
                                     {price && (
                                       <div className="text-right shrink-0">
-                                        <span className="text-sm font-semibold text-[#6c3518] font-inter">
+                                        <span className="text-sm font-semibold text-black font-inter">
                                           {formatPrice(price.amount, price.currencyCode)}
                                         </span>
                                         {compareAt && parseFloat(compareAt.amount) > parseFloat(price.amount) && (
-                                          <p className="text-[10px] text-gray-400 line-through font-inter">
+                                          <p className="text-[10px] text-black line-through font-inter">
                                             {formatPrice(compareAt.amount, compareAt.currencyCode)}
                                           </p>
                                         )}
                                       </div>
                                     )}
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#6c3518] group-hover:translate-x-0.5 transition-all shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#B40417] group-hover:translate-x-0.5 transition-all shrink-0">
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                                     </svg>
                                   </Link>
@@ -540,7 +540,7 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                           <Link
                             href={`/shop?q=${encodeURIComponent(query)}`}
                             onClick={handleResultClick}
-                            className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 border border-[#6c3518]/20 rounded-xl text-sm font-inter font-medium text-[#6c3518] hover:bg-[#6c3518] hover:text-white transition-all duration-200"
+                            className="mt-4 flex items-center justify-center gap-2 w-full py-2.5 border border-[#B40417]/20  text-sm font-inter font-semibold text-black hover:bg-[#B40417] hover:text-white transition-all duration-200"
                           >
                             View all results
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
@@ -550,13 +550,13 @@ export default function SearchBar({ solidMode }: SearchBarProps) {
                         </>
                       ) : hasSearched ? (
                         <div className="py-10 text-center">
-                          <div className="w-12 h-12 rounded-full bg-[#f5f1e6] flex items-center justify-center mx-auto mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-[#6c3518]/50">
+                          <div className="w-12 h-12 rounded-full bg-[#B40417]/10 flex items-center justify-center mx-auto mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-[#B40417]/50">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                           </div>
                           <p className="text-gray-500 font-inter text-sm font-medium">
-                            No results for &ldquo;<span className="text-[#6c3518]">{query}</span>&rdquo;
+                            No results for &ldquo;<span className="text-black">{query}</span>&rdquo;
                           </p>
                           <p className="text-gray-400 font-inter text-xs mt-1">
                             Try a different ingredient, concern, or product name.
