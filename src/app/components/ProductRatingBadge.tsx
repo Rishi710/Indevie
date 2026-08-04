@@ -33,18 +33,18 @@ export default function ProductRatingBadge({ productId }: ProductRatingBadgeProp
   const roundedRating = Math.round(averageRating);
 
   return (
-    <div className="flex items-center gap-1 mt-1">
+    <div className="flex items-center gap-1">
       <div className="flex gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            size={14}
-            fill={star <= roundedRating ? "#FFD700" : "transparent"}
-            color={star <= roundedRating ? "#FFD700" : "#d1d5db"} // Golden #FFD700
+            size={18}
+            fill={star <= roundedRating ? "#25211a" : "transparent"}
+            color={star <= roundedRating ? "#25211a" : "#25211a"}
           />
         ))}
       </div>
-      <span className="text-xs text-gray-500 ml-1">({totalReviews})</span>
+      <span className="text-lg text-gray-500 ml-1">({totalReviews})</span>
     </div>
   );
 }

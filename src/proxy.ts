@@ -25,13 +25,12 @@ export function proxy(request: NextRequest) {
         return NextResponse.next();
     }
 
-    // Protect /account routes - redirect to login if no token
+    // Protect /account routes - redirect to home if no token
+    // (Customer auth is handled by GoKwik; /login is disabled)
     if (pathname.startsWith("/account")) {
         const token = request.cookies.get("customerAccessToken");
         if (!token) {
-            const loginUrl = new URL("/login", request.url);
-            loginUrl.searchParams.set("redirect", pathname);
-            return NextResponse.redirect(loginUrl);
+            return NextResponse.redirect(new URL("/", request.url));
         }
     }
 

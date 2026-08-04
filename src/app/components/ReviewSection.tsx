@@ -103,8 +103,8 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
           >
             <Star
               size={interactive ? 24 : 16}
-              fill={star <= rating ? "#6c3518" : "transparent"}
-              className={star <= rating ? "text-[#6c3518]" : "text-gray-300"}
+              fill={star <= rating ? "#B40417" : "transparent"}
+              className={star <= rating ? "text-[#B40417]" : "text-gray-300"}
             />
           </button>
         ))}
@@ -113,13 +113,17 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
   };
 
   return (
-    <div className="w-full mt-12 py-10 border-t border-[#e5e5e5]/50 px-4 md:px-0">
+    <div className="w-full  py-4 border-t border-[#e5e5e5]/50 px-4 md:px-0">
       <div className="flex flex-col md:flex-row justify-between items-center md:items-center mb-10 gap-6">
         <div>
-          <h2 className="text-2xl font-inter italic text-[#2a2a2a] mb-3">
-            Customer Reviews
+          <h2 className="text-4xl md:text-5xl text-black flex flex-col justify-center items-center md:items-center  font-inter uppercase">
+            Customer{" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+              Reviews
+            </span>
           </h2>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mt-4">
             {renderStars(Math.round(averageRating))}
             <p className="text-sm font-inter text-gray-500 font-medium">
               {averageRating > 0 ? averageRating.toFixed(1) : "0.0"} based on {totalReviews} Reviews
@@ -128,14 +132,14 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
         </div>
         <button
           onClick={() => setIsWriting(!isWriting)}
-          className="bg-[#6c3518] text-white px-6 py-3 rounded-[8px] text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-colors"
+          className="bg-[#B40417] text-white px-6 py-3 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-black transition-colors"
         >
           {isWriting ? "Cancel" : "Write a Review"}
         </button>
       </div>
 
       {isWriting && (
-        <div className="bg-white p-6 md:p-8 font-inter rounded-[14px] border border-[#e5e5e5] mb-12 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="bg-white p-6 md:p-8 font-inter border-2 border-[#e5e5e5] mb-12 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
           {submitSuccess ? (
             <div className="text-center py-10 text-[#6c3518]">
               <h3 className="text-xl font-inter italic mb-2">Thank you!</h3>
@@ -162,7 +166,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="border border-[#e5e5e5] rounded-[8px] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#f5f1e6]/40"
+                    className="border border-[#B30617] px-4 py-3 text-sm outline-none focus:border-[#B30617] transition-colors bg-[#B30617]/5"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -173,7 +177,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="border border-[#e5e5e5] rounded-[8px] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#f5f1e6]/40"
+                    className="border border-[#B30617] px-4 py-3 text-sm outline-none focus:border-[#B30617] transition-colors bg-[#B30617]/10"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -184,7 +188,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                     type="text"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="border border-[#e5e5e5] rounded-[8px] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#f5f1e6]/40"
+                    className="border border-[#B30617] px-4 py-3 text-sm outline-none focus:border-[#B30617] transition-colors bg-[#B30617]/10"
                     placeholder="e.g. Mumbai, India"
                   />
                 </div>
@@ -196,7 +200,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                     min="1"
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    className="border border-[#e5e5e5] rounded-[8px] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#f5f1e6]/40"
+                    className="border border-[#B30617] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#B30617]/10"
                     placeholder="25"
                   />
                 </div>
@@ -209,7 +213,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                   rows={4}
                   value={formData.body}
                   onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                  className="border border-[#e5e5e5] rounded-[8px] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#f5f1e6]/40 resize-none"
+                  className="border border-[#B30617] px-4 py-3 text-sm outline-none focus:border-[#6c3518] transition-colors bg-[#B30617]/10 resize-none"
                   placeholder="Write your comments here..."
                 />
               </div>
@@ -217,7 +221,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-black text-white px-6 py-4 rounded-[8px] text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-[#6c3518] transition-colors mt-2 disabled:opacity-50"
+                className="bg-[#B40417] text-white px-6 py-4 text-[12px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B30617]/75 transition-colors mt-2 disabled:opacity-50"
               >
                 {isSubmitting ? "Submitting..." : "Submit Review"}
               </button>
@@ -231,11 +235,11 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
           <div className="w-6 h-6 border-2 border-gray-200 border-t-[#6c3518] rounded-full animate-spin" />
         </div>
       ) : reviews.length === 0 ? (
-        <div className="text-center py-16 bg-[#e5e5e5]/20 rounded-[14px]">
+        <div className="text-center py-16 bg-[#e5e5e5]/20">
           <p className="text-gray-500 mb-4">Make the first move. Let us know how this product feels.</p>
           <button
             onClick={() => setIsWriting(true)}
-            className="text-[#6c3518] underline font-medium hover:text-black transition-colors"
+            className="text-[#B30617] underline font-medium hover:text-black transition-colors"
           >
             Be the first to review
           </button>
@@ -258,7 +262,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
             }
 
             return (
-              <div key={review.id} className="bg-white p-6 rounded-[14px] border border-[#e5e5e5]/80 shadow-sm flex flex-col gap-3">
+              <div key={review.id} className="bg-white p-6 border border-[#e5e5e5]/80 shadow-sm flex flex-col gap-3">
                 <div className="flex justify-between items-start mb-1">
                   {renderStars(review.rating)}
                   <span className="text-xs text-gray-400">
@@ -283,7 +287,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
                     )}
                   </div>
                   {review.reviewer.verified_buyer && (
-                    <span className="bg-[#6c3518]/10 text-[#6c3518] px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
+                    <span className="bg-[#B70F21] text-white px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
                       Verified
                     </span>
                   )}

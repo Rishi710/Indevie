@@ -1,20 +1,6 @@
-import React from "react";
-import AuthLayout from "../../components/auth/AuthLayout";
-import RegisterForm from "../../components/auth/RegisterForm";
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "Create Account - Indevie Beauty",
-  description: "Join Indevie Beauty to track your orders and enjoy a personalized shopping experience.",
-};
-
+// Registration is handled by GoKwik — redirect to home
 export default function RegisterPage() {
-  return (
-    <AuthLayout
-    title="Join the Indevie Community" 
-    subtitle="Create an account for a more personalized experience"
-    >
-      <RegisterForm />
-    </AuthLayout>
-      
-  );
+  redirect("/");
 }

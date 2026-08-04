@@ -139,19 +139,22 @@ export default function Header({
                 onMouseEnter={() => isLoggedIn && setShowAccountDropdown(true)}
                 onMouseLeave={() => isLoggedIn && setShowAccountDropdown(false)}
               >
-                <Link
-                  href={isLoggedIn ? "/account" : "/login"}
-                  className="hover:opacity-70 transition-opacity hidden sm:flex items-center gap-2 group relative py-2"
-                  aria-label="Account"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                  </svg>
-                  <span className={`text-[11px] font-inter font-bold tracking-[0.2em] uppercase transition-colors ${shouldBeSolid ? "text-[#B40417]" : "text-white"
-                    }`}>
-                    {isLoggedIn ? `${userName || "User"}` : "Login"}
-                  </span>
-                </Link>
+{/* Account icon — only shown when logged in; GoKwik handles guest auth */}
+                {isLoggedIn && (
+                  <Link
+                    href="/account"
+                    className="hover:opacity-70 transition-opacity hidden sm:flex items-center gap-2 group relative py-2"
+                    aria-label="Account"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.25} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                    <span className={`text-[11px] font-inter font-bold tracking-[0.2em] uppercase transition-colors ${shouldBeSolid ? "text-[#B40417]" : "text-white"
+                      }`}>
+                      {userName || "Account"}
+                    </span>
+                  </Link>
+                )}
 
                 {/* Account Dropdown */}
                 <AnimatePresence>
@@ -368,27 +371,8 @@ export default function Header({
                 transition={{ delay: 0.15 + mobileFlatLinks.length * 0.05 }}
                 className="pt-6 mt-2 border-t border-gray-100"
               >
-                {!isLoggedIn ? (
-                  <Link
-                    href="/login"
-                    className="flex items-center gap-4 text-gray-900 group"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <div className="w-12 h-12 bg-[#f5f1e6] rounded-full flex items-center justify-center text-[#6c3518]">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-inter font-bold tracking-widest text-gray-400 uppercase">
-                        Welcome to Indevie
-                      </p>
-                      <p className="text-xl font-inter font-medium text-[#6c3518]">
-                        Login / Register
-                      </p>
-                    </div>
-                  </Link>
-                ) : (
+{/* Guest login link removed — GoKwik handles customer auth */}
+                {isLoggedIn && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 text-gray-900 font-inter">
                       <div className="w-12 h-12 bg-[#f5f1e6] rounded-full flex items-center justify-center text-[#6c3518]">

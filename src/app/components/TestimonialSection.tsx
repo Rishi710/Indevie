@@ -58,17 +58,19 @@ export default function TestimonialSection() {
   };
 
   return (
-    <section className="w-full bg-[#110f0e] py-20 md:py-28 relative overflow-hidden">
+    <section className="w-full bg-[#110f0e] py-12 md:py-24 relative overflow-hidden">
       {/* Creative Background Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#6c3518] rounded-full blur-[150px] opacity-20 pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#d4af37] rounded-full blur-[150px] opacity-10 pointer-events-none" />
-
       <div className="max-w-[1500px] mx-auto relative z-10">
-        <div className="flex flex-col items-center text-center mb-10 md:mb-16 px-4">
-          <h2 className="text-3xl md:text-5xl font-inter text-[#f5f1e6] italic mb-4">
-            Hear It From Our Community
+        <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5">
+          <h2 className="text-4xl md:text-5xl text-white font-inter uppercase">
+            Hear it from{" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#d4af37]/40 -z-10" />
+              Our Community
+            </span>
           </h2>
-          <div className="w-16 md:w-20 h-[1px] bg-[#d4af37]/40"></div>
         </div>
 
         {/* Horizontal scroll on Mobile, 4 Columns on Desktop */}

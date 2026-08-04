@@ -14,7 +14,7 @@ import {
 } from "@/lib/shopify";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, ReactNode } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { Bookmark, ShoppingBag, ChevronDown, Check } from "lucide-react";
 import ProductCard from "@/app/components/ProductCard";
@@ -24,6 +24,7 @@ import ProductRatingBadge from "@/app/components/ProductRatingBadge";
 import TestimonialSection from "@/app/components/TestimonialSection";
 import { getProductFaqs } from "@/app/components/ProductFaqSection";
 import { pixelViewContent } from "@/lib/pixel";
+
 
 // FAQs card — same header/card chrome as RichTextAccordionRow, but the body is a
 // scrollable list of Q&A pairs (all shown at once) instead of a bullet list.
@@ -119,7 +120,7 @@ function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 mb-8">
+    <div className="flex flex-col gap-4">
       <RichTextAccordionRow title="Benefits" html={benefitsHtml} />
       <RichTextAccordionRow title="Ingredients" html={ingredientsHtml} />
       <RichTextAccordionRow title="How To Use" html={howToUseHtml} />
@@ -145,9 +146,9 @@ function ProductForAndSize({ product }: { product: ShopifyProduct }) {
         <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
           <span className="font-semibold font-inter text-[20px] text-[#2a2a2a]">For:</span>
           {concerns.map((concern, i) => (
-            <span key={concern} className="flex font-inter-semibold text-[16px] items-center gap-0.4 text-gray-600">
+            <span key={concern} className="flex font-inter font-semibold text-[18px] items-center gap-1 italic text-gray-600">
               {concern}
-              <Check size={13} className="text-[#B40417] text-[20px]" strokeWidth={3} />
+              <Check size={20} className="text-[#B40417] text-[20px]" strokeWidth={3} />
               {i < concerns.length - 1 && <span className="text-gray-300">,</span>}
             </span>
           ))}
@@ -157,7 +158,7 @@ function ProductForAndSize({ product }: { product: ShopifyProduct }) {
       {size && (
         <div className="flex items-center gap-2.5">
           <span className="font-semibold text-[20px] text-[#2a2a2a]">Size:</span>
-          <span className="px-4 py-1.5 rounded-full border border-[#B40417]  bg-[#B40417]/5 text-[#B40417] font-medium text-[14px]">
+          <span className="px-4 py-1.5 border border-[#B40417]  bg-[#B40417]/5 text-[#B40417] font-medium text-[14px]">
             {size}
           </span>
         </div>
@@ -191,7 +192,7 @@ function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }
           return (
             <div
               key={p.id}
-              className="w-[320px] shrink-0 flex items-center gap-3 border border-black p-3"
+              className="w-[320px] shrink-0 flex items-center gap-3 border-2 border-black p-3"
             >
               <Link
                 href={`/products/${p.handle}`}
@@ -204,7 +205,7 @@ function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }
               <div className="flex flex-col gap-1.5 min-w-0">
                 <Link
                   href={`/products/${p.handle}`}
-                  className="text-[14px] font-medium text-[#2a2a2a] leading-snug line-clamp-2 underline underline-offset-2"
+                  className="text-[14px] font-semibold text-black leading-snug line-clamp-2 underline underline-offset-2"
                 >
                   {p.title}
                 </Link>
@@ -238,10 +239,12 @@ function UpgradeYourRoutineCarousel({ products }: { products: ShopifyProduct[] }
 
 export default function ProductPageClient({
   product,
-  relatedProducts = []
+  relatedProducts = [],
+  productGridSection,
 }: {
   product: ShopifyProduct;
   relatedProducts?: ShopifyProduct[];
+  productGridSection?: ReactNode;
 }) {
   const [quantity, setQuantity] = useState(1);
   const [mobileImageIndex, setMobileImageIndex] = useState(0);
@@ -279,10 +282,10 @@ export default function ProductPageClient({
   const variantId = selectedVariant?.id;
   const price = selectedVariant?.price;
   const compareAtPrice = selectedVariant?.compareAtPrice;
-  const formattedPrice = price ? `Rs. ${parseFloat(price.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "N/A";
+  const formattedPrice = price ? `₹${parseFloat(price.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "N/A";
 
   const formattedComparePrice = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price?.amount || "0")
-    ? `MRP. ${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    ? `₹${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
     : null;
 
   const { isOutOfStock, maxQuantity } = getStockInfo(selectedVariant);
@@ -333,7 +336,7 @@ export default function ProductPageClient({
                 <button
                   key={idx}
                   onClick={() => setSelectedImageIndex(idx)}
-                  className={`w-full aspect-square shrink-0 relative rounded-md overflow-hidden bg-[#e5e5e5] transition-colors ${idx === selectedImageIndex ? "border-2 border-black" : "border border-black/20 hover:border-black/50"
+                  className={`w-full aspect-square shrink-0 relative overflow-hidden bg-[#e5e5e5] transition-colors ${idx === selectedImageIndex ? "border-2 border-black" : "border border-black/20 hover:border-black/50"
                     }`}
                 >
                   <Image
@@ -347,7 +350,7 @@ export default function ProductPageClient({
               ))}
             </div>
           )}
-          <div className="flex-1 self-start max-w-[520px] aspect-[4.5/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
+          <div className="flex-1 self-start max-w-[520px] aspect-[4.5/5] relative overflow-hidden bg-[#e5e5e5]">
             {selectedImage && (
               <Image
                 src={selectedImage.url}
@@ -365,7 +368,7 @@ export default function ProductPageClient({
             the image column beside it stays sticky/pinned. */}
         <div className="  py-8 px-4 pr-10 lg:pr-40 flex flex-col min-w-0">
           <div className="flex justify-between items-start mb-2 mt-2">
-            <h1 className="text-[20px] lg:text-[28px] leading-tight font-inter font-semibold text-black max-w-[85%]">
+            <h1 className="text-[20px] lg:text-[28px] leading-tight font-sans font-semibold italic text-black max-w-[85%]">
               {product.title}
             </h1>
             {/* <button aria-label="Save product" className="text-gray-400 hover:text-black transition-colors mt-2">
@@ -373,15 +376,15 @@ export default function ProductPageClient({
              </button> */}
           </div>
 
-          <div className="flex items-center font-inter gap-3">
-            <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
+          <div className="flex items-center font-inter gap-3 mt-2">
             {formattedComparePrice && (
-              <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
+              <p className="text-[22px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
             )}
+            <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
           </div>
           <p className="text-[11px] text-gray-400 mb-1">(MRP inclusive of all taxes)</p>
 
-          <div className="mb-3">
+          <div className="">
             <ProductRatingBadge productId={product.id} />
           </div>
 
@@ -403,27 +406,27 @@ export default function ProductPageClient({
           <div className="flex flex-col gap-3 mb-8">
             <span className="text-[11px] font-inter font-bold tracking-[0.15em] text-black uppercase">Quantity</span>
             <div className="flex items-center gap-4">
-              <div className="flex items-center w-32 border border-black bg-white/50 backdrop-blur-sm">
+              <div className="flex items-center w-32 border-2 border-black bg-white/50 backdrop-blur-sm">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-10 h-10 flex items-center justify-center text-[#B40417]  hover:bg-[#B40417]/5 transition-colors"
                 >
                   −
                 </button>
-                <div className="flex-1 text-center text-sm font-medium text-[#B40417]">
+                <div className="flex-1 text-center text-sm font-semibold text-[#B40417]">
                   {quantity}
                 </div>
                 <button
                   onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
                   disabled={isOutOfStock || quantity >= maxQuantity}
-                  className="w-10 h-10 flex items-center justify-center text-[#B40417]  hover:bg-[#B40417]/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                  className="w-10 h-10 flex items-center justify-center text-[#B40417] font-semibold hover:bg-[#B40417]/5 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                 >
                   +
                 </button>
               </div>
               <button
                 onClick={handleShare}
-                className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-black hover:bg-[#B40417]/5 transition-colors h-10 flex items-center justify-center bg-white/50 backdrop-blur-sm text-[#B40417]"
+                className="text-[12px] uppercase tracking-widest font-inter font-semibold px-6 py-3 border-2 border-black hover:bg-[#B40417]/5 transition-colors h-10 flex items-center justify-center bg-white/50 backdrop-blur-sm text-[#B40417]"
               >
                 Share
               </button>
@@ -443,13 +446,13 @@ export default function ProductPageClient({
               <>
                 <button
                   onClick={() => variantId && addItem(variantId, quantity)}
-                  className="w-full bg-[#B40417] border border-[#B40417] text-white py-4 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417]/80 hover:text-white transition-all duration-300 font-inter shadow-sm"
+                  className="w-full bg-[#B40417] border border-[#B40417] text-white py-4 text-[12px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417]/80 hover:text-white transition-all duration-300 font-inter shadow-sm"
                 >
                   ADD TO CART
                 </button>
                 <button
                   onClick={handleBuyNow}
-                  className="w-full bg-white border border-[#B40417] text-[#B40417]  py-4 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-all duration-500 font-inter shadow-xl shadow-[#B40417]/10"
+                  className="w-full bg-white border-2 border-[#B40417] text-[#B40417]  py-4 text-[12px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-all duration-500 font-inter shadow-xl shadow-[#B40417]/10"
                 >
                   BUY NOW
                 </button>
@@ -462,7 +465,7 @@ export default function ProductPageClient({
       </div>
 
       {/* Mobile view fallback: Stacked gallery moved to slider */}
-      <div className="md:hidden flex flex-col p-4 gap-2 pt-30 pb-10">
+      <div className="md:hidden flex flex-col p-4 gap-2 pt-25">
         {/* Mobile Gallery Slider */}
         <div className="relative -mx-4 group">
           <div
@@ -475,8 +478,8 @@ export default function ProductPageClient({
             }}
           >
             {images.map((img, idx) => (
-              <div key={idx} className="w-full shrink-0 snap-center px-4">
-                <div className="w-full aspect-[4/5] relative rounded-[14px] overflow-hidden bg-[#e5e5e5]">
+              <div key={idx} className="w-full shrink-0 snap-center">
+                <div className="w-full aspect-[4/5] relative overflow-hidden bg-[#e5e5e5]">
                   <Image
                     src={img.url}
                     alt={img.altText || `${product.title} ${idx + 1}`}
@@ -492,11 +495,11 @@ export default function ProductPageClient({
 
           {/* Pagination Dots */}
           {images.length > 1 && (
-            <div className="flex justify-center gap-1.5 mt-4">
+            <div className="flex justify-center gap-3 mt-8">
               {images.map((_, idx) => (
                 <div
                   key={idx}
-                  className={`h-1 rounded-full transition-all duration-300 ${idx === mobileImageIndex ? "w-6 bg-[#6c3518]" : "w-1.5 bg-[#6c3518]/20"
+                  className={`h-2.5 w-2.5 transition-all duration-300 ${idx === mobileImageIndex ? "bg-[#B40417]" : "bg-[#B40417]/20"
                     }`}
                 />
               ))}
@@ -504,25 +507,25 @@ export default function ProductPageClient({
           )}
         </div>
 
-        <div className="flex flex-col mb-2">
+        <div className="flex flex-col mb-2 mt-4">
           <div className="flex justify-between items-start">
-            <h1 className="text-[26px] leading-tight font-inter font-medium text-black max-w-[85%]">{product.title}</h1>
+            <h1 className="text-[24px] leading-tight font-sans font-medium text-black max-w-[85%]">{product.title}</h1>
             {/* <button aria-label="Save product" className="text-gray-400 hover:text-black transition-colors mt-2">
                <Bookmark size={24} />
              </button> */}
           </div>
-          <div className="flex items-center gap-3 mt-2 mb-1">
-            <p className="text-[22px] text-black">{formattedPrice}</p>
+          <div className="flex items-center gap-3 mt-5">
+            <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
             {formattedComparePrice && (
-              <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
+              <p className="text-[22px] font-semibold text-black">{formattedPrice}</p>
             )}
           </div>
-          <p className="text-[11px] text-gray-400 mb-2">(MRP inclusive of all taxes)</p>
+          <p className="text-[12px] text-gray-400 ">(MRP Inclusive of all Taxes)</p>
           <ProductRatingBadge productId={product.id} />
         </div>
 
         {(safeDescriptionHtml || product.description) && (
-          <div className="text-[13px] text-black leading-relaxed prose prose-sm max-w-none">
+          <div className="text-[16px] text-black leading-relaxed prose prose-sm font-medium max-w-none">
             {safeDescriptionHtml ? (
               <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
             ) : (
@@ -539,27 +542,27 @@ export default function ProductPageClient({
         <div className="flex flex-col gap-1 mb-2">
           <span className="text-[11px] font-bold tracking-[0.15em] text-black uppercase">Quantity</span>
           <div className="flex items-center gap-4">
-            <div className="flex items-center w-32 border border-black bg-white">
+            <div className="flex items-center w-32 border-2 border-black bg-white">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-12 h-12 flex items-center justify-center text-black"
+                className="w-12 h-12 flex items-center justify-center font-semibold text-black"
               >
                 −
               </button>
-              <div className="flex-1 text-center font-medium text-[#B40417]">
+              <div className="flex-1 text-center font-semibold text-[#B40417]">
                 {quantity}
               </div>
               <button
                 onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
                 disabled={isOutOfStock || quantity >= maxQuantity}
-                className="w-12 h-12 flex items-center justify-center text-black disabled:opacity-30"
+                className="w-12 h-12 flex items-center justify-center font-semibold text-black disabled:opacity-30"
               >
                 +
               </button>
             </div>
             <button
               onClick={handleShare}
-              className="text-[10px] uppercase tracking-widest font-bold px-6 py-3 border border-black hover:bg-black/20 hover:text-white transition-colors h-12 flex items-center justify-center text-black"
+              className="text-[10px] uppercase tracking-widest font-semibold px-6 py-3 border-2 border-black hover:bg-black/20 hover:text-white transition-colors h-12 flex items-center justify-center text-black"
             >
               Share
             </button>
@@ -578,13 +581,13 @@ export default function ProductPageClient({
             <>
               <button
                 onClick={() => variantId && addItem(variantId, quantity)}
-                className="w-full bg-[#B40417] border border-[#B40417]/20 text-white py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-white hover:text-[#B40417] transition-all duration-300 font-inter shadow-sm"
+                className="w-full bg-[#B40417] border-2 border-[#B40417] text-white py-4 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-white hover:text-[#B40417] transition-all duration-300 font-inter shadow-sm"
               >
                 ADD TO CART
               </button>
               <button
                 onClick={handleBuyNow}
-                className="w-full bg-white border border-[#B40417]/20 text-[#B40417] py-4 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-all duration-500 font-inter shadow-xl shadow-[#B40417]/10"
+                className="w-full bg-white border-2 border-[#B40417] text-[#B40417] py-4 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-all duration-500 font-inter shadow-xl shadow-[#B40417]/10"
               >
                 BUY NOW
               </button>
@@ -596,23 +599,30 @@ export default function ProductPageClient({
       </div>
 
 
+      {/* Crowd Favourites */}
+      {productGridSection}
 
-      {/* Judge.me Reviews Section */}
+      {/* Judge.me Reviews Section
       <div className="max-w-[1500px] mx-auto w-full md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 px-4 sm:px-10 lg:px-16 pb-12">
         <div className="w-full relative col-span-1 md:col-start-1 md:pr-10 lg:pr-5">
           <ReviewSection productId={product.id} />
         </div>
-      </div>
+      </div> */}
 
       {/* Hardcoded Featured Testimonials */}
       <TestimonialSection />
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16 py-20 border-t border-[#e5e5e5]/30">
-          <div className="flex flex-col items-center mb-2">
-            <h2 className="text-3xl md:text-4xl font-inter text-[#6c3518] italic mb-12">Complete Your Ritual</h2>
-            <div className="w-24 h-[1px] bg-[#6c3518]/20"></div>
+        <section className="max-w-[1500px] mx-auto px-4 sm:px-10 lg:px-16 py-4 border-t border-[#e5e5e5]/30">
+          <div className="flex flex-col items-center text-center mb-8 md:mb-16 gap-3 md:gap-5 mt-4 md:mt-12">
+            <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+              Complete{" "}
+              <span className="relative z-0 inline-block font-semibold italic px-1">
+                <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+                your Ritual
+              </span>
+            </h2>
           </div>
 
           {/* Mobile: Horizontal Carousel | Desktop: 4-Column Grid */}
@@ -625,6 +635,12 @@ export default function ProductPageClient({
           </div>
         </section>
       )}
+      {/* Judge.me Reviews Section */}
+      <div className="max-w-[1500px] mx-auto w-full md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 px-4 sm:px-10 lg:px-16 pb-12 py-10" >
+        <div className="w-full relative col-span-1 md:col-start-1 md:pr-10 lg:pr-5">
+          <ReviewSection productId={product.id} />
+        </div>
+      </div>
     </div>
   );
 }
