@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X } from 'lucide-react';
 import Image from 'next/image';
@@ -11,42 +11,78 @@ interface IngredientsClientProps {
   ingredients: Ingredient[];
 }
 
-// const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const ALPHABET = "ACGJKLOPST".split("");
-
 export default function IngredientsClient({ ingredients }: IngredientsClientProps) {
-  const [activeLetter, setActiveLetter] = useState<string>('A');
+  const [activeLetter, setActiveLetter] = useState<string | null>(null);
   const [expandedWord, setExpandedWord] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredIngredients = useMemo(() => {
-    let result = ingredients;
+  // The site header is `fixed`, and its real height moves (announcement bar
+  // can be dismissed, header shrinks once scrolled) -- measure it live
+  // instead of guessing a fixed Tailwind top-* value, so the tab bar sits
+  // flush under it on every screen size and header state.
+  const tabBarRef = useRef<HTMLDivElement>(null);
+  // Sane fallback matching the header's typical solid-state height, so the
+  // tab bar is never briefly positioned at top:0 (i.e. behind the header)
+  // before the ResizeObserver below reports the real measurement.
+  const [headerOffset, setHeaderOffset] = useState(80);
+  const [tabBarHeight, setTabBarHeight] = useState(0);
 
-    if (searchQuery) {
-      const lowerQuery = searchQuery.toLowerCase();
-      result = ingredients.filter(ing =>
+  useEffect(() => {
+    const headerEl = document.querySelector("header")?.parentElement;
+    if (!headerEl) return;
+
+    const updateHeaderOffset = () => setHeaderOffset(headerEl.getBoundingClientRect().height);
+    updateHeaderOffset();
+
+    const observer = new ResizeObserver(updateHeaderOffset);
+    observer.observe(headerEl);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = tabBarRef.current;
+    if (!el) return;
+
+    const updateTabBarHeight = () => setTabBarHeight(el.getBoundingClientRect().height);
+    updateTabBarHeight();
+
+    const observer = new ResizeObserver(updateTabBarHeight);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery) return null;
+    const lowerQuery = searchQuery.toLowerCase();
+    return ingredients
+      .filter(ing =>
         ing.word.toLowerCase().includes(lowerQuery) ||
         (ing.about && ing.about.toLowerCase().includes(lowerQuery)) ||
         (ing.tags && ing.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
-      );
-    } else {
-      result = ingredients.filter(ing => ing.word.toUpperCase().startsWith(activeLetter));
-    }
+      )
+      .sort((a, b) => a.word.localeCompare(b.word));
+  }, [ingredients, searchQuery]);
 
-    // Sort alphabetically
-    return result.sort((a, b) => a.word.localeCompare(b.word));
-  }, [ingredients, activeLetter, searchQuery]);
-
-  // Find which letters actually have ingredients
-  const availableLetters = useMemo(() => {
-    const letters = new Set<string>();
+  // Every ingredient, grouped by first letter and sorted -- the whole
+  // glossary renders in one continuous list instead of hiding all but one
+  // letter at a time.
+  const groupedIngredients = useMemo(() => {
+    const groups = new Map<string, Ingredient[]>();
     ingredients.forEach(ing => {
-      if (ing.word && ing.word.length > 0) {
-        letters.add(ing.word[0].toUpperCase());
-      }
+      if (!ing.word) return;
+      const letter = ing.word[0].toUpperCase();
+      if (!groups.has(letter)) groups.set(letter, []);
+      groups.get(letter)!.push(ing);
     });
-    return Array.from(letters).sort();
+    return Array.from(groups.keys())
+      .sort()
+      .map(letter => ({
+        letter,
+        items: groups.get(letter)!.sort((a, b) => a.word.localeCompare(b.word)),
+      }));
   }, [ingredients]);
+
+  const availableLetters = groupedIngredients.map(g => g.letter);
 
   const toggleExpand = (word: string) => {
     setExpandedWord(prev => (prev === word ? null : word));
@@ -55,11 +91,16 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
   const handleLetterClick = (letter: string) => {
     setActiveLetter(letter);
     setSearchQuery("");
-    setExpandedWord(null);
+    document.getElementById(`ingredient-letter-${letter}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <main className="relative min-h-screen bg-white overflow-x-hidden">
+    // No overflow-x-hidden here: it would implicitly force overflow-y to a
+    // computed value too (per the CSS overflow spec), turning this <main>
+    // into its own scroll container and breaking `position: sticky` for the
+    // alphabet tab bar below. The hero section already clips its own
+    // parallax image with its own overflow-hidden, so nothing here needs it.
+    <main className="relative min-h-screen bg-white">
       {/* 🌿 HERO SECTION (Parallax) */}
       <section className="relative h-[50vh] md:h-[80vh] w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-[50vh] md:h-[80vh] z-0 opacity-90">
@@ -114,27 +155,61 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
             />
           </div>
 
-          {/* Alphabet Tabs */}
-          {!searchQuery && (
-            <div className="mb-12 relative">
-              <div className="flex overflow-x-auto hide-scrollbar bg-white sticky top-20 z-10 mx-auto max-w-xl">
+          {searchQuery ? (
+            <>
+              {/* Section Title */}
+              <div className="mb-8 flex items-center max-w-4xl mx-auto">
+                <div className="h-px bg-[#B30717]/20 flex-grow"></div>
+                <h2 className="px-6 text-3xl md:text-4xl font-inter font-bold text-[#B30717]">
+                  Search Results
+                </h2>
+                <div className="h-px bg-[#B30717]/20 flex-grow"></div>
+              </div>
+
+              {/* Search results */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
+                {searchResults && searchResults.length > 0 ? (
+                  searchResults.map((ing) => (
+                    <IngredientCard
+                      key={ing.word}
+                      ing={ing}
+                      onToggle={() => toggleExpand(ing.word)}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-12 text-[#B30717]/60 font-inter">
+                    No ingredients found matching your criteria.
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            // The tab bar and every letter group share this one wrapper so it's
+            // tall enough to give `position: sticky` real room to work -- a
+            // sticky element can only stay stuck for as long as its own parent
+            // still has height left to scroll through. A wrapper sized to just
+            // the tab bar (as this used to be) gives sticky nowhere to stick.
+            <div className="relative">
+              {/* Alphabet Tabs -- sticky, jumps to that letter's section below
+                  instead of hiding every other letter. */}
+              <div
+                ref={tabBarRef}
+                style={{ top: headerOffset }}
+                className="flex overflow-x-auto hide-scrollbar bg-white sticky z-10 mx-auto max-w-xl mb-12"
+              >
                 <div className="flex mx-auto min-w-max px-2">
-                  {ALPHABET.map((letter) => {
-                    const isAvailable = availableLetters.includes(letter);
+                  {availableLetters.map((letter) => {
                     const isActive = activeLetter === letter;
 
                     return (
                       <button
                         key={letter}
-                        onClick={() => isAvailable && handleLetterClick(letter)}
-                        disabled={!isAvailable}
+                        onClick={() => handleLetterClick(letter)}
                         className={`
                         py-4 px-3 md:px-5 text-sm md:text-base font-inter font-medium transition-all
                         ${isActive
                             ? 'text-[#B30717] border-b-2 border-[#B30717]'
-                            : isAvailable
-                              ? 'text-[#B30717]/60 hover:text-[#B30717]'
-                              : 'text-[#B30717]/20 cursor-not-allowed'}
+                            : 'text-[#B30717]/60 hover:text-[#B30717]'}
                       `}
                       >
                         {letter}
@@ -143,34 +218,37 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
                   })}
                 </div>
               </div>
+
+              {/* Every letter's group, all visible at once, each anchored so the
+                  sticky tabs above can jump straight to it. */}
+              {groupedIngredients.map(({ letter, items }) => (
+              <div
+                key={letter}
+                id={`ingredient-letter-${letter}`}
+                style={{ scrollMarginTop: headerOffset + tabBarHeight + 16 }}
+                className="mb-16 last:mb-0"
+              >
+                <div className="mb-8 flex items-center max-w-4xl mx-auto">
+                  <div className="h-px bg-[#B30717]/20 flex-grow"></div>
+                  <h2 className="px-6 text-3xl md:text-4xl font-inter font-bold text-[#B30717]">
+                    {letter}
+                  </h2>
+                  <div className="h-px bg-[#B30717]/20 flex-grow"></div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
+                  {items.map((ing) => (
+                    <IngredientCard
+                      key={ing.word}
+                      ing={ing}
+                      onToggle={() => toggleExpand(ing.word)}
+                    />
+                  ))}
+                </div>
+              </div>
+              ))}
             </div>
           )}
-
-          {/* Section Title (Letter or Search Results) */}
-          <div className="mb-8 flex items-center max-w-4xl mx-auto">
-            <div className="h-px bg-[#B30717]/20 flex-grow"></div>
-            <h2 className="px-6 text-3xl md:text-4xl font-inter font-bold text-[#B30717]">
-              {searchQuery ? "Search Results" : activeLetter}
-            </h2>
-            <div className="h-px bg-[#B30717]/20 flex-grow"></div>
-          </div>
-
-          {/* Ingredients List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
-            {filteredIngredients.length === 0 ? (
-              <div className="col-span-full text-center py-12 text-[#B30717]/60 font-inter">
-                No ingredients found matching your criteria.
-              </div>
-            ) : (
-              filteredIngredients.map((ing) => (
-                <IngredientCard
-                  key={ing.word}
-                  ing={ing}
-                  onToggle={() => toggleExpand(ing.word)}
-                />
-              ))
-            )}
-          </div>
         </div>
       </section>
 
