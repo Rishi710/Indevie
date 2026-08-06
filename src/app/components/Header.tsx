@@ -299,7 +299,7 @@ export default function Header({
                 >
                   <span className="relative inline-block">
                     <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-inter fonr-medium text-gray-900">Favourites</span>
+                    <span className="relative text-3xl font-inter italic fonr-medium text-gray-900">Favourites</span>
                   </span>
                   <motion.svg
                     animate={{ rotate: isFavouritesOpen ? 180 : 0 }}
@@ -342,7 +342,7 @@ export default function Header({
                 >
                   <span className="relative inline-block">
                     <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-inter text-gray-900">Collections</span>
+                    <span className="relative text-3xl font-inter italic text-gray-900">Collections</span>
                   </span>
                   <motion.svg
                     animate={{ rotate: isCollectionsOpen ? 180 : 0 }}
