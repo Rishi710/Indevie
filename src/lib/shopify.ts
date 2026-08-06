@@ -140,6 +140,8 @@ export interface ShopifyProduct {
   concernMetafield?: { value: string } | null;
   /** custom.size metafield — a single_line_text_field, so `value` is a plain string (or null if unset). */
   sizeMetafield?: { value: string } | null;
+  /** custom.info metafield — a single_line_text_field, so `value` is a plain string (or null if unset). Powers the product card's black banner label. */
+  infoMetafield?: { value: string } | null;
   /** custom.benefits metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
   benefitsMetafield?: { value: string } | null;
   /** custom.ingredients metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
@@ -383,6 +385,18 @@ export function getProductSize(product: Pick<ShopifyProduct, "sizeMetafield">): 
   return normalized.length > 0 ? normalized : null;
 }
 
+/**
+ * Reads the real product card banner label from the custom.info Shopify
+ * metafield (a single_line_text_field). No tag or title-keyword fallback --
+ * a product simply shows no banner until it's set in Shopify Admin.
+ */
+export function getProductInfo(product: Pick<ShopifyProduct, "infoMetafield">): string | null {
+  const raw = product.infoMetafield?.value;
+  if (!raw) return null;
+  const normalized = normalizeMetafieldText(raw);
+  return normalized.length > 0 ? normalized : null;
+}
+
 export interface StockInfo {
   isOutOfStock: boolean;
   /** Max quantity that can be added; Infinity when unlimited or oversell is allowed */
@@ -422,6 +436,9 @@ export const GET_PRODUCTS_QUERY = `
           value
         }
         sizeMetafield: metafield(namespace: "custom", key: "size") {
+          value
+        }
+        infoMetafield: metafield(namespace: "custom", key: "info") {
           value
         }
         variants(first: 1) {
@@ -504,6 +521,9 @@ export const GET_COLLECTION_PRODUCTS_QUERY = `
             value
           }
           sizeMetafield: metafield(namespace: "custom", key: "size") {
+            value
+          }
+          infoMetafield: metafield(namespace: "custom", key: "info") {
             value
           }
           variants(first: 1) {
@@ -631,6 +651,9 @@ export const GET_RECOMMENDED_PRODUCTS_QUERY = `
       id
       title
       handle
+      infoMetafield: metafield(namespace: "custom", key: "info") {
+        value
+      }
       variants(first: 1) {
         nodes {
           id

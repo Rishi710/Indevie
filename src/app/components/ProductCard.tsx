@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Plus, Minus } from "lucide-react";
-import { ShopifyProduct, getStockInfo } from "@/lib/shopify";
+import { ShopifyProduct, getStockInfo, getProductInfo } from "@/lib/shopify";
 import { useCart } from "../context/CartContext";
 
 interface ProductCardProps {
@@ -56,43 +56,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     ? `₹${parseFloat(compareAtPrice.amount).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`
     : null;
 
-  // Extract banners from tags, or use smart fallbacks
-  const tags = product.tags || [];
+  // Real banner label from the custom.info Shopify metafield. No dummy fallback.
+  const bannerText = getProductInfo(product);
 
-  // Banner matching
-  let bannerText = "";
-  const customBannerTag = tags.find(t => t.toLowerCase().startsWith("banner:"));
-  if (customBannerTag) {
-    bannerText = customBannerTag.split(":")[1].toUpperCase();
-  } else {
-    // Smart defaults based on title / handle
-    const titleLower = product.title.toLowerCase();
-    if (titleLower.includes("geeli mitti")) bannerText = "Face Hydration";
-    else if (titleLower.includes("gulkand")) bannerText = "Face Hydration";
-    else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) bannerText = "AYURVEDIC SPF 50";
-    else if (titleLower.includes("calm balm")) bannerText = "Sleep Inducing";
-    else if (titleLower.includes("lotion")) bannerText = "Skin Hydration Lotion";
-    else if (titleLower.includes("maalish")) bannerText = "Skin Hydration Oil";
-    else if (titleLower.includes("set") || titleLower.includes("ritual")) bannerText = "ULTIMATE SKIN RITUAL";
-    else bannerText = "GENURVEDA™ APPROVED";
-  }
-
-  // Subtitle / snippet description
-  let subtitle = "";
-  if (product.description) {
-    // Get the first sentence of the description as subtitle
-    const sentences = product.description.split(/[.!?]+/);
-    subtitle = sentences[0]?.trim() || "";
-  }
-  if (!subtitle) {
-    const titleLower = product.title.toLowerCase();
-    if (titleLower.includes("mist")) subtitle = "Refreshing botanical mist for deep hydration";
-    else if (titleLower.includes("sunshield") || titleLower.includes("sunscreen")) subtitle = "Non-greasy Ayurvedic sun shield";
-    else if (titleLower.includes("calm balm")) subtitle = "Soothing multipurpose body balm";
-    else if (titleLower.includes("lotion")) subtitle = "Intensely hydrating daily body moisturizer";
-    else if (titleLower.includes("maalish")) subtitle = "Nourishing oil for radiant skin";
-    else subtitle = "Pure Genurveda™ botanical treasure";
-  }
+  // Subtitle / snippet description — first sentence of the real Shopify
+  // description. No dummy fallback; the subtitle just doesn't render if a
+  // product has no description yet.
+  const subtitle = product.description?.split(/[.!?]+/)[0]?.trim() || "";
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
