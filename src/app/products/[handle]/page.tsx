@@ -1,14 +1,11 @@
-import { fetchProduct, fetchRecommendedProducts, fetchProducts } from "@/lib/shopify";
+import { fetchProduct, fetchRecommendedProducts } from "@/lib/shopify";
 import { notFound } from "next/navigation";
 import ProductPageClient from "@/app/products/[handle]/ProductPageClient";
 import ProductGridSection from "@/app/components/ProductGridSection";
 
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
-  const [product, products] = await Promise.all([
-    fetchProduct(handle),
-    fetchProducts(50),
-  ]);
+  const product = await fetchProduct(handle);
 
   if (!product) {
     return notFound();
@@ -20,7 +17,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
     <ProductPageClient
       product={product}
       relatedProducts={relatedProducts}
-      productGridSection={<ProductGridSection initialProducts={products} />}
+      productGridSection={<ProductGridSection />}
     />
   );
 }

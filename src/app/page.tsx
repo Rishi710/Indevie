@@ -27,7 +27,7 @@ export default async function Home() {
       <HeroSlider />
       <InfiniteTicker />
       {/* <BrandMantra /> */}
-      <ProductGridSection initialProducts={products} />
+      <ProductGridSection />
       <ProductPlaybookSection />
       {/* <IntroductionSection /> */}
       <UgcSection initialProducts={products} />
