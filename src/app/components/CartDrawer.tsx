@@ -84,17 +84,17 @@ export default function CartDrawer() {
             <div className="flex items-center justify-between p-6 border-2 border-[#B30617]/10">
               <div className="flex items-center gap-3">
                 <ShoppingBag size={20} className="text-black" />
-                <h2 className="text-xl font-inter font-medium text-black italic">Your Cart</h2>
-                <span className="bg-[#B30617] text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                <h2 className="text-xl font-inter font-light text-black italic">Your Cart</h2>
+                <span className="bg-[#B30617] text-white text-[12px] font-light px-2 py-0.5 rounded-full">
                   {totalQuantity}
                 </span>
               </div>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="p-2 hover:bg-black rounded-full transition-colors"
+                className="p-2 rounded-full transition-colors"
                 aria-label="Close cart"
               >
-                <X size={24} className="text-[#B30617]" />
+                <X size={24} className="text-black hover:text-[#B30617]" />
               </button>
             </div>
 

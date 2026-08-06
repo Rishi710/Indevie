@@ -63,10 +63,10 @@ export default function BlogHero({ post }: BlogHeroProps) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="order-2 lg:order-2 space-y-6"
           >
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#c93e3e]">Featured Article</span>
               <span className="w-10 h-[1px] bg-[#c93e3e]/40"></span>
-            </div>
+            </div> */}
 
             <h1 className="text-4xl md:text-4xl lg:text-4xl font-inter text-gray-900 leading-[1.1] group-hover:text-red-900 transition-colors">
               {post.title}
@@ -89,8 +89,8 @@ export default function BlogHero({ post }: BlogHeroProps) {
                 <span className="text-sm font-medium font-inter text-gray-900">Indevie Editor Desk</span>
               </div>
 
-              <div className="ml-0 md:ml-4 mt-2 md:mt-0 flex items-center gap-4">
-                <button className="px-10 font-inter py-4 bg-black text-white text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-[#c93e3e] transition-colors duration-300 rounded-none w-auto">
+              <div className="ml-0 md:ml-1 mt-2 md:mt-0 flex items-center gap-4">
+                <button className="px-10 font-inter py-4 bg-[#b20b17] text-white text-[11px] uppercase tracking-[0.2em] font-semibold hover:bg-[#c93e3e] transition-colors duration-300 rounded-none w-auto">
                   Read Article
                 </button>
                 <button

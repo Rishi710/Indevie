@@ -43,13 +43,13 @@ export default function AboutPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
+    <main className="relative min-h-screen bg-[#ffffff] overflow-x-hidden">
       {/* 🌿 HERO SECTION (Parallax) */}
-      <section className="relative h-[95vh] w-full overflow-hidden">
+      <section className="relative h-[50vh] md:h-[80vh] w-full overflow-hidden">
         <div
-          className="fixed inset-0 w-full h-[110vh] z-0 opacity-90"
+          className="absolute inset-0 w-full h-[50vh] md:h-[80vh] bg-[#B40417] z-0 opacity-90"
           style={{
-            backgroundImage: "url('https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2823_JPG.webp?v=1777466926')",
+            // backgroundImage: "url('https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2823_JPG.webp?v=1777466926')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -63,10 +63,17 @@ export default function AboutPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="text-5xl md:text-8xl font-inter text-white mb-6 drop-shadow-2xl">
+            {/* <h1 className="text-5xl md:text-8xl font-inter text-white uppercase mb-6 drop-shadow-2xl">
               Our Story
-            </h1>
-            <p className="text-white/90 text-[10px] md:text-sm uppercase tracking-[0.4em] md:tracking-[0.6em] font-inter font-light max-w-2xl mx-auto leading-loose">
+            </h1> */}
+            <h2 className="text-5xl md:text-8xl text-white font-inter uppercase">
+              Our{" "}
+              <span className="relative z-0 inline-block font-semibold italic px-1">
+                <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#CD646A] -z-10" />
+                Story
+              </span>
+            </h2>
+            <p className="text-white/90 text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.4em] font-inter font-light max-w-2xl mx-auto leading-loose">
               Born from care. Backed by science.
             </p>
           </motion.div>
@@ -75,7 +82,7 @@ export default function AboutPage() {
 
       {/* 🌿 SECTION 1: SO, WHAT IS INDEVIE? (Poster Layout) */}
       <section
-        className="relative z-20 bg-[#f5f1e6] pt-24 md:pt-40 pb-20 px-6 lg:px-12 border-b border-[#6c3518]/10 overflow-hidden"
+        className="relative z-20 bg-white pt-24 md:pt-40 pb-20 px-6 lg:px-12 border-b border-[#B40417]/20 overflow-hidden"
       >
         <div className="max-w-[1400px] mx-auto"
 
@@ -93,8 +100,8 @@ export default function AboutPage() {
             }}
 
           >
-            <h2 className="text-[17vw] xs:text-[15vw] sm:text-7xl md:text-[11vw] lg:text-[130px] xl:text-[180px] font-inter font-black text-[#6c3518] leading-[0.9] tracking-[-0.04em] uppercase w-full">
-              WHAT IS <br className="lg:hidden" /> INDEVIE?
+            <h2 className="text-[17vw] xs:text-[15vw] sm:text-7xl md:text-[11vw] lg:text-[130px] xl:text-[180px] font-inter font-black text-[#B40417] leading-[0.9] tracking-[-0.04em] uppercase w-full">
+              WHAT IS <br className="lg:hidden" /> <span className="italic"> INDEVIE?</span>
             </h2>
           </motion.div>
 
@@ -106,8 +113,8 @@ export default function AboutPage() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8 }}
             >
-              <h3 className="text-xl md:text-2xl font-inter font-semibold tracking-tight text-[#24120a] mb-3 md:mb-5">Born from care</h3>
-              <p className="text-sm md:text-[15px] font-inter text-[#24120a]/80 leading-relaxed font-light">
+              <h3 className="text-xl md:text-2xl font-inter font-semibold tracking-tight italic uppercase text-black mb-3 md:mb-5">Born from care</h3>
+              <p className="text-sm md:text-[15px] font-inter text-black/80 leading-relaxed font-light">
                 Indévie is a new-age Ayurvedic soulcare house backed by science, and inspired by a deeply personal story of helping loved ones heal from within.
               </p>
             </motion.div>
@@ -118,8 +125,8 @@ export default function AboutPage() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: 0.1 }}
             >
-              <h3 className="text-xl md:text-2xl font-inter font-semibold tracking-tight text-[#24120a] mb-3 md:mb-5">Rooted in Genurveda</h3>
-              <p className="text-sm md:text-[15px] font-inter text-[#24120a]/80 leading-relaxed font-light">
+              <h3 className="text-xl md:text-2xl font-inter font-semibold tracking-tight uppercase text-black mb-3 italic md:mb-5">Rooted in Genurveda</h3>
+              <p className="text-sm md:text-[15px] font-inter text-black/80 leading-relaxed font-light">
                 Our philosophy beautifully blends generations of traditional wisdom with the absolute clarity, safety, and precision of modern clinical skin science.
               </p>
             </motion.div>
@@ -130,9 +137,9 @@ export default function AboutPage() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <h3 className="text-xl md:text-2xl font-inter font-semibold tracking-tight text-[#24120a] mb-3 md:mb-5">Intentional soulcare</h3>
-              <p className="text-sm md:text-[15px] font-inter text-[#24120a]/80 leading-relaxed font-light">
-                We create gentle, effective formulations designed especially for sensitive, stressed skin and hair—keeping everything clean, minimal, and intentional.
+              <h3 className="text-xl md:text-2xl font-inter font-semibold tracking-tight italic uppercase text-black mb-3 md:mb-5">Intentional soulcare</h3>
+              <p className="text-sm md:text-[15px] font-inter text-black/80 leading-relaxed font-light">
+                We create gentle, effective formulations designed especially for sensitive, stressed skin and hair keeping everything clean, minimal, and intentional.
               </p>
             </motion.div>
           </div>
@@ -145,10 +152,10 @@ export default function AboutPage() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <h3 className="text-2xl md:text-4xl font-inter font-semibold text-[#6c3518] leading-tight max-w-xl">
+              <h3 className="text-2xl md:text-4xl font-inter font-semibold text-[#B40417] uppercase leading-tight max-w-3xl">
                 Your routine should feel like ease.<br />
               </h3>
-              <p className="mt-4 font-inter max-w-3xl text-sm md:text-[15px] text-[#24120a]/80 leading-relaxed font-light">
+              <p className="mt-4 font-inter max-w-3xl text-sm md:text-[15px] text-black/80 leading-relaxed font-light">
                 Rooted in tradition, but with better boundaries. Familiar, just far more doable. Because self-care shouldn’t feel like a commitment. It should feel like a habit you don’t have to convince yourself to keep.
               </p>
             </motion.div>
@@ -160,7 +167,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="w-full md:w-auto mt-4 md:mt-0"
             >
-              <Link href="/shop" className="group flex items-center justify-center gap-4 bg-[#6c3518] text-[#f5f1e6] px-10 py-5 rounded-none text-xs uppercase tracking-[0.2em] font-inter font-bold hover:bg-[#d0ba96] hover:text-[#24120a] transition-all w-full md:min-w-[200px]">
+              <Link href="/shop" className="group flex items-center justify-center gap-4 bg-[#B40417] text-white px-10 py-5 rounded-none text-xs uppercase tracking-[0.2em] font-inter font-medium hover:bg-white hover:text-[#B40417] transition-all w-full md:min-w-[200px]">
                 <span>Explore Collection</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -172,7 +179,7 @@ export default function AboutPage() {
 
 
       {/* 🌿 SECTION 2: THE JOURNEY (Animated Continuous Timeline) */}
-      <section ref={journeyRef} className="relative z-20 bg-[#6c3518] py-32 px-6 lg:px-12 text-[#f5f1e6] overflow-hidden">
+      <section ref={journeyRef} className="relative z-20 bg-[#B40417] py-32 px-6 lg:px-12 text-[#ffffff] overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -181,12 +188,12 @@ export default function AboutPage() {
             transition={{ duration: 1 }}
             className="text-center mb-10 md:mb-0 space-y-6"
           >
-            <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-medium text-[#f5f1e6]/50">
+            <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-medium text-[#ffffff]/80">
               The Journey
             </h3>
             <h2 className="text-4xl md:text-6xl font-inter leading-tight md:leading-snug">
               Every challenge shaped <br className="hidden md:block" />
-              <span className="italic text-[#f5f1e6]/80" style={{ color: '#d0ba96' }}>what Indevie stands for today.</span>
+              <span className="italic text-[#f5f1e6]/80" style={{ color: '#f5f1e6' }}>what Indevie stands for today.</span>
             </h2>
           </motion.div>
 
@@ -317,7 +324,7 @@ export default function AboutPage() {
       </section>
 
       {/* 🌿 SECTION 3: MORE THAN A BRAND (Family) */}
-      <section className="relative z-20 bg-[#f5f1e6] py-16 px-6 lg:px-12 border-t border-[#6c3518]/10">
+      <section className="relative z-20 bg-[#ffffff] py-16 px-6 lg:px-12 border-t border-[#B40417]/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
 
           <motion.div
@@ -346,7 +353,7 @@ export default function AboutPage() {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
             />
-            <div className="absolute inset-0 bg-[#6c3518]/10 transition-colors duration-300 group-hover:bg-[#6c3518]/20 flex items-center justify-center">
+            <div className="absolute inset-0 bg-[#ffffff]/10 transition-colors duration-300 group-hover:bg-[#ffffff]/20 flex items-center justify-center">
               {!isPlaying && (
                 <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center text-white shadow-lg">
                   <Play size={24} className="ml-1" fill="currentColor" />
@@ -369,17 +376,17 @@ export default function AboutPage() {
             transition={{ duration: 1.2, delay: 0.2 }}
             className="space-y-8"
           >
-            <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-medium text-[#6c3518]/50">
+            <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-medium text-[#B40417]/50">
               More Than A Brand
             </h3>
-            <h2 className="text-4xl md:text-5xl font-inter text-[#6c3518] leading-tight italic">
-              Our Indevie Family.
+            <h2 className="text-4xl md:text-5xl font-inter text-[#B40417] uppercase tracking-[0.em] leading-tight italic">
+              Our Indevie Family
             </h2>
 
-            <p className="text-sm md:text-base font-inter text-[#6c3518]/80 leading-relaxed md:leading-loose">
+            <p className="text-sm md:text-base font-inter text-black leading-relaxed md:leading-loose">
               Along this journey, something unexpected happened. A women-only WhatsApp group turned into a space of support, warmth, and connection. What started as a community slowly began to feel like a family.
             </p>
-            <p className="text-sm md:text-base font-inter text-[#6c3518]/80 leading-relaxed md:leading-loose">
+            <p className="text-sm md:text-base font-inter text-black leading-relaxed md:leading-loose">
               Every woman became a safe space for another sharing, healing, and uplifting each other without expecting anything in return. Indévie is not just about products. It’s about people.
             </p>
 
@@ -388,7 +395,7 @@ export default function AboutPage() {
                 href="https://chat.whatsapp.com/IpBSSA2sron8SdbLwBFhl4?mode=gi_t"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-3 bg-[#6c3518] text-white px-8 py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-inter font-bold hover:bg-[#6c3518] transition-all shadow-lg hover:shadow-xl hover:text-[#d0ba96] hover:-translate-y-1 w-full sm:w-max"
+                className="group inline-flex items-center justify-center gap-3 bg-[#B40417] text-white px-8 py-4 text-xs uppercase tracking-[0.2em] font-inter font-bold hover:bg-[#ffffff] transition-all shadow-lg hover:shadow-xl hover:text-[#B40417] hover:-translate-y-1 w-full sm:w-max"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
@@ -401,10 +408,10 @@ export default function AboutPage() {
       </section>
 
       {/* 🌿 SECTION 4: FOUNDER'S NOTE (Creative Layout) */}
-      <section className="relative z-20 bg-[#f5f1e6] py-16 px-6 lg:px-12 overflow-hidden">
+      <section className="relative z-20 bg-[#ffffff] py-16 px-6 lg:px-12 overflow-hidden">
         {/* Abstract Background Elements for Creativity */}
-        <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#d0ba96]/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
-        <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-[#6c3518]/5 rounded-full blur-[80px] -translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-[#B40417]/10 rounded-full blur-[100px] -translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-[#B40417]/5 rounded-full blur-[80px] -translate-y-1/2 pointer-events-none" />
 
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
 
@@ -416,7 +423,7 @@ export default function AboutPage() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="space-y-10"
           >
-            <div className="flex items-center gap-3 text-[#6c3518]/60">
+            <div className="flex items-center gap-3 text-[#B40417]/60">
               <Sparkles size={16} strokeWidth={1.5} />
               <h3 className="text-[11px] uppercase tracking-[0.4em] font-medium font-inter italic">
                 Founder&apos;s Note
@@ -424,13 +431,13 @@ export default function AboutPage() {
             </div>
 
             <div className="relative">
-              <span className="absolute -top-10 -left-6 text-7xl text-[#6c3518]/10 font-inter font-bold leading-none">"</span>
-              <h2 className="text-4xl md:text-[46px] font-inter text-[#6c3518] leading-[1.3] italic relative z-10 pr-4">
+              <span className="absolute -top-10 -left-6 text-7xl text-[#B40417]/10 font-inter font-bold leading-none">"</span>
+              <h2 className="text-4xl md:text-[46px] font-inter text-black font-light uppercase leading-[1.3] italic relative z-10 pr-4">
                 We wanted to help my mother feel confident.
               </h2>
             </div>
 
-            <div className="space-y-6 text-[14px] md:text-[15px] font-inter text-[#6c3518]/70 leading-[1.8] font-light max-w-[480px]">
+            <div className="space-y-6 text-[14px] md:text-[15px] font-inter text-black leading-[1.8] font-light max-w-[480px]">
               <p>
                 What started as a quiet thought slowly turned into something much bigger a purpose. I wanted to help my mother feel confident in her skin as she struggled with psoriasis. Watching her go through discomfort, both physically and emotionally, made me realize how deeply personal skincare really is.
               </p>
@@ -439,9 +446,9 @@ export default function AboutPage() {
               </p> */}
             </div>
 
-            <div className="pt-8 border-t border-[#6c3518]/10 w-full max-w-[480px] mt-4">
-              <p className="text-xl md:text-2xl font-inter text-[#6c3518] font-medium">Ar. Ishita Pathak</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] font-inter text-[#6c3518]/50 mt-2 font-medium">Founder, Indévie</p>
+            <div className="pt-8 border-t border-[#B40417]/10 w-full max-w-[480px] mt-4">
+              <p className="text-xl md:text-2xl font-inter text-[#B40417] font-medium">Ar. Ishita Pathak</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] font-inter text-[#B40417]/50 mt-2 font-medium">Founder, Indévie</p>
             </div>
           </motion.div>
 
@@ -468,6 +475,7 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+
     </main>
   );
 }

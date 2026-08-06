@@ -27,16 +27,23 @@ export default async function BlogsPage() {
   return (
     <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
       {/* Hero Section for Blogs */}
-      <section className="relative h-[75vh] md:h-[95vh] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
-        <div className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0">
+      <section className="relative h-[50vh] md:h-[80vh] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
+        <div className="absolute inset-0 w-full h-[50vh] md:h-[80vh] z-0">
           <ShaderBackground />
         </div>
 
         <div className="relative z-10 animate-fade-in-up">
-          <h1 className="text-3xl md:text-7xl font-inter text-white mb-4 drop-shadow-md">
+          {/* <h1 className="text-3xl md:text-7xl font-inter text-white mb-4 drop-shadow-md uppercase">
             Indevie Journals
+          </h1> */}
+          <h1 className="text-5xl md:text-8xl text-white font-inter uppercase">
+            Indevie{" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+              Journals
+            </span>
           </h1>
-          <p className="text-white/90 text-[20px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
+          <p className="text-white/90 text-[14px] md:text-[18px] uppercase tracking-[0.3em] font-light max-w-lg mx-auto">
             Because your skin has questions and internet has terrible answers
           </p>
         </div>
@@ -50,7 +57,13 @@ export default async function BlogsPage() {
         {remainingArticles.length > 0 && (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center mb-16 space-y-4 flex flex-col items-center">
-              <h2 className="text-3xl md:text-5xl font-inter text-gray-900">Latest Journals</h2>
+              <h2 className="text-4xl md:text-5xl text-black font-inter uppercase">
+                Latest{" "}
+                <span className="relative z-0 inline-block font-semibold italic px-1">
+                  <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+                  Journal
+                </span>
+              </h2>
               <p className="text-gray-500 max-w-lg mx-auto">
                 Explore our collection of stories, rituals, and mindful insights.
               </p>

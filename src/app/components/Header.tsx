@@ -10,6 +10,37 @@ import { useCart } from "../context/CartContext";
 import SearchBar from "./SearchBar";
 import { useScrollLock } from "@/lib/useScrollLock";
 
+const SOCIAL_LINKS = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/indeviebeauty?utm_source=qr",
+    SVG: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+    )
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/people/Indevie-Beauty/61584322480264/",
+    SVG: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+    )
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/ishita-pathak-188bb9378/",
+    SVG: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+    )
+  },
+  {
+    label: "Pinterest",
+    href: "https://in.pinterest.com/indeviebeauty/?invite_code=39fa11aa4e2442eea028c46f356a40b5&sender=1070097698868490460",
+    SVG: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.853 0 1.267.64 1.267 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.135-1.867 3.135-4.56 0-2.385-1.715-4.052-4.163-4.052-2.836 0-4.5 2.127-4.5 4.326 0 .856.33 1.775.741 2.276a.3.3 0 0 1 .069.286c-.076.313-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.967-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.522 0 10-4.477 10-10S17.522 2 12 2z" /></svg>
+    )
+  }
+];
+
 export default function Header({
   isLoggedIn = false,
   userName = null
@@ -139,7 +170,7 @@ export default function Header({
                 onMouseEnter={() => isLoggedIn && setShowAccountDropdown(true)}
                 onMouseLeave={() => isLoggedIn && setShowAccountDropdown(false)}
               >
-{/* Account icon — only shown when logged in; GoKwik handles guest auth */}
+                {/* Account icon — only shown when logged in; GoKwik handles guest auth */}
                 {isLoggedIn && (
                   <Link
                     href="/account"
@@ -171,7 +202,7 @@ export default function Header({
                           href="/account?tab=profile"
                           className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-[#f5f1e6]/50 rounded-xl transition-colors group/item"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 group-hover/item:text-[#6c3518]">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 group-hover/item:text-[#B30617]">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21.012c-1.735 0-3.347-.489-4.714-1.338m11.963 0a9 9 0 001.053-3.136C22.25 9.209 18.183 5.25 13.235 5.25c-5.03 0-9.135 4.047-9.073 9.082.016 1.341.34 2.61.912 3.731" />
                           </svg>
                           <span className="font-medium">My Profile</span>
@@ -181,7 +212,7 @@ export default function Header({
                           href="/account?tab=orders"
                           className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-[#f5f1e6]/50 rounded-xl transition-colors group/item"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 group-hover/item:text-[#6c3518]">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-400 group-hover/item:text-[#B30617]">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
                           </svg>
                           <span className="font-medium">My Orders</span>
@@ -218,7 +249,7 @@ export default function Header({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
                 {totalQuantity > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#6c3518] text-white text-[8px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-white shadow-sm animate-in zoom-in duration-300">
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#B20518] text-white text-[8px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-white shadow-sm animate-in zoom-in duration-300">
                     {totalQuantity}
                   </span>
                 )}
@@ -268,7 +299,7 @@ export default function Header({
                 >
                   <span className="relative inline-block">
                     <span className="absolute inset-x-[-3px] bottom-1 h-3 bg-[#e9c46a]/50 -z-10" />
-                    <span className="relative text-3xl font-inter text-gray-900">Favourites</span>
+                    <span className="relative text-3xl font-inter fonr-medium text-gray-900">Favourites</span>
                   </span>
                   <motion.svg
                     animate={{ rotate: isFavouritesOpen ? 180 : 0 }}
@@ -293,7 +324,7 @@ export default function Header({
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="text-lg font-inter text-gray-600 hover:text-[#6c3518]"
+                          className="text-lg font-inter text-gray-600 hover:text-[#B20518]"
                         >
                           {link.name}
                         </Link>
@@ -336,7 +367,7 @@ export default function Header({
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="text-lg font-inter text-gray-600 hover:text-[#6c3518]"
+                          className="text-lg font-inter text-gray-600 hover:text-[#B20518]"
                         >
                           {link.name}
                         </Link>
@@ -356,7 +387,7 @@ export default function Header({
                 >
                   <Link
                     href={link.href}
-                    className="text-3xl font-inter text-gray-900 hover:text-[#6c3518] transition-colors"
+                    className="text-3xl font-inter text-gray-900 hover:text-[#B30617] transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -365,17 +396,17 @@ export default function Header({
               ))}
 
               {/* Account / Login — placed after the nav tabs */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 + mobileFlatLinks.length * 0.05 }}
                 className="pt-6 mt-2 border-t border-gray-100"
-              >
-{/* Guest login link removed — GoKwik handles customer auth */}
-                {isLoggedIn && (
+              > */}
+              {/* Guest login link removed — GoKwik handles customer auth */}
+              {/* {isLoggedIn && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 text-gray-900 font-inter">
-                      <div className="w-12 h-12 bg-[#f5f1e6] rounded-full flex items-center justify-center text-[#6c3518]">
+                      <div className="w-12 h-12 bg-[#f5f1e6] rounded-full flex items-center justify-center text-[#B30617]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
@@ -384,7 +415,7 @@ export default function Header({
                         <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
                           Account Dashboard
                         </p>
-                        <p className="text-xl font-medium text-[#6c3518]">
+                        <p className="text-xl font-medium text-[#B30617]">
                           Hello, {userName || "User"}
                         </p>
                       </div>
@@ -392,14 +423,14 @@ export default function Header({
                     <div className="grid grid-cols-2 gap-3 pl-16">
                       <Link
                         href="/account?tab=profile"
-                        className="text-xs font-bold uppercase tracking-widest text-[#6c3518]/60 hover:text-[#6c3518] py-2"
+                        className="text-xs font-bold uppercase tracking-widest text-[#B30617]/60 hover:text-[#B30617] py-2"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Profile
                       </Link>
                       <Link
                         href="/account?tab=orders"
-                        className="text-xs font-bold uppercase tracking-widest text-[#6c3518]/60 hover:text-[#6c3518] py-2"
+                        className="text-xs font-bold uppercase tracking-widest text-[#B30617]/60 hover:text-[#B30617] py-2"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Orders
@@ -407,7 +438,7 @@ export default function Header({
                     </div>
                   </div>
                 )}
-              </motion.div>
+              </motion.div>*/}
             </nav>
 
             {/* Mobile Menu Bottom Info */}
@@ -418,9 +449,19 @@ export default function Header({
               className="mt-12 border-t border-gray-100 pt-8 pb-4"
             >
               <p className="text-xs uppercase tracking-widest text-gray-400 mb-4">Follow Us</p>
-              <div className="flex space-x-6">
-                <span className="text-sm font-medium">Instagram</span>
-                <span className="text-sm font-medium">Facebook</span>
+              <div className="flex items-center space-x-4">
+                {SOCIAL_LINKS.map(({ SVG, href, label }) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 flex items-center justify-center text-[#B30617] hover:text-[#B30617] hover:border-[#B30617] hover:bg-[#B30617]/5 transition-colors"
+                    aria-label={label}
+                  >
+                    <SVG />
+                  </Link>
+                ))}
               </div>
             </motion.div>
           </motion.div>

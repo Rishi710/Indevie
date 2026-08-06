@@ -64,25 +64,32 @@ export default function FaqPage() {
   return (
     <main className="min-h-screen bg-[#f5f1e6] relative overflow-hidden font-sans">
       {/* --- Aesthetic Background Elements --- */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" 
-        style={{ 
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` 
-        }} 
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+        }}
       />
 
       {/* --- HERO SECTION FOR HEADER VISIBILITY --- */}
-      <section className="relative h-[100vh] w-full overflow-hidden bg-[#6c3518] flex items-center justify-center pt-20">
+      <section className="relative h-[80vh] md:h[100vh] w-full overflow-hidden bg-[#6c3518] flex items-center justify-center pt-20">
         <div className="absolute inset-0 z-0 opacity-30">
-           <Image src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2821_2_1.webp?v=1777466276" alt="FAQ Background" fill className="object-cover object-top" priority />
+          <Image src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2821_2_1.webp?v=1777466276" alt="FAQ Background" fill className="object-cover object-top" priority />
         </div>
-        <div className="relative z-10 text-center px-6 max-w-4xl">
-          <h1 className="text-5xl md:text-7xl font-inter text-white mb-6 leading-tight drop-shadow-lg">
-            Frequently Asked<br/>
+        <div className="relative z-10 text-center px-6 max-w-5xl">
+          {/* <h1 className="text-5xl md:text-7xl font-inter uppercase text-white mb-6 leading-tight drop-shadow-lg">
+            Frequently Asked<br />
             <span className="italic text-[#d0ba96]">Questions</span>
+          </h1> */}
+          <h1 className="text-4xl md:text-8xl text-white font-inter font-semibold italic uppercase">
+            Frequently Asked{" "}
+            <span className="relative z-0 inline-block font-semibold italic px-1">
+              <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5]/30 -z-10" />
+              Questions
+            </span>
           </h1>
-          <p className="text-white/80 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Everything you need to know about our Genurvedic rituals, 
+          <p className="text-white/90 font-light text-sm md:text-xl max-w-3xl mx-auto uppercase">
+            Everything you need to know about our Genurvedic rituals,
             formulations, and bringing Indevie into your home.
           </p>
         </div>
@@ -92,14 +99,14 @@ export default function FaqPage() {
         {/* --- FAQ Accordions --- */}
 
         <FaqAccordion categories={faqCategories} />
-        
+
         {/* --- Support CTA --- */}
         <div className="mt-24 text-center max-w-xl mx-auto border-t border-gray-200 pt-16">
-          <h3 className="text-2xl font-inter text-gray-900 mb-4 tracking-wide">Still have questions?</h3>
+          <h3 className="text-2xl font-inter text-gray-900 mb-4 tracking-wide uppercase">Still have questions?</h3>
           <p className="text-gray-600 font-light mb-8">
             Our team is here to help you find the perfect ritual for your skin.
           </p>
-          <a href="/contact" className="inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white rounded-full text-xs tracking-[0.2em] uppercase font-medium hover:bg-[#8B4513] transition-colors duration-300">
+          <a href="/contact" className="inline-flex items-center justify-center px-8 py-4 bg-[#B20B17] text-white text-xs tracking-[0.2em] uppercase font-medium hover:bg-[#B20B17]/80 transition-colors duration-300">
             Contact Support
           </a>
         </div>

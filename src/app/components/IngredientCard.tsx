@@ -48,7 +48,7 @@ export default function IngredientCard({ ing, onToggle }: IngredientCardProps) {
             {ing.tags.map((tag, idx) => tag && (
               <span
                 key={idx}
-                className="inline-block px-4 py-1.5 bg-white/90 backdrop-blur-sm text-[#6c3518] border border-[#6c3518]/20 rounded-full text-xs uppercase tracking-wider font-inter font-medium shadow-sm"
+                className="inline-block px-4 py-1.5 bg-white/90 backdrop-blur-sm text-#B30717 border border-[#B30717]/20 rounded-full text-xs uppercase tracking-wider font-inter font-medium shadow-sm"
               >
                 {tag}
               </span>
@@ -59,18 +59,18 @@ export default function IngredientCard({ ing, onToggle }: IngredientCardProps) {
 
       {/* Bottom Content Section */}
       <div className="p-6 md:p-8 flex flex-col flex-grow bg-white">
-        <h3 className="text-xl md:text-2xl font-inter text-[#6c3518] mb-4">
+        <h3 className="text-xl md:text-2xl font-inter text-[#B30717] font-medium mb-4">
           {ing.word}
         </h3>
 
         <div className="flex items-start justify-between gap-4">
-          <p className="text-sm md:text-sm text-[#6c3518]/70 font-inter leading-tight max-w-[100%]">
+          <p className="text-sm md:text-sm text-[#B30717]/70 font-inter leading-tight max-w-[100%]">
             {ing.subtitle || (ing.about && ing.about.substring(0, 100) + '...')}
           </p>
 
           <button
             onClick={onToggle}
-            className="flex-shrink-0 w-12 h-12 rounded-full border border-[#6c3518]/20 flex items-center justify-center transition-all duration-300 focus:outline-none text-[#6c3518] hover:border-[#6c3518] hover:bg-[#f5f1e6]"
+            className="flex-shrink-0 w-12 h-12 rounded-full border border-[#B30717]/20 flex items-center justify-center transition-all duration-300 focus:outline-none text-[#B30717] hover:border-[#B30717] hover:bg-[#B30717]/30"
             aria-label="Expand details"
           >
             <Plus strokeWidth={1.5} size={24} />

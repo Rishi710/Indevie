@@ -55,11 +55,11 @@ export default function ContactPage() {
   return (
     <main className="relative min-h-screen bg-[#f5f1e6] overflow-x-hidden">
       {/* 🌿 SIMPLIFIED HERO SECTION (Parallax) */}
-      <section className="relative h-[95vh] md:h-[95vh] w-full overflow-hidden">
+      <section className="relative h-[50vh] md:h-[100vh] w-full overflow-hidden">
         <div
-          className="fixed inset-0 w-full h-[100vh] md:h-[100vh] z-0 opacity-90"
+          className="absolute inset-0 w-full h-[50vh] bg-[#B20717] md:h-[80vh] z-0 opacity-90"
           style={{
-            backgroundImage: "url('/images/connect.jpeg')",
+            // backgroundImage: "url('/images/connect.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -75,10 +75,14 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-7xl font-inter text-white mb-4 drop-shadow-xl00">
-              Connect With Us
+            <h1 className="text-5xl md:text-8xl text-white italic font-inter font-semibold uppercase">
+              Connect{" "}
+              <span className="relative z-0 inline-block font-semibold italic px-1">
+                <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#CD646A] -z-10" />
+                With Us
+              </span>
             </h1>
-            <p className="text-white/100 text-[10px] md:text-xs uppercase tracking-[0.5em] font-light max-w-lg mx-auto leading-loose">
+            <p className="text-white/100 text-[14px] md:text-[18px] uppercase tracking-[0.2em] font-light max-w-lg mx-auto leading-loose">
               Where nature meets timeless beauty rituals.
             </p>
           </motion.div>
@@ -98,22 +102,30 @@ export default function ContactPage() {
             className="space-y-6"
           >
             <div className="space-y-4">
-              <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-bold text-[#6c3518]/40 italic">Enquiries</h3>
+              {/* <h3 className="text-[10px] uppercase tracking-[0.5em] font-inter font-bold text-[#6c3518]/40 italic">Enquiries</h3>
               <h2 className="text-4xl font-inter text-[#6c3518] leading-tight">
                 Get in touch with <br /> Indevie beauty experts.
+              </h2> */}
+              <h2 className="text-4xl md:text-4xl text-black font-inter italic uppercase">
+                Get in touch with
+                {/* <span className="font-semibold italic">Indevie</span> */}
+                {" "}
+                <span className="relative z-0 inline-block font-semibold italic px-1">
+                  <span className="absolute bottom-1 left-0 right-0 h-[38%] bg-[#F7E5B5] -z-10" />
+                  Beauty Experts
+                </span>
               </h2>
-              <p className="text-sm md:text-base font-inter text-[#6c3518] leading-relaxed max-w-md">
+              <p className="text-sm md:text-base font-inter text-black leading-relaxed max-w-md">
                 Whether you have a question about our products, need guidance on your skincare journey, or want to share your experience,we&apos;re here to listen.
               </p>
             </div>
-
             <div className="space-y-4">
 
               <div className="flex items-center gap-6 group">
                 <FileText size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Legal Name</h4>
-                  <p className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">InGoddess Private Limited</p>
+                  <p className="text-lg font-inter text-[#B20717] hover:opacity-60 transition-opacity">InGoddess Private Limited</p>
                 </div>
               </div>
 
@@ -121,7 +133,7 @@ export default function ContactPage() {
                 <Landmark size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Trade Name</h4>
-                  <p className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">Indevie Beauty</p>
+                  <p className="text-lg font-inter text-[#B20717] hover:opacity-60 transition-opacity">Indevie Beauty</p>
 
                 </div>
               </div>
@@ -130,7 +142,7 @@ export default function ContactPage() {
                 <Mail size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Email</h4>
-                  <a href="mailto:care@indevie.com" className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">care@indevie.com</a>
+                  <a href="mailto:care@indevie.com" className="text-lg font-inter text-[#B20717] hover:opacity-60 transition-opacity">care@indevie.com</a>
                 </div>
               </div>
 
@@ -138,7 +150,7 @@ export default function ContactPage() {
                 <Phone size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Phone</h4>
-                  <a href="tel:+919981300183" className="text-lg font-inter text-[#6c3518] hover:opacity-60 transition-opacity">+919981300183</a>
+                  <a href="tel:+919981300183" className="text-lg font-inter text-[#B20717] hover:opacity-60 transition-opacity">+919981300183</a>
                 </div>
               </div>
 
@@ -146,7 +158,7 @@ export default function ContactPage() {
                 <MapPin size={18} strokeWidth={1.5} className="text-[#6c3518]/60" />
                 <div className="space-y-1">
                   <h4 className="text-[9px] uppercase tracking-[0.4em] font-inter-bold text-[#6c3518]/50s">Head Office Location</h4>
-                  <p className="text-lg font-inter text-[#6c3518]">Plot 96, Indralok Colony, Sudama Nagar,<br /> Indore, Madhya Pradesh, India</p>
+                  <p className="text-lg font-inter text-[#B20717]">Plot 96, Indralok Colony, Sudama Nagar,<br /> Indore, Madhya Pradesh, India</p>
                 </div>
               </div>
             </div>
@@ -177,7 +189,7 @@ export default function ContactPage() {
                       required
                       value={formState.name}
                       onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                      className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-inter-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
+                      className="bg-transparent border-b border-[#B20717]/50 py-4 text-[11px] font-inter tracking-widest font-inter font-semibold text-[#B20717] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#B20717]/70"
                     />
                     <input
                       type="email"
@@ -185,7 +197,7 @@ export default function ContactPage() {
                       required
                       value={formState.email}
                       onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                      className="bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-inter-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
+                      className="bg-transparent border-b border-[#B20717]/50 py-4 text-[11px] font-inter tracking-widest font-inter font-semibold text-[#B20717] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#B20717]/70"
                     />
                   </div>
 
@@ -195,7 +207,7 @@ export default function ContactPage() {
                     required
                     value={formState.subject}
                     onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
-                    className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70"
+                    className="w-full bg-transparent border-b border-[#B20717]/50 py-4 text-[11px] font-inter tracking-widest font-semibold text-[#B20717] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#B20717]/70"
                   />
 
                   <textarea
@@ -204,17 +216,17 @@ export default function ContactPage() {
                     required
                     value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                    className="w-full bg-transparent border-b border-[#6c3518]/50 py-4 text-[11px] font-inter tracking-widest font-medium text-[#6c3518] focus:outline-none focus:border-[#6c3518] transition-all placeholder:text-[#6c3518]/70 resize-none"
+                    className="w-full bg-transparent border-b border-[#B20717]/50 py-4 text-[11px] font-inter tracking-widest font-semibold text-[#B20717] focus:outline-none focus:border-[#B20717] transition-all placeholder:text-[#B20717]/70 resize-none"
                   />
 
                   <div className="pt-4">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="group relative w-full h-[60px] bg-[#6c3518] font-inter text-[#f5f1e6] rounded-xl overflow-hidden transition-all hover:bg-[#5a2c14] disabled:bg-[#6c3518]/50"
+                      className="group relative w-full h-[60px] bg-[#B20717] font-inter text-[#ffffff] overflow-hidden transition-all hover:bg-[#ffffff] border-2 hover:border-[#B20717] hover:text-[#B20717] disabled:bg-[#B20717]/50"
                     >
-                      <div className="flex items-center justify-center gap-3 font-inter font-bold">
-                        <span className="text-[10px] uppercase tracking-[0.5em] ">
+                      <div className="flex items-center justify-center gap-3 font-inter font-semibold">
+                        <span className="text-[12px] uppercase tracking-[0.5em] ">
                           {isSubmitting ? "Sending..." : "Send Message"}
                         </span>
                         {!isSubmitting && <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
@@ -227,18 +239,18 @@ export default function ContactPage() {
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center space-y-6 bg-white p-8 md:p-12 rounded-2xl border border-[#6c3518]/5 text-center min-h-[450px]"
+                  className="flex flex-col items-center justify-center space-y-6 bg-white p-8 md:p-12 rounded-2xl border border-[#B20717]/5 text-center min-h-[450px]"
                 >
                   <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-2">
                     <CheckCircle2 size={48} className="text-[#22c55e]" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-2xl md:text-3xl font-inter text-[#22c55e]">Form submitted successfully!</h3>
-                  <p className="text-sm md:text-base font-inter text-[#6c3518] leading-relaxed max-w-sm">
+                  <p className="text-sm md:text-base font-inter text-[#B20717] leading-relaxed max-w-sm">
                     Thank you {submittedName}! The form has been submitted successfully.<br />We will reply to you soon!
                   </p>
                   <button
                     onClick={() => setIsSubmitted(false)}
-                    className="mt-8 text-sm font-inter-medium text-[#8b5cf6] hover:text-[#7c3aed] transition-colors"
+                    className="mt-8 text-sm font-inter-medium text-[#B20717] hover:text-[#B20717]/70 transition-colors"
                   >
                     Go back
                   </button>
