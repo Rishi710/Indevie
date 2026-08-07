@@ -17,6 +17,7 @@ interface CartContextType {
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   totalQuantity: number;
   updateBuyerIdentity: (customerAccessToken?: string, email?: string, phone?: string) => Promise<any>;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -149,6 +150,30 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isUpdating]);
 
+  // GoKwik checkout (Scenario 2) has no cart/clear.js endpoint to clear our
+  // Shopify cart automatically after an order -- we own that responsibility.
+  // Simplest correct approach: drop the cart cookie and local state; the
+  // existing addItem() lazy-create-on-first-add logic naturally builds a
+  // fresh cart the next time the user adds something.
+  const clearCart = useCallback(() => {
+    Cookies.remove(CART_COOKIE_KEY);
+    setCart(null);
+  }, []);
+
+  // Listen for GoKwik's checkout events, posted via window.postMessage from
+  // their checkout overlay. We only care about Order_Placed_GK here -- that's
+  // our signal a purchase actually completed, so it's safe to empty the cart.
+  useEffect(() => {
+    const handleGokwikMessage = (event: MessageEvent) => {
+      if (event.data?.type !== "gokwik_events") return;
+      if (event.data?.event === "Order_Placed_GK") {
+        clearCart();
+      }
+    };
+    window.addEventListener("message", handleGokwikMessage);
+    return () => window.removeEventListener("message", handleGokwikMessage);
+  }, [clearCart]);
+
   const totalQuantity = cart?.totalQuantity || 0;
 
   return (
@@ -163,6 +188,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateQuantity,
         totalQuantity,
         updateBuyerIdentity,
+        clearCart,
       }}
     >
       {children}

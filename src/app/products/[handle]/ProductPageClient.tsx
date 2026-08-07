@@ -2,7 +2,6 @@
 
 import {
   ShopifyProduct,
-  getSafeCheckoutUrl,
   getStockInfo,
   getProductBenefitsHtml,
   getProductIngredientsHtml,
@@ -24,6 +23,7 @@ import ProductRatingBadge from "@/app/components/ProductRatingBadge";
 import TestimonialSection from "@/app/components/TestimonialSection";
 import { getProductFaqs } from "@/app/components/ProductFaqSection";
 import { pixelViewContent } from "@/lib/pixel";
+import { triggerGokwikCheckout } from "@/lib/gokwik";
 
 
 // FAQs card — same header/card chrome as RichTextAccordionRow, but the body is a
@@ -299,8 +299,11 @@ export default function ProductPageClient({
   const handleBuyNow = async () => {
     if (variantId && !isOutOfStock) {
       const updatedCart = await addItem(variantId, quantity);
-      if (updatedCart?.checkoutUrl) {
-        window.location.href = getSafeCheckoutUrl(updatedCart.checkoutUrl);
+      if (updatedCart?.id) {
+        const opened = triggerGokwikCheckout(updatedCart.id);
+        if (!opened) {
+          alert("Checkout is still loading — please try again in a moment.");
+        }
       }
     }
   };

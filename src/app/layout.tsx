@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { Inter, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import MetaPixel from "./components/MetaPixel";
+import GoKwikScript from "./components/GoKwikScript";
 
 const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -42,6 +43,7 @@ export default async function RootLayout({
         </LayoutWrapper>
         <Analytics />
         <MetaPixel />
+        <GoKwikScript />
       </body>
     </html>
   );

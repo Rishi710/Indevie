@@ -4,8 +4,9 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { getSafeCheckoutUrl, getStockInfo } from "@/lib/shopify";
+import { getStockInfo } from "@/lib/shopify";
 import { pixelInitiateCheckout, toShopifyContentId } from "@/lib/pixel";
+import { triggerGokwikCheckout } from "@/lib/gokwik";
 import { useScrollLock } from "@/lib/useScrollLock";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -42,8 +43,8 @@ export default function CartDrawer() {
       }
     }
 
-    if (currentCart?.checkoutUrl) {
-      // Fire InitiateCheckout pixel event before redirecting
+    if (currentCart?.id) {
+      // Fire InitiateCheckout pixel event before opening checkout
       const lines = currentCart?.lines?.nodes || [];
       pixelInitiateCheckout({
         numItems: currentCart?.totalQuantity || 0,
@@ -52,10 +53,12 @@ export default function CartDrawer() {
         contentIds: lines.map((l: any) => toShopifyContentId(l.merchandise?.product?.id, l.merchandise?.id)).filter(Boolean),
       });
 
-      const safeUrl = getSafeCheckoutUrl(currentCart.checkoutUrl);
-      window.location.href = safeUrl;
+      const opened = triggerGokwikCheckout(currentCart.id);
+      if (!opened) {
+        alert("Checkout is still loading — please try again in a moment.");
+      }
     } else {
-      console.error("No checkout URL found", currentCart);
+      console.error("No cart found", currentCart);
     }
   };
 
