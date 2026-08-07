@@ -6,10 +6,14 @@ import { Metadata } from "next";
 import { Inter, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import MetaPixel from "./components/MetaPixel";
-import GoKwikScript from "./components/GoKwikScript";
+import Script from "next/script";
 
 const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
+const GOKWIK_MERCHANT_ID = process.env.NEXT_PUBLIC_GOKWIK_MERCHANT_ID;
+const GOKWIK_ENVIRONMENT = process.env.NEXT_PUBLIC_GOKWIK_ENVIRONMENT || "sandbox";
+const GOKWIK_STORE_ID = process.env.NEXT_PUBLIC_GOKWIK_STORE_ID;
 
 export const metadata: Metadata = {
   title: "Indévie Beauty | Modern Botanical Skincare rooted in Genurveda™",
@@ -43,7 +47,36 @@ export default async function RootLayout({
         </LayoutWrapper>
         <Analytics />
         <MetaPixel />
-        <GoKwikScript />
+        {GOKWIK_MERCHANT_ID && GOKWIK_STORE_ID && (
+          <>
+            {/* GoKwik's own script reads window.merchantInfo synchronously at
+                the top of its execution (confirmed by inspecting their bundle:
+                `const d = window.merchantInfo; ...ot(d.environment)...`) -- if
+                merchantInfo isn't set yet at that exact moment, it's captured
+                as undefined forever and their init silently never runs. Both
+                scripts must be beforeInteractive (root-layout only, per
+                Next.js) and in this exact order so merchantInfo is guaranteed
+                to exist before their SDK's own code executes. */}
+            <Script
+              id="gokwik-merchant-info"
+              strategy="beforeInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `window.merchantInfo = ${JSON.stringify({
+                  mid: GOKWIK_MERCHANT_ID,
+                  environment: GOKWIK_ENVIRONMENT,
+                  type: "merchantInfo",
+                  storeId: Number(GOKWIK_STORE_ID),
+                  fbPixel: process.env.NEXT_PUBLIC_META_PIXEL_ID || "",
+                })};`,
+              }}
+            />
+            <Script
+              id="gokwik-merchant-integration"
+              src="https://pdp.gokwik.co/merchant-integration/build/merchant.integration.js?v4"
+              strategy="beforeInteractive"
+            />
+          </>
+        )}
       </body>
     </html>
   );
