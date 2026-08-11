@@ -1015,6 +1015,10 @@ export const CART_FRAGMENT = `
           amount
           currencyCode
         }
+        subtotalAmount {
+          amount
+          currencyCode
+        }
       }
       merchandise {
         ... on ProductVariant {
@@ -1026,6 +1030,15 @@ export const CART_FRAGMENT = `
             id
             title
             handle
+            tags
+            productType
+            collections(first: 5) {
+              nodes {
+                id
+                handle
+                title
+              }
+            }
           }
           image {
             url
@@ -1034,6 +1047,10 @@ export const CART_FRAGMENT = `
             height
           }
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }

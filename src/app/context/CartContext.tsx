@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { createCart, addToCart, updateCartLine, removeFromCart, fetchCart, updateCartBuyerIdentity } from "@/lib/shopify";
 import { pixelAddToCart } from "@/lib/pixel";
 
+import { calculateMinisOffer, MinisOfferResult } from "@/lib/minisOffer";
+
 const CART_COOKIE_KEY = "shopify_cart_id";
 
 interface CartContextType {
@@ -18,6 +20,7 @@ interface CartContextType {
   totalQuantity: number;
   updateBuyerIdentity: (customerAccessToken?: string, email?: string, phone?: string) => Promise<any>;
   clearCart: () => void;
+  minisOffer: MinisOfferResult;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -175,6 +178,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [clearCart]);
 
   const totalQuantity = cart?.totalQuantity || 0;
+  const minisOffer = calculateMinisOffer(cart?.lines?.nodes || []);
 
   return (
     <CartContext.Provider
@@ -189,6 +193,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         totalQuantity,
         updateBuyerIdentity,
         clearCart,
+        minisOffer,
       }}
     >
       {children}

@@ -2,9 +2,10 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from "lucide-react";
+import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, Sparkles, Tag, CheckCircle2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { getStockInfo } from "@/lib/shopify";
+import { isTravelMini } from "@/lib/minisOffer";
 import { pixelInitiateCheckout, toShopifyContentId } from "@/lib/pixel";
 import { triggerGokwikCheckout } from "@/lib/gokwik";
 import { useScrollLock } from "@/lib/useScrollLock";
@@ -21,13 +22,15 @@ export default function CartDrawer() {
     removeItem,
     updateQuantity,
     totalQuantity,
-    updateBuyerIdentity
+    updateBuyerIdentity,
+    minisOffer,
   } = useCart();
 
   // Prevent body scroll when drawer is open
   useScrollLock(isCartOpen);
 
   const subtotal = cart?.cost?.subtotalAmount;
+  const rawSubtotalAmount = parseFloat(subtotal?.amount || "0");
 
   const handleCheckout = async () => {
     if (isUpdating) return;
@@ -84,7 +87,7 @@ export default function CartDrawer() {
             className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[1000] flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-2 border-[#B30617]/10">
+            <div className="flex items-center justify-between p-2 border-b border-[#B30617]/10">
               <div className="flex items-center gap-3">
                 <ShoppingBag size={20} className="text-black" />
                 <h2 className="text-xl font-inter font-light text-black italic">Your Cart</h2>
@@ -101,11 +104,54 @@ export default function CartDrawer() {
               </button>
             </div>
 
+            {/* Travel Minis Special Offer Nudge Banner */}
+            <div className="bg-gradient-to-r from-[#B30617]/10 via-[#B30617]/5 to-[#B30617]/10 px-6 py-3.5 border-b border-[#B30617]/15">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#B30617] tracking-wider uppercase">
+                  <Sparkles size={14} className="text-[#B30617] animate-pulse" />
+                  <span>Travel Minis Offer</span>
+                </div>
+                {minisOffer.hasOfferApplied && (
+                  <span className="bg-[#B30617] text-white text-[8px] font-semibold px-2 py-1 shadow-sm flex items-center gap-1">
+                    <CheckCircle2 size={10} />
+                    SAVED ₹{minisOffer.discountAmount.toLocaleString()}
+                  </span>
+                )}
+              </div>
+
+              <p className="text-xs font-medium text-gray-800 leading-snug">
+                {minisOffer.bannerMessage}
+              </p>
+
+              {/* Progress Bar for Tier Goals */}
+              <div className="mt-2 w-full bg-white/80 rounded-full h-2 overflow-hidden border border-[#B30617]/20 shadow-inner">
+                <motion.div
+                  className="bg-gradient-to-r from-[#B30617] to-[#e63946] h-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${minisOffer.progressPercent}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
+              </div>
+            </div>
+
             {/* Line Items */}
             <div className={`flex-1 overflow-y-auto p-6 space-y-6 transition-opacity duration-300 ${isUpdating ? "opacity-60 pointer-events-none" : "opacity-100"}`}>
               {cart?.lines?.nodes.length > 0 ? (
                 cart.lines.nodes.map((line: any, index: number) => {
                   const { maxQuantity } = getStockInfo(line.merchandise);
+                  const isMini = isTravelMini(line.merchandise?.product);
+
+                  const quantity = line.quantity || 1;
+                  const unitPrice = parseFloat(line.merchandise?.price?.amount || "0");
+                  const unitCompareAtPrice = line.merchandise?.compareAtPrice ? parseFloat(line.merchandise.compareAtPrice.amount) : 0;
+
+                  // Standard line item pricing (does not override with dynamic discounts)
+                  const lineStandardTotal = unitPrice * quantity;
+                  const lineCompareAtTotal = unitCompareAtPrice > unitPrice ? unitCompareAtPrice * quantity : 0;
+
+                  const currencyCode = line.merchandise?.price?.currencyCode || "INR";
+                  const currencySymbol = currencyCode === "INR" ? "₹" : currencyCode;
+
                   return (
                     <div key={line.id}>
                       <div className="flex gap-4 group">
@@ -144,12 +190,21 @@ export default function CartDrawer() {
                                 <Trash2 size={16} />
                               </button>
                             </div>
-                            <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">
+
+                            <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
                               {line.merchandise.title !== "Default Title" ? line.merchandise.title : "Standard Ritual"}
                             </p>
+
+                            {/* Offer Badge for Eligible Minis */}
+                            {isMini && (
+                              <div className="inline-flex items-center gap-1 mt-1.5 text-[10px] font-semibold text-[#B30617] bg-[#B30617]/10 px-2 py-0.5 border border-[#B30617]/20">
+                                <Tag size={10} />
+                                <span>Travel Mini • Offer Eligible</span>
+                              </div>
+                            )}
                           </div>
 
-                          <div className="flex justify-between items-end">
+                          <div className="flex justify-between items-end mt-2">
                             <div className="flex items-center border-1 border-[#B30617] bg-white overflow-hidden">
                               <button
                                 onClick={() => updateQuantity(line.id, line.quantity - 1)}
@@ -171,9 +226,23 @@ export default function CartDrawer() {
                                 <Plus size={12} className="text-[#6c3518]" />
                               </button>
                             </div>
-                            <p className="text-sm font-inter font-semibold italic text-[#B30617]">
-                              {line.estimatedCost.totalAmount.currencyCode === "INR" ? "₹" : line.estimatedCost.totalAmount.currencyCode} {parseFloat(line.estimatedCost.totalAmount.amount).toLocaleString()}
-                            </p>
+
+                            <div className="text-right">
+                              {lineCompareAtTotal > lineStandardTotal ? (
+                                <div className="flex flex-col items-end">
+                                  <span className="text-[11px] text-gray-400 line-through font-inter font-normal leading-tight">
+                                    {currencySymbol} {lineCompareAtTotal.toLocaleString()}
+                                  </span>
+                                  <span className="text-sm font-inter font-semibold italic text-[#B30617] leading-tight">
+                                    {currencySymbol} {lineStandardTotal.toLocaleString()}
+                                  </span>
+                                </div>
+                              ) : (
+                                <p className="text-sm font-inter font-semibold italic text-[#B30617]">
+                                  {currencySymbol} {lineStandardTotal.toLocaleString()}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -204,39 +273,86 @@ export default function CartDrawer() {
             </div>
 
             {/* Footer */}
-            {cart?.lines?.nodes.length > 0 && (
-              <div className="p-8 bg-white border-2 border-[#B30617]/10 space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-[12px] font-semibold tracking-[0.1em] text-[#B30617] uppercase">Subtotal</p>
-                    <p className="text-xs text-gray-400 font-inter italic">Shipping & taxes calculated at checkout</p>
+            {cart?.lines?.nodes.length > 0 && (() => {
+              const lines = cart?.lines?.nodes || [];
+              const currencySymbol = subtotal?.currencyCode === "INR" ? "₹" : (subtotal?.currencyCode || "₹");
+
+              let rawCartStandardTotal = 0;
+              let totalCartCompareSubtotal = 0;
+
+              lines.forEach((line: any) => {
+                const qty = line.quantity || 1;
+                const unitPrice = parseFloat(line.merchandise?.price?.amount || "0");
+                const unitCompareAtPrice = line.merchandise?.compareAtPrice ? parseFloat(line.merchandise.compareAtPrice.amount) : 0;
+
+                const lineStandard = unitPrice * qty;
+                const lineCompare = unitCompareAtPrice > unitPrice ? unitCompareAtPrice * qty : lineStandard;
+
+                rawCartStandardTotal += lineStandard;
+                totalCartCompareSubtotal += lineCompare;
+              });
+
+              // Calculate offer savings and final subtotal
+              const offerSavings = minisOffer.hasOfferApplied ? minisOffer.discountAmount : 0;
+              const finalSubtotal = Math.max(0, rawCartStandardTotal - offerSavings);
+              const displayCompareTotal = Math.max(totalCartCompareSubtotal, rawCartStandardTotal);
+              const totalSavings = Math.max(0, Math.round(displayCompareTotal - finalSubtotal));
+
+              return (
+                <div className="p-6 bg-white border-t border-[#B30617]/10 space-y-4">
+                  {/* Savings & Subtotal breakdown */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-[12px] font-semibold tracking-[0.1em] text-[#B30617] uppercase">Subtotal</p>
+                        <p className="text-xs text-gray-800 font-inter italic"><a href="https://indevie.com/shipping-policy" target="_blank" rel="noopener noreferrer" className="cursor-pointer text-black underline font-semibold">Shipping & taxes</a> calculated at checkout</p>
+                      </div>
+                      <div className="text-right flex flex-col items-end">
+                        {totalSavings > 0 && displayCompareTotal > finalSubtotal && (
+                          <span className="text-sm text-gray-400 line-through font-inter font-normal leading-none mb-1">
+                            {currencySymbol} {Math.round(displayCompareTotal).toLocaleString()}
+                          </span>
+                        )}
+                        <p className="text-2xl font-inter italic font-semibold text-[#B30617] leading-none">
+                          {currencySymbol} {finalSubtotal.toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    {totalSavings > 0 && (
+                      <div className="flex items-center justify-between text-xs text-emerald-700 font-medium pt-1 border-t border-emerald-700/10">
+                        {/* <span className="flex items-center gap-1">
+                          <Tag size={12} />
+                          {minisOffer.hasOfferApplied && minisOffer.discountPercent > 0
+                            ? `Minis ${minisOffer.discountPercent}% OFF Savings`
+                            : "Total Savings"}
+                        </span> */}
+                        {/* <span>- {currencySymbol} {totalSavings.toLocaleString()}</span> */}
+                      </div>
+                    )}
                   </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-inter italic font-semibold text-[#B30617]">
-                      {subtotal?.currencyCode === "INR" ? "₹" : subtotal?.currencyCode} {parseFloat(subtotal?.amount).toLocaleString()}
-                    </p>
-                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isUpdating}
+                    className="group w-full flex items-center justify-between bg-[#B30617] text-white p-5 hover:bg-black transition-all duration-500 shadow-xl shadow-[#B30617]/10 disabled:opacity-50"
+                  >
+                    <span className="text-sm font-inter font-semibold tracking-[0.2em] uppercase underline-offset-4 group-hover:underline">
+                      {isUpdating ? "Preparing Checkout..." : "Proceed to Checkout"}
+                    </span>
+                    <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
+                  </button>
+
+                  <p className="text-[9px] text-center text-gray-800 uppercase tracking-[0.2em] font-light">
+                    SECURE SHOPPING • FAST SHIPPING • SATISFACTION GUARANTEED
+                  </p>
                 </div>
-
-                <button
-                  onClick={handleCheckout}
-                  disabled={isUpdating}
-                  className="group w-full flex items-center justify-between bg-[#B30617] text-white p-6  hover:bg-black transition-all duration-500 shadow-xl shadow-[#B30617]/10 disabled:opacity-50"
-                >
-                  <span className="text-sm font-inter font-semibold tracking-[0.2em] uppercase underline-offset-4 group-hover:underline">
-                    {isUpdating ? "Preparing Checkout..." : "Proceed to Checkout"}
-                  </span>
-                  <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
-                </button>
-
-                <p className="text-[9px] text-center text-gray-800 uppercase tracking-[0.2em] font-light">
-                  SECURE SHOPPING • FAST SHIPPING • SATISFACTION GUARANTEED
-                </p>
-              </div>
-            )}
+              );
+            })()}
           </motion.div>
         </>
       )}
     </AnimatePresence>
   );
 }
+
