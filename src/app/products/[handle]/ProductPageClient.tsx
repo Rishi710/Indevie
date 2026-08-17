@@ -17,7 +17,7 @@ import Link from "next/link";
 import { useState, useEffect, useMemo, ReactNode } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { Bookmark, ShoppingBag, ChevronDown, Check } from "lucide-react";
-import ProductCard from "@/app/components/ProductCard";
+import ProductSlider from "@/app/components/ProductSlider";
 import { useCart } from "@/app/context/CartContext";
 import ReviewSection from "@/app/components/ReviewSection";
 import ProductRatingBadge from "@/app/components/ProductRatingBadge";
@@ -662,14 +662,7 @@ export default function ProductPageClient({
             </h2>
           </div>
 
-          {/* Mobile: Horizontal Carousel | Desktop: 4-Column Grid */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-4 md:gap-8 -mx-4 px-4 md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {relatedProducts.slice(0, 4).map((relProduct) => (
-              <div key={relProduct.id} className="min-w-[75vw] sm:min-w-[45vw] md:min-w-0 snap-center">
-                <ProductCard product={relProduct} />
-              </div>
-            ))}
-          </div>
+          <ProductSlider products={relatedProducts} />
         </section>
       )}
       {/* Judge.me Reviews Section */}
