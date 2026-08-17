@@ -10,6 +10,7 @@ import {
   getProductAdditionalInfoHtml,
   getProductConcerns,
   getProductSize,
+  getProductSizeOptions,
 } from "@/lib/shopify";
 import Image from "next/image";
 import Link from "next/link";
@@ -131,12 +132,19 @@ function ProductAccordionGroup({ product }: { product: ShopifyProduct }) {
   );
 }
 
-// "For: Frizzy✓ Dry✓ ..." and "Size: Travel Size" rows — both sourced from
-// real Shopify metafields (custom.concern, custom.size). Each row disappears
-// on its own if the product has no data for it.
+// "For: Frizzy✓ Dry✓ ..." and "Size: [Full Size] [Travel Size]" rows — both
+// sourced from real Shopify metafields (custom.concern, custom.size,
+// custom.size_options). Each row disappears on its own if the product has no
+// data for it.
 function ProductForAndSize({ product }: { product: ShopifyProduct }) {
   const concerns = getProductConcerns(product);
   const size = getProductSize(product);
+  // custom.size_options links this product to its sibling sizes (e.g. Full
+  // Size <-> Travel Size, each a separate Shopify product). When it's set,
+  // "Size" becomes a switcher between those real products instead of a
+  // static label -- clicking a size that isn't the current product navigates
+  // to that product's own page.
+  const sizeOptions = getProductSizeOptions(product);
 
   if (concerns.length === 0 && !size) return null;
 
@@ -156,11 +164,36 @@ function ProductForAndSize({ product }: { product: ShopifyProduct }) {
       )}
 
       {size && (
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           <span className="font-semibold text-[20px] text-[#2a2a2a]">Size:</span>
-          <span className="px-4 py-1.5 border border-[#B40417]  bg-[#B40417]/5 text-[#B40417] font-medium text-[14px]">
-            {size}
-          </span>
+          {sizeOptions.length > 0 ? (
+            <div className="flex flex-wrap items-center gap-2">
+              {sizeOptions.map((opt) => {
+                const isCurrent = opt.handle === product.handle;
+                return isCurrent ? (
+                  <span
+                    key={opt.handle}
+                    aria-current="true"
+                    className="px-4 py-1.5 border border-[#B40417] bg-[#B40417]/5 text-[#B40417] font-medium text-[14px]"
+                  >
+                    {opt.size}
+                  </span>
+                ) : (
+                  <Link
+                    key={opt.handle}
+                    href={`/products/${opt.handle}`}
+                    className="px-4 py-1.5 border border-black/20 text-[#2a2a2a] font-medium text-[14px] hover:border-[#B40417] hover:text-[#B40417] transition-colors"
+                  >
+                    {opt.size}
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <span className="px-4 py-1.5 border border-[#B40417] bg-[#B40417]/5 text-[#B40417] font-medium text-[14px]">
+              {size}
+            </span>
+          )}
         </div>
       )}
     </div>
@@ -251,6 +284,10 @@ export default function ProductPageClient({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { cart, addItem } = useCart();
 
+  // No variant picker UI -- always the product's first (and typically only
+  // purchasable) variant.
+  const selectedVariant = product.variants?.nodes[0];
+
   // Fire ViewContent pixel event when product page loads
   useEffect(() => {
     const variant = product.variants?.nodes[0];
@@ -278,7 +315,6 @@ export default function ProductPageClient({
 
   const selectedImage = images[selectedImageIndex] || images[0];
 
-  const selectedVariant = product.variants?.nodes[0];
   const variantId = selectedVariant?.id;
   const price = selectedVariant?.price;
   const compareAtPrice = selectedVariant?.compareAtPrice;
@@ -319,8 +355,6 @@ export default function ProductPageClient({
       alert("Link copied to clipboard!");
     }
   };
-
-  const sizeOption = (product.options || []).find(o => o.name.toLowerCase() === 'size');
 
   return (
     <div className="w-full bg-[#ffffff] min-h-screen">

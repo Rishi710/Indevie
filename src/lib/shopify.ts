@@ -140,6 +140,21 @@ export interface ShopifyProduct {
   concernMetafield?: { value: string } | null;
   /** custom.size metafield — a single_line_text_field, so `value` is a plain string (or null if unset). */
   sizeMetafield?: { value: string } | null;
+  /**
+   * custom.size_options metafield — a list.product_reference. `references`
+   * resolves the linked products directly (title/handle/own size label) so
+   * the size switcher doesn't need a second round-trip per linked product.
+   */
+  sizeOptionsMetafield?: {
+    references?: {
+      nodes: {
+        id: string;
+        title: string;
+        handle: string;
+        sizeMetafield?: { value: string } | null;
+      }[];
+    } | null;
+  } | null;
   /** custom.info metafield — a single_line_text_field, so `value` is a plain string (or null if unset). Powers the product card's black banner label. */
   infoMetafield?: { value: string } | null;
   /** custom.benefits metafield — a rich_text_field, so `value` is a JSON-stringified rich text AST (or null if unset). */
@@ -385,6 +400,26 @@ export function getProductSize(product: Pick<ShopifyProduct, "sizeMetafield">): 
   return normalized.length > 0 ? normalized : null;
 }
 
+export interface SizeOption {
+  handle: string;
+  title: string;
+  size: string;
+}
+
+/**
+ * Reads the real custom.size_options metafield (a list.product_reference) --
+ * the other products representing this same item in different sizes (e.g.
+ * Full Size <-> Travel Size), each labelled with its own custom.size value.
+ * No dummy fallback -- returns an empty array when unset, or when a linked
+ * product has no size label of its own (nothing sensible to show as a button).
+ */
+export function getProductSizeOptions(product: Pick<ShopifyProduct, "sizeOptionsMetafield">): SizeOption[] {
+  const nodes = product.sizeOptionsMetafield?.references?.nodes || [];
+  return nodes
+    .map((p) => ({ handle: p.handle, title: p.title, size: getProductSize(p) }))
+    .filter((opt): opt is SizeOption => !!opt.size);
+}
+
 /**
  * Reads the real product card banner label from the custom.info Shopify
  * metafield (a single_line_text_field). No tag or title-keyword fallback --
@@ -582,6 +617,20 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
       }
       sizeMetafield: metafield(namespace: "custom", key: "size") {
         value
+      }
+      sizeOptionsMetafield: metafield(namespace: "custom", key: "size_options") {
+        references(first: 10) {
+          nodes {
+            ... on Product {
+              id
+              title
+              handle
+              sizeMetafield: metafield(namespace: "custom", key: "size") {
+                value
+              }
+            }
+          }
+        }
       }
       benefitsMetafield: metafield(namespace: "custom", key: "benefits") {
         value
