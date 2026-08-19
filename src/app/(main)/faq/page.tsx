@@ -77,10 +77,6 @@ export default function FaqPage() {
           <Image src="https://cdn.shopify.com/s/files/1/0649/7301/3058/files/IMG_2821_2_1.webp?v=1777466276" alt="FAQ Background" fill className="object-cover object-top" priority />
         </div>
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          {/* <h1 className="text-5xl md:text-7xl font-inter uppercase text-white mb-6 leading-tight drop-shadow-lg">
-            Frequently Asked<br />
-            <span className="italic text-[#d0ba96]">Questions</span>
-          </h1> */}
           <h1 className="text-4xl md:text-8xl text-white font-inter font-semibold italic uppercase">
             Frequently Asked{" "}
             <span className="relative z-0 inline-block font-semibold italic px-1">

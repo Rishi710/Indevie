@@ -16,8 +16,8 @@ const GOKWIK_ENVIRONMENT = process.env.NEXT_PUBLIC_GOKWIK_ENVIRONMENT || "sandbo
 const GOKWIK_STORE_ID = process.env.NEXT_PUBLIC_GOKWIK_STORE_ID;
 
 export const metadata: Metadata = {
-  title: "Indévie Beauty | Modern Botanical Skincare rooted in Genurveda™",
-  description: "Discover Indévie Beauty's range of clean, effective, and intentional skincare rituals. Built with intention, backed by conviction.",
+  title: "Indevie Beauty | Modern Botanical Skincare rooted in Genurveda™",
+  description: "Discover Indevie Beauty's range of clean, effective, and intentional skincare rituals. Built with intention, backed by conviction.",
   keywords: ["skincare", "botanical beauty", "Genurveda", "clean beauty", "intentional skincare"],
   other: {
     "facebook-domain-verification": "m2b63pt96o6nhkqkt1wk154bcexgf2",
