@@ -6,7 +6,6 @@ import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, Sparkles, Tag, CheckCi
 import { useCart } from "../context/CartContext";
 import { getStockInfo } from "@/lib/shopify";
 import { isTravelMini } from "@/lib/minisOffer";
-import { pixelInitiateCheckout, toShopifyContentId } from "@/lib/pixel";
 import { triggerGokwikCheckout } from "@/lib/gokwik";
 import { useScrollLock } from "@/lib/useScrollLock";
 import Cookies from "js-cookie";
@@ -47,15 +46,7 @@ export default function CartDrawer() {
     }
 
     if (currentCart?.id) {
-      // Fire InitiateCheckout pixel event before opening checkout
-      const lines = currentCart?.lines?.nodes || [];
-      pixelInitiateCheckout({
-        numItems: currentCart?.totalQuantity || 0,
-        value: parseFloat(currentCart?.cost?.subtotalAmount?.amount || "0"),
-        currencyCode: currentCart?.cost?.subtotalAmount?.currencyCode || "₹",
-        contentIds: lines.map((l: any) => toShopifyContentId(l.merchandise?.product?.id, l.merchandise?.id)).filter(Boolean),
-      });
-
+      // GoKwik SDK handles InitiateCheckout and Purchase tracking natively
       const opened = triggerGokwikCheckout(currentCart.id);
       if (!opened) {
         alert("Checkout is still loading — please try again in a moment.");

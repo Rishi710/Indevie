@@ -12,27 +12,11 @@ export const dynamic = "force-dynamic";
  * (see getSafeCheckoutUrl in src/lib/shopify.ts), so the browser never
  * returns to this app after a purchase — there is no "thank you" page on
  * our domain to fire a client-side Purchase pixel from.
- *
- * ENABLED: this is the source of truth for Purchase → Meta. The store's
- * Shopify "Facebook & Instagram" sales channel was expected to cover this
- * from Shopify's checkout directly, but a real test order confirmed it sends
- * nothing to Meta at all — so this webhook is what actually reports Purchase.
- * If that native channel is ever confirmed working independently, revisit
- * PURCHASE_CAPI_ENABLED to avoid double-counting (it can't dedupe against an
- * event_id we don't control).
- *
- * Setup required in Shopify Admin → Settings → Notifications → Webhooks:
- *   - Event: "Order creation" (topic orders/create) — fires as soon as the
- *     order is placed, matching when a client-side Purchase pixel would have
- *     fired historically. Use "Order payment" (orders/paid) instead if you'd
- *     rather only count captured payments (note: COD orders may not reach
- *     "paid" until fulfillment, which would delay/miss those conversions).
- *   - Format: JSON
- *   - URL: https://<your-domain>/api/webhooks/shopify-order
- * Shopify shows a signing secret when you create the webhook — put it in
- * your env as SHOPIFY_WEBHOOK_SECRET.
+ * GoKwik integration note: GoKwik tracks Purchase natively via its SDK /
+ * checkout confirmation with the configured fbPixel. Setting PURCHASE_CAPI_ENABLED
+ * to false prevents duplicate purchase & revenue tracking in Meta Ads.
  */
-const PURCHASE_CAPI_ENABLED = true;
+const PURCHASE_CAPI_ENABLED = false;
 
 function verifyShopifyWebhook(rawBody: string, hmacHeader: string | null, secret: string): boolean {
   if (!hmacHeader) return false;

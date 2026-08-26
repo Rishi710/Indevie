@@ -14,9 +14,9 @@ import {
 } from "@/lib/shopify";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useMemo, ReactNode } from "react";
+import { useState, useEffect, useMemo, ReactNode, useRef } from "react";
 import DOMPurify from "isomorphic-dompurify";
-import { Bookmark, ShoppingBag, ChevronDown, Check } from "lucide-react";
+import { Bookmark, ShoppingBag, ChevronDown, Check, Truck, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductSlider from "@/app/components/ProductSlider";
 import { useCart } from "@/app/context/CartContext";
 import ReviewSection from "@/app/components/ReviewSection";
@@ -283,6 +283,34 @@ export default function ProductPageClient({
   const [mobileImageIndex, setMobileImageIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { cart, addItem } = useCart();
+  const mobileSliderRef = useRef<HTMLDivElement>(null);
+
+  const scrollMobileTo = (index: number) => {
+    if (mobileSliderRef.current) {
+      const width = mobileSliderRef.current.clientWidth;
+      mobileSliderRef.current.scrollTo({
+        left: index * width,
+        behavior: "smooth",
+      });
+      setMobileImageIndex(index);
+    }
+  };
+
+  const handleMobilePrev = () => {
+    if (product.images?.nodes?.length && product.images.nodes.length > 1) {
+      const total = product.images.nodes.length;
+      const newIndex = mobileImageIndex > 0 ? mobileImageIndex - 1 : total - 1;
+      scrollMobileTo(newIndex);
+    }
+  };
+
+  const handleMobileNext = () => {
+    if (product.images?.nodes?.length && product.images.nodes.length > 1) {
+      const total = product.images.nodes.length;
+      const newIndex = mobileImageIndex < total - 1 ? mobileImageIndex + 1 : 0;
+      scrollMobileTo(newIndex);
+    }
+  };
 
   // No variant picker UI -- always the product's first (and typically only
   // purchasable) variant.
@@ -405,7 +433,7 @@ export default function ProductPageClient({
             the image column beside it stays sticky/pinned. */}
         <div className="  py-8 px-4 pr-10 lg:pr-40 flex flex-col min-w-0">
           <div className="flex justify-between items-start mb-2 mt-2">
-            <h1 className="text-[20px] lg:text-[28px] leading-tight font-sans font-semibold italic text-black max-w-[85%]">
+            <h1 className="text-[20px] lg:text-[36px] leading-tight font-sans font-semibold italic text-black max-w-[85%] uppercase">
               {product.title}
             </h1>
             {/* <button aria-label="Save product" className="text-gray-400 hover:text-black transition-colors mt-2">
@@ -413,16 +441,42 @@ export default function ProductPageClient({
              </button> */}
           </div>
 
-          <div className="flex items-center font-inter gap-3 mt-2">
-            {formattedComparePrice && (
-              <p className="text-[22px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
-            )}
-            <p className="text-[22px] text-[#2a2a2a]">{formattedPrice}</p>
-          </div>
-          <p className="text-[11px] text-gray-400 mb-1">(MRP inclusive of all taxes)</p>
-
-          <div className="">
+          <div className="mt-2 mb-4">
             <ProductRatingBadge productId={product.id} />
+          </div>
+
+          <div className="bg-[#F6F6F7] px-4 sm:px-6 py-3.5 sm:py-4 mb-2 flex flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              {formattedComparePrice && (
+                <span className="text-[18px] sm:text-[22px] text-[#666666] line-through decoration-1">{formattedComparePrice}</span>
+              )}
+              <span className="text-[22px] sm:text-[26px] font-bold text-black">{formattedPrice}</span>
+            </div>
+
+            {/* Fulfilled by Amazon + Shiprocket Badge */}
+            <div className="bg-[#FCC101] px-2.5 py-1.5 sm:px-3 sm:py-2 text-white shrink-0 flex items-center gap-1.5 sm:gap-2">
+              <Truck size={14} className="text-white shrink-0 stroke-[2.2]" />
+              <span className="text-[9px] sm:text-[10.5px] font-extrabold uppercase tracking-wider text-white shrink-0 whitespace-nowrap">
+                Fulfilled by
+              </span>
+              <div className="flex items-center gap-1.5 bg-white px-2 py-0.5 shrink-0 ml-1">
+                <Image
+                  src="/images/amazon.png"
+                  alt="Amazon"
+                  width={52}
+                  height={20}
+                  className="h-4 sm:h-5 w-auto object-contain shrink-0"
+                />
+                <span className="text-[10px] font-bold text-gray-400 select-none">+</span>
+                <Image
+                  src="/images/shiprocket-logo.png"
+                  alt="Shiprocket"
+                  width={76}
+                  height={20}
+                  className="h-4 sm:h-5 w-auto object-contain shrink-0"
+                />
+              </div>
+            </div>
           </div>
 
           {(safeDescriptionHtml || product.description) && (
@@ -506,6 +560,7 @@ export default function ProductPageClient({
         {/* Mobile Gallery Slider */}
         <div className="relative -mx-4 group">
           <div
+            ref={mobileSliderRef}
             className="flex overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             onScroll={(e) => {
@@ -530,35 +585,86 @@ export default function ProductPageClient({
             ))}
           </div>
 
-          {/* Pagination Dots */}
+          {/* Mobile Slider Navigation Arrows */}
           {images.length > 1 && (
-            <div className="flex justify-center gap-3 mt-8">
+            <>
+              <button
+                onClick={handleMobilePrev}
+                aria-label="Previous image"
+                className="absolute left-2 top-[40%] -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/85 text-black shadow-md flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <ChevronLeft size={20} className="stroke-[2.2]" />
+              </button>
+              <button
+                onClick={handleMobileNext}
+                aria-label="Next image"
+                className="absolute right-2 top-[40%] -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/85 text-black shadow-md flex items-center justify-center active:scale-90 transition-transform"
+              >
+                <ChevronRight size={20} className="stroke-[2.2]" />
+              </button>
+            </>
+          )}
+
+          {/* Pagination Dots */}
+          {/* {images.length > 1 && (
+            <div className="flex justify-center gap-3 mt-4">
               {images.map((_, idx) => (
-                <div
+                <button
                   key={idx}
-                  className={`h-2.5 w-2.5 transition-all duration-300 ${idx === mobileImageIndex ? "bg-[#B40417]" : "bg-[#B40417]/20"
+                  onClick={() => scrollMobileTo(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-2.5 w-2.5 transition-all duration-300 ${idx === mobileImageIndex ? "bg-[#B40417] scale-110" : "bg-[#B40417]/20"
                     }`}
                 />
               ))}
             </div>
-          )}
+          )} */}
         </div>
 
-        <div className="flex flex-col mb-2 mt-4">
+        <div className="flex flex-col mb-2 mt-2">
           <div className="flex justify-between items-start">
-            <h1 className="text-[24px] leading-tight font-sans font-medium text-black max-w-[85%]">{product.title}</h1>
+            <h1 className="text-[24px] leading-tight font-inter font-semibold italic uppercase text-black max-w-[85%]">{product.title}</h1>
             {/* <button aria-label="Save product" className="text-gray-400 hover:text-black transition-colors mt-2">
                <Bookmark size={24} />
              </button> */}
           </div>
-          <div className="flex items-center gap-3 mt-5">
-            <p className="text-[18px] text-gray-500 line-through decoration-[1.5px]">{formattedComparePrice}</p>
-            {formattedComparePrice && (
-              <p className="text-[22px] font-semibold text-black">{formattedPrice}</p>
-            )}
+          <div className="mt-2 mb-4">
+            <ProductRatingBadge productId={product.id} />
           </div>
-          <p className="text-[12px] text-gray-400 ">(MRP Inclusive of all Taxes)</p>
-          <ProductRatingBadge productId={product.id} />
+
+          <div className="bg-[#F6F6F7] px-3.5 sm:px-5 py-3 flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-3">
+              {formattedComparePrice && (
+                <span className="text-[16px] sm:text-[20px] text-[#666666] line-through decoration-1">{formattedComparePrice}</span>
+              )}
+              <span className="text-[20px] sm:text-[24px] font-bold text-black">{formattedPrice}</span>
+            </div>
+
+            {/* Fulfilled by Amazon + Shiprocket Badge */}
+            <div className="bg-[#FCC101] px-2 py-1.5 text-white shrink-0 flex items-center gap-1.5">
+              <Truck size={13} className="text-white shrink-0 stroke-[2.2]" />
+              <span className="text-[8.5px] font-extrabold uppercase tracking-wider text-white shrink-0 whitespace-nowrap">
+                Fulfilled by
+              </span>
+              <div className="flex items-center gap-1 bg-white px-1.5 py-0.5 shrink-0 ml-0.5">
+                <Image
+                  src="/images/amazon.png"
+                  alt="Amazon"
+                  width={44}
+                  height={18}
+                  className="h-3.5 sm:h-4 w-auto object-contain shrink-0"
+                />
+                <span className="text-[9px] font-bold text-gray-400 select-none">+</span>
+                <Image
+                  src="/images/shiprocket-logo.png"
+                  alt="Shiprocket"
+                  width={64}
+                  height={18}
+                  className="h-3.5 sm:h-4 w-auto object-contain shrink-0"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {(safeDescriptionHtml || product.description) && (
@@ -566,7 +672,7 @@ export default function ProductPageClient({
             {safeDescriptionHtml ? (
               <div dangerouslySetInnerHTML={{ __html: safeDescriptionHtml }} />
             ) : (
-              <p>{product.description}</p>
+              <p className="mt-2">{product.description}</p>
             )}
           </div>
         )}

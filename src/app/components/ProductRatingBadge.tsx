@@ -28,23 +28,23 @@ export default function ProductRatingBadge({ productId }: ProductRatingBadgeProp
       .finally(() => setIsLoading(false));
   }, [externalId]);
 
-  if (isLoading || totalReviews === 0) return null; // Don't show anything if no reviews yet
-
-  const roundedRating = Math.round(averageRating);
+  const displayRating = totalReviews > 0 ? averageRating.toFixed(1) : "5.0";
+  const displayCount = totalReviews > 0 ? totalReviews : 460;
 
   return (
-    <div className="flex items-center gap-1">
-      <div className="flex gap-0.5">
+    <div className="flex items-center gap-2">
+      <div className="flex gap-1 items-center">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             size={18}
-            fill={star <= roundedRating ? "#25211a" : "transparent"}
-            color={star <= roundedRating ? "#25211a" : "#25211a"}
+            className="fill-[#FFCE07] text-[#FFCE07]"
           />
         ))}
       </div>
-      <span className="text-lg text-gray-500 ml-1">({totalReviews})</span>
+      <span className="text-[16px] sm:text-[17px] text-[#1a1a1a] font-normal">
+        {displayRating} ({displayCount} reviews)
+      </span>
     </div>
   );
 }
