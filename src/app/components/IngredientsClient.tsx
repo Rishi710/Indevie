@@ -195,9 +195,9 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
               <div
                 ref={tabBarRef}
                 style={{ top: headerOffset }}
-                className="flex overflow-x-auto hide-scrollbar bg-white sticky z-10 mx-auto max-w-xl mb-12"
+                className="flex flex-wrap justify-center bg-white sticky z-50 mb-12 px-4"
               >
-                <div className="flex mx-auto min-w-max px-2">
+                <div className="flex flex-wrap justify-center">
                   {availableLetters.map((letter) => {
                     const isActive = activeLetter === letter;
 
@@ -222,30 +222,30 @@ export default function IngredientsClient({ ingredients }: IngredientsClientProp
               {/* Every letter's group, all visible at once, each anchored so the
                   sticky tabs above can jump straight to it. */}
               {groupedIngredients.map(({ letter, items }) => (
-              <div
-                key={letter}
-                id={`ingredient-letter-${letter}`}
-                style={{ scrollMarginTop: headerOffset + tabBarHeight + 16 }}
-                className="mb-16 last:mb-0"
-              >
-                <div className="mb-8 flex items-center max-w-4xl mx-auto">
-                  <div className="h-px bg-[#B30717]/20 flex-grow"></div>
-                  <h2 className="px-6 text-3xl md:text-4xl font-inter font-bold text-[#B30717]">
-                    {letter}
-                  </h2>
-                  <div className="h-px bg-[#B30717]/20 flex-grow"></div>
-                </div>
+                <div
+                  key={letter}
+                  id={`ingredient-letter-${letter}`}
+                  style={{ scrollMarginTop: headerOffset + tabBarHeight + 16 }}
+                  className="mb-16 last:mb-0"
+                >
+                  <div className="mb-8 flex items-center max-w-4xl mx-auto">
+                    <div className="h-px bg-[#B30717]/20 flex-grow"></div>
+                    <h2 className="px-6 text-3xl md:text-4xl font-inter font-bold text-[#B30717]">
+                      {letter}
+                    </h2>
+                    <div className="h-px bg-[#B30717]/20 flex-grow"></div>
+                  </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
-                  {items.map((ing) => (
-                    <IngredientCard
-                      key={ing.word}
-                      ing={ing}
-                      onToggle={() => toggleExpand(ing.word)}
-                    />
-                  ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
+                    {items.map((ing) => (
+                      <IngredientCard
+                        key={ing.word}
+                        ing={ing}
+                        onToggle={() => toggleExpand(ing.word)}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
               ))}
             </div>
           )}
