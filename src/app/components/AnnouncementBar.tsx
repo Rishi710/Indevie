@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const announcementItems = [
   "Fully Fed Skin is Healthy Skin",
   "Flat 20% OFF Sitewide",
-  "Enjoy Free Shipping Across India",
+  "Free Shipping On All Orders Above ₹499",
 ];
 
 interface AnnouncementBarProps {
