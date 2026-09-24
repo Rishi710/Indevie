@@ -4,7 +4,18 @@ import dns from "dns";
 // Force IPv4 resolution first to avoid Node IPv6 connection failures
 dns.setDefaultResultOrder("ipv4first");
 
-export const dynamic = 'force-dynamic';
+// Reviews change rarely; cache Judge.me responses so repeat page views don't
+// hit Judge.me (or burn Vercel CPU) every time.
+const REVIEWS_REVALIDATE_SECONDS = 600; // 10 min
+const PRODUCT_ID_REVALIDATE_SECONDS = 86400; // Shopify->Judge.me id mapping never changes
+
+const CACHE_HEADERS = {
+  'Cache-Control': `public, s-maxage=${REVIEWS_REVALIDATE_SECONDS}, stale-while-revalidate=${REVIEWS_REVALIDATE_SECONDS * 3}`,
+};
+
+function cachedJson(body: unknown) {
+  return NextResponse.json(body, { headers: CACHE_HEADERS });
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -23,13 +34,12 @@ export async function GET(request: Request) {
   }
 
   try {
-    console.log(`Fetching reviews for productId: ${externalId} on domain: ${domain}`);
-
     // 1. Resolve Shopify external ID to Judge.me internal product ID
     let internalId = null;
     try {
       const productRes = await fetch(
-        `https://judge.me/api/v1/products/-1?shop_domain=${domain}&api_token=${token}&external_id=${externalId}`
+        `https://judge.me/api/v1/products/-1?shop_domain=${domain}&api_token=${token}&external_id=${externalId}`,
+        { next: { revalidate: PRODUCT_ID_REVALIDATE_SECONDS } }
       );
       if (productRes.ok) {
         const productData = await productRes.json();
@@ -42,20 +52,22 @@ export async function GET(request: Request) {
     // 2. Fetch reviews specifically for this product using the internal ID if found
     if (internalId) {
       const reviewsRes = await fetch(
-        `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&product_id=${internalId}&per_page=100`
+        `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&product_id=${internalId}&per_page=100`,
+        { next: { revalidate: REVIEWS_REVALIDATE_SECONDS } }
       );
 
       if (reviewsRes.ok) {
         const data = await reviewsRes.json();
         const reviews = data.reviews || [];
         const publishedReviews = reviews.filter((r: any) => !r.hidden);
-        return NextResponse.json(calculateStats(publishedReviews));
+        return cachedJson(calculateStats(publishedReviews));
       }
     }
 
     // 3. Fallback: Fetch all reviews and filter (if no internal ID was resolved or query failed)
     const fallbackRes = await fetch(
-      `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=100`
+      `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=100`,
+      { next: { revalidate: REVIEWS_REVALIDATE_SECONDS } }
     );
     if (!fallbackRes.ok) {
       return NextResponse.json({ reviews: [], averageRating: 0, total: 0 });
@@ -64,7 +76,7 @@ export async function GET(request: Request) {
     const filtered = (allData.reviews || []).filter(
       (r: any) => !r.hidden && String(r.product_external_id) === String(externalId)
     );
-    return NextResponse.json(calculateStats(filtered));
+    return cachedJson(calculateStats(filtered));
 
   } catch (error) {
     console.error("Error fetching reviews:", error);

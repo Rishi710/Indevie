@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
+import { fetchReviews } from "@/lib/reviewsClient";
 
 interface ProductRatingBadgeProps {
   productId: string;
@@ -18,8 +19,7 @@ export default function ProductRatingBadge({ productId }: ProductRatingBadgeProp
   useEffect(() => {
     if (!externalId) return;
 
-    fetch(`/api/reviews?productId=${externalId}`)
-      .then((res) => res.json())
+    fetchReviews(externalId)
       .then((data) => {
         setAverageRating(data.averageRating || 0);
         setTotalReviews(data.total || 0);

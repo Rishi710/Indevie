@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
+import { fetchReviews } from "@/lib/reviewsClient";
 
 interface Review {
   id: number;
@@ -44,8 +45,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
   useEffect(() => {
     if (!externalId) return;
 
-    fetch(`/api/reviews?productId=${externalId}`)
-      .then((res) => res.json())
+    fetchReviews(externalId)
       .then((data) => {
         setReviews(data.reviews || []);
         setAverageRating(data.averageRating || 0);
