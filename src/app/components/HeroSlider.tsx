@@ -14,7 +14,7 @@ import Link from "next/link";
 const slides = [
   {
     id: 1,
-    image: "/images/Hair_oil.png",
+    image: "/images/hair-oil.webp",
     title: "",
     subtitle: "",
     cta: "SHOP Hair Oil",
