@@ -14,6 +14,14 @@ import Link from "next/link";
 const slides = [
   {
     id: 1,
+    image: "/images/Hair_oil.png",
+    title: "",
+    subtitle: "",
+    cta: "SHOP Hair Oil",
+    link: "/products/gulkand-non-sticky-hair-oil",
+  },
+  {
+    id: 2,
     image: "/images/DSC_6479.jpg",
     title: "Rub Away The Stress",
     subtitle: "Heavy Head? Find instant relief",
@@ -21,7 +29,7 @@ const slides = [
     link: "/products/indevie-calm-balm",
   },
   {
-    id: 2,
+    id: 3,
     image: "/images/DSC_6484.jpg",
     title: "Feed Your Skin",
     subtitle: "Glow Maalish Oil is skin food",
@@ -29,7 +37,7 @@ const slides = [
     link: "/products/indevie-glow-maalish-oil",
   },
   {
-    id: 3,
+    id: 4,
     image: "/images/DSC_6451.jpg",
     title: "Indulgence in Every Drop",
     subtitle: "A body lotion inspired by Dessert",
