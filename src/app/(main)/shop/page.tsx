@@ -117,20 +117,10 @@ export default function ShopPage() {
         // Fetch all products to construct "Shop All"
         const compiledProducts = await fetchProducts(100);
 
-        const preferredHandles = [
-          "geeli-mitti-face-mist",
-          "gulkand-face-mist",
-          "gulaab-tez-dhoop-sunshield-ayurvedic-spf-50-pa-sunscreen",
-          "indevie-calm-balm"
-        ];
-        const preferred = preferredHandles
-          .map(h => compiledProducts.find(p => p.handle === h))
-          .filter(Boolean) as ShopifyProduct[];
-        const others = compiledProducts.filter(p => !preferredHandles.includes(p.handle));
-        const sortedAll = [...preferred, ...others];
-
-        setAllProducts(sortedAll);
-        setProducts(sortedAll);
+        // Ordering (newest first) is applied in filteredAndSortedProducts so it
+        // also covers collection tabs.
+        setAllProducts(compiledProducts);
+        setProducts(compiledProducts);
       } catch (error) {
         console.error("Error loading shop catalog:", error);
       } finally {
@@ -256,8 +246,12 @@ export default function ShopPage() {
       });
     }
 
-    // Apply Sorting
-    if (sortBy === "price-asc") {
+    // Apply Sorting. Default ("Most Relevant") lists the newest products first;
+    // products without a publish date keep their original relative order.
+    if (sortBy === "relevant") {
+      const time = (p: ShopifyProduct) => (p.publishedAt ? Date.parse(p.publishedAt) : 0);
+      result.sort((a, b) => time(b) - time(a));
+    } else if (sortBy === "price-asc") {
       result.sort((a, b) => parseFloat(a.variants.nodes[0]?.price?.amount || "0") - parseFloat(b.variants.nodes[0]?.price?.amount || "0"));
     } else if (sortBy === "price-desc") {
       result.sort((a, b) => parseFloat(b.variants.nodes[0]?.price?.amount || "0") - parseFloat(a.variants.nodes[0]?.price?.amount || "0"));
@@ -315,7 +309,7 @@ export default function ShopPage() {
   ), [filterOptions, selectedProductTypes, selectedConcerns, selectedSizes, selectedOthers, sortBy]);
 
   const SORT_OPTIONS = [
-    { value: "relevant", label: "Most Relevant" },
+    { value: "relevant", label: "Newest First" },
     { value: "price-asc", label: "Price: Low to High" },
     { value: "price-desc", label: "Price: High to Low" },
     { value: "alpha", label: "Alphabetical" },
@@ -656,7 +650,7 @@ export default function ShopPage() {
                     onChange={(e) => setSortBy(e.target.value)}
                     className="w-full bg-white border border-[#B40417] text-[#B40417] rounded-[4px] px-3 py-2.5 text-xs font-inter uppercase font-bold outline-none cursor-pointer appearance-none"
                   >
-                    <option value="relevant">Most Relevant</option>
+                    <option value="relevant">Newest First</option>
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
                     <option value="alpha">Alphabetical</option>

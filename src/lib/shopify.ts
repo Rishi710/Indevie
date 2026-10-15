@@ -134,6 +134,8 @@ export interface ShopifyProduct {
   descriptionHtml?: string;
   description?: string;
   productType?: string;
+  /** ISO date the product went live on the storefront — used to list new products first. */
+  publishedAt?: string;
   vendor?: string;
   tags?: string[];
   /** custom.concern metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
@@ -466,6 +468,7 @@ export const GET_PRODUCTS_QUERY = `
         handle
         description
         productType
+        publishedAt
         tags
         concernMetafield: metafield(namespace: "custom", key: "concern") {
           value
@@ -551,6 +554,7 @@ export const GET_COLLECTION_PRODUCTS_QUERY = `
           handle
           description
           productType
+          publishedAt
           tags
           concernMetafield: metafield(namespace: "custom", key: "concern") {
             value
