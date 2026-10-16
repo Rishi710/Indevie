@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { Inter, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import MetaPixel from "./components/MetaPixel";
+import ShopifyAnalytics from "./components/ShopifyAnalytics";
 import Script from "next/script";
 
 const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans" });
@@ -47,6 +48,7 @@ export default async function RootLayout({
         </LayoutWrapper>
         <Analytics />
         <MetaPixel />
+        <ShopifyAnalytics />
         {GOKWIK_MERCHANT_ID && GOKWIK_STORE_ID && (
           <>
             {/* GoKwik's own script reads window.merchantInfo synchronously at

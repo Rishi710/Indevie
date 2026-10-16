@@ -24,6 +24,7 @@ import ProductRatingBadge from "@/app/components/ProductRatingBadge";
 import TestimonialSection from "@/app/components/TestimonialSection";
 import { getProductFaqs } from "@/app/components/ProductFaqSection";
 import { pixelViewContent } from "@/lib/pixel";
+import { trackPageView, AnalyticsPageType } from "@/lib/shopifyAnalytics";
 import { triggerGokwikCheckout } from "@/lib/gokwik";
 
 
@@ -330,6 +331,28 @@ export default function ProductPageClient({
       });
     }
   }, [product.id, product.title, product.variants]);
+
+  // Shopify Analytics product page view (counts the session + product view)
+  useEffect(() => {
+    const variant = product.variants?.nodes[0];
+    if (!variant?.price) return;
+    trackPageView({
+      pageType: AnalyticsPageType.product,
+      resourceId: product.id,
+      totalValue: parseFloat(variant.price.amount),
+      products: [
+        {
+          productGid: product.id,
+          variantGid: variant.id,
+          name: product.title,
+          variantName: variant.title,
+          brand: product.vendor || "",
+          category: product.productType || undefined,
+          price: variant.price.amount,
+        },
+      ],
+    });
+  }, [product.id, product.title, product.vendor, product.productType, product.variants]);
 
   const images = product.images?.nodes || [];
 

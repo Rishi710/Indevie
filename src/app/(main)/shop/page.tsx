@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchCollections, fetchCollectionProducts, fetchProducts, getProductConcerns, getProductSize, ShopifyProduct } from "@/lib/shopify";
 import ProductCard from "@/app/components/ProductCard";
+import { trackCollectionView } from "@/lib/shopifyAnalytics";
 import { ChevronDown, ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -170,6 +171,14 @@ export default function ShopPage() {
       cancelled = true;
     };
   }, [activeCollection, allProducts]);
+
+  // Shopify Analytics: a collection tab is a collection view (no route change
+  // happens, so the global page-view tracker doesn't see it).
+  useEffect(() => {
+    if (activeCollection === "all") return;
+    const col = collections.find((c) => c.handle === activeCollection);
+    if (col) trackCollectionView(col.id, col.handle);
+  }, [activeCollection, collections]);
 
   // Compute available filter items (with product counts) from products
   const filterOptions = useMemo(() => {

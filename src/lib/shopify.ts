@@ -616,6 +616,8 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
       handle
       descriptionHtml
       description
+      vendor
+      productType
       concernMetafield: metafield(namespace: "custom", key: "concern") {
         value
       }
@@ -1083,6 +1085,7 @@ export const CART_FRAGMENT = `
             id
             title
             handle
+            vendor
             tags
             productType
             collections(first: 5) {

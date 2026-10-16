@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, Suspense } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { pixelPageView } from "@/lib/pixel";
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
@@ -10,12 +10,22 @@ const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 /**
  * Inner component that fires PageView on every client-side route change.
  * Must be wrapped in <Suspense> because useSearchParams requires it in Next.js 15+.
+ *
+ * The first page load is NOT handled here: this effect runs on hydration, which
+ * can happen before the afterInteractive pixel script has defined window.fbq, so
+ * the landing PageView was silently dropped (making Meta undercount sessions vs
+ * Vercel). The base script below fires the landing PageView itself instead.
  */
 function PageViewTracker() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     pixelPageView();
   }, [pathname, searchParams]);
 
@@ -50,6 +60,7 @@ export default function MetaPixel() {
             'https://connect.facebook.net/en_US/fbevents.js');
             if (!/^(localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)$/.test(window.location.hostname)) {
               fbq('init', '${PIXEL_ID}');
+              fbq('track', 'PageView');
             }
           `,
         }}
