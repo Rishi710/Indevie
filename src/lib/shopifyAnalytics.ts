@@ -18,6 +18,10 @@ import { AnalyticsEventName, AnalyticsPageType } from "@shopify/hydrogen-react/a
 const SHOP_ID = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID || "gid://shopify/Shop/64973013058";
 const CURRENCY = "INR";
 
+// ID of our storefront in the Shopify Headless channel. Shopify uses it to
+// credit events to that storefront; without it they are not attributed.
+const STOREFRONT_ID = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ID;
+
 const UNIQUE_COOKIE = "_shopify_y"; // visitor identity, ~1 year
 const VISIT_COOKIE = "_shopify_s"; // session, 30 min rolling
 
@@ -125,6 +129,7 @@ export async function trackPageView(details: PageViewDetails): Promise<void> {
         shopId: SHOP_ID,
         currency: CURRENCY,
         shopifySalesChannel: "headless",
+        ...(STOREFRONT_ID && { storefrontId: STOREFRONT_ID }),
         ...details,
       },
     } as Parameters<typeof sendShopifyAnalytics>[0]
@@ -145,6 +150,7 @@ export async function trackCollectionView(collectionId: string, collectionHandle
         shopId: SHOP_ID,
         currency: CURRENCY,
         shopifySalesChannel: "headless",
+        ...(STOREFRONT_ID && { storefrontId: STOREFRONT_ID }),
         pageType: AnalyticsPageType.collection,
         collectionId,
         collectionHandle,
@@ -168,6 +174,7 @@ export async function trackAddToCart(cartId: string, products: TrackedProduct[])
         shopId: SHOP_ID,
         currency: CURRENCY,
         shopifySalesChannel: "headless",
+        ...(STOREFRONT_ID && { storefrontId: STOREFRONT_ID }),
         cartId,
         totalValue,
         products,
