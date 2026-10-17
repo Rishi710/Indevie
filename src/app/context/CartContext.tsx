@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import Cookies from "js-cookie";
 import { createCart, addToCart, updateCartLine, removeFromCart, fetchCart, updateCartBuyerIdentity } from "@/lib/shopify";
 import { pixelAddToCart } from "@/lib/pixel";
-import { trackAddToCart } from "@/lib/shopifyAnalytics";
+import { publishAddToCart } from "@/lib/shopifyAnalytics";
 
 import { calculateMinisOffer, MinisOfferResult } from "@/lib/minisOffer";
 
@@ -86,18 +86,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         // Shopify Analytics add-to-cart (feeds the "Added to cart" funnel step)
         if (newLine?.merchandise?.product) {
-          trackAddToCart(updatedCart.id, [
-            {
-              productGid: newLine.merchandise.product.id,
-              variantGid: newLine.merchandise.id,
-              name: newLine.merchandise.product.title,
-              variantName: newLine.merchandise.title,
-              brand: newLine.merchandise.product.vendor || "",
-              category: newLine.merchandise.product.productType || undefined,
-              price: newLine.merchandise.price?.amount || "0",
-              quantity,
-            },
-          ]);
+          publishAddToCart(updatedCart, newLine, quantity);
         }
 
         return updatedCart;

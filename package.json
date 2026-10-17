@@ -19,7 +19,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@shadergradient/react": "^2.4.20",
-    "@shopify/hydrogen-react": "2026.4.4",
+    "@shopify/hydrogen": "2026.10.1",
     "@tailwindcss/typography": "^0.5.19",
     "@types/js-cookie": "^3.0.6",
     "@vercel/analytics": "^2.0.1",

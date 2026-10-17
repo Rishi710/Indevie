@@ -1,40 +1,30 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { AnalyticsPageType, trackPageView } from "@/lib/shopifyAnalytics";
-
-function pageTypeFor(pathname: string): string {
-  if (pathname === "/") return AnalyticsPageType.home;
-  if (pathname === "/shop") return AnalyticsPageType.listCollections;
-  if (pathname === "/blogs") return AnalyticsPageType.blog;
-  if (pathname.startsWith("/blogs/")) return AnalyticsPageType.article;
-  if (pathname.startsWith("/search")) return AnalyticsPageType.search;
-  if (pathname.startsWith("/account")) return AnalyticsPageType.customersAccount;
-  return AnalyticsPageType.page;
-}
+import { ShopifyScripts } from "@shopify/hydrogen/react";
 
 /**
- * Reports a Shopify Analytics page view on first load and on every client-side
- * navigation. Product pages are skipped here: they send their own page view
- * (ProductPageClient) because Shopify needs the product details attached.
+ * Loads Shopify's own storefront scripts (Customer Privacy API, analytics bus
+ * and the storefront analytics script) using Shopify's official helper. This is
+ * what makes visits, product views and add-to-carts show up in Shopify
+ * Analytics for a headless storefront: it sends page views on load and on every
+ * client-side navigation, and receives the product/collection/cart events we
+ * publish from src/lib/shopifyAnalytics.ts.
+ *
+ * Orders aren't reported from here: they're created in Shopify by the GoKwik
+ * checkout, which Shopify already counts.
  */
-function PageViewTracker() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (pathname.startsWith("/products/")) return;
-    trackPageView({ pageType: pageTypeFor(pathname) });
-  }, [pathname, searchParams]);
-
-  return null;
-}
-
 export default function ShopifyAnalytics() {
   return (
-    <Suspense fallback={null}>
-      <PageViewTracker />
-    </Suspense>
+    <ShopifyScripts
+      shop={{
+        shopId: process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID || "gid://shopify/Shop/64973013058",
+        storefrontId: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ID || "174241",
+        myshopifyDomain: "indevie-beauty.myshopify.com",
+      }}
+      analytics={{ channel: "headless" }}
+      consent={{ mode: "no-banner" }}
+      i18n={{ country: "IN", language: "EN", currency: "INR" }}
+      webMcp={false}
+    />
   );
 }
