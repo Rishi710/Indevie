@@ -12,10 +12,32 @@ const endpoint = isBrowser
   ? `${window.location.origin}/api/shopify` 
   : `https://${domain}/api/2024-01/graphql.json`;
 
+/**
+ * The visitor's Shopify tracking tokens, issued by Shopify's Customer Privacy
+ * script (see <ShopifyAnalytics />). Sent with cart calls so Shopify can tie
+ * the cart to the visitor's session for the "Added to cart" funnel step.
+ * Empty until that script has loaded, in which case nothing extra is sent.
+ */
+function getShopifyTrackingHeaders(): Record<string, string> {
+  try {
+    const internal = (window as any).Shopify?.customerPrivacy?.__internal;
+    const options = { generateFallback: true, tag: "indevie:cart" };
+    const uniqueToken = internal?.uniqueToken?.(options);
+    const visitToken = internal?.visitToken?.(options);
+    return {
+      ...(uniqueToken && { "X-Shopify-UniqueToken": uniqueToken }),
+      ...(visitToken && { "X-Shopify-VisitToken": visitToken }),
+    };
+  } catch {
+    return {};
+  }
+}
+
 export const storefrontClient = new GraphQLClient(endpoint, {
-  headers: isBrowser ? {} : {
-    "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
-  },
+  headers: () =>
+    isBrowser
+      ? getShopifyTrackingHeaders()
+      : { "X-Shopify-Storefront-Access-Token": storefrontAccessToken },
 });
 
 export interface ShopifyImage {

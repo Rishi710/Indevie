@@ -52,6 +52,13 @@ export async function POST(req: Request) {
       headers: {
         "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
         "Content-Type": "application/json",
+        // Visitor tracking tokens, so Shopify can attribute carts to the session.
+        ...(req.headers.get("x-shopify-uniquetoken") && {
+          "X-Shopify-UniqueToken": req.headers.get("x-shopify-uniquetoken") as string,
+        }),
+        ...(req.headers.get("x-shopify-visittoken") && {
+          "X-Shopify-VisitToken": req.headers.get("x-shopify-visittoken") as string,
+        }),
       },
       body: JSON.stringify(body),
     });
