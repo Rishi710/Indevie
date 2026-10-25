@@ -15,7 +15,12 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    formats: ['image/avif', 'image/webp'],
+    // Shopify-hosted images are resized by Shopify's own CDN (free); see
+    // src/lib/imageLoader.ts. Everything else still uses Vercel's optimizer,
+    // so serve a single modern format to keep transformations to a minimum.
+    loader: 'custom',
+    loaderFile: './src/lib/imageLoader.ts',
+    formats: ['image/webp'],
     remotePatterns: [
       {
         protocol: "https",
