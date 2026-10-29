@@ -139,15 +139,17 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
         {/* Rating & Pricing Row */}
         <div className="flex flex-wrap items-center justify-between gap-y-1 gap-x-2 mt-0 shrink-0">
-          {/* Left: Star Rating */}
-          <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[12px] font-inter text-gray-800 font-medium shrink-0">
-            <span className="text-black text-[12px] sm:text-[14px] leading-none">★</span>
-            <span>{totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}</span>
-            <span className="text-gray-400 font-normal">({totalReviews > 0 ? totalReviews : 1})</span>
-          </div>
+          {/* Left: real Judge.me rating — hidden entirely when there are no reviews */}
+          {totalReviews > 0 && (
+            <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-[12px] font-inter text-gray-800 font-medium shrink-0">
+              <span className="text-black text-[12px] sm:text-[14px] leading-none">★</span>
+              <span>{averageRating.toFixed(1)}</span>
+              <span className="text-gray-400 font-normal">({totalReviews})</span>
+            </div>
+          )}
 
           {/* Right: Pricing */}
-          <div className="flex items-baseline gap-1 sm:gap-1.5 shrink-0">
+          <div className="flex items-baseline gap-1 sm:gap-1.5 shrink-0 ml-auto">
             {formattedComparePrice && (
               <span className="text-[10px] sm:text-[12px] text-gray-500 font-semibold line-through font-light">
                 {formattedComparePrice}

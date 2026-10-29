@@ -59,29 +59,48 @@ export async function GET(request: Request) {
       if (reviewsRes.ok) {
         const data = await reviewsRes.json();
         const reviews = data.reviews || [];
-        const publishedReviews = reviews.filter((r: any) => !r.hidden);
+        const publishedReviews = reviews.filter(isPublicReview);
         return cachedJson(calculateStats(publishedReviews));
       }
     }
 
-    // 3. Fallback: Fetch all reviews and filter (if no internal ID was resolved or query failed)
-    const fallbackRes = await fetch(
-      `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=100`,
-      { next: { revalidate: REVIEWS_REVALIDATE_SECONDS } }
-    );
-    if (!fallbackRes.ok) {
-      return NextResponse.json({ reviews: [], averageRating: 0, total: 0 });
+    // 3. Fallback: page through the shop's reviews and keep this product's
+    // (used when no internal ID was resolved, e.g. a product with no reviews yet).
+    const matching: any[] = [];
+    for (let page = 1; page <= MAX_FALLBACK_PAGES; page++) {
+      const pageRes = await fetch(
+        `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=100&page=${page}`,
+        { next: { revalidate: REVIEWS_REVALIDATE_SECONDS } }
+      );
+      if (!pageRes.ok) {
+        // Don't report "0 reviews" when we simply couldn't reach Judge.me.
+        return NextResponse.json({ error: 'Reviews unavailable' }, { status: 502 });
+      }
+      const pageData = await pageRes.json();
+      const pageReviews: any[] = pageData.reviews || [];
+      matching.push(
+        ...pageReviews.filter(
+          (r: any) => isPublicReview(r) && String(r.product_external_id) === String(externalId)
+        )
+      );
+      if (pageReviews.length < 100) break;
     }
-    const allData = await fallbackRes.json();
-    const filtered = (allData.reviews || []).filter(
-      (r: any) => !r.hidden && String(r.product_external_id) === String(externalId)
-    );
-    return cachedJson(calculateStats(filtered));
+    return cachedJson(calculateStats(matching));
 
   } catch (error) {
     console.error("Error fetching reviews:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+}
+
+const MAX_FALLBACK_PAGES = 10;
+
+/**
+ * Only reviews a shopper could actually see on Judge.me count toward the
+ * rating: not hidden, and approved (not spam or still awaiting moderation).
+ */
+function isPublicReview(r: any): boolean {
+  return !r.hidden && r.published !== false && r.curated === 'ok';
 }
 
 function calculateStats(reviews: any[]) {

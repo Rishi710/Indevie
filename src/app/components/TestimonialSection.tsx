@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { User, MapPin, Star, StarHalf } from "lucide-react";
+import { User, MapPin } from "lucide-react";
 
 export default function TestimonialSection() {
   const testimonials = [
@@ -10,7 +10,6 @@ export default function TestimonialSection() {
       name: "Aditi",
       age: "30",
       location: "Hyderabad",
-      rating: 5,
       text: "I didn’t realise how much tension I carry in my body until I started using this. I apply Calm Balm on my neck and feet at night and within minutes, I feel calmer. It’s become my go-to wind-down ritual",
       image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/333.webp?v=1778163425" // Placeholder
     },
@@ -19,7 +18,6 @@ export default function TestimonialSection() {
       name: "Nikky",
       age: "25",
       location: "Ahmedabad",
-      rating: 4.5, // Half star example
       text: "My skin feels softer instantly after applying Indevie Maalish oil, but the real difference is the glow. It doesn’t just sit on the skin, it actually absorbs and nourishes.",
       image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/111_2.webp?v=1778094990"
     },
@@ -28,7 +26,6 @@ export default function TestimonialSection() {
       name: "Anushka",
       age: "30",
       location: "Indore",
-      rating: 5,
       text: "I have really dry skin and most lotions feel either sticky or not enough. Indevie Kalakand Body Lotion is different. It’s rich but absorbs well, and my skin feels comfortable all day. Oh, and it smells like my favourite dessert!",
       image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/222.webp?v=1778094296"
     },
@@ -37,25 +34,10 @@ export default function TestimonialSection() {
       name: "Nivedita",
       age: "47",
       location: "Pune",
-      rating: 5, // Half star example
       text: "I am absolutely in love with how my skin feels after applying Kalakand Body Lotion. It has soothed the irritation and dryness in my skin, in just a few days.",
       image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/444.webp?v=1778094297"
     }
   ];
-
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (rating >= i) {
-        stars.push(<Star key={i} size={15} fill="#FFD700" color="#FFD700" />);
-      } else if (rating >= i - 0.5) {
-        stars.push(<StarHalf key={i} size={15} fill="#FFD700" color="#FFD700" />);
-      } else {
-        stars.push(<Star key={i} size={15} color="#FFD700" className="opacity-20" />);
-      }
-    }
-    return <div className="flex items-center gap-0.5">{stars}</div>;
-  };
 
   return (
     <section className="w-full bg-[#110f0e] py-12 md:py-24 relative overflow-hidden">
@@ -95,10 +77,6 @@ export default function TestimonialSection() {
                 {/* Subtle fade to blend into the glass card */}
                 <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#161413] to-transparent opacity-90" />
 
-                {/* Floating Gold Stars with Half-Star Support */}
-                <div className="absolute bottom-4 left-5 z-10 drop-shadow-md">
-                  {renderStars(item.rating)}
-                </div>
               </div>
 
               {/* Content Container */}

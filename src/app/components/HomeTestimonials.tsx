@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star } from "lucide-react";
 
 interface Testimonial {
   id: number;
@@ -107,19 +106,6 @@ export default function HomeTestimonials() {
             }}
             className="absolute inset-0 flex flex-col items-center text-center justify-start pointer-events-none w-full"
           >
-            {/* Stars */}
-            <div className="flex gap-1 mb-5 md:mb-8">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={12}
-                  fill="#FFD700"
-                  stroke="none"
-                  className="drop-shadow-sm"
-                />
-              ))}
-            </div>
-
             {/* Quote */}
             <h2 className="text-[15px] sm:text-[17px] md:text-2xl lg:text-[24px] font-inter leading-[1.7] md:leading-[1.4] text-black italic max-w-3xl mb-6 md:mb-10 px-2 md:px-0 select-none">
               {"\"" + testimonials[currentIndex].quote + "\""}

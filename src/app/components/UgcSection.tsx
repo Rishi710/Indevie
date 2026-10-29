@@ -4,6 +4,7 @@ import { Volume2, VolumeX, ArrowUpRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { fetchReviews } from "@/lib/reviewsClient";
 
 // ================= TYPES =================
 // Unchanged — every field below is still part of the data model and still used.
@@ -13,7 +14,6 @@ type UgcItem = {
   age: string;
   quote: string;
   location: string;
-  rating: number;
   productHandle: string;
   videoSrc: string;
 };
@@ -26,7 +26,6 @@ const ugcData: UgcItem[] = [
     age: "25",
     quote: "A non-sticky glow? Smells so good too.",
     location: "Bangalore",
-    rating: 5,
     productHandle: "indevie-glow-maalish-oil",
     videoSrc: "https://cdn.shopify.com/videos/c/o/v/8d0383e1b28946ee85ef87915691b5aa.mp4",
   },
@@ -36,7 +35,6 @@ const ugcData: UgcItem[] = [
     age: "25",
     quote: "I had such a bad headache and in just 15 seconds, it blew like a wind.",
     location: "Bangalore",
-    rating: 5,
     productHandle: "indevie-calm-balm",
     videoSrc: "https://cdn.shopify.com/videos/c/o/v/623d09ce1d884c168fc086f4c203a4cc.mp4",
   },
@@ -46,7 +44,6 @@ const ugcData: UgcItem[] = [
     age: "25",
     quote: "Glow Maalish, my go to for every skin problem",
     location: "Bangalore",
-    rating: 5,
     productHandle: "indevie-glow-maalish-oil",
     videoSrc: "https://cdn.shopify.com/videos/c/o/v/a8f1a2e826d44fcd8f6f487e9d84e733.mp4",
   },
@@ -56,7 +53,6 @@ const ugcData: UgcItem[] = [
     age: "30",
     quote: "Indevie is supposed to make you remember who you are truly. Channel your inner devi and never stop taking care of yourself.",
     location: "Indore",
-    rating: 5,
     productHandle: "indevie-calm-balm",
     videoSrc: "https://cdn.shopify.com/videos/c/o/v/f877e19335cd40bb96cbb8a860f17d07.mp4",
   },
@@ -66,7 +62,6 @@ const ugcData: UgcItem[] = [
     age: "28",
     quote: "I was going to get merried in 7 days and this body oil helped me recover my glow in just 3 days.",
     location: "Alibag",
-    rating: 5,
     productHandle: "indevie-glow-maalish-oil",
     videoSrc: "https://cdn.shopify.com/videos/c/o/v/2325f46207224f8a92d0010acbe46afd.mp4",
   },
@@ -76,7 +71,6 @@ const ugcData: UgcItem[] = [
     age: "28",
     quote: "Being a new mother, baby duties has made my life chaotic. The calm balm is my escape to every problem now.",
     location: "Delhi",
-    rating: 5,
     productHandle: "the-ultimate-care-ritual-set",
     videoSrc: "https://cdn.shopify.com/videos/c/o/v/ea819fb229354eb19ee28cb6c9d732dc.mp4",
   },
@@ -112,6 +106,16 @@ const UgcVideoCard = ({
       video.pause();
     }
   }, [shouldPlay]);
+
+  // Real Judge.me rating for the product shown on this card (nothing if it has no reviews)
+  const [rating, setRating] = useState<{ average: number; total: number } | null>(null);
+  const productExternalId = product?.id?.split("/").pop();
+  useEffect(() => {
+    if (!productExternalId) return;
+    fetchReviews(productExternalId)
+      .then((d) => setRating({ average: d.averageRating || 0, total: d.total || 0 }))
+      .catch(() => {});
+  }, [productExternalId]);
 
   const productImageUrl = product?.images?.nodes?.[0]?.url;
   const productPrice = product?.variants?.nodes?.[0]?.price?.amount;
@@ -184,7 +188,11 @@ const UgcVideoCard = ({
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#e8decb] shrink-0 animate-pulse" />
           )}
           <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
-            <span className="text-[9px] sm:text-[11px] font-iner font-bold text-amber-500 tracking-wide">★★★★★</span>
+            {rating && rating.total > 0 && (
+              <span className="text-[9px] sm:text-[11px] font-inter font-bold text-amber-500 tracking-wide">
+                ★ {rating.average.toFixed(1)} <span className="text-gray-400 font-medium">({rating.total})</span>
+              </span>
+            )}
             <span className="text-xs sm:text-sm font-inter font-semibold text-[#1a1a1a] truncate leading-tight">
               {product?.title || "Indevie Product"}
             </span>

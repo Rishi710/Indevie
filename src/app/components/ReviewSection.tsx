@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import { fetchReviews } from "@/lib/reviewsClient";
+import StarRating from "./StarRating";
 
 interface Review {
   id: number;
@@ -124,10 +125,18 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
             </span>
           </h2>
           <div className="flex items-center gap-3 mt-4">
-            {renderStars(Math.round(averageRating))}
-            <p className="text-sm font-inter text-gray-500 font-medium">
-              {averageRating > 0 ? averageRating.toFixed(1) : "0.0"} based on {totalReviews} Reviews
-            </p>
+            {totalReviews > 0 ? (
+              <>
+                <StarRating rating={averageRating} size={16} fillColor="#B40417" />
+                <p className="text-sm font-inter text-gray-500 font-medium">
+                  {averageRating.toFixed(1)} based on {totalReviews} {totalReviews === 1 ? "Review" : "Reviews"}
+                </p>
+              </>
+            ) : (
+              !isLoading && (
+                <p className="text-sm font-inter text-gray-500 font-medium">No reviews yet</p>
+              )
+            )}
           </div>
         </div>
         <button
