@@ -17,7 +17,7 @@ const slides = [
     image: "/images/hair-oil.webp",
     title: "",
     subtitle: "",
-    cta: "SHOP Hair Oil",
+    cta: "Shop Hair Oil",
     link: "/products/gulkand-non-sticky-hair-oil",
   },
   {
@@ -25,7 +25,7 @@ const slides = [
     image: "/images/DSC_6479.jpg",
     title: "Rub Away The Stress",
     subtitle: "Heavy Head? Find instant relief",
-    cta: "SHOP CALM BALM",
+    cta: "Shop Calm Balm",
     link: "/products/indevie-calm-balm",
   },
   {
@@ -33,7 +33,7 @@ const slides = [
     image: "/images/DSC_6484.jpg",
     title: "Feed Your Skin",
     subtitle: "Glow Maalish Oil is skin food",
-    cta: "SHOP GLOW OIL",
+    cta: "Shop Glow Oil",
     link: "/products/indevie-glow-maalish-oil",
   },
   {
@@ -41,7 +41,7 @@ const slides = [
     image: "/images/DSC_6451.jpg",
     title: "Indulgence in Every Drop",
     subtitle: "A body lotion inspired by Dessert",
-    cta: "SHOP LOTION",
+    cta: "Shop Lotion",
     link: "/products/indevie-kalakand-body-lotion",
   },
 ];
@@ -180,7 +180,7 @@ export default function HeroSlider() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-white text-5xl md:text-7xl font-inter italic mb-6 "
+              className="text-white text-4xl md:text-7xl font-inter mb-6 "
             >
               {slides[index].title}
             </motion.h1>
@@ -196,7 +196,7 @@ export default function HeroSlider() {
 
             <Link
               href={slides[index].link}
-              className="border-2 border-white px-8 py-3 font-inter font-semibold text-white uppercase tracking-widest hover:bg-white hover:text-black transition"
+              className="border-2 border-white px-8 py-3 font-inter rounded-[50px] font-medium text-white tracking-widest hover:bg-white hover:text-black transition"
             >
               {slides[index].cta}
             </Link>

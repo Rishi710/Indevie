@@ -292,10 +292,10 @@ const Footer = () => {
                     <Mail size={16} strokeWidth={1.5} />
                     <span className="text-[14px] font-light tracking-wide">care@indevie.com</span>
                   </a>
-                  <a href="tel:+919981300183" className="flex items-center gap-4 group opacity-90 hover:opacity-100 transition-opacity">
+                  {/* <a href="tel:+919981300183" className="flex items-center gap-4 group opacity-90 hover:opacity-100 transition-opacity">
                     <Phone size={16} strokeWidth={1.5} />
                     <span className="text-[14px] font-light tracking-wide">+91 9981300183</span>
-                  </a>
+                  </a> */}
                 </div>
 
                 {/* Sophisticated Socials with Magnetic Pull */}
