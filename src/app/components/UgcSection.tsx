@@ -4,7 +4,7 @@ import { Volume2, VolumeX, ArrowUpRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchReviews } from "@/lib/reviewsClient";
+import { fetchRating } from "@/lib/reviewsClient";
 
 // ================= TYPES =================
 // Unchanged — every field below is still part of the data model and still used.
@@ -112,8 +112,8 @@ const UgcVideoCard = ({
   const productExternalId = product?.id?.split("/").pop();
   useEffect(() => {
     if (!productExternalId) return;
-    fetchReviews(productExternalId)
-      .then((d) => setRating({ average: d.averageRating || 0, total: d.total || 0 }))
+    fetchRating(productExternalId)
+      .then((d) => setRating({ average: d.averageRating, total: d.total }))
       .catch(() => {});
   }, [productExternalId]);
 

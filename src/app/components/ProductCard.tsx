@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ShoppingBag, Plus, Minus } from "lucide-react";
 import { ShopifyProduct, getStockInfo, getProductInfo } from "@/lib/shopify";
 import { useCart } from "../context/CartContext";
-import { fetchReviews } from "@/lib/reviewsClient";
+import { fetchRating } from "@/lib/reviewsClient";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -32,7 +32,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   useEffect(() => {
     if (!externalId) return;
 
-    fetchReviews(externalId)
+    fetchRating(externalId)
       .then((data) => {
         setAverageRating(data.averageRating || 0);
         setTotalReviews(data.total || 0);

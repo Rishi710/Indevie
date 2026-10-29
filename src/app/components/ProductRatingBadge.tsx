@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchReviews } from "@/lib/reviewsClient";
+import { fetchRating } from "@/lib/reviewsClient";
 import StarRating from "./StarRating";
 
 interface ProductRatingBadgeProps {
@@ -22,7 +22,7 @@ export default function ProductRatingBadge({ productId }: ProductRatingBadgeProp
   useEffect(() => {
     if (!externalId) return;
 
-    fetchReviews(externalId)
+    fetchRating(externalId)
       .then((data) => {
         setAverageRating(data.averageRating || 0);
         setTotalReviews(data.total || 0);
