@@ -80,10 +80,6 @@ export default function FounderSection() {
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
               </button>
 
-              {/* Glass Card Annotation (Creative Touch) */}
-              {/* <div className="absolute bottom-6 left-6 right-6 p-4 backdrop-blur-md bg-white/20 rounded-2xl border border-white/30 hidden md:block opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
-                <p className="text-white text-[10px] uppercase tracking-[0.3em] font-medium font-inter">A Journey of Intention — Ar. Ishita Pathak</p>
-              </div>  */}
             </motion.div>
 
             {/* Border Accents */}
