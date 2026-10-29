@@ -409,8 +409,12 @@ export default function ProductPageClient({
             releasing once the info column's content is exhausted. */}
         <div className="pl-10 lg:pl-40 pr-2 flex gap-3 self-start sticky top-32">
           {images.length > 1 && (
+            // The rail is exactly as tall as the main image beside it (absolute
+            // inside a stretched wrapper), and scrolls when there are more
+            // thumbnails than fit.
+            <div className="relative w-25 shrink-0">
             <div
-              className="flex flex-col gap-2 w-25 shrink-0 self-start max-h-[578px] overflow-y-auto [&::-webkit-scrollbar]:hidden"
+              className="absolute inset-0 flex flex-col gap-2 overflow-y-auto [&::-webkit-scrollbar]:hidden"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {images.map((img, idx) => (
@@ -430,8 +434,9 @@ export default function ProductPageClient({
                 </button>
               ))}
             </div>
+            </div>
           )}
-          <div className="flex-1 self-start max-w-[520px] aspect-[4.5/5] relative overflow-hidden bg-[#e5e5e5]">
+          <div className="flex-1 self-start max-w-[520px] aspect-[4/5] relative overflow-hidden bg-[#e5e5e5]">
             {selectedImage && (
               <Image
                 src={selectedImage.url}
