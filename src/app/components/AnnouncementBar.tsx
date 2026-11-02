@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 
 const announcementItems = [
   "Fully Fed Skin is Healthy Skin",
-  // "Flat 20% OFF Sitewide",
   "Travel Minis: Any 2 Save 5% · Any 4 Save 10%",
-  "Free Shipping On All Orders Above ₹499",
+  "Free Delivery Above ₹499 • No COD Charge On Prepaid Orders",
+  // "Free Shipping On All Orders Above ₹499",
 ];
 
 // Scroll speed in pixels per second. Lower = slower. The animation time is worked
