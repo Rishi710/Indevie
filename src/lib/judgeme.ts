@@ -35,6 +35,8 @@ export interface PublicReview {
   rating: number;
   created_at: string;
   reviewer: { name: string };
+  /** Published review photos: a small thumbnail and a large version for viewing. */
+  pictures: { thumb: string; full: string }[];
 }
 
 export interface PublicReviewEntry {
@@ -53,16 +55,49 @@ function isPublicReview(r: any): boolean {
   return !r.hidden && r.published !== false && r.curated === "ok";
 }
 
+/**
+ * Older reviews were saved with the reviewer's location and age appended to the
+ * text: a blank line, a "---" line, then "Location: ..." and "Age: ..." lines.
+ * We no longer collect or show either, so remove that trailing block. Only a
+ * final "---" section made up entirely of Location/Age lines is removed; the
+ * review text itself is never touched.
+ */
+export function stripReviewerMeta(body: string): string {
+  const lines = body.split("\n");
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (/^\s*-{3,}\s*$/.test(lines[i])) {
+      const tail = lines.slice(i + 1).filter((l) => l.trim() !== "");
+      if (tail.length > 0 && tail.every((l) => /\b(location|age)\s*:/i.test(l))) {
+        return lines.slice(0, i).join("\n").trim();
+      }
+      break; // a "---" that isn't our metadata block: leave the text as it is
+    }
+  }
+  return body.trim();
+}
+
+function toPublicPictures(r: any): PublicReview["pictures"] {
+  if (!Array.isArray(r.pictures)) return [];
+  return r.pictures
+    .filter((p: any) => p && !p.hidden && p.urls)
+    .map((p: any) => ({
+      thumb: p.urls.compact || p.urls.small || p.urls.original,
+      full: p.urls.huge || p.urls.original || p.urls.compact,
+    }))
+    .filter((p: { thumb?: string; full?: string }) => p.thumb && p.full);
+}
+
 function toPublicEntry(r: any): PublicReviewEntry {
   return {
     productId: String(r.product_external_id),
     review: {
       id: r.id,
       title: r.title ?? null,
-      body: r.body ?? "",
+      body: stripReviewerMeta(r.body ?? ""),
       rating: Number(r.rating) || 0,
       created_at: r.created_at,
       reviewer: { name: r.reviewer?.name ?? "" },
+      pictures: toPublicPictures(r),
     },
   };
 }

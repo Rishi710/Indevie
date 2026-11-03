@@ -23,6 +23,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/js-cookie": "^3.0.6",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "^2.8.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "graphql-request": "^7.4.0",

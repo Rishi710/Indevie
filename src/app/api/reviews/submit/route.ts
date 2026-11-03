@@ -6,10 +6,32 @@ dns.setDefaultResultOrder("ipv4first");
 
 export const dynamic = 'force-dynamic';
 
+const MAX_PHOTOS = 3;
+const MAX_TITLE_LENGTH = 80;
+
+/**
+ * Photos must be ones we just stored in our own Vercel Blob store (see
+ * /api/reviews/upload). Anything else is ignored, so this route can't be used to
+ * make Judge.me fetch arbitrary URLs.
+ */
+function isOurPhotoUrl(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === 'https:' &&
+      url.hostname.endsWith('.public.blob.vercel-storage.com') &&
+      url.pathname.startsWith('/review-photos/')
+    );
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const bodyPayload = await request.json();
-    const { name, email, rating, reviewBody, location, age, id } = bodyPayload;
+    const { name, email, rating, reviewTitle, reviewBody, id, pictureUrls } = bodyPayload;
 
     // 'id' here is the Shopify product ID (external ID)
 
@@ -24,8 +46,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    // Format location and age perfectly into the review payload
-    const formattedBody = `${reviewBody}\n\n---\n🌍 Location: ${location || 'N/A'}\n👤 Age: ${age || 'N/A'}`;
+    const pictures: string[] = Array.isArray(pictureUrls)
+      ? pictureUrls.filter(isOurPhotoUrl).slice(0, MAX_PHOTOS)
+      : [];
 
     const payload = {
       shop_domain: domain,
@@ -35,11 +58,13 @@ export async function POST(request: Request) {
       name: name,
       email: email,
       rating: parseInt(String(rating), 10),
-      title: "",
-      body: formattedBody,
+      title: typeof reviewTitle === 'string' ? reviewTitle.trim().slice(0, MAX_TITLE_LENGTH) : "",
+      body: String(reviewBody).trim(),
+      ...(pictures.length > 0 && { picture_urls: pictures }),
     };
 
-    console.log("Submitting review to Judge.me with payload:", { ...payload, api_token: '***' });
+    // Never log the token, the reviewer's email or their text.
+    console.log("Submitting review to Judge.me for product", id, "with", pictures.length, "photo(s)");
 
     const res = await fetch(`https://judge.me/api/v1/reviews`, {
       method: 'POST',
@@ -60,10 +85,8 @@ export async function POST(request: Request) {
       }, { status: res.status });
     }
 
-    const data = await res.json();
-    console.log("Judge.me Submission Success:", data);
     // Judge.me usually returns HTTP 201 Created and the review object inside `review`
-    return NextResponse.json({ success: true, data: data }, { status: 201 });
+    return NextResponse.json({ success: true }, { status: 201 });
 
   } catch (error) {
     console.error("Review Submit Route Error:", error);
