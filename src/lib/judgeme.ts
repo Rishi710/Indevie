@@ -14,6 +14,8 @@
  *    include reviewers' email, phone and IP, which must never reach the browser.
  */
 
+import { unstable_cache } from "next/cache";
+
 export const JUDGEME_REVIEWS_TAG = "judgeme-reviews";
 
 /** Safety-net expiry for the shared copy; webhooks refresh it sooner. */
@@ -102,8 +104,8 @@ function toPublicEntry(r: any): PublicReviewEntry {
   };
 }
 
-/** All published reviews for the shop, from the shared cached copy. Throws if Judge.me is unreachable. */
-export async function getPublicReviews(): Promise<PublicReviewEntry[]> {
+/** Reads every page from Judge.me in one go, so the result is a single consistent snapshot. */
+async function fetchAllPublicReviews(): Promise<PublicReviewEntry[]> {
   const domain = process.env.JUDGE_ME_SHOP_DOMAIN || process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
   const token = process.env.JUDGE_ME_PRIVATE_TOKEN;
   if (!domain || !token) {
@@ -114,7 +116,7 @@ export async function getPublicReviews(): Promise<PublicReviewEntry[]> {
   for (let page = 1; page <= MAX_PAGES; page++) {
     const res = await fetch(
       `https://judge.me/api/v1/reviews?shop_domain=${domain}&api_token=${token}&per_page=${PER_PAGE}&page=${page}`,
-      { next: { revalidate: DATA_CACHE_SECONDS, tags: [JUDGEME_REVIEWS_TAG] } }
+      { cache: "no-store" }
     );
     if (!res.ok) throw new Error(`Judge.me responded ${res.status}`);
 
@@ -127,6 +129,18 @@ export async function getPublicReviews(): Promise<PublicReviewEntry[]> {
   }
   return entries;
 }
+
+/**
+ * All published reviews for the shop, from the shared cached copy. Throws if Judge.me is unreachable.
+ *
+ * The whole list is cached as ONE entry. Caching each page separately let pages fall out of
+ * step: Judge.me lists newest first, so new reviews push older ones onto the next page, and
+ * pages saved at different times then dropped or repeated reviews.
+ */
+export const getPublicReviews = unstable_cache(fetchAllPublicReviews, ["judgeme-public-reviews"], {
+  revalidate: DATA_CACHE_SECONDS,
+  tags: [JUDGEME_REVIEWS_TAG],
+});
 
 export function statsFor(reviews: PublicReview[]): RatingSummary {
   const total = reviews.length;
