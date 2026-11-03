@@ -39,7 +39,7 @@ interface ReviewSectionProps {
 }
 
 /** Reviews shown at first, and added each time "Show more" is pressed. */
-const REVIEWS_PER_PAGE = 6;
+const REVIEWS_PER_PAGE = 12; // divides evenly into the 3- and 4-column grids
 
 export default function ReviewSection({ productId }: ReviewSectionProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -251,7 +251,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
       </div>
 
       {isWriting && (
-        <div className="bg-white p-6 md:p-8 font-inter border-2 border-[#e5e5e5] mb-12 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="bg-white p-6 md:p-8 font-inter border-2 border-[#e5e5e5] mb-12 shadow-sm max-w-3xl mx-auto animate-in fade-in slide-in-from-top-4 duration-300">
           {submitSuccess ? (
             <div className="text-center py-10 text-[#6c3518]">
               <h3 className="text-xl font-inter italic mb-2">Thank you!</h3>
@@ -397,7 +397,7 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
       ) : (
         <>
           {/* items-start: each card is exactly as tall as its own content. */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 items-start">
             {visibleReviews.map((review) => (
               <div key={review.id} className="bg-white p-6 border border-[#e5e5e5]/80 shadow-sm flex flex-col gap-3">
                 <div className="flex justify-between items-start mb-1">

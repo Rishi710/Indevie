@@ -793,10 +793,8 @@ export default function ProductPageClient({
         </section>
       )}
       {/* Judge.me Reviews Section */}
-      <div className="max-w-[1500px] mx-auto w-full md:grid md:grid-cols-[1.8fr_1.2fr] gap-0 px-4 sm:px-10 lg:px-16 pb-12 py-10" >
-        <div className="w-full relative col-span-1 md:col-start-1 md:pr-10 lg:pr-5">
-          <ReviewSection productId={product.id} />
-        </div>
+      <div className="max-w-[1500px] mx-auto w-full px-4 sm:px-10 lg:px-16 pb-12 py-10">
+        <ReviewSection productId={product.id} />
       </div>
     </div>
   );
