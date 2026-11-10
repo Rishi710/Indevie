@@ -162,6 +162,10 @@ export interface ShopifyProduct {
   tags?: string[];
   /** custom.concern metafield — a list.single_line_text_field, so `value` is a JSON-stringified string array (or null if unset). */
   concernMetafield?: { value: string } | null;
+  /** custom.skin_type metafield — a list.single_line_text_field like concern (e.g. ["All Hair Type"]). Only fetched on the single-product query. */
+  skinTypeMetafield?: { value: string } | null;
+  /** custom.net_quantity metafield — a single_line_text_field holding the pack's content, e.g. "100 ml" or "50 g". Only fetched on the single-product query. */
+  netQuantityMetafield?: { value: string } | null;
   /** custom.size metafield — a single_line_text_field, so `value` is a plain string (or null if unset). */
   sizeMetafield?: { value: string } | null;
   /**
@@ -263,6 +267,19 @@ function getMetafieldStringList(metafield?: { value: string } | null): string[] 
 
 export function getProductConcerns(product: Pick<ShopifyProduct, "concernMetafield">): string[] {
   return getMetafieldStringList(product.concernMetafield);
+}
+
+/** Real custom.net_quantity value (e.g. "100 ml"); null when unset. */
+export function getProductNetQuantity(product: Pick<ShopifyProduct, "netQuantityMetafield">): string | null {
+  const raw = product.netQuantityMetafield?.value;
+  if (!raw) return null;
+  const normalized = normalizeMetafieldText(raw);
+  return normalized.length > 0 ? normalized : null;
+}
+
+/** Real custom.skin_type values (e.g. "All Hair Type"); empty when unset. */
+export function getProductSkinTypes(product: Pick<ShopifyProduct, "skinTypeMetafield">): string[] {
+  return getMetafieldStringList(product.skinTypeMetafield);
 }
 
 interface RichTextNode {
@@ -641,6 +658,12 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
       vendor
       productType
       concernMetafield: metafield(namespace: "custom", key: "concern") {
+        value
+      }
+      skinTypeMetafield: metafield(namespace: "custom", key: "skin_type") {
+        value
+      }
+      netQuantityMetafield: metafield(namespace: "custom", key: "net_quantity") {
         value
       }
       sizeMetafield: metafield(namespace: "custom", key: "size") {
@@ -1083,11 +1106,42 @@ export const CART_FRAGMENT = `
   id
   checkoutUrl
   totalQuantity
+  discountAllocations {
+    discountedAmount {
+      amount
+      currencyCode
+    }
+    ... on CartAutomaticDiscountAllocation {
+      title
+      discountedAmount {
+        amount
+        currencyCode
+      }
+    }
+    ... on CartCodeDiscountAllocation {
+      code
+      discountedAmount {
+        amount
+        currencyCode
+      }
+    }
+    ... on CartCustomDiscountAllocation {
+      title
+      discountedAmount {
+        amount
+        currencyCode
+      }
+    }
+  }
+  discountCodes {
+    code
+    applicable
+  }
   lines(first: 100) {
     nodes {
       id
       quantity
-      estimatedCost {
+      cost {
         totalAmount {
           amount
           currencyCode
@@ -1095,6 +1149,41 @@ export const CART_FRAGMENT = `
         subtotalAmount {
           amount
           currencyCode
+        }
+        amountPerQuantity {
+          amount
+          currencyCode
+        }
+        compareAtAmountPerQuantity {
+          amount
+          currencyCode
+        }
+      }
+      discountAllocations {
+        discountedAmount {
+          amount
+          currencyCode
+        }
+        ... on CartAutomaticDiscountAllocation {
+          title
+          discountedAmount {
+            amount
+            currencyCode
+          }
+        }
+        ... on CartCodeDiscountAllocation {
+          code
+          discountedAmount {
+            amount
+            currencyCode
+          }
+        }
+        ... on CartCustomDiscountAllocation {
+          title
+          discountedAmount {
+            amount
+            currencyCode
+          }
         }
       }
       merchandise {
@@ -1174,6 +1263,10 @@ export const UPDATE_CART_LINES_MUTATION = `
       cart {
         ${CART_FRAGMENT}
       }
+      userErrors {
+        field
+        message
+      }
     }
   }
 `;
@@ -1242,20 +1335,25 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
       cartId,
       lines: [{ id: lineId, quantity }],
     });
-    return data.cartLinesUpdate.cart;
+    if (data?.cartLinesUpdate?.userErrors?.length) {
+      console.warn("Update Cart Line userErrors:", data.cartLinesUpdate.userErrors);
+    }
+    return data?.cartLinesUpdate?.cart ?? null;
   } catch (error) {
     console.error("Update Cart Line Error:", error);
     return null;
   }
 }
 
-export async function removeFromCart(cartId: string, lineId: string): Promise<any> {
+export async function removeFromCart(cartId: string, lineId: string | string[]): Promise<any> {
+  const lineIds = Array.isArray(lineId) ? lineId : [lineId];
+  if (lineIds.length === 0) return null;
   try {
     const data: any = await storefrontClient.request(REMOVE_CART_LINES_MUTATION, {
       cartId,
-      lineIds: [lineId],
+      lineIds,
     });
-    return data.cartLinesRemove.cart;
+    return data?.cartLinesRemove?.cart ?? null;
   } catch (error) {
     console.error("Remove from Cart Error:", error);
     return null;

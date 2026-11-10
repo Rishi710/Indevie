@@ -38,15 +38,29 @@ interface ReviewSectionProps {
   productId: string;
 }
 
-/** Reviews shown at first, and added each time "Show more" is pressed. */
-const REVIEWS_PER_PAGE = 12; // divides evenly into the 3- and 4-column grids
+/** Number of reviews displayed per page. */
+const REVIEWS_PER_PAGE = 8;
+
+function getPageNumbers(current: number, total: number): (number | string)[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  if (current <= 3) {
+    return [1, 2, 3, 4, "...", total];
+  }
+  if (current >= total - 2) {
+    return [1, "...", total - 3, total - 2, total - 1, total];
+  }
+  return [1, "...", current - 1, current, current + 1, "...", total];
+}
 
 export default function ReviewSection({ productId }: ReviewSectionProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(REVIEWS_PER_PAGE);
+  const [currentPage, setCurrentPage] = useState(1);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const [isWriting, setIsWriting] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -213,11 +227,17 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [lightbox]);
 
-  const visibleReviews = reviews.slice(0, visibleCount);
-  const remaining = reviews.length - visibleReviews.length;
+  const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+  const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE;
+  const visibleReviews = reviews.slice(startIndex, startIndex + REVIEWS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
-    <div className="w-full  py-4 border-t border-[#e5e5e5]/50 px-4 md:px-0">
+    <div ref={sectionRef} id="customer-reviews" className="w-full py-4 border-t border-[#e5e5e5]/50 px-4 md:px-0">
       <div className="flex flex-col md:flex-row justify-between items-center md:items-center mb-10 gap-6">
         <div>
           <h2 className="text-4xl md:text-5xl text-black flex flex-col justify-center items-center md:items-center  font-inter uppercase">
@@ -439,15 +459,57 @@ export default function ReviewSection({ productId }: ReviewSectionProps) {
             ))}
           </div>
 
-          {remaining > 0 && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => setVisibleCount((c) => c + REVIEWS_PER_PAGE)}
-                className="border border-[#B40417] text-[#B40417] px-8 py-3 text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-[#B40417] hover:text-white transition-colors"
-              >
-                Show more reviews ({remaining} more)
-              </button>
-            </div>
+          {totalPages > 1 && (
+            <nav aria-label="Reviews pagination" className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pt-6 border-t border-[#e5e5e5]">
+              <p className="text-[13px] text-gray-500 font-inter">
+                Showing <span className="font-semibold text-black">{startIndex + 1}</span>–<span className="font-semibold text-black">{Math.min(startIndex + REVIEWS_PER_PAGE, reviews.length)}</span> of{" "}
+                <span className="font-semibold text-black">{reviews.length}</span> reviews
+              </p>
+
+              <div className="flex items-center gap-1.5 font-inter">
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  aria-label="Previous page"
+                  className="w-10 h-10 flex items-center justify-center border border-black/20 text-[#2a2a2a] hover:border-black hover:text-black transition-colors disabled:opacity-30 disabled:pointer-events-none rounded-none bg-white"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+
+                {getPageNumbers(currentPage, totalPages).map((p, idx) =>
+                  typeof p === "number" ? (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handlePageChange(p)}
+                      aria-current={p === currentPage ? "page" : undefined}
+                      className={`w-10 h-10 flex items-center justify-center text-[13px] font-semibold transition-colors ${
+                        p === currentPage
+                          ? "bg-[#B40417] text-white border border-[#B40417]"
+                          : "border border-black/20 text-[#2a2a2a] hover:border-black hover:text-black bg-white"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ) : (
+                    <span key={idx} className="w-8 h-10 flex items-center justify-center text-gray-400 text-[13px]">
+                      {p}
+                    </span>
+                  )
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  aria-label="Next page"
+                  className="w-10 h-10 flex items-center justify-center border border-black/20 text-[#2a2a2a] hover:border-black hover:text-black transition-colors disabled:opacity-30 disabled:pointer-events-none rounded-none bg-white"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </nav>
           )}
         </>
       )}

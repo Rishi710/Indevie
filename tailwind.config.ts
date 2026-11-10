@@ -7,8 +7,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-open-sans)"],
-        inter: ["var(--font-inter)"],
+        sans: ["Poppins Numerals", "Poppins Rupee", "var(--font-open-sans)"],
+        inter: ["Poppins Numerals", "Poppins Rupee", "var(--font-inter)"],
       },
       keyframes: {
         'fade-in-up': {

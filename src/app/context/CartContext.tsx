@@ -10,18 +10,21 @@ import { calculateMinisOffer, MinisOfferResult } from "@/lib/minisOffer";
 
 const CART_COOKIE_KEY = "shopify_cart_id";
 
+const normalizeId = (id?: string) => (id ? id.split("/").pop()?.split("?")[0] : "");
+
 interface CartContextType {
   cart: any;
   isCartOpen: boolean;
   isUpdating: boolean;
   setIsCartOpen: (open: boolean) => void;
   addItem: (variantId: string, quantity?: number) => Promise<any>;
-  removeItem: (lineId: string) => Promise<void>;
-  updateQuantity: (lineId: string, quantity: number) => Promise<void>;
+  removeItem: (lineId: string | string[]) => Promise<void>;
+  updateQuantity: (lineId: string, quantity: number, extraLineIds?: string[]) => Promise<void>;
   totalQuantity: number;
   updateBuyerIdentity: (customerAccessToken?: string, email?: string, phone?: string) => Promise<any>;
   clearCart: () => void;
   minisOffer: MinisOfferResult;
+  consolidateCart: () => Promise<any>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -32,6 +35,77 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
 
+  const mountedRef = React.useRef(true);
+  const isUpdatingRef = React.useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  // Helper to deduplicate any duplicate lines in a cart returned by Shopify
+  const consolidateDuplicates = useCallback(async (cartData: any, cartId: string) => {
+    if (!cartData?.lines?.nodes?.length) return cartData;
+    const lines = cartData.lines.nodes;
+    const variantMap = new Map<string, any[]>();
+    lines.forEach((line: any) => {
+      const vId = normalizeId(line.merchandise?.id);
+      if (vId) {
+        if (!variantMap.has(vId)) variantMap.set(vId, []);
+        variantMap.get(vId)!.push(line);
+      }
+    });
+
+    let hasDuplicates = false;
+    for (const [, list] of variantMap) {
+      if (list.length > 1) {
+        hasDuplicates = true;
+        break;
+      }
+    }
+
+    if (!hasDuplicates) return cartData;
+
+    let latestCart = cartData;
+    for (const [, list] of variantMap) {
+      if (list.length > 1) {
+        const primary = list[0];
+        const totalQty = list.reduce((sum: number, l: any) => sum + (l.quantity || 0), 0);
+        const extraIds = list.slice(1).map((l: any) => l.id);
+        const updated = await updateCartLine(cartId, primary.id, totalQty);
+        if (updated) latestCart = updated;
+        const cleaned = await removeFromCart(cartId, extraIds);
+        if (cleaned) latestCart = cleaned;
+      }
+    }
+    return latestCart;
+  }, []);
+
+  const cartRef = React.useRef<any>(null);
+  // Keep ref in sync so consolidateCart doesn't depend on cart state directly
+  cartRef.current = cart;
+
+  const consolidateCart = useCallback(async () => {
+    const currentCartId = Cookies.get(CART_COOKIE_KEY);
+    if (!currentCartId) return null;
+    const cartToClean = cartRef.current || (await fetchCart(currentCartId));
+    if (!cartToClean) return null;
+    const cleaned = await consolidateDuplicates(cartToClean, currentCartId);
+    if (cleaned && mountedRef.current) {
+      setCart(cleaned);
+    }
+    return cleaned;
+  }, [consolidateDuplicates]);
+
+  // Consolidate whenever cart drawer opens so Shopify stays 100% clean
+  useEffect(() => {
+    if (isCartOpen && !isInitializing) {
+      consolidateCart();
+    }
+  }, [isCartOpen, consolidateCart, isInitializing]);
+
   // Initialize or fetch existing cart
   useEffect(() => {
     const initCart = async () => {
@@ -39,19 +113,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (existingCartId) {
         const fetchedCart = await fetchCart(existingCartId);
         if (fetchedCart) {
-          setCart(fetchedCart);
+          const consolidatedCart = await consolidateDuplicates(fetchedCart, existingCartId);
+          if (mountedRef.current) {
+            setCart(consolidatedCart);
+          }
         } else {
           // If fetchedCart is null, the cart might have expired or been deleted in Shopify
           Cookies.remove(CART_COOKIE_KEY);
         }
       }
-      setIsInitializing(false);
+      if (mountedRef.current) {
+        setIsInitializing(false);
+      }
     };
     initCart();
-  }, []);
+  }, [consolidateDuplicates]);
 
   const addItem = async (variantId: string, quantity = 1) => {
-    if (isUpdating) return null;
+    if (isUpdatingRef.current) return null;
+    isUpdatingRef.current = true;
     setIsUpdating(true);
     try {
       let currentCartId = Cookies.get(CART_COOKIE_KEY);
@@ -63,17 +143,44 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           Cookies.set(CART_COOKIE_KEY, updatedCart.id, { expires: 7 });
         }
       } else {
-        updatedCart = await addToCart(currentCartId, variantId, quantity);
+        // Retrieve cart to check if this variant is already present
+        const currentCart = cart || (await fetchCart(currentCartId));
+        const targetVId = normalizeId(variantId);
+        const existingLines = (currentCart?.lines?.nodes || []).filter(
+          (l: any) => normalizeId(l.merchandise?.id) === targetVId
+        );
+
+        if (existingLines.length > 0) {
+          // Product already in cart: add quantity to existing primary line
+          const totalExistingQty = existingLines.reduce(
+            (sum: number, l: any) => sum + (l.quantity || 0),
+            0
+          );
+          const targetQty = totalExistingQty + quantity;
+          const primaryLine = existingLines[0];
+
+          updatedCart = await updateCartLine(currentCartId, primaryLine.id, targetQty);
+
+          // If there were extra duplicate lines in Shopify, remove them
+          if (existingLines.length > 1) {
+            const extraIds = existingLines.slice(1).map((l: any) => l.id);
+            const cleanedCart = await removeFromCart(currentCartId, extraIds);
+            if (cleanedCart) updatedCart = cleanedCart;
+          }
+        } else {
+          updatedCart = await addToCart(currentCartId, variantId, quantity);
+        }
       }
 
-      if (updatedCart) {
+      if (updatedCart && mountedRef.current) {
         setCart(updatedCart);
         setIsCartOpen(true); // Open drawer automatically when item is added
 
         // Fire Meta Pixel AddToCart event
-        // Find the newly added line to get price/title for richer data
-        const newLine = updatedCart?.lines?.nodes?.find((l: any) =>
-          l.merchandise?.id === variantId
+        // Find the newly added line using normalized ID matching
+        const targetVId = normalizeId(variantId);
+        const newLine = updatedCart?.lines?.nodes?.find(
+          (l: any) => normalizeId(l.merchandise?.id) === targetVId
         );
         pixelAddToCart({
           id: newLine?.merchandise?.product?.id || variantId,
@@ -93,48 +200,85 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return null;
     } finally {
-      setIsUpdating(false);
+      isUpdatingRef.current = false;
+      if (mountedRef.current) {
+        setIsUpdating(false);
+      }
     }
   };
 
-  const removeItem = async (lineId: string) => {
-    if (isUpdating) return;
+  const removeItem = async (lineIdOrIds: string | string[]) => {
+    if (isUpdatingRef.current) return;
+    isUpdatingRef.current = true;
     setIsUpdating(true);
     try {
       const currentCartId = Cookies.get(CART_COOKIE_KEY);
       if (!currentCartId) return;
 
-      const updatedCart = await removeFromCart(currentCartId, lineId);
-      if (updatedCart) {
+      const updatedCart = await removeFromCart(currentCartId, lineIdOrIds);
+      if (updatedCart && mountedRef.current) {
         setCart(updatedCart);
       }
     } finally {
-      setIsUpdating(false);
+      isUpdatingRef.current = false;
+      if (mountedRef.current) {
+        setIsUpdating(false);
+      }
     }
   };
 
-  const updateQuantity = async (lineId: string, quantity: number) => {
+  const updateQuantity = async (
+    lineId: string,
+    quantity: number,
+    extraLineIds?: string[]
+  ) => {
+    if (isUpdatingRef.current) return;
+
     if (quantity < 1) {
-      return removeItem(lineId);
+      const toRemove =
+        extraLineIds && extraLineIds.length > 0 ? [lineId, ...extraLineIds] : lineId;
+      return removeItem(toRemove);
     }
 
-    if (isUpdating) return;
+    isUpdatingRef.current = true;
     setIsUpdating(true);
     try {
       const currentCartId = Cookies.get(CART_COOKIE_KEY);
       if (!currentCartId) return;
 
-      const updatedCart = await updateCartLine(currentCartId, lineId, quantity);
-      if (updatedCart) {
+      let updatedCart = await updateCartLine(currentCartId, lineId, quantity);
+
+      if (extraLineIds && extraLineIds.length > 0) {
+        const cleanedCart = await removeFromCart(currentCartId, extraLineIds);
+        if (cleanedCart) updatedCart = cleanedCart;
+      }
+
+      if (updatedCart && mountedRef.current) {
         setCart(updatedCart);
+      } else {
+        // Cart may have expired — re-fetch to sync UI with actual cart state
+        const freshCart = await fetchCart(currentCartId);
+        if (mountedRef.current) {
+          if (freshCart) {
+            setCart(freshCart);
+          } else {
+            // Cart gone entirely; clear it
+            Cookies.remove(CART_COOKIE_KEY);
+            setCart(null);
+          }
+        }
       }
     } finally {
-      setIsUpdating(false);
+      isUpdatingRef.current = false;
+      if (mountedRef.current) {
+        setIsUpdating(false);
+      }
     }
   };
 
   const updateBuyerIdentity = useCallback(async (customerAccessToken?: string, email?: string, phone?: string) => {
-    if (isUpdating) return null;
+    if (isUpdatingRef.current) return null;
+    isUpdatingRef.current = true;
     setIsUpdating(true);
     try {
       const currentCartId = Cookies.get(CART_COOKIE_KEY);
@@ -145,19 +289,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (email) buyerIdentityInput.email = email;
       if (phone) buyerIdentityInput.phone = phone;
 
-      // If we only have a token but no info, we could fetch customer info here if needed
-      // but for now we'll just pass what we have.
-
       const updatedCart = await updateCartBuyerIdentity(currentCartId, buyerIdentityInput);
-      if (updatedCart) {
+      if (updatedCart && mountedRef.current) {
         setCart(updatedCart);
         return updatedCart;
       }
       return null;
     } finally {
-      setIsUpdating(false);
+      isUpdatingRef.current = false;
+      if (mountedRef.current) {
+        setIsUpdating(false);
+      }
     }
-  }, [isUpdating]);
+  }, []);
 
   // GoKwik checkout (Scenario 2) has no cart/clear.js endpoint to clear our
   // Shopify cart automatically after an order -- we own that responsibility.
@@ -200,6 +344,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateBuyerIdentity,
         clearCart,
         minisOffer,
+        consolidateCart,
       }}
     >
       {children}

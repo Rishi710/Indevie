@@ -43,7 +43,7 @@ export function isTravelMini(product: any): boolean {
   const normalizedTags = tags.map((t) => t.toLowerCase().trim());
   if (
     normalizedTags.some((t) =>
-      ["mini", "travel-mini", "travel mini", "travel minis", "travel"].includes(t)
+      ["mini", "travel-mini", "travel mini", "travel minis"].includes(t)
     )
   ) {
     return true;
@@ -53,19 +53,23 @@ export function isTravelMini(product: any): boolean {
   const collections = product.collections?.nodes || [];
   if (
     collections.some((c: any) =>
-      ["travel-minis", "travel-mini", "minis", "travel-collection"].includes(
-        c.handle?.toLowerCase()
-      )
+      ["travel-minis", "travel-mini"].includes(c.handle?.toLowerCase())
     )
   ) {
     return true;
   }
 
-  // 3. Check product title or productType
+  // 3. Check product title, handle, or productType
   const title = (product.title || "").toLowerCase();
+  const handle = (product.handle || "").toLowerCase();
   const productType = (product.productType || "").toLowerCase();
 
-  if (title.includes("mini") || productType.includes("mini") || title.includes("travel")) {
+  if (
+    title.includes("mini") ||
+    productType.includes("mini") ||
+    handle === "gulkand-face-mist" ||
+    handle === "geeli-mitti-face-mist"
+  ) {
     return true;
   }
 
@@ -151,15 +155,14 @@ export function calculateMinisOffer(lines: any[] = []): MinisOfferResult {
     discountPercent = 10;
     currentTier = "4_plus";
     progressPercent = 100;
-    targetCountForNextTier = totalMinisCount;
+    targetCountForNextTier = 4;
     itemsNeededForNextTier = 0;
     bannerMessage = `🎉 Best Value! 10% OFF Applied on all ${totalMinisCount} Minis!`;
     badgeMessage = "10% OFF Applied";
   }
 
-  const rawDiscount = minisOriginalSubtotal * (discountPercent / 100);
-  const discountAmount = Math.round(rawDiscount);
-  const minisOfferTotal = Math.round(minisOriginalSubtotal - discountAmount);
+  const minisOfferTotal = Math.round(minisOriginalSubtotal * (1 - discountPercent / 100));
+  const discountAmount = Math.round(minisOriginalSubtotal) - minisOfferTotal;
   const hasOfferApplied = discountAmount > 0;
 
   return {

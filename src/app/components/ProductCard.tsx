@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Plus, Minus } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { ShopifyProduct, getStockInfo, getProductInfo } from "@/lib/shopify";
 import { useCart } from "../context/CartContext";
 import { fetchRating } from "@/lib/reviewsClient";
@@ -41,11 +41,15 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   }, [externalId]);
 
   // Find if this product (or variant) is currently in the cart
-  const lineItem = cart?.lines?.nodes?.find(
-    (line: any) => line.merchandise.id === variantId
+  const normalizeId = (id?: string) => (id ? id.split("/").pop()?.split("?")[0] : undefined);
+  const targetId = normalizeId(variantId);
+  const matchingLines = (cart?.lines?.nodes || []).filter(
+    (line: any) => targetId && normalizeId(line.merchandise?.id) === targetId
   );
-  const quantityInCart = lineItem ? lineItem.quantity : 0;
-  const lineId = lineItem ? lineItem.id : null;
+  const quantityInCart = matchingLines.reduce((sum: number, l: any) => sum + (l.quantity || 0), 0);
+  const primaryLine = matchingLines[0];
+  const lineId = primaryLine ? primaryLine.id : null;
+  const extraLineIds = matchingLines.slice(1).map((l: any) => l.id);
 
   // Formatting prices
   const formattedPrice = price
@@ -64,28 +68,45 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   // product has no description yet.
   const subtitle = product.description?.split(/[.!?]+/)[0]?.trim() || "";
 
+  const isFiringRef = useRef(false);
+
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isUpdating || !variantId || isOutOfStock) return;
-    await addItem(variantId, 1);
+    if (isUpdating || isFiringRef.current || !variantId || isOutOfStock) return;
+    isFiringRef.current = true;
+    try {
+      await addItem(variantId, 1);
+    } finally {
+      isFiringRef.current = false;
+    }
   };
 
   const handleIncrease = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isUpdating || !lineId || quantityInCart >= maxQuantity) return;
-    await updateQuantity(lineId, quantityInCart + 1);
+    if (isUpdating || isFiringRef.current || !lineId || quantityInCart >= maxQuantity) return;
+    isFiringRef.current = true;
+    try {
+      await updateQuantity(lineId, quantityInCart + 1, extraLineIds);
+    } finally {
+      isFiringRef.current = false;
+    }
   };
 
   const handleDecrease = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isUpdating || !lineId) return;
-    if (quantityInCart === 1) {
-      await removeItem(lineId);
-    } else {
-      await updateQuantity(lineId, quantityInCart - 1);
+    if (isUpdating || isFiringRef.current || !lineId) return;
+    isFiringRef.current = true;
+    try {
+      if (quantityInCart <= 1) {
+        await removeItem(matchingLines.map((l: any) => l.id));
+      } else {
+        await updateQuantity(lineId, quantityInCart - 1, extraLineIds);
+      }
+    } finally {
+      isFiringRef.current = false;
     }
   };
 
@@ -155,7 +176,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                 {formattedComparePrice}
               </span>
             )}
-            <span className="text-[16px] sm:text-[14px] font-semibold font-inter text-black">
+            <span className="text-[14px] sm:text-[16px] font-semibold font-inter text-black">
               {formattedPrice}
             </span>
           </div>

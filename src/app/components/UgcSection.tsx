@@ -189,7 +189,7 @@ const UgcVideoCard = ({
           )}
           <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
             {rating && rating.total > 0 && (
-              <span className="text-[9px] sm:text-[11px] font-inter font-bold text-amber-500 tracking-wide">
+              <span className="text-[9px] sm:text-[11px] font-inter font-bold text-[#B40417] tracking-wide">
                 ★ {rating.average.toFixed(1)} <span className="text-gray-400 font-medium">({rating.total})</span>
               </span>
             )}

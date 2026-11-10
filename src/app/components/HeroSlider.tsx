@@ -14,11 +14,11 @@ import Link from "next/link";
 const slides = [
   {
     id: 1,
-    image: "/images/hair-oil.webp",
-    title: "",
-    subtitle: "",
-    cta: "Shop Hair Oil",
-    link: "/products/gulkand-non-sticky-hair-oil",
+    image: "https://cdn.shopify.com/s/files/1/0649/7301/3058/files/Gulkand_Beauty_Bottles_on_Chessboard.webp?v=1794085150",
+    title: "The Gulkand Hair Care Ritual",
+    subtitle: "Where timeless beauty meets modern hair care.",
+    cta: "Explore the Ritual",
+    link: "/products/gulkand-shampoo-conditioner",
   },
   {
     id: 2,

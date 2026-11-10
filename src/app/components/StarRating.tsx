@@ -17,7 +17,7 @@ interface StarRatingProps {
 export default function StarRating({
   rating,
   size = 18,
-  fillColor = "#FFCE07",
+  fillColor = "#B40417",
   emptyColor = "#d1d5db",
 }: StarRatingProps) {
   const clamped = Math.min(5, Math.max(0, rating));
