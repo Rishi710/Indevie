@@ -29,23 +29,23 @@ import { getProductFaqs } from "@/app/components/ProductFaqSection";
 import { pixelViewContent } from "@/lib/pixel";
 import { publishProductViewed } from "@/lib/shopifyAnalytics";
 import { triggerGokwikCheckout } from "@/lib/gokwik";
+import { isTravelMini } from "@/lib/minisOffer";
 
 const PRODUCT_BASE_PATH = "/products";
 
-// Packs of 1-3 are the quantity selector, shown as cards.
+// Standard pack sizes & offers (for full-size products)
 const PACK_SIZES = [1, 2, 3];
-
-// Discount and badge shown on each pack card.
-// Re-enable these once matching Shopify Automatic Discounts exist (e.g. 10% off for qty ≥ 2,
-// 15% off for qty ≥ 3). Until then keep this empty so the page and cart always agree.
 const PACK_OFFERS: Record<number, { percent?: number; badge?: string }> = {
   2: { percent: 5, badge: "Most Popular" },
   3: { percent: 10, badge: "Best Value" },
 };
 
-// Total for a pack after its discount, in whole rupees (the same rounding the cards show).
-const packTotalFor = (unitPrice: number, pack: number) =>
-  Math.round(unitPrice * pack * (1 - (PACK_OFFERS[pack]?.percent ?? 0) / 100));
+// Travel Minis pack sizes & offers (Buy 2 for 5% OFF, Buy 4 for 10% OFF)
+const MINIS_PACK_SIZES = [1, 2, 4];
+const MINIS_PACK_OFFERS: Record<number, { percent?: number; badge?: string }> = {
+  2: { percent: 5, badge: "Most Popular" },
+  4: { percent: 10, badge: "Best Value" },
+};
 
 // Claims shown under "Upgrade your routine" on every product page, so each must be true for the whole range.
 const PRODUCT_CLAIMS = ["Sulphate free", "Paraben free", "Cruelty free", "Ethically sourced", "Made in India"];
@@ -475,6 +475,7 @@ export default function ProductPageClient({
   useEffect(() => {
     setMobileImageIndex(0);
     setSelectedImageIndex(0);
+    setQuantity(1);
   }, [product.handle]);
 
   const scrollMobileTo = (index: number) => {
@@ -560,12 +561,19 @@ export default function ProductPageClient({
       ? parseFloat(compareAtPrice.amount)
       : null;
 
+  const isMini = isTravelMini(product);
+  const packSizes = isMini ? MINIS_PACK_SIZES : PACK_SIZES;
+  const packOffers = isMini ? MINIS_PACK_OFFERS : PACK_OFFERS;
+
+  const packTotalFor = (unitPriceVal: number, pack: number) =>
+    Math.round(unitPriceVal * pack * (1 - (packOffers[pack]?.percent ?? 0) / 100));
+
   const packPrice = unitPrice !== null ? packTotalFor(unitPrice, quantity) : null;
   // Struck-through price: the product's compare-at price, or its normal price when only a pack discount applies.
   const packComparePrice =
     unitComparePrice !== null
       ? Math.round(unitComparePrice * quantity)
-      : unitPrice !== null && PACK_OFFERS[quantity]
+      : unitPrice !== null && packOffers[quantity]
         ? Math.round(unitPrice * quantity)
         : null;
   const packSavings =
@@ -789,10 +797,10 @@ export default function ProductPageClient({
             <div className="flex flex-col gap-1.5 mb-3">
               <span className={LABEL_CLASS}>Choose a pack</span>
               <div className="grid grid-cols-3 gap-2.5 pt-2">
-                {PACK_SIZES.map((pack) => {
+                {packSizes.map((pack) => {
                   const selected = pack === quantity;
                   const unavailable = pack > maxQuantity;
-                  const offer = PACK_OFFERS[pack];
+                  const offer = packOffers[pack];
                   const total = packTotalFor(unitPrice, pack);
                   return (
                     <button
