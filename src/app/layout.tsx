@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "rA54DjMphxrb_yUw1GeK5a7HarGOtA1V-DjwIdrbwzI",
+  },
   other: {
     "facebook-domain-verification": "m2b63pt96o6nhkqkt1wk154bcexgf2",
   },
