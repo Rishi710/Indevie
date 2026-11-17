@@ -17,9 +17,23 @@ const GOKWIK_ENVIRONMENT = process.env.NEXT_PUBLIC_GOKWIK_ENVIRONMENT || "sandbo
 const GOKWIK_STORE_ID = process.env.NEXT_PUBLIC_GOKWIK_STORE_ID;
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.indevie.com"),
   title: "Indevie Beauty | Modern Botanical Skincare rooted in Genurveda™",
   description: "Discover Indevie Beauty's range of clean, effective, and intentional skincare rituals. Built with intention, backed by conviction.",
   keywords: ["skincare", "botanical beauty", "Genurveda", "clean beauty", "intentional skincare"],
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/manifest.json",
   other: {
     "facebook-domain-verification": "m2b63pt96o6nhkqkt1wk154bcexgf2",
   },
@@ -43,6 +57,18 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${openSans.variable} ${inter.variable} antialiased font-sans bg-[#f5f1e6]`} suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Indevie Beauty",
+              url: "https://www.indevie.com",
+              logo: "https://www.indevie.com/favicon-512x512.png",
+            }),
+          }}
+        />
         <LayoutWrapper isLoggedIn={isLoggedIn} userName={userName}>
           {children}
         </LayoutWrapper>

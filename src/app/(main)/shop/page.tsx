@@ -255,9 +255,18 @@ export default function ShopPage() {
       });
     }
 
-    // Apply Sorting. Default ("Most Relevant") lists the newest products first;
-    // products without a publish date keep their original relative order.
+    // Apply Sorting:
+    // If user has not changed sort (sortBy === "relevant"):
+    // - In "Shop All" (activeCollection === "all"): default to newest first
+    // - In specific collection tabs: default to exact Shopify backend sequence
     if (sortBy === "relevant") {
+      if (activeCollection === "all") {
+        const time = (p: ShopifyProduct) => (p.publishedAt ? Date.parse(p.publishedAt) : 0);
+        result.sort((a, b) => time(b) - time(a));
+      } else {
+        // Keep exact Shopify backend order as returned by the API
+      }
+    } else if (sortBy === "newest") {
       const time = (p: ShopifyProduct) => (p.publishedAt ? Date.parse(p.publishedAt) : 0);
       result.sort((a, b) => time(b) - time(a));
     } else if (sortBy === "price-asc") {
@@ -269,7 +278,7 @@ export default function ShopPage() {
     }
 
     return result;
-  }, [products, activeProductType, selectedProductTypes, selectedSizes, selectedConcerns, selectedOthers, sortBy]);
+  }, [products, activeCollection, activeProductType, selectedProductTypes, selectedSizes, selectedConcerns, selectedOthers, sortBy]);
 
   // Toggle Filters
   const handleTypeToggle = (type: string) => {
@@ -317,12 +326,13 @@ export default function ShopPage() {
     ].filter((c) => c.available)
   ), [filterOptions, selectedProductTypes, selectedConcerns, selectedSizes, selectedOthers, sortBy]);
 
-  const SORT_OPTIONS = [
-    { value: "relevant", label: "Newest First" },
+  const SORT_OPTIONS = useMemo(() => [
+    { value: "relevant", label: activeCollection === "all" ? "Newest First" : "Featured" },
+    ...(activeCollection === "all" ? [] : [{ value: "newest", label: "Newest First" }]),
     { value: "price-asc", label: "Price: Low to High" },
     { value: "price-desc", label: "Price: High to Low" },
     { value: "alpha", label: "Alphabetical" },
-  ];
+  ], [activeCollection]);
 
   // Shared slide transition for drill-down screens in the mobile drawer
   const drillDownMotionProps = {
@@ -659,10 +669,11 @@ export default function ShopPage() {
                     onChange={(e) => setSortBy(e.target.value)}
                     className="w-full bg-white border border-[#B40417] text-[#B40417] rounded-[4px] px-3 py-2.5 text-xs font-inter uppercase font-bold outline-none cursor-pointer appearance-none"
                   >
-                    <option value="relevant">Newest First</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="alpha">Alphabetical</option>
+                    {SORT_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
                   </select>
                   <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#6c3518]" />
                 </div>
